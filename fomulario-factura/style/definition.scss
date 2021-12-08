@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+//constantes
+$formMax: 700px;
+$darkGray: #444;
+$gentleLavanda: rgb(190, 180, 235);
+$gentleGray: #ddd;
+$A4Width: 73.2064%;
+
+//funciones
+@mixin purpleBack() {
+    background: rgb(51,52,166); 
+    background: rgb(114,115,190);
+    background: linear-gradient(345deg, rgba(114,115,190,1) 0%, rgba(20,23,57,1) 100%); 
+}
+@mixin purplePanel() {
+    background-color: rgba(31, 28, 44, 0.8);
+    box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
+    -webkit-box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
+    -moz-box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
+}
+@mixin globalFont {
+    font: {
+        family: "Cambria", Georgia, Times, 'Times New Roman', serif;
+        size: 1rem;
+    }
+    color: whitesmoke;
+}
+@mixin grayBorder {
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+@mixin neatBorder {
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: rgba(31, 28, 44, 0.8);
+}
+@mixin flex {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: end;
+}
+@mixin smallHeader {
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
