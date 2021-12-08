@@ -27,12 +27,12 @@
         Los datos se envían a generador.html, que activa get-handler.js
         para generar una factura-->
 
-        <form id="form" action="generador.html">
+        <form id="form" action="generador.html" method="POST">
 
             <!--Datos de la factura-->
             <div>
                 <label for="opt-tipo">Tipo</label>
-                <select name="tipo" class="inputControl" id="opt-tipo" required>
+                <select name="tipo" class="inputControl" id="opt-tipo" name="opt-tipo" required>
                     <option selected value="factura-A">A</option>
                     <option value="factura-B">B</option>
                     <option value="factura-C">C</option>
@@ -41,7 +41,7 @@
 
             <div>
                 <label for="date">Fecha</label>
-                <input name="fecha" type="date" id="date" class="inputControl" required>
+                <input name="fecha" type="date" id="date" name="date" class="inputControl" required>
             </div>
 
             <hr>
@@ -49,22 +49,22 @@
             <!--Datos del receptor-->
             <div>
                 <label for="txf-receptor">Receptor</label>
-                <input name="receptor" type="text" id="txf-receptor" class="inputControl" placeholder="Cliente" maxlength="30" required>
+                <input name="receptor" type="text" id="txf-receptor" name="txf-receptor" class="inputControl" placeholder="Cliente" maxlength="30" required>
             </div>
 
             <div>
                 <label for="txf-domicilio">Domicilio</label>
-                <input name="domicilio" type="text" id="txf-domicilio" class="inputControl" value="Av. Rivadavia" maxlength="30" required>
+                <input name="domicilio" type="text" id="txf-domicilio" name="txf-domicilio" class="inputControl" value="Av. Rivadavia" maxlength="30" required>
             </div>
 
             <div>
                 <label for="txf-localidad">Localidad</label>
-                <input name="localidad" type="text" id="txf-localidad" class="inputControl" value="Puerto Iguazú" maxlength="20" required>
+                <input name="localidad" type="text" id="txf-localidad" name="txf-localidad" class="inputControl" value="Puerto Iguazú" maxlength="20" required>
             </div>
 
             <div>
                 <label for="cod-postal">Código Postal</label>
-                <input name="cod" type="number" id="cod-postal" class="inputControl" placeholder="" min="1111" max="9999" required>
+                <input name="cod" type="number" id="cod-postal" name="cod-postal" class="inputControl" placeholder="" min="1111" max="9999" required>
             </div>
 
             <div>
@@ -77,7 +77,7 @@
 
             <div>
                 <label for="txf-cuit">C.U.I.T.</label>
-                <input name="cuit" type="number" id="txf-cuit" class="inputControl" placeholder="xx-xxxxxxxx-x" min="20100000000" max="33999999999" required>
+                <input name="cuit" type="number" id="txf-cuit" name="txf-cuit" class="inputControl" placeholder="xx-xxxxxxxx-x" min="20100000000" max="33999999999" required>
             </div>
 
             <hr>
@@ -95,7 +95,7 @@
 
             <div>
                 <label>Remito <span>(opcional)</span></label>
-                <input name="rem" type="number" id="num-remito" class="inputControl" placeholder="xxxx-xxxxxxxxx" min="0001000000001" max="9999999999999">
+                <input name="rem" type="number" id="num-remito" name="num-remito" class="inputControl" placeholder="xxxx-xxxxxxxxx" min="0001000000001" max="9999999999999">
             </div>
 
 
