@@ -1,0 +1,91 @@
+body {
+  background-color: blue;
+}
+
+body header {
+  width: 100%;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+  background-color: green;
+}
+
+body header input {
+  display: block;
+  margin-right: 2rem;
+  width: 40px;
+  height: 40px;
+}
+
+body article {
+  background-color: #fff;
+  margin: 60px auto;
+  padding: 10px;
+  width: 73.2vw;
+  height: 103.5048vw;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 2fr 1fr 3fr 1fr;
+      grid-template-rows: 2fr 1fr 3fr 1fr;
+  gap: 1px;
+}
+
+body article div {
+  background-color: #111b06;
+  padding: 5px;
+}
+
+body article #doc-header {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  border-radius: 5px;
+}
+
+body article #doc-header div {
+  background-color: chocolate;
+  border-radius: 5px;
+}
+
+body article #doc-body {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 2fr 1fr 1fr;
+      grid-template-rows: 2fr 1fr 1fr;
+  gap: 5px;
+}
+
+body article #doc-body div {
+  background-color: coral;
+  border-radius: 5px;
+}
+
+body article #doc-table {
+  display: -ms-grid;
+  display: grid;
+  gap: 1px;
+  -ms-grid-rows: 1fr 10fr;
+      grid-template-rows: 1fr 10fr;
+}
+
+body article #doc-table div {
+  background-color: coral;
+  border-radius: 5px;
+}
+/*# sourceMappingURL=fact.css.map */
