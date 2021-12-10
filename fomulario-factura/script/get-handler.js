@@ -1,6 +1,6 @@
 /**
  * Programa que rellena los datos de la factura en fact.html
- * tomando los datos del GET request en el formulario de form.html
+ * tomando los datos del GET request del formulario de form.html
  */
 class Factura {
     constructor(urlsp) {
