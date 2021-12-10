@@ -19,6 +19,11 @@ $A4Width: 73.2064%;
     -webkit-box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
     -moz-box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
 }
+@mixin shadow {
+    box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
+    -webkit-box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
+    -moz-box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.59);
+}
 @mixin globalFont {
     font: {
         family: "Cambria", Georgia, Times, 'Times New Roman', serif;
@@ -35,11 +40,11 @@ $A4Width: 73.2064%;
     border-radius: 4px;
     background-color: rgba(31, 28, 44, 0.8);
 }
-@mixin flex {
+@mixin flex($justify, $align) {
     display: flex;
     flex-flow: row wrap;
-    align-items: center;
-    justify-content: end;
+    align-items: $align;
+    justify-content: $justify;
 }
 @mixin smallHeader {
     width: 100%;

@@ -17,6 +17,11 @@ radios.forEach(() => addEventListener('change', () =>{
 }
 ));
 
+//actualizar radCondOtro.value="err" al momento de cargar la página
+if (txfCondOtro.value != '') {
+  radCondOtro.value = txfCondOtro.value;
+}
+
 //hacer que radCondOtro.value="err" sea reemplazado con el valor del cuadro de texto
 txfCondOtro.addEventListener('change', () => {
   radCondOtro.value = txfCondOtro.value;
