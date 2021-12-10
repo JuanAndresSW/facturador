@@ -31,9 +31,8 @@ function newNumberField(prefix) {
     const nf = document.createElement('input');
     nf.name = `${prefix}${rowCounter}`;
     nf.type = 'number';
-    nf.class = 'inputControl';
-    nf.min = '0.01';
-    nf.max = '9999999';
+    nf.setAttribute('class','inputControl');
+    nf.max = '999999';
     return nf;
 }
 
@@ -42,8 +41,8 @@ function newTextField() {
 
     tf.name = `d${rowCounter}`;
     tf.type = 'text';
-    tf.class = 'inputControl';
-    tf.maxlength = '20';
+    tf.setAttribute('class','inputControl');
+    tf.setAttribute('maxlength','20');
     return tf;
 }
 
