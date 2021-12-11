@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Juan Dos Santos">
     <meta name="description" content="Esta página genera facturas a partir de un formulario">
@@ -10,21 +9,22 @@
     <link rel="stylesheet" href="style/fact.css">
     <link rel="stylesheet" href="style/normalize.css">
 
-    <script defer src="script/get-handler.js"></script>
+    <script defer src="script/fill-data.js"></script>
+    <script defer src="script/Factura.js" type="module"></script>
 
     <title>Tu factura</title>
 </head>
 
 <body>
     <header>
-        <input type="button" id="pdf-download">
-        <input type="button" id="email-send">
+        <input type="button" id="pdf-download" value="pdf">
+        <input type="button" id="email-send" value="email">
     </header>
 
     <article>
         <div id="doc-header">
             <div>
-                <img id="company-logo" src="eye.png">
+                <img id="company-logo" src="eye.png" alt="LOGO">
                 <div id="company-data">
                     <p class="medium">Distribuidora All Clean S.R.L.</p>
                     <p class="medium">Av. Santa Fe 1525 C.A.B.A.</p>
@@ -68,8 +68,5 @@
         </div>
 
     </article>
-
-    
 </body>
-
 </html>
