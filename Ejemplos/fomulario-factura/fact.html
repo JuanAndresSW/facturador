@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Juan Dos Santos">
+    <meta name="description" content="Esta página genera facturas a partir de un formulario">
+
+    <link rel="stylesheet" href="style/fact.css">
+    <link rel="stylesheet" href="style/normalize.css">
+
+    <script defer src="script/fill-data.js" type="module"></script>
+    <script defer src="script/Factura.js" type="module"></script>
+
+    <title>Tu factura</title>
+</head>
+
+<body>
+    <header>
+        <input type="button" id="pdf-download" value="pdf">
+        <input type="button" id="email-send" value="email">
+    </header>
+
+    <article>
+        <div id="doc-header">
+            <div>
+                <img id="company-logo" src="eye.png" alt="LOGO">
+                <div id="company-data">
+                    <p class="medium">Distribuidora All Clean S.R.L.</p>
+                    <p class="medium">Av. Santa Fe 1525 C.A.B.A.</p>
+                    <p class="small">Tel.: 7345-6574</p>
+                    <p class="small">I.V.A. Responsable Inscripto</p>
+                    <p class="small">www.allclean.com.ar</p>
+                </div>
+            </div>
+
+            <div>
+                <p id="tipo"></p>
+                <p id="fecha"></p>
+            </div>
+        </div>
+
+        <div id="doc-body">
+            <div class="generated-text">
+                <p id="receptor">Señor/es: </p>
+                <p id="cp">C.P.: </p>
+                <p id="domicilio">Domicilio: </p>
+                <p id="localidad">Localidad: </p>
+            </div>
+            <div class="generated-text">
+                <p id="iva">I.V.A.: </p>
+                <p id="cuit">C.U.I.T.: </p>
+            </div>
+            <div class="generated-text">
+                <p id="condiciones">Condiciones de venta: </p>
+                <p id="remito">Remito: </p>
+            </div>
+        </div>
+
+        <div id="productos">
+            <div id="product-table">
+                <p>Cantidad</p><p>Descripción</p><p>Precio</p><p>Total</p>
+            </div>
+        </div>
+        
+        <div id="totales">
+
+        </div>
+
+    </article>
+</body>
+</html>
