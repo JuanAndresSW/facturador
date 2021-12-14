@@ -1,0 +1,14 @@
+com\example\sga\datos\PersonaDaoImpl.class
+com\example\sga\service\PersonaServiceLocal.class
+com\example\sga\service\PersonaServiceImpl.class
+com\example\sga\web\PersonaServlet.class
+com\example\sga\domain\Usuario.class
+com\example\sga\datos\PersonaDao.class
+com\example\sga\service\PersonaServiceRemote.class
+com\example\sga\datos\UsuarioDaoImpl.class
+com\example\sga\domain\Persona.class
+com\example\sga\datos\UsuarioDao.class
+com\example\sga\service\UsuarioServiceRemote.class
+com\example\sga\service\UsuarioServiceImpl.class
+com\example\sga\web\UsuarioServlet.class
+com\example\sga\service\UsuarioServiceLocal.class
