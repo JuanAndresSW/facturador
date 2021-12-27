@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import './SplashScreen.css';
 import poster from '../../asset/img/poster.jpg';
 export default function SplashScreen() {
-
+    //objeto de usuario a enviar al servidor
     const user = {name: null, password: null};
+
     const [currentLoginValue, setCurrentLoginValue] = useState('text');
     const [placeholder, setPlaceHolder] = useState('Nombre');
     const [errorMessage, setErrorMessage] = useState('');
-
+    
+    //comprobar la validez del valor de login
     function checkValidity() {
         if (currentLoginValue === 'text') {
-            setErrorMessage('Todavía no implementado :)');
+            setErrorMessage('Todavía no implementado :^)');
             //enviar el nombre al servidor
             //si valida, guardar el nombre y cambiar el estado a password
             //si no valida, cambiar el texto de mensaje

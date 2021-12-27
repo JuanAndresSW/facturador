@@ -1,0 +1,40 @@
+.tab-set {
+  width: 70%;
+  margin: 0 auto 0 auto;
+}
+
+.tab-set ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  list-style: none;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  margin: 0;
+  padding: 0;
+}
+
+.tab-set ul li {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  text-align: center;
+  border-bottom: 2px solid gray;
+  cursor: pointer;
+}
+
+.tab-set ul .current-tab {
+  border: 2px solid gray;
+  border-bottom: none;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.tab-set .tab-content {
+  height: 600px;
+  border: 2px solid red;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+/*# sourceMappingURL=TabbedPane.css.map */

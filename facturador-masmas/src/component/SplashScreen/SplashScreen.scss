@@ -1,7 +1,7 @@
 .splash-wrapper {
     display: flex;
     flex-flow: row wrap;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-around;
     margin: 4rem 1rem 1rem 1rem;
     .title-wrapper {
@@ -13,5 +13,7 @@
         min-width: 300px;
         width: 40%;
         height: auto;
+        border-radius: 5px;
+        box-shadow: 5px 5px 12px -5px rgba(0,0,0,0.37);
     }
 }

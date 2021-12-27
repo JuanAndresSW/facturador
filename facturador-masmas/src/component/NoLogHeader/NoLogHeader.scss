@@ -6,8 +6,8 @@ header {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
-	background-color: #fff;
-	box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .5); 
+	background: inherit;
+	box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, .3); 
     img {
         margin-left: 0.6rem;
         border-radius: 50%;
