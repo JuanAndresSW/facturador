@@ -1,0 +1,17 @@
+.splash-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: start;
+    justify-content: space-around;
+    margin: 4rem 1rem 1rem 1rem;
+    .title-wrapper {
+        display: block;
+        width: 40%;
+    }
+    video {
+        margin: 2rem 1rem;
+        min-width: 300px;
+        width: 40%;
+        height: auto;
+    }
+}

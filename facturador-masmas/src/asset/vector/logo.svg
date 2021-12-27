@@ -1,0 +1,27 @@
+<svg width="200mm" height="200mm" version="1.1" viewBox="0 0 250 200" xmlns="http://www.w3.org/2000/svg" xmlnsCc="http://creativecommons.org/ns#" xmlnsDc="http://purl.org/dc/elements/1.1/" xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <defs>
+  <filter id="a" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+   <feGaussianBlur/>
+  </filter>
+ </defs>
+ <path d="m175.94 27.454 39.402 130.16" fill="none" stroke="#f2f2f2" stroke-width=".53884px"/>
+ <path d="m75.321 162.34 15.486 41.399" fill="none" stroke="#f2f2f2" stroke-width=".53884px"/>
+ <g transform="matrix(2.0166 0 0 2.0568 -27.6 -212.89)">
+  <g fill="#f2f2f2">
+   <path d="m100.93 116.85 20.153 56.683-0.614 6.5986z"/>
+   <path d="m49.336 182.14 7.2965 1.6838 2.0852 18.734z"/>
+   <path transform="matrix(.26458 0 0 .26458 4.2474 -2.045)" d="m439.27 688.55-73.85-239.18-188.57 247.86 29.025 76.074c20.538 7.0289 42.088 10.648 63.795 10.715 69.306-0.10099 133.56-36.272 169.6-95.471z"/>
+  </g>
+  <path transform="matrix(.26458 0 0 .26458 4.2474 -2.045)" d="m269.67 386.22a198.9 198.9 0 0 0-198.9 198.9 198.9 198.9 0 0 0 135.1 188.18l-29.025-76.074 188.57-247.86 73.85 239.18a198.9 198.9 0 0 0 29.297-103.43 198.9 198.9 0 0 0-198.9-198.9z" fill="#fff"/>
+  <path d="m62.047 116.85h-5.9066c-3.5634 0.52986-5.0906 2.7385-5.1971 5.7645l0.09457 59.814c0.48949 2.2582 2.3534 4.0962 5.008 4.7248l44.885 0.0946v-13.248l-38.83 0.19275z" fill="#0055d4"/>
+  <path d="m61.766 116.85 0.05465 57.343 39.11-0.19275v-57.15z" fill="#2a7fff"/>
+  <path d="m98.674 174.01s0.13027 10.684-0.0587 10.684c-0.18899 0-41.388 0.0472-41.388 0.0472-2.2705-0.16501-4.0644-3.0128-4.1105-5.2917 0.123-2.7352 1.0243-4.8155 4.016-5.3389z" fill="#fff"/>
+  <rect x="65.826" y="135.66" width="30.805" height="3.8924" ry=".15953" filter="url(#c)" opacity=".5"/>
+  <rect transform="rotate(90,71.606,67.075)" x="143.74" y="55.556" width="30.805" height="3.8924" ry=".15953" filter="url(#b)" opacity=".5"/>
+  <rect transform="rotate(90)" x="138.68" y="-83.125" width="30.805" height="3.8924" ry=".15953" fill="#fff"/>
+  <flowRoot transform="scale(.26458)" fill="#000000" font-family="sans-serif" font-size="40px" letter-spacing="0px" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><flowRegion><rect x="-273.93" y="476.81" width="33.214" height="40"/></flowRegion><flowPara>dD H</flowPara></flowRoot>
+  <flowRoot transform="matrix(.39701 0 0 .41631 176.12 -75.589)" fill="#000000" filter="url(#a)" font-family="sans-serif" font-size="40px" letter-spacing="0px" opacity=".5" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><flowRegion><rect x="-278.57" y="467.52" width="123.21" height="53.571" fill="#000"/></flowRegion><flowPara font-family="'Arial Rounded MT Bold'">D  H</flowPara></flowRoot>
+  <flowRoot transform="matrix(.39701 0 0 .41631 176.12 -76.118)" fill="#ffffff" font-family="sans-serif" font-size="40px" letter-spacing="0px" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><flowRegion fill="#ffffff"><rect x="-278.57" y="467.52" width="123.21" height="53.571" fill="#fff"/></flowRegion><flowPara font-family="'Arial Rounded MT Bold'">D  H</flowPara></flowRoot>
+  <rect x="65.826" y="135.14" width="30.805" height="3.8924" ry=".15953" fill="#fff"/>
+ </g>
+</svg>

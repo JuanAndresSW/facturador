@@ -1,0 +1,28 @@
+.splash-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  margin: 4rem 1rem 1rem 1rem;
+}
+
+.splash-wrapper .title-wrapper {
+  display: block;
+  width: 40%;
+}
+
+.splash-wrapper video {
+  margin: 2rem 1rem;
+  min-width: 300px;
+  width: 40%;
+  height: auto;
+}
+/*# sourceMappingURL=SplashScreen.css.map */
