@@ -13,8 +13,8 @@ export function TabbedPane ({children}) {
         <ul>
             {
             children.map(tab => (
-            <li className={tab.props.label == currentTab ? 'current-tab' : ''} key={tab.props.label}
-                onClick={() => {handleTabSwitch(tab.props.label)}}>{tab.props.label}
+            <li className={tab.props.label === currentTab ? 'current-tab' : ''} key={tab.props.label}
+                onMouseDown={() => {handleTabSwitch(tab.props.label)}}>{tab.props.label}
             </li>
             ))
             }
@@ -22,7 +22,7 @@ export function TabbedPane ({children}) {
 
         {
         children.map(tab => {
-            if (tab.props.label == currentTab) {
+            if (tab.props.label === currentTab) {
                 return (<div className={'tab-content'} key={tab.props.label}>{tab.props.children}</div>)
             }
         })

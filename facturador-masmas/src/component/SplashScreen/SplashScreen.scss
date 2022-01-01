@@ -1,19 +1,10 @@
-.splash-wrapper {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: flex-start;
-    justify-content: space-around;
-    margin: 4rem 1rem 1rem 1rem;
-    .title-wrapper {
-        display: block;
-        width: 40%;
-    }
-    video {
-        margin: 2rem 1rem;
-        min-width: 300px;
-        width: 40%;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 5px 5px 12px -5px rgba(0,0,0,0.37);
-    }
+.title-wrapper {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    min-height: 70vh;
+    margin: 2rem auto;
+    text-align: center;
+    h1 {font-size: 5rem;}
+    h2 {margin-top: -2rem}
 }

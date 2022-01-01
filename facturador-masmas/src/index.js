@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
+import FallBack from './component/FallBack/FallBack.jsx';
 import './global-style/normalize.css';
 import './global-style/outer.css';
 //importar diferidamente los contenedores
@@ -16,7 +17,7 @@ const Error404 = lazy(() => import('./container/Error404.js'));
 //mostrar el contenedor indicado
 ReactDOM.render(
   <Router forceRefresh={true}>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<FallBack />}>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/start" render={<Start />}/>

@@ -1,31 +1,17 @@
-.splash-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: row wrap;
-          flex-flow: row wrap;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  margin: 4rem 1rem 1rem 1rem;
-}
-
-.splash-wrapper .title-wrapper {
+.title-wrapper {
   display: block;
-  width: 40%;
+  width: 100%;
+  max-width: 700px;
+  min-height: 70vh;
+  margin: 2rem auto;
+  text-align: center;
 }
 
-.splash-wrapper video {
-  margin: 2rem 1rem;
-  min-width: 300px;
-  width: 40%;
-  height: auto;
-  border-radius: 5px;
-  -webkit-box-shadow: 5px 5px 12px -5px rgba(0, 0, 0, 0.37);
-          box-shadow: 5px 5px 12px -5px rgba(0, 0, 0, 0.37);
+.title-wrapper h1 {
+  font-size: 5rem;
+}
+
+.title-wrapper h2 {
+  margin-top: -2rem;
 }
 /*# sourceMappingURL=SplashScreen.css.map */

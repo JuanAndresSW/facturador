@@ -20,20 +20,15 @@ export default function SplashScreen() {
         }
     }
     return (
-        <div className='splash-wrapper'>
 
         <div className='title-wrapper'>
-            <h1>Facturador++</h1>
-            <h2>Crea documentos comerciales, observa el libro diario y libro mayor, obtén estadísticas y más</h2>
+            <h1>Más que un facturador</h1>
+            <h2>Crea documentos comerciales, observa el libro diario y libro mayor, obtén estadísticas y más;
+                facturador++ fue diseñado para facilitar el proceso contable para pequeñas empresas y empresas simuladas.
+            </h2>
             <input type={currentLoginValue} name='name' placeholder={placeholder}></input>
             <button type='button' onClick={() => checkValidity()}>Iniciar sesión</button>
             <p className='message'>{errorMessage}</p>
-        </div>
-
-        <video autoPlay poster={poster}>
-            <source src="../../asset/presentation.webm" />
-            Error al cargar el video
-        </video>
         </div>
     
     );

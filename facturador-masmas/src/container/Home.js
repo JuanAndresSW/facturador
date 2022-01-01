@@ -1,9 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import isUserAuthenticated from "../index";
-import NoLogHeader from "../component/NoLogHeader/NoLogHeader";
+import Header from "../component/Header/Header";
 import SplashScreen from "../component/SplashScreen/SplashScreen";
 import PreviewWindow from "../component/PreviewWindow/PreviewWindow";
+import WhyThisApp from "./../component/WhyThisApp/WhyThisApp";
+import Footer from "./../component/Footer/Footer";
+
 
 export default function Home() {
     if (isUserAuthenticated()) {
@@ -11,9 +14,11 @@ export default function Home() {
     else {
         return (
             <>
-            <NoLogHeader />
+            <Header />
             <SplashScreen />
             <PreviewWindow />
+            <WhyThisApp />
+            <Footer />
             </>
         )
     }

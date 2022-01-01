@@ -1,31 +1,32 @@
 .tab-set {
+    width: 90%;
+    margin: 0 auto 0 auto;
+    padding: 1rem 0 1rem 0;
     ul {
         display: flex;
         list-style: none;
         justify-content: space-around;
         margin: 0;
-        padding: 0;
+        padding: 1rem 0;
+        background-color: #fff;
+        border-radius: 5px;
         li {
             flex-grow: 1;
             text-align: center;
-            border-bottom: 2px solid gray;
+            border-bottom: 5px solid #ddd;
             cursor: pointer;
         }
         .current-tab {
-            border: 2px solid gray;
-            border-bottom: none;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
+            border-bottom: 5px solid rgb(84, 123, 250);
         }
     }
-    width: 70%;
-    margin: 0 auto 0 auto;
     .tab-content {
         height: 600px;
-        border: 2px solid red;
+        background-color: #fff;
         border-top: none;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        overflow: hidden;
     }
     
 }

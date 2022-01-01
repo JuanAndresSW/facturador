@@ -1,0 +1,9 @@
+export {default as Factura} from './Factura';
+export {default as NotaDeCredito} from './NotaDeCredito';
+export {default as NotaDeDebito} from './NotaDeDebito';
+export {default as Recibo} from './Recibo';
+export {default as OrdenDeCompra} from './OrdenDeCompra';
+export {default as Remito} from './Remito';
+export {default as Cheque} from './Cheque';
+export {default as Pagare} from './Pagare';
+export {default as Otro} from './Otro';

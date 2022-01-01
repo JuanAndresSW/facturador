@@ -1,8 +1,8 @@
 @charset "utf-8";
-html {
-	background: rgb(0,127,255);
-	background: linear-gradient(45deg, rgba(0,127,255,1) 0%, rgba(108,180,238,1) 100%); 
-	background-size: 400% 4000%;
+#root {
+	background: rgb(0, 99, 199);
+	background: linear-gradient(45deg, rgba(0,127,255,0.8) 0%, rgba(108,180,238,0.8) 100%); 
+	background-size: 400% 400%;
 	animation: gradient 60s ease-in infinite;
 }
 @keyframes gradient {
@@ -19,6 +19,6 @@ html {
 }
 body {
 	margin:0;
-	background: center / cover url(../asset/vector/plus.svg);
+	background: center / cover url(../asset/img/main.jpg);
 	min-height: 100vh;
 }
