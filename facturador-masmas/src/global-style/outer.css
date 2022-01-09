@@ -1,7 +1,7 @@
 @charset "utf-8";
 #root {
 	background: rgb(0, 99, 199);
-	background: linear-gradient(45deg, rgba(0,127,255,0.8) 0%, rgba(108,180,238,0.8) 100%); 
+	background: linear-gradient(45deg, rgba(0,127,255,0.9) 0%, rgba(108,180,238,0.9) 100%); 
 	background-size: 400% 400%;
 	animation: gradient 60s ease-in infinite;
 }
@@ -19,6 +19,6 @@
 }
 body {
 	margin:0;
-	background: center / cover url(../asset/img/main.jpg);
+	background: center  url(../asset/img/main.jpg);
 	min-height: 100vh;
 }

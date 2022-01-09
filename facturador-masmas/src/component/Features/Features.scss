@@ -1,0 +1,44 @@
+.features {
+    //background: center / cover url(../../asset/img/punto.jpg);
+    background-color: white;
+    width: 100%;
+    min-height: 2rem;
+    padding: 2rem 0;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 20px 20px 0 0;
+    div {
+        min-height: 15rem;
+        margin: 3rem;
+        padding: .5rem 1rem;
+        width: 85%;
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ccc;
+        border-radius: 15% 55% 15% 55%;
+        img {
+            width: 15rem;
+        }
+        h3 {
+            margin: 0;
+            padding-top: 1rem;
+            font-size: 3rem;
+        }
+    }
+    div:nth-child(odd) {
+        box-shadow: -20px -14px 0px 0px rgb(11, 117, 255);
+        margin-right: 5rem;
+        text-align: left;
+        img {
+            float: left;
+            transform: skew(-8deg);
+        }
+    }
+    div:nth-child(even){
+        box-shadow: 20px -14px 0px 0px rgba(189, 253, 255, 1);
+        margin-left: 5rem;
+        text-align: right;
+        img {
+            float: right;
+            transform: skew(8deg);
+        }
+    }
+}

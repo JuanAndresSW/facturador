@@ -1,0 +1,57 @@
+.tab-set {
+  width: 90%;
+  margin: 0 auto 0 auto;
+  padding: 1rem 0 2rem 0;
+}
+
+.tab-set ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  list-style: none;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.tab-set ul li {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  text-align: center;
+  font-size: 2rem;
+  padding: 1rem 0;
+  margin: 1rem;
+  border: 0px solid #ccc;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.tab-set ul li:nth-child(1).current-tab {
+  background-color: #6396f7;
+}
+
+.tab-set ul li:nth-child(2).current-tab {
+  background-color: #fa8080;
+}
+
+.tab-set ul li:nth-child(3).current-tab {
+  background-color: #8efd97;
+}
+
+.tab-set ul li:nth-child(4).current-tab {
+  background-color: #edfa7c;
+}
+
+.tab-set .tab-content {
+  background-color: #fff;
+  border-top: none;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  overflow: hidden;
+}
+/*# sourceMappingURL=TabbedPane.css.map */

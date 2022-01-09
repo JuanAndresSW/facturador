@@ -1,20 +1,28 @@
 .footer {
-    min-height: 10rem;
+    min-height: 5rem;
     background-color: inherit;
     border-top: 0px solid black;
-    padding: 0 3rem;
+    padding: 0 3rem 2rem;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
     justify-content: space-between;
-    div a {
-        display: block;
-        .github {
+    div {
+        margin: 1rem;
+        a {
+            display: block;
+            width: max-content;
             margin: 0 auto;
-            height: 3rem;
-            width: 3rem;
-            border-radius: 50%;
-            background-color: black;
         }
+        .github *{
+            height: 4rem;
+            width: 4rem;
+            color: black;
+        }
+    }
+}
+@media (max-width: 800px) {
+    .footer {
+        justify-content: center;
     }
 }
