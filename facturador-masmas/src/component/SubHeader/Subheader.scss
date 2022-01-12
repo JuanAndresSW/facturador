@@ -1,0 +1,38 @@
+.subheader {
+    width: 100%;
+    height: min-content;
+    /* height: 0;
+    overflow: hidden;
+    padding: 0 !important; */
+    border-bottom: 1px solid gainsboro;
+    padding: .6rem .2rem;
+    background-color: white;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+    justify-content: end;
+    
+    p {
+        border: 1px solid rgb(114, 113, 113);
+        border-radius: 10px;
+        font-size: .8rem;
+        margin: 0 1rem;
+        padding: .2rem .4rem;
+        display: block;
+        cursor: default;
+    }
+    p:nth-child(1) {
+        background-color: rgb(111, 245, 111);
+    }
+    p:nth-child(2) {
+        background-color: rgb(250, 213, 90);
+    }
+    p:nth-child(3) {
+        background-color: rgb(93, 186, 248);
+    }
+}
+@media (max-width: 600px) {
+    .subheader p {
+        margin: .5rem
+    }
+}

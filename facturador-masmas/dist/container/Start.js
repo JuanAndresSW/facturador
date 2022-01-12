@@ -1,11 +1,12 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
-import isUserAuthenticated from '../index';
+import Header from '../component/Header/Header';
+import Subheader from '../component/SubHeader/Subheader';
+import Main from '../component/Main/Main';
+import Footer from '../component/Footer/Footer';
 export default function Start() {
-    if (isUserAuthenticated()) {
-        return (React.createElement(React.Fragment, null, "P\u00C1GINA DE INICIO"));
-    }
-    else {
-        return (React.createElement(Navigate, { to: "/LogIn" }));
-    }
+    return (React.createElement(React.Fragment, null,
+        React.createElement(Header, null),
+        React.createElement(Subheader, null),
+        React.createElement(Main, null),
+        React.createElement(Footer, null)));
 }

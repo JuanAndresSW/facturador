@@ -11,6 +11,7 @@ var __assign = (this && this.__assign) || function () {
 };
 import React from "react";
 import Slider from "react-slick";
+import { DiAndroid } from "react-icons/di";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import img1 from '../../asset/img/doc.png';
@@ -21,21 +22,19 @@ import './Phone.css';
 var imgs = [img1, img2, img3, img4];
 export default function Phone() {
     var settings = {
-        dots: true,
+        arrows: false,
         infinite: true,
-        adaptiveHeight: true,
         autoplay: true,
-        mobileFirst: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1
     };
     return (React.createElement("div", { className: "phone" },
-        React.createElement("h2", null, "Encu\u00E9ntralo en Play Store.."),
-        React.createElement("p", null, "(carrusel no terminado)"),
+        React.createElement("a", { href: "about:blank", id: "phone-title" },
+            React.createElement(DiAndroid, null),
+            React.createElement("h2", null, "Encu\u00E9ntralo en Play Store..")),
         React.createElement("div", { className: "slider-wrapper" },
-            React.createElement(Slider, __assign({}, settings), imgs.map(function (img, index) {
-                return (React.createElement("div", { className: "slidex" },
-                    React.createElement("img", { src: img, alt: "" })));
-            })))));
+            React.createElement("hr", null),
+            React.createElement(Slider, __assign({}, settings), imgs.map(function (img, index) { return (React.createElement("div", { className: "slide", key: index.toString() },
+                React.createElement("img", { src: img, alt: "" }))); })))));
 }

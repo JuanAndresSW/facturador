@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# Proyecto creado con "npm create-react-app"
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Scripts:
 
-## Available Scripts
-
-In the project directory, you can run:
-
+En la carpeta raíz, se puede ejecutar:
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Ejecuta la aplicación en modo de desarrollo. Asegurarse de ejecutar `npm install` antes, para instalar las dependencias.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ejecuta el entorno de pruebas
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Transpila, minifica y hace tree shaking a todo el proyecto para la versión de lanzamiento
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**No se utiliza**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Notas:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### SCSS:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+La mayoría de componentes utilizan SCSS. Para transformarlo a CSS, se recomienda la extensión 'live sass compiler en VSC'. Los archivos de CSS no deberían ser modificados directamente.
 
-## Learn More
+### Archivos especiales:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. package.json: declaración de dependencias
+2. webpack.config.js: configuración del administrador de paquetes webpack
+3. tsconfig.json: configuración del comportamiento de typescript
+4. declaration.d.ts: exporta tipos de datos personalizados para typescript.
+5. global.d.ts: exporta declaraciones especiales que permiten importar archivos .jpg, .png, .svg..
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Directorios:
+* **dist**: generado por el transpilador de typescript (no modificar)
+* **node_modules**: módulos de react. Para generar automáticamente a partir de las dependecias especificadas: npm install
+* **public**: carpeta principal accesible por el servidor
+* **src**: todos los recursos que serán transpilados por Webpack.

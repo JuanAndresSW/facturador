@@ -33,9 +33,16 @@ header {
             a {margin: 0;}
         }
     }
+    #logged-header {
+        display: flex;
+    }
 }
 @media (max-width: 750px) {
     #logo p {display: none;}
+    #logged-header {
+        display: flex;
+        justify-content: space-between;
+    }
 }
 @media (max-width: 600px) {
     #logo * {display: none;}

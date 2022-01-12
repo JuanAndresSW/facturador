@@ -23,14 +23,14 @@ export default function Features() {
 
     return (    
         <div className="features">
-            {feats.map((feat, index)=>{
-                return <div
-                key={index}
+            {feats.map((feat: JSX.Element, index: number)=>(
+                <div
+                key={index.toString()}
                 data-aos={(index%2===0)?'fade-right':'fade-left'}
                 data-aos-anchor-placement="center-bottom"
-                data-aos-offset="200"
-                >{feat}</div>
-            })}
+                data-aos-offset="200">{feat}
+                </div>
+            ))}
         </div>
     );  
 }

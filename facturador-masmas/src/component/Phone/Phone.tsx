@@ -1,5 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
+import { DiAndroid } from "react-icons/di";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -13,25 +14,23 @@ import './Phone.css';
 const imgs:string[] = [img1, img2, img3, img4];
 export default function Phone():JSX.Element {
     const settings = {
-        dots: true,
+        arrows: false,
         infinite: true,
-        adaptiveHeight: true,
         autoplay: true,
-        mobileFirst: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1
     };
     return (
         <div className="phone">
-            <h2>Encuéntralo en Play Store..</h2>
-            <p>(carrusel no terminado)</p>
+            <a href="about:blank" id="phone-title"><DiAndroid /><h2>Encuéntralo en Play Store..</h2></a>
             <div className="slider-wrapper">
-            <Slider {...settings}>
-                {imgs.map((img:string, index:number)=>
-                    (<div className="slidex"><img src={img} alt="" /></div>)
-                )}
-            </Slider>
+                <hr />
+                <Slider {...settings}>
+                    {imgs.map((img:string, index:number)=> (
+                        <div className="slide" key={index.toString()}><img src={img} alt="" /></div>
+                    ))}
+                </Slider>
             </div>
         </div>
     )

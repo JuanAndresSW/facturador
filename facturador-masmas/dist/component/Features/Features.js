@@ -33,7 +33,5 @@ export default function Features() {
     useEffect(function () {
         Aos.init({}); //iniciar las animaciones globales de Aos 
     }, []);
-    return (React.createElement("div", { className: "features" }, feats.map(function (feat, index) {
-        return React.createElement("div", { key: index, "data-aos": (index % 2 === 0) ? 'fade-right' : 'fade-left', "data-aos-anchor-placement": "center-bottom", "data-aos-offset": "200" }, feat);
-    })));
+    return (React.createElement("div", { className: "features" }, feats.map(function (feat, index) { return (React.createElement("div", { key: index.toString(), "data-aos": (index % 2 === 0) ? 'fade-right' : 'fade-left', "data-aos-anchor-placement": "center-bottom", "data-aos-offset": "200" }, feat)); })));
 }

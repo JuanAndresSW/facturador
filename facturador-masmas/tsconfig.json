@@ -1,7 +1,9 @@
 {
   "include": [
-    "src/*"
-  ],
+    "src/*",
+    "src/component/Header/CommandLine",
+    "declaration.d.ts"
+],
   "exclude": [
     "node_modules",
     "build"
