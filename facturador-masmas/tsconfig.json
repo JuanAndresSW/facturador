@@ -1,7 +1,7 @@
 {
   "include": [
     "src/*",
-    "src/component/Header/CommandLine",
+    "src/components/Header/CommandLine",
     "declaration.d.ts"
 ],
   "exclude": [

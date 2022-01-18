@@ -1,6 +1,9 @@
 import "react";
 declare module 'react' {
   export interface HTMLAttributes<T> {
-    label?: ReactNode;
+    tabHeader?: ReactNode;
+  }
+  export interface JsxAttributes<T> {
+    flux?: 'in' | 'out';
   }
 }

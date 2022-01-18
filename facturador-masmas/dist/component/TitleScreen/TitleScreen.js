@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { setCookie } from '../../scripts/cookies';
+import { setCookie } from '../../script/cookies';
 import './TitleScreen.css';
 //objeto de usuario que representa un usuario en la base de datos
 var tempUser = {

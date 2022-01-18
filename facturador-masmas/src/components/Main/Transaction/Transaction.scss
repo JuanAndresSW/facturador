@@ -1,0 +1,28 @@
+#transaction-options {
+    width: 80%;
+    margin: 1rem auto;
+    hr {
+        border: 1px solid gainsboro;
+    }
+    p {
+        font-size: 1rem;
+        cursor: default;
+        margin-bottom: -1rem;
+        margin-top: 2rem;
+    }
+    div {
+        display: block;
+        width: 100%;
+        margin: 1rem auto;
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px solid gainsboro;
+        text-align: center;
+        text-decoration: none;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+    div:hover {
+        background-color: gainsboro;
+    }
+}

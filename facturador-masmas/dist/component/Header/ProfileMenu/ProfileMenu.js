@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
-import { clearCookies, getCookie } from "../../../scripts/cookies";
+import { clearCookies, getCookie } from "../../../script/cookies";
 import OutsideClickHandler from 'react-outside-click-handler';
 import './ProfileMenu.css';
 import profilePicture from '../../../asset/vector/solucion.svg';

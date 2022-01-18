@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Headroom from 'react-headroom';
 import './Header.css';
 import logo from '../../asset/vector/logo.svg';
-import { getCookie } from '../../scripts/cookies';
+import { getCookie } from '../../script/cookies';
 import CommandLine from './CommandLine/CommandLine';
 import ProfileMenu from './ProfileMenu/ProfileMenu';
 var notLoggedHeader = (React.createElement("div", { id: 'header-links' },
@@ -18,7 +18,7 @@ export default function Header() {
     return (React.createElement(Headroom, null,
         React.createElement("header", null,
             React.createElement("div", { id: "logo" },
-                React.createElement("img", { src: logo, alt: 'Facturador++' }),
+                React.createElement("img", { src: logo, alt: '' }),
                 React.createElement("p", null, "facturador++")),
             (getCookie('username') === "") ? notLoggedHeader : loggedHeader)));
 }

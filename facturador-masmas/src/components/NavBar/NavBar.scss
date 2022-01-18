@@ -1,0 +1,36 @@
+.tab-set {
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    a {
+        flex-grow: 1;
+        text-align: center;
+        font-size: .8rem;
+        text-decoration: none;
+        color: black;
+        padding: .5rem 0;
+        margin:  0 1.2rem;
+        border-bottom: 4px groove transparent;
+        border-radius: 1px;
+        cursor: pointer;
+        svg {
+            display: block;
+            margin: 0 auto;
+            font-size: 1.2rem;
+        }
+    }
+    a.active {
+        border-bottom: 4px groove blue;
+        color: blue;
+    }
+    a:hover {
+        border-bottom: 4px groove rgb(146, 146, 146);
+    }
+    a.active:hover {
+        border-bottom: 4px groove blue;
+    }
+}
+    

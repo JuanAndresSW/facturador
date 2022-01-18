@@ -1,5 +1,5 @@
 import React from "react";
-import { isUserAuthenticated } from "../scripts/cookies";
+import { isUserAuthenticated } from "../script/cookies";
 import Header from "../component/Header/Header";
 import TitleScreen from "../component/TitleScreen/TitleScreen";
 import Features from "../component/Features/Features";
