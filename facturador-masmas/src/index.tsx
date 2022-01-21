@@ -7,7 +7,7 @@ import './style/outer.css';
 //deferred import components
 const Home = lazy(() => import('./container/Home'));
 const SignUp = lazy(() => import('./container/SignUp'));
-const LogIn = lazy(() => import('./container/LogIn'));
+const Login = lazy(() => import('./container/Login'));
 const Account = lazy(() => import('./container/Account'));
 const About = lazy(() => import('./container/About'));
 const Error404 = lazy(() => import('./container/Error404'));
@@ -18,6 +18,7 @@ ReactDOM.render(
       <Routes>
         <Route path='/*' element={<Home />} />
         <Route path="/signup/*" element={<SignUp />}/>
+        <Route path="/login" element={<Login />}/>
         <Route path="/account/*" element={<Account />}/>
         <Route path="/about/*" element={<About />}/>
         <Route path="*" element={<Error404 />}/>

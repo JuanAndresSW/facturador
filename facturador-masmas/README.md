@@ -37,4 +37,4 @@ La mayoría de componentes utilizan SCSS. Para transformarlo a CSS, se recomiend
 * **dist**: generado por el transpilador de typescript (no modificar)
 * **node_modules**: módulos de react. Para generar automáticamente a partir de las dependecias especificadas: npm install
 * **public**: carpeta principal accesible por el servidor
-* **src**: todos los recursos que serán transpilados por Webpack.
+* **src**: todos los recursos que serán empaquetados por Webpack.

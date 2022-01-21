@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import Session from '../../script/Session';
+import Valid from '../../script/Valid';
 import './TitleScreen.css';
 
 //objeto de usuario que representa un usuario en la base de datos
@@ -20,10 +21,8 @@ export default function TitleScreen():JSX.Element {
     //comprobar la validez del valor de login
     function checkValidity():void {
         if (loginType === 'text') {
-            if (loginValue.length <= 20 && loginValue.length >= 3) {
+            if (Valid.loginUser) {
                 user.name = loginValue.trim();
-                console.log(loginValue);
-                console.log(user.name);
                 setLoginValue("");
                 setLoginType('password');
                 setErrorMessage('');
@@ -31,7 +30,7 @@ export default function TitleScreen():JSX.Element {
             return;
         }
         if (loginType === 'password') {
-            if (loginValue.length <= 30 && loginValue.length >= 8) {
+            if (Valid.loginPassword) {
                 user.password = loginValue.trim();
                 authenticate(user);
                 setLoginValue("");
@@ -48,7 +47,6 @@ export default function TitleScreen():JSX.Element {
         //enviar el objeto al servidor, que devuelve una página con un objeto cookie o un mensaje de error
         //por ahora, se establece la cookie localmente (1209600=14d)
         if (user.name === tempUser.name && user.password === tempUser.password) {
-            console.log(user === tempUser);
             Session.open(user.name);
             window.location.reload();
             return;

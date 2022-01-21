@@ -1,13 +1,14 @@
 import React from "react";
-import { isUserAuthenticated } from "../script/cookies";
-import Header from "../component/Header/Header";
-import TitleScreen from "../component/TitleScreen/TitleScreen";
-import Features from "../component/Features/Features";
-import Phone from "../component/Phone/Phone";
-import Footer from "../component/Footer/Footer";
+import Session from "../script/Session";
+import Header from "../components/Header/Header";
+import TitleScreen from "../components/TitleScreen/TitleScreen";
+import Features from "../components/Features/Features";
+import Phone from "../components/Phone/Phone";
+import Footer from "../components/Footer/Footer";
 import Start from "./Start";
 export default function Home() {
-    return (isUserAuthenticated()) ? React.createElement(Start, null) :
+    window.history.pushState("", "", "/");
+    return (Session.isAuthenticated()) ? React.createElement(Start, null) :
         (React.createElement(React.Fragment, null,
             React.createElement(Header, null),
             React.createElement(TitleScreen, null),

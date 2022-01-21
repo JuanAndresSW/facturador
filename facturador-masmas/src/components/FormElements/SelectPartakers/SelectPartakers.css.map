@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,mBAAmB,CAAC;EAChB,KAAK,EAAE,IAAI;EACX,UAAU,EAAE,MAAM;CACrB;;AACD,AAAA,cAAc,CAAC;EACX,KAAK,EAAE,KAAK;CACf",
+    "sources": [
+        "SelectPartakers.scss"
+    ],
+    "names": [],
+    "file": "SelectPartakers.css"
+}
