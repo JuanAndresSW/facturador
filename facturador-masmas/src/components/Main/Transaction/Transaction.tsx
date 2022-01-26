@@ -6,7 +6,7 @@ export default function Transaction() {
 
     const [outlet, setOutlet] = useState(<></>);
     //if an outlet wasn't produced, then the initial options are active
-    const disabled = outlet.type === (<></>).type ? false : true;
+    const disabled = outlet.type === (<></>).type ? false : true
 
     //returns either an outlet, or the options to select an outlet
     return (
@@ -41,12 +41,3 @@ export default function Transaction() {
         )
     }
 }
-/*  <Factura flux={flux} />
-    <NotaDeCredito flux={flux} />
-    <NotaDeDebito flux={flux} />
-    <Recibo flux={flux} />
-    <OrdenDeCompra flux={flux} />
-    <Remito flux={flux} />
-    <Cheque flux={flux} />
-    <Pagare flux={flux} />
-    <Otro flux={flux} /> */

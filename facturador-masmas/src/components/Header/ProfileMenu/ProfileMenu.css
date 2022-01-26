@@ -36,8 +36,6 @@
 #profile-menu-list {
   height: 0;
   overflow: hidden;
-  -webkit-transition: height 3s ease;
-  transition: height 3s ease;
   background-color: white;
   position: absolute;
   top: 4rem;
@@ -58,10 +56,35 @@
 }
 
 #profile-menu-list.active {
-  height: -webkit-min-content;
-  height: -moz-min-content;
-  height: min-content;
-  -webkit-transition: all 3s ease;
-  transition: all 3s ease;
+  -webkit-animation: retract .1s ease-in forwards;
+          animation: retract .1s ease-in forwards;
+  overflow: hidden;
+}
+
+@-webkit-keyframes retract {
+  0% {
+    height: 0;
+  }
+  50% {
+    height: 5rem;
+  }
+  100% {
+    height: -webkit-max-content;
+    height: max-content;
+  }
+}
+
+@keyframes retract {
+  0% {
+    height: 0;
+  }
+  50% {
+    height: 5rem;
+  }
+  100% {
+    height: -webkit-max-content;
+    height: -moz-max-content;
+    height: max-content;
+  }
 }
 /*# sourceMappingURL=ProfileMenu.css.map */

@@ -24,8 +24,6 @@
 #profile-menu-list {
     height: 0;
     overflow: hidden;
-    transition: height 3s ease;
-
     background-color: white;
     position: absolute;
     top: 4rem;
@@ -42,6 +40,17 @@
     }
 }
 #profile-menu-list.active {
-    height: min-content;
-    transition: all 3s ease;
+    animation: retract .1s ease-in forwards;
+    overflow: hidden;
+}
+@keyframes retract {
+	0% {
+	height: 0;
+	}
+    50% {
+        height: 5rem;
+    }
+	100% {
+		height: max-content;
+	}
 }

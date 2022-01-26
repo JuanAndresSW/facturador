@@ -5,7 +5,6 @@ import Subheader from '../components/SubHeader/Subheader';
 import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
 import { Transaction, Books, Stats, Spots } from '../components/Main';
-import Protected from '../script/Protected';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { MdClass, MdPoll, MdPinDrop } from 'react-icons/md';
 var paths = {
@@ -14,7 +13,7 @@ var paths = {
     stats: "/estadisticas",
     spots: "/puntos-de-venta"
 };
-//key, although necessary, cannot be used as a property, hence the use of accessKey
+//key, si bien obligatoria, no puede ser leída como propiedad, por tanto el uso de accessKey
 var tabs = [
     React.createElement("div", { tabHeader: React.createElement(React.Fragment, null,
             React.createElement(AiFillDollarCircle, null),
@@ -33,8 +32,9 @@ var tabs = [
             "Puntos de venta"), key: paths.spots, accessKey: paths.spots },
         React.createElement(Spots, null))
 ];
+//devuelve la página principal dependiente de una sesión iniciada
 export default function Start() {
-    return (React.createElement(Protected, null,
+    return (React.createElement(React.Fragment, null,
         React.createElement(Header, null),
         React.createElement(Subheader, null),
         React.createElement(NavBar, null, tabs),

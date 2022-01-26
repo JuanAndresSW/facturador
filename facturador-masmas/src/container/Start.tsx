@@ -5,9 +5,9 @@ import Subheader from '../components/SubHeader/Subheader';
 import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
 import {Transaction, Books, Stats, Spots} from '../components/Main';
-import Protected from '../script/Protected';
 import {AiFillDollarCircle} from 'react-icons/ai';
 import {MdClass, MdPoll, MdPinDrop} from 'react-icons/md';
+import Session from '../script/Session';
 
 const paths = {
     transaction: "/transaccion",
@@ -16,7 +16,7 @@ const paths = {
     spots: "/puntos-de-venta"
 }
 
-//key, although necessary, cannot be used as a property, hence the use of accessKey
+//key, si bien obligatoria, no puede ser leída como propiedad, por tanto el uso de accessKey
 const tabs = [
     <div tabHeader={<><AiFillDollarCircle />Transacción</>} key={paths.transaction} accessKey={paths.transaction}><Transaction /></div>,
     <div tabHeader={<><MdClass />Libros</>} key={paths.books} accessKey={paths.books}><Books /></div>,
@@ -24,9 +24,10 @@ const tabs = [
     <div tabHeader={<><MdPinDrop />Puntos de venta</>} key={paths.spots} accessKey={paths.spots}><Spots /></div>
 ]
 
+//devuelve la página principal dependiente de una sesión iniciada
 export default function Start():JSX.Element {
     return (
-    <Protected>  
+    <>  
         <Header />
         <Subheader />
         <NavBar>
@@ -41,5 +42,5 @@ export default function Start():JSX.Element {
             <Route path="*" element={<Navigate to={"/"} />}/>
         </Routes>
         <Footer />
-    </Protected>)
+    </>)
 }

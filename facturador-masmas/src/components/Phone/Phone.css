@@ -39,7 +39,7 @@
   max-height: min-content;
   overflow: hidden;
   margin: 1rem auto;
-  padding: 1rem .5rem 2rem .5rem;
+  padding: 1rem 0.5rem 2rem 0.5rem;
   border: 2px inset black;
   border-radius: 15px;
 }

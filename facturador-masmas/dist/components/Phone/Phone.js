@@ -12,13 +12,13 @@ var __assign = (this && this.__assign) || function () {
 import React from "react";
 import Slider from "react-slick";
 import { DiAndroid } from "react-icons/di";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import img1 from '../../asset/img/doc.png';
-import img2 from '../../asset/img/libro.jpg';
-import img3 from '../../asset/img/punto.jpg';
-import img4 from '../../asset/img/stats.jpg';
-import './Phone.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import img1 from "../../asset/img/doc.png";
+import img2 from "../../asset/img/libro.jpg";
+import img3 from "../../asset/img/punto.jpg";
+import img4 from "../../asset/img/stats.jpg";
+import "./Phone.css";
 var imgs = [img1, img2, img3, img4];
 export default function Phone() {
     var settings = {
@@ -27,7 +27,7 @@ export default function Phone() {
         autoplay: true,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
     };
     return (React.createElement("div", { className: "phone" },
         React.createElement("a", { href: "about:blank", id: "phone-title" },

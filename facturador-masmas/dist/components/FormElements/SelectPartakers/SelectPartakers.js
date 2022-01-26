@@ -3,7 +3,6 @@ import DocData from '../../../script/DocData';
 import './SelectPartakers.css';
 //return a selection list for points of sale, third party partakers and groups
 export default function SelectPartakers() {
-    DocData.fetchFormData();
     //define index of default point of sale, third party and group
     DocData.initializeValues();
     var _a = useState(0), pointOfSale = _a[0], setPointOfSale = _a[1];
@@ -53,7 +52,7 @@ export default function SelectPartakers() {
             React.createElement("input", { className: "search-box", type: "text", onChange: function (e) { return search(e.target.value, "third-parties"); } }),
             React.createElement("label", { htmlFor: "select-group" }, "Grupos"),
             React.createElement("select", { className: "input-control", value: group, id: "select-group", required: true, onChange: function (e) { return handleGroupChange(e); } },
-                React.createElement("option", { value: -1, disabled: true }),
+                React.createElement("option", { value: -1 }),
                 DocData.getGroups().map(function (party, index) { return (React.createElement("option", { value: index, key: index, title: party.members.toString() }, party.name)); })),
             React.createElement("input", { className: "search-box", type: "search", onChange: function (e) { return search(e.target.value, "groups"); } }))));
 }

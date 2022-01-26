@@ -28,12 +28,3 @@ export default function Transaction() {
                 React.createElement("div", { onMouseDown: function () { return setOutlet(React.createElement(DocumentForm, { type: "other", flux: flux })); } }, " Otro "))));
     }
 }
-/*  <Factura flux={flux} />
-    <NotaDeCredito flux={flux} />
-    <NotaDeDebito flux={flux} />
-    <Recibo flux={flux} />
-    <OrdenDeCompra flux={flux} />
-    <Remito flux={flux} />
-    <Cheque flux={flux} />
-    <Pagare flux={flux} />
-    <Otro flux={flux} /> */ 

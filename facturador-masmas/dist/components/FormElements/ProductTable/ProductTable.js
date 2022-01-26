@@ -3,9 +3,9 @@ import { IoIosAdd } from 'react-icons/io';
 import './ProductTable.css';
 export default function ProductTable(_a) {
     var type = _a.type;
-    return (type === ("factura" || "nota-de-credito" || "nota-de-debito" || "recibo-x" || "orden-de-compra" || "remito") ?
+    return (type === "invoice" || "credit-note" || "debit-note" || "receipt-x" || "purchase-order" || "remittance" ?
         React.createElement(React.Fragment, null,
-            React.createElement("div", { id: "productos" },
+            React.createElement("div", { id: "products" },
                 React.createElement("label", null, "Cantidad"),
                 React.createElement("label", null, "Detalle"),
                 React.createElement("label", null, "Precio"),
