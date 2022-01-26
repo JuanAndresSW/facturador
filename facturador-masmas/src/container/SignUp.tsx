@@ -14,7 +14,7 @@ export default function SignUp() {
   /*DATOS DEL FORMULARIO*****************************************************/
 
   //controlador de las 3 partes del formulario
-  const [active, setActive] = useState("point");
+  const [active, setActive] = useState("user");
 
   //controlador del panel retráctil de datos extra del punto de venta
   const [extraActive, setExtraActive] = useState(true);
