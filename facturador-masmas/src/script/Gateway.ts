@@ -5,9 +5,31 @@ import Format from "./Format";
  * define métodos de comunicación con el servidor.
  */
 
+  /*
+  Crea la funcion con la palabra async entonces la funcion se vuelve asincronica
+    de esta forma podras usar los "await" y con esto dejar de usar el .then
+  Si decis porque no usarias el then es porque el then se complica mas ademas
+    de esta forma el codigo es mas limpio, mas legible
+  Nota el process llama al archivo .env es una archivo de variables para desarrollo
+    tambien para la produccion se tendria que cambiar de .env a .env.production
+    export async function nameFunction(){
+      Let url = process.env.REACT_APP_API + 'nameMetodo';
+      Let response = await fetch(url,{
+        "method": 'POST',
+        "headers": {
+         "Content-Type": 'application/json'
+       }
+    })
+
+     return await response.json();
+    }
+
+    Nota cada vez que llames a esta funcion debes usar await para llamarla y al usar este
+      en la funcion donde la llamas debes transformarla en asincronica
+  */
 export default class DocGateway {
   //envía un json con los datos de usuario y blobs con el logo y la foto de perfil
-  public static submitAccount(account: account, url: string): void {
+  public static async submitAccount(account: account) {
     //definir datos a enviar
     const data = new FormData();
     data.append("account", Format.account(account));
@@ -19,16 +41,15 @@ export default class DocGateway {
     }
 
     //enviar y esperar por el código de sesión o el error
-    fetch(url, {
-      method: "POST",
-      body: data,
+    let url = process.env.REACT_APP_API + 'recibe';
+    
+    let response = await fetch(url, {
+      "method": 'POST',
+      "body": data,
+      "headers": {
+         "Content-Type": 'application/json'
+       }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    return await response.json(); 
   }
 }
