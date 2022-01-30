@@ -45,11 +45,12 @@ export default class DocGateway {
     
     let response = await fetch(url, {
       "method": 'POST',
-      "body": data,
+      "body": JSON.stringify(data),
       "headers": {
          "Content-Type": 'application/json'
        }
     })
-    return await response.json(); 
+
+    
   }
 }
