@@ -1,19 +1,19 @@
 import React, { Suspense, lazy } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ReactDOM from "react-dom";
 import FallBack from "./components/FallBack/FallBack";
 import "./style/normalize.css";
 import "./style/outer.css";
-//deferred import components
+//importar diferidamente los componentes
 const Home = lazy(() => import("./container/Home"));
 const SignUp = lazy(() => import("./container/SignUp"));
 const Login = lazy(() => import("./container/Login"));
 const Account = lazy(() => import("./container/Account"));
 const About = lazy(() => import("./container/About"));
 const Error404 = lazy(() => import("./container/Error404"));
-//process url address
+//procesar la dirección URL
 ReactDOM.render(
-  <Router>
+  <BrowserRouter>
     <Suspense fallback={<FallBack />}>
       <Routes>
         <Route path="/*" element={<Home />} />
@@ -24,6 +24,6 @@ ReactDOM.render(
         <Route path="*" element={<Error404 />} />
       </Routes>
     </Suspense>
-  </Router>,
+  </BrowserRouter>,
   document.getElementById("root")
 );

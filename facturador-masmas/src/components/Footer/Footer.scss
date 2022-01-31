@@ -1,6 +1,5 @@
 .footer {
     min-height: 5rem;
-    background-color: inherit;
     border-top: 0px solid black;
     padding: 0 3rem 2rem;
     display: flex;
@@ -8,7 +7,7 @@
     align-items: center;
     justify-content: space-between;
     div {
-        margin: 1rem;
+        margin: 0 1rem;
         a {
             display: block;
             width: max-content;

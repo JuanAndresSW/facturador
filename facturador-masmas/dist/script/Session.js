@@ -12,9 +12,14 @@ var Session = /** @class */ (function () {
         }
         return false;
     };
-    //establecer la sesión con el código de sesión recibido
+    //establecer la sesión con el código de sesión recibido, el nombre y el patrimonio
     Session.open = function (session) {
-        document.cookie = "username=".concat(session, "; max-age=1209600; path=/; Secure");
+        document.cookie = "session=".concat(session, "; max-age=1209600; path=/; Secure");
+        var patrimony = {
+            active: 1,
+            passive: 2,
+        };
+        var name = "niño";
     };
     //verifica si existe un código de sesión válido en las cookies
     Session.isAuthenticated = function () {
@@ -23,14 +28,23 @@ var Session = /** @class */ (function () {
         }
         return false;
     };
-    //recupera el valor de nombre de usuario de las cookies
-    Session.getUsername = function () {
+    //recupera el valor de código de sesión de las cookies
+    Session.getSession = function () {
         var cookieArray = decodeURIComponent(document.cookie).split("; ");
         try {
-            return cookieArray[0].substring("username=".length);
+            return cookieArray[0].substring("session=".length);
         }
         catch (NullPointerException) {
             return "";
+        }
+    };
+    //recupera el valor del nombre de usuario de la sesión
+    Session.getUsername = function () {
+        try {
+            sessionStorage.getItem("username");
+        }
+        catch (NullPointerException) {
+            return "?";
         }
     };
     //borra la cookie de sesión; la contraparte en la base de datos se debe eliminar tiempo después

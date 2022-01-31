@@ -1,5 +1,5 @@
-import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Subheader from '../components/SubHeader/Subheader';
 import NavBar from '../components/NavBar/NavBar';
@@ -8,6 +8,7 @@ import {Transaction, Books, Stats, Spots} from '../components/Main';
 import {AiFillDollarCircle} from 'react-icons/ai';
 import {MdClass, MdPoll, MdPinDrop} from 'react-icons/md';
 import Session from '../script/Session';
+import { BiArrowBack } from 'react-icons/bi';
 
 const paths = {
     transaction: "/transaccion",
@@ -26,6 +27,11 @@ const tabs = [
 
 //devuelve la página principal dependiente de una sesión iniciada
 export default function Start():JSX.Element {
+    useEffect(() => {
+        Session.refresh();
+    }, []);
+    const navigate = useNavigate();
+
     return (
     <>  
         <Header />
@@ -33,9 +39,10 @@ export default function Start():JSX.Element {
         <NavBar>
             {tabs}
         </NavBar>
+        <BiArrowBack onClick={() => navigate(-1)} />
         <Routes>
-            <Route path='' element={<Navigate to={paths.transaction} />} />
-            <Route path={paths.transaction+"/"} element={<Transaction />} />
+            <Route index element={<Navigate to={paths.transaction} />} />
+            <Route path={paths.transaction+"/*"} element={<Transaction />} />
             <Route path={paths.books+"/*"} element={<Books />}/>
             <Route path={paths.stats+"/*"} element={<Stats />}/>
             <Route path={paths.spots+"/*"} element={<Spots />}/>

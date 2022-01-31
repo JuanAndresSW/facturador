@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Session from "../../script/Session";
 import Valid from "../../script/Valid";
 import "../../style/form.css";
@@ -9,10 +8,9 @@ import "./TitleScreen.css";
 const user = { name: "", password: "" };
 
 export default function TitleScreen(): JSX.Element {
-  const navigate = useNavigate();
 
   const [loginType, setLoginType] = useState("text");
-  let placeholder = loginType === "text" ? "nombre" : "contraseña";
+  let placeholder = loginType === "text" ? "nombre o email" : "contraseña";
   const [loginValue, setLoginValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [disable, setDisable] = useState(false);
@@ -42,9 +40,8 @@ export default function TitleScreen(): JSX.Element {
 
   //autenticar el objeto de usuario
   function authenticate(user: { name: string; password: string }): void {
-    if (Session.authenticate(user.name, user.password)) {
+    if (Session.tryStart(user.name, user.password)) {
       setDisable(true);
-      Session.open(user.name);
       window.location.reload();
     } else setErrorMessage("Nombre o contraseña incorrecta");
   }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import './PurchaseExtra.css';
 
 type props = {
     type: string

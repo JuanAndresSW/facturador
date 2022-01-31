@@ -1,39 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Valid from "../script/Valid";
 import Session from "../script/Session";
 import "../style/form.css";
 import { useNavigate } from "react-router-dom";
 
-type props = {
-  origin?: string;
-};
-
 //devuelve un formulario para iniciar sesión
-export default function LogIn({ origin = "/" }: props) {
+export default function LogIn() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    //redirigir al inicio si ya existe una sesión
+    if (Session.isAuthenticated()) navigate("/");
+  }, []);
 
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const validate = () => {
+  const submit = (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.preventDefault();
     if ((Valid.names(user) || Valid.email(user)) && Valid.password(password))
       authenticate();
     else setError("Usuario o contraseña incorrecta");
   };
 
-  const submit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    validate();
-  };
-
   function authenticate() {
-    console.log(
-      "%cAuthenticación",
-      "background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);padding:1rem;display:block;width:min-content;font-size:2rem;text-align:center;border-radius:333px"
-    );
-    if (Session.authenticate(user, password)) {
-      Session.open(user);
+    if (Session.tryStart(user, password)) {
       navigate("/");
     } else setError("Usuario o contraseña incorrecta");
   }
@@ -73,7 +69,7 @@ export default function LogIn({ origin = "/" }: props) {
 
       <p className="error">{error}</p>
 
-      <button type="submit" onMouseDown={validate}>
+      <button type="submit" onMouseDown={(e) => submit(e)}>
         Ingresar
       </button>
     </form>

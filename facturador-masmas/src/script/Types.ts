@@ -11,15 +11,16 @@ export interface account {
     code: string;
     grossIncome: string;
   };
-  pointOfSale: {
-    name: string;
-    address: string;
-    locality: string;
-    postalCode: string;
-    email: string;
-    phone: string;
-    website: string;
-    color: string;
-    logo: File;
-  };
 }
+
+export interface pointOfSale {
+  name: string;
+  address: string;
+  locality: string;
+  postalCode: string;
+  email: string;
+  phone: string;
+  website: string;
+  color: string;
+  logo: File;
+};

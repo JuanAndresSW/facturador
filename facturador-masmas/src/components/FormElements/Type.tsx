@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import DocData from '../../../script/DocData';
-import './Type.css';
+import DocData from './../../script/DocData';
 
 type props = {
     type: string

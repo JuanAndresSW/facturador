@@ -1,6 +1,5 @@
 import React from "react";
 import {IoIosAdd} from 'react-icons/io';
-import './ProductTable.css';
 
 type props = {
     type: string
@@ -8,7 +7,7 @@ type props = {
 
 export default function ProductTable({type}:props):JSX.Element { 
     return (
-        type === "invoice" || "credit-note" || "debit-note" || "receipt-x" || "purchase-order" || "remittance" ?
+        type === ("invoice" || "credit-note" || "debit-note" || "receipt-x" || "remittance") ?
         
         <>
             <div id="products">

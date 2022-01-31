@@ -7,7 +7,7 @@ type props = {
   children: JSX.Element[];
 };
 
-export default function Main({ children }: props) {
+export default function NavBar({ children }: props) {
 
   return (
     <Protected>

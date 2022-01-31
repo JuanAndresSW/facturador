@@ -21,7 +21,6 @@ export default function LogIn(_a) {
         validate();
     };
     function authenticate() {
-        console.log("%cAuthenticación", "background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);padding:1rem;display:block;width:min-content;font-size:2rem;text-align:center;border-radius:333px");
         if (Session.authenticate(user, password)) {
             Session.open(user);
             navigate("/");

@@ -1,5 +1,4 @@
 import React from "react";
-import './Observations.css';
 
 type props = {
     type:string
