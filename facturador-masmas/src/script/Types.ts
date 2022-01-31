@@ -11,6 +11,7 @@ export interface account {
     code: string;
     grossIncome: string;
   };
+  /*
   pointOfSale: {
     name: string;
     address: string;
@@ -22,4 +23,5 @@ export interface account {
     color: string;
     logo: File;
   };
+  */
 }

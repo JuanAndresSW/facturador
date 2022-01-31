@@ -1,0 +1,18 @@
+---
+server:
+  port: 8080
+
+logging:
+  pattern:
+    dateformat: HH:mm:ss
+
+spring:
+  main:
+    banner-mode: off
+  datasource:
+    tomcat:
+      max-wait: 20000
+      max-active: 50
+      max-idle: 20
+      min-idle: 15
+...

@@ -30,23 +30,6 @@ export default function SignUp() {
   const [userError, setUserError] = useState("");
 
   //datos del comerciante
-  /*
-  Creas un archivo Trader.ts y le pones solo esta interface
-  export default interface Trader {
-    businessName: string;
-    vatCategory: string;
-    code: string;
-    grossIncome: string;
-  }
-  Y creas la variable de esta manera
-  const [trader, setTrader] = useState<Trader>({});
-
-  Esto haria lo mismo, pero te daria el tipado fuerte de TS y al mismo tiempo
-    al compilar a JS la interface es como si no existiera
-  Esto seria crear un modelo lo podes hacer con clases o interfaces
-    pero la interface no se compila dejando menos codigo
-  Ademas seria reutilizable
-  */
   const [trader, setTrader] = useState({
     businessName: "",
     vatCategory: "",
@@ -168,7 +151,7 @@ export default function SignUp() {
     }
 
     //enviar objeto al servidor
-    Gateway.submitAccount({ user, trader, pointOfSale });
+    Gateway.submitAccount({user, trader});
   };
 
   /*FORMULARIO*****************************************************/
