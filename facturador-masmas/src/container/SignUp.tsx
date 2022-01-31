@@ -85,7 +85,7 @@ export default function SignUp() {
       setTraderError("Ingrese un número de ingresos brutos válido");
       return;
     }
-    Gateway.submitAccount({user, trader}, window.location.href);
+    Gateway.submitAccount(user, trader);
   };
 
   /*FORMULARIO*****************************************************/
