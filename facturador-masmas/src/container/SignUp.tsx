@@ -151,7 +151,7 @@ export default function SignUp() {
     }
 
     //enviar objeto al servidor
-    Gateway.submitAccount({ user, trader, pointOfSale }, window.location.href);
+    Gateway.submitAccount({user, trader});
   };
 
   /*FORMULARIO*****************************************************/

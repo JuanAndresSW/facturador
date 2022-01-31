@@ -17,7 +17,7 @@ export default class Format {
         vatCategory: account.trader.vatCategory,
         code: account.trader.code,
         grossIncome: account.trader.grossIncome,
-      },
+      },/*
       pointOfSale: {
         name: account.pointOfSale.name,
         address: account.pointOfSale.address,
@@ -27,7 +27,7 @@ export default class Format {
         phone: account.pointOfSale.phone,
         website: account.pointOfSale.website,
         color: account.pointOfSale.color,
-      },
+      },*/
     });
     return data;
   }
