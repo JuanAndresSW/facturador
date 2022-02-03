@@ -3,7 +3,7 @@ package dev.facturador.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -23,7 +23,7 @@ public final class Cheque {
     private String serie;
 
     @Column(name = "fecha_emision", nullable = false)
-    private Date issueDate;
+    private LocalDate issueDate;
 
     @Column(name = "cantidad", nullable = false, scale = 2)
     private double amountCheck;

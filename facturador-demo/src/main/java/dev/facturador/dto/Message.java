@@ -1,4 +1,4 @@
-package dev.facturador.modelo;
+package dev.facturador.dto;
 import lombok.*;
 
 @Getter @Setter @AllArgsConstructor

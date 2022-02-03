@@ -3,14 +3,14 @@ package dev.facturador.repository;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.entities.CuentaSecundaria;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
  * Interfaz para llaar al repositorio de Cuenta Secudnaria
  */
-public interface ICuentaSecundariaRepository extends CrudRepository<CuentaSecundaria, Long> {
+public interface ICuentaSecundariaRepository extends JpaRepository<CuentaSecundaria, Long> {
 
     /**
      * Query Custom no proporcionada por la clase CrudRepository

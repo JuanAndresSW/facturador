@@ -1,4 +1,4 @@
-package dev.facturador.services.component;
+package dev.facturador.util;
 
 import org.springframework.stereotype.Component;
 

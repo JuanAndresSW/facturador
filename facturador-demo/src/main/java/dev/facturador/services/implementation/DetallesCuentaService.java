@@ -1,7 +1,8 @@
-package dev.facturador.services;
+package dev.facturador.services.implementation;
 
 import dev.facturador.entities.DetallesCuenta;
 import dev.facturador.repository.IDetallesCuentaRepository;
+import dev.facturador.services.IDetallesCuentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
  * Servicio del detalle de cuenta
  */
 @Service
-public final class DetallesCuentaService implements IDetallesCuentaService{
+public final class DetallesCuentaService implements IDetallesCuentaService {
 
     //Injeccion de depencia del repository
     //Spring se encarga de:

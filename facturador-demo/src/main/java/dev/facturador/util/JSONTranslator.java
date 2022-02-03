@@ -3,14 +3,14 @@ package dev.facturador.util;
 import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.entities.DetallesCuenta;
-import dev.facturador.modelo.Account;
+import dev.facturador.dto.Account;
 import org.springframework.stereotype.Component;
 
 @Component
 public final class JSONTranslator {
 
     /**
-     * Transforma el modelo Account a la entidad CuentaPrincipal
+     * Transforma el dto Account a la entidad CuentaPrincipal
      */
     public static CuentaPrincipal translatorAccountToMainAccount(Account account){
         CuentaPrincipal mainAccount = new CuentaPrincipal();

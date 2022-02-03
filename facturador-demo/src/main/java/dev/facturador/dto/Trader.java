@@ -1,9 +1,12 @@
-package dev.facturador.modelo;
+package dev.facturador.dto;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Dto del Json para el Comerciante
+ */
 @Data
 public final class Trader {
 

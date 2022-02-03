@@ -1,12 +1,12 @@
 package dev.facturador.controllers;
 
 import dev.facturador.entities.CuentaPrincipal;
-import dev.facturador.modelo.Account;
-import dev.facturador.modelo.Message;
+import dev.facturador.dto.Account;
+import dev.facturador.dto.Message;
 import dev.facturador.services.ISingUpMainAccountService;
 import static dev.facturador.util.JSONTranslator.translatorAccountToMainAccount;
 
-import dev.facturador.services.component.CustomBCryptPasswordEncoder;
+import dev.facturador.util.CustomBCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

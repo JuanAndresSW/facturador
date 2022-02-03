@@ -1,4 +1,4 @@
-package dev.facturador.modelo;
+package dev.facturador.dto;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Modelo del Json para el usuario
+ * Dto del Json para el usuario
  */
 @Data
 public final class User {
