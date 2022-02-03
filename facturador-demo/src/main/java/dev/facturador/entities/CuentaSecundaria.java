@@ -13,7 +13,7 @@ public final class CuentaSecundaria {
     @Id
     @Column(name = "id_cuenta_secundaria", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idSecondaryAccount;
+    private long idSecondaryAccount;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cuenta_principal", nullable = false)

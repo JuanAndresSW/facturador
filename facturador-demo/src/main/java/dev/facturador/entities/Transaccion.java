@@ -13,17 +13,17 @@ public final class Transaccion {
     @Id
     @Column(name = "id_transaccion", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idTransaccion;
+    private long idTransaction;
 
     @Column(name = "num_transaccion", nullable = false)
-    private int numTransaccion;
+    private int numTransaction;
 
-    @Column(nullable = false)
-    private String tipo;
+    @Column(name = "tipo", nullable = false, length = 20)
+    private String typeTransaction;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_punto_venta", nullable = false)
-    private PuntoVenta puntoVenta;
+    private PuntoVenta pointOfSale;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_socio", nullable = false)
@@ -31,7 +31,7 @@ public final class Transaccion {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_orden_compra")
-    private OrdenCompra ordenCompra;
+    private OrdenCompra purchaseOrder;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_remito")
@@ -39,7 +39,7 @@ public final class Transaccion {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_factura")
-    private Factura factura;
+    private Factura invoice;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pagare")
@@ -47,14 +47,13 @@ public final class Transaccion {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cheque")
-    private Cheque cheque;
+    private Cheque check;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_recibo_x")
-    private ReciboX reciboX;
+    private ReciboX receiptX;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_recibo")
-    private Recibo recibo;
-
+    private Recibo receipt;
 }

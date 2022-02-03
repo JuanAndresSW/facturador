@@ -12,7 +12,7 @@ public class DetallesCuenta {
     @Id
     @Column(name = "id_detalles_cuenta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idAccountDetails;
+    private long idAccountDetails;
 
     @Column(nullable = false, length = 30, unique = true)
     private String username;
@@ -22,4 +22,10 @@ public class DetallesCuenta {
 
     @Column(nullable = false, length = 320, unique = true)
     private String  email;
+
+    public DetallesCuenta(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 }
