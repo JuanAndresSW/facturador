@@ -12,7 +12,7 @@ public final class PuntoVenta {
     @Id
     @Column(name = "id_punto_venta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idPointOfSale;
+    private long idPointOfSale;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="id_comerciante", nullable = false)
@@ -27,10 +27,7 @@ public final class PuntoVenta {
     @Column(name = "email", nullable = false, length = 320)
     private String email;
 
-
-    public PuntoVenta(Integer idPointOfSale) {
+    public PuntoVenta(long idPointOfSale) {
         this.idPointOfSale = idPointOfSale;
     }
-
-
 }

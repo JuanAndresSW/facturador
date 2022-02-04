@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("ALL")
@@ -15,32 +16,32 @@ public final class ReciboX {
     @Id
     @Column(name = "id_recibo_x")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idReciboX;
+    private long idReceiptX;
 
     @Column(name = "num_recibo_x", nullable = false)
     private int numFactura;
 
-    @Column(nullable = false, length = 1)
-    private String flux;
+    @Column(name = "flujo", nullable = false, length = 1)
+    private String fluxReceiptX;
 
     @Column(name = "fecha_emision", nullable = false)
-    private Date issueDate;
+    private LocalDate issueDate;
 
-    @Column(nullable = false, length = 40)
-    private String pagador;
+    @Column(name = "pagador", nullable = false, length = 40)
+    private String payerReceiptX;
 
     @Column(name = "horario", nullable = false)
-    private LocalDateTime horario;
+    private LocalDateTime horary;
 
     @Column(name = "cheque", nullable = false, scale = 2)
-    private double cheque;
+    private double check;
 
     @Column(name = "documentos", nullable = false, scale = 2)
-    private double documentos;
+    private double documents;
 
     @Column(name = "efectivo", nullable = false, scale = 2)
-    private double efectivo;
+    private double cash;
 
     @Column(name = "domicilio_pago", nullable = false, length = 20)
-    private String domicilioPago;
+    private String paymentAddress;
 }

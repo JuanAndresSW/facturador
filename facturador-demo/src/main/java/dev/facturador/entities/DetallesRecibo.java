@@ -12,9 +12,9 @@ import java.time.LocalDate;
 public final class DetallesRecibo {
 
     @Id
-    @Column(name = "id_detalles_recibo", nullable = false)
+    @Column(name = "id_detalles_recibo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idReceiptDetails;
+    private long idReceiptDetails;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_recibo_x", nullable = false)

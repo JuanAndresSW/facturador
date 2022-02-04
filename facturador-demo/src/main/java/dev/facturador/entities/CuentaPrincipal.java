@@ -14,22 +14,22 @@ public final class CuentaPrincipal {
     @Id
     @Column(name="id_cuenta_principal")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idMainAccount;
+    private long idMainAccount;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_comerciante", nullable = false, updatable = false, unique = true)
+    @JoinColumn(name="id_comerciante", nullable = false, unique = true)
     private Comerciante accountOwner;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_detalles_cuenta", nullable = false, updatable = false, unique = true)
+    @JoinColumn(name = "id_detalles_cuenta", nullable = false, unique = true)
     private DetallesCuenta mainAccountDetails;
 
-    @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.ALL)
-    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private List<CuentaSecundaria> ownerSecondaryAccounts;
+    @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.REMOVE)
+    private List<CuentaSecundaria> secondaryAccounts;
 
     private void addSecondaryAccount(CuentaSecundaria element){
-        if(ownerSecondaryAccounts == null) ownerSecondaryAccounts = new LinkedList<>();
-        this.ownerSecondaryAccounts.add(element);
+        if(secondaryAccounts == null) secondaryAccounts = new LinkedList<>();
+        this.secondaryAccounts.add(element);
     }
 
     @Override

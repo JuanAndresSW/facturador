@@ -10,20 +10,20 @@ import javax.persistence.*;
 public final class Productos {
 
     @Id
-    @Column(name = "id_productos", nullable = false)
+    @Column(name = "id_productos")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idProduct;
+    private long idProduct;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_transaccion", nullable = false)
     private Transaccion transaction;
 
-    @Column(nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private int amountProducts;
 
-    @Column(nullable = false)
+    @Column(name = "nombre", nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "precio", nullable = false)
     private double price;
 }
