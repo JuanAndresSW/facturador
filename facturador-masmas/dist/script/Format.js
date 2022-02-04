@@ -1,5 +1,7 @@
 /**
  * Aplica el formato necesario a los datos antes de enviarlos al servidor
+ *
+ * No se utiliza por el momento
  */
 var Format = /** @class */ (function () {
     function Format() {

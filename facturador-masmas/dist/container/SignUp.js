@@ -14,7 +14,7 @@ import Valid from "../script/Valid";
 import Gateway from "../script/Gateway";
 import "../style/form.css";
 import { useNavigate } from "react-router-dom";
-import { BiArrowBack } from "react-icons/bi";
+import { BiChevronLeft } from "react-icons/bi";
 //devuelve un formulario de 2 partes para crear una nueva cuenta, comerciante y punto de venta
 export default function SignUp() {
     var navigate = useNavigate();
@@ -81,7 +81,7 @@ export default function SignUp() {
             setTraderError("Ingrese un número de ingresos brutos válido");
             return;
         }
-        Gateway.submitAccount({ user: user, trader: trader }, window.location.href);
+        Gateway.submitAccount({ user: user, trader: trader });
     };
     /*FORMULARIO*****************************************************/
     return (React.createElement("form", { className: "panel", method: "post" }, active === "user" ? (React.createElement(React.Fragment, null,
@@ -108,7 +108,7 @@ export default function SignUp() {
         React.createElement("p", { className: "error" }, userError),
         React.createElement("button", { onClick: function (e) { return validateUser(e); } }, "Comprobar"))) : /***************************************************************************/
         active === "trader" ? (React.createElement(React.Fragment, null,
-            React.createElement(BiArrowBack, { onClick: function () {
+            React.createElement(BiChevronLeft, { onClick: function () {
                     setActive("user");
                 } }),
             React.createElement("h1", { className: "title" }, "Datos del comercio"),

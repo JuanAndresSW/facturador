@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Session from "../../script/Session";
 import Valid from "../../script/Valid";
 import "../../style/form.css";
@@ -7,9 +6,8 @@ import "./TitleScreen.css";
 //objeto de usuario a enviar al servidor
 var user = { name: "", password: "" };
 export default function TitleScreen() {
-    var navigate = useNavigate();
     var _a = useState("text"), loginType = _a[0], setLoginType = _a[1];
-    var placeholder = loginType === "text" ? "nombre" : "contraseña";
+    var placeholder = loginType === "text" ? "nombre o email" : "contraseña";
     var _b = useState(""), loginValue = _b[0], setLoginValue = _b[1];
     var _c = useState(""), errorMessage = _c[0], setErrorMessage = _c[1];
     var _d = useState(false), disable = _d[0], setDisable = _d[1];
@@ -41,9 +39,8 @@ export default function TitleScreen() {
     }
     //autenticar el objeto de usuario
     function authenticate(user) {
-        if (Session.authenticate(user.name, user.password)) {
+        if (Session.tryStart(user.name, user.password)) {
             setDisable(true);
-            Session.open(user.name);
             window.location.reload();
         }
         else

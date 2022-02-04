@@ -8,9 +8,7 @@ import {
   Remittance,
   Check,
   PromissoryNote,
-  Other,
 } from "../Documents";
-import TransactionTypes from "../TransactionTypes";
 import SelectPartakers from "../../../FormElements/SelectPartakers";
 import ProductTable from "../../../FormElements/ProductTable";
 import Observations from "../../../FormElements/Observations";
@@ -22,7 +20,7 @@ type props = {
   flux: string;
   type: string;
 };
-//return a form element to gather data needed by the server to generate a new business document
+//devuelve un formulario que recolecta los datos necesitados por el back-end para generar un documento
 export default function DocumentForm({ flux, type }: props): JSX.Element {
   DocData.fetchFormData();
   return (
@@ -40,7 +38,7 @@ export default function DocumentForm({ flux, type }: props): JSX.Element {
   );
 }
 
-//get a proper title for the form
+//encontrar un título apropiado para el formulario
 function getTitle(type: string, flux: string): string {
   let title: string;
   switch (type) {

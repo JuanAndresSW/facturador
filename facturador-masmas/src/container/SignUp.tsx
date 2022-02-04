@@ -3,15 +3,18 @@ import Valid from "../script/Valid";
 import Gateway from "../script/Gateway";
 import "../style/form.css";
 import { useNavigate } from "react-router-dom";
-import { BiArrowBack } from "react-icons/bi";
-//devuelve un formulario de 2 partes para crear una nueva cuenta, comerciante y punto de venta
+import { BiChevronLeft } from "react-icons/bi";
+/**
+ * devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante
+ */
 export default function SignUp() {
   const navigate = useNavigate();
 
   /*DATOS DEL FORMULARIO*****************************************************/
 
-  //controlador de las 2 partes del formulario
+  //controladores del estado del formulario
   const [active, setActive] = useState("user");
+  const [submitButton, setSubmitButton] = useState("Comprobar");
 
   //datos del usuario
   const [user, setUser] = useState({
@@ -33,7 +36,6 @@ export default function SignUp() {
   const [traderError, setTraderError] = useState("");
 
   /*VALIDACIÓN***************************************************************/
-
   const validateUser = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
@@ -85,8 +87,36 @@ export default function SignUp() {
       setTraderError("Ingrese un número de ingresos brutos válido");
       return;
     }
-    Gateway.submitAccount(user, trader);
+    submit();
   };
+  /*ENVIAR/RECIBIR*************************************************/
+  async function submit(): Promise<void> {
+    Gateway.submitAccount({ user, trader }, handleResponse);
+    setSubmitButton("Cargando...");
+  }
+
+  function handleResponse(state: number, data: string) {
+    switch (state) {
+      case 0:
+        setSubmitButton(
+          "No se ha podido establecer la comunicación con el servidor"
+        );
+        break;
+      case 200:
+        setSubmitButton("La cuenta se ha creado correctamente");
+        console.log(data);
+        break;
+      case 400:
+        setSubmitButton("Hubo un error al validar los datos");
+        break;
+      case 500:
+        setSubmitButton("Hubo un problema con el servidor");
+        break;
+      default:
+        setSubmitButton("Hubo un error desconocido al procesar tus datos");
+        break;
+    }
+  }
 
   /*FORMULARIO*****************************************************/
 
@@ -140,30 +170,30 @@ export default function SignUp() {
           </label>
 
           <label>
-              {"Foto de perfil"}
-              <span> (opcional)</span>
-              <input
-                type="file"
-                accept=".png, .jpeg, .jpg, .svg"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files.length > 0)
-                    setUser({
-                      ...user,
-                      avatar: e.target.files.item(0),
-                    });
-                }}
-              ></input>
-            </label>
+            {"Foto de perfil"}
+            <span> (opcional)</span>
+            <input
+              type="file"
+              accept=".png, .jpeg, .jpg, .svg"
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0)
+                  setUser({
+                    ...user,
+                    avatar: e.target.files.item(0),
+                  });
+              }}
+            ></input>
+          </label>
 
           <p className="error">{userError}</p>
 
-          <button onClick={(e) => validateUser(e)}>Comprobar</button>
+          <button onClick={(e) => validateUser(e)}>Siguiente</button>
         </>
       ) : /***************************************************************************/
 
       active === "trader" ? (
         <>
-          <BiArrowBack
+          <BiChevronLeft
             onClick={() => {
               setActive("user");
             }}
@@ -233,7 +263,6 @@ export default function SignUp() {
               maxLength={20}
               value={trader.code}
               onChange={(e) => setTrader({ ...trader, code: e.target.value })}
-              required
             ></input>
           </label>
 
@@ -248,7 +277,6 @@ export default function SignUp() {
                 onChange={(e) =>
                   setTrader({ ...trader, grossIncome: e.target.value })
                 }
-                required
               ></input>
             </label>
           ) : (
@@ -257,12 +285,16 @@ export default function SignUp() {
 
           <p className="error">{traderError}</p>
 
-          <button onClick={(e) => validateTrader(e)}>Comprobar</button>
+          <button
+            disabled={submitButton !== "Comprobar"}
+            onClick={(e) => validateTrader(e)}
+          >
+            {submitButton}
+          </button>
         </>
-      ) :
-
-     <></>
-      }
+      ) : (
+        <>????</>
+      )}
     </form>
   );
 }

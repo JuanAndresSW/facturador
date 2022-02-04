@@ -2,8 +2,9 @@ import { account, pointOfSale } from "./Types";
 
 /**
  * Aplica el formato necesario a los datos antes de enviarlos al servidor
+ * 
+ * No se utiliza por el momento
  */
-
 export default class Format {
   public static account(account:account): string {
     const data = JSON.stringify({

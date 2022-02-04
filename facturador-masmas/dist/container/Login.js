@@ -1,28 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Valid from "../script/Valid";
 import Session from "../script/Session";
 import "../style/form.css";
 import { useNavigate } from "react-router-dom";
 //devuelve un formulario para iniciar sesión
-export default function LogIn(_a) {
-    var _b = _a.origin, origin = _b === void 0 ? "/" : _b;
+export default function LogIn() {
     var navigate = useNavigate();
-    var _c = useState(""), user = _c[0], setUser = _c[1];
-    var _d = useState(""), password = _d[0], setPassword = _d[1];
-    var _e = useState(""), error = _e[0], setError = _e[1];
-    var validate = function () {
+    useEffect(function () {
+        //redirigir al inicio si ya existe una sesión
+        if (Session.isAuthenticated())
+            navigate("/");
+    }, []);
+    var _a = useState(""), user = _a[0], setUser = _a[1];
+    var _b = useState(""), password = _b[0], setPassword = _b[1];
+    var _c = useState(""), error = _c[0], setError = _c[1];
+    var submit = function (e) {
+        e.preventDefault();
         if ((Valid.names(user) || Valid.email(user)) && Valid.password(password))
             authenticate();
         else
             setError("Usuario o contraseña incorrecta");
     };
-    var submit = function (e) {
-        e.preventDefault();
-        validate();
-    };
     function authenticate() {
-        if (Session.authenticate(user, password)) {
-            Session.open(user);
+        if (Session.tryStart(user, password)) {
             navigate("/");
         }
         else
@@ -40,5 +40,5 @@ export default function LogIn(_a) {
             React.createElement("input", { name: "password", type: "password", maxLength: 128, value: password, onChange: function (e) { return setPassword(e.target.value); }, required: true })),
         React.createElement("a", { href: "about:blank", target: "_blank", className: "special" }, "Olvid\u00E9 mi contrase\u00F1a"),
         React.createElement("p", { className: "error" }, error),
-        React.createElement("button", { type: "submit", onMouseDown: validate }, "Ingresar")));
+        React.createElement("button", { type: "submit", onMouseDown: function (e) { return submit(e); } }, "Ingresar")));
 }

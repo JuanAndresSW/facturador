@@ -12,7 +12,7 @@ export default function TitleScreen(): JSX.Element {
   const [loginType, setLoginType] = useState("text");
   let placeholder = loginType === "text" ? "nombre o email" : "contraseña";
   const [loginValue, setLoginValue] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
   const [disable, setDisable] = useState(false);
 
   //validar dato y cambiar el tipo de input
@@ -22,8 +22,8 @@ export default function TitleScreen(): JSX.Element {
         user.name = loginValue.trim();
         setLoginValue("");
         setLoginType("password");
-        setErrorMessage("");
-      } else setErrorMessage("nombre inválido");
+        setError("");
+      } else setError("nombre inválido");
       return;
     }
     if (loginType === "password") {
@@ -32,7 +32,7 @@ export default function TitleScreen(): JSX.Element {
         authenticate(user);
         setLoginValue("");
         setLoginType("text");
-      } else setErrorMessage("Nombre o contraseña incorrecta");
+      } else setError("Nombre o contraseña incorrecta");
       setLoginValue("");
       setLoginType("text");
     }
@@ -40,10 +40,34 @@ export default function TitleScreen(): JSX.Element {
 
   //autenticar el objeto de usuario
   function authenticate(user: { name: string; password: string }): void {
-    if (Session.tryStart(user.name, user.password)) {
-      setDisable(true);
-      window.location.reload();
-    } else setErrorMessage("Nombre o contraseña incorrecta");
+    Session.tryStart(user.name, user.password, handleResponse);
+  }
+  function handleResponse(state:number, data:string) {
+    switch (state) {
+      case 0:
+        setError(
+          "No se ha podido establecer la comunicación con el servidor"
+        );
+        break;
+      case 200:
+        setError("");
+        setDisable(true);
+        const usr = JSON.parse(data);
+        Session.setSession(usr.code, usr.name, usr.passive, usr.active);
+        window.location.reload();
+        break;
+      case 400:
+        setError("Usuario o contraseña incorrecta");
+        setDisable(false);
+        break;
+      case 500:
+        setDisable(true);
+        setError("Hubo un problema con el servidor");
+        break;
+      default:
+        setError("Hubo un error desconocido al procesar tus datos");
+        break;
+    }
   }
 
   return (
@@ -67,11 +91,11 @@ export default function TitleScreen(): JSX.Element {
         }}
         disabled={disable}
       ></input>
-      <button type="button" onClick={() => checkValidity()}>
+      <button disabled={disable} type="button" onClick={() => checkValidity()}>
         Iniciar sesión
       </button>
 
-      <p className="message">{errorMessage}</p>
+      <p className="message">{error}</p>
     </div>
   );
 }

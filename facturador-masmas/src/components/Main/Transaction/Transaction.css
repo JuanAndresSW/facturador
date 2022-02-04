@@ -81,4 +81,10 @@
   color: blue;
   font-size: 0.9rem;
 }
+
+.back-arrow {
+  margin: 1rem;
+  color: #2c2c2c;
+  cursor: pointer;
+}
 /*# sourceMappingURL=Transaction.css.map */

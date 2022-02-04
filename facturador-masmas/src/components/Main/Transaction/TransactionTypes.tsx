@@ -1,5 +1,6 @@
 import React from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
+import { BiChevronLeft } from "react-icons/bi";
+import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import DocumentForm from "./DocumentForm/DocumentForm";
 import "./Transaction.css";
 
@@ -8,46 +9,38 @@ type props = {
 };
 
 export default function TransactionTypes({ flux }: props): JSX.Element {
+  const navigate = useNavigate();
   return (
-    <Routes>
+    <><BiChevronLeft onClick={() => navigate(-1)} className="back-arrow" /><Routes>
       <Route index element={start} />
       <Route
         path={"/factura"}
-        element={<DocumentForm flux={flux} type="invoice" />}
-      />
+        element={<DocumentForm flux={flux} type="invoice" />} />
       <Route
         path={"/nota-de-credito"}
-        element={<DocumentForm flux={flux} type="credit-note" />}
-      />
+        element={<DocumentForm flux={flux} type="credit-note" />} />
       <Route
         path={"/nota-de-debito"}
-        element={<DocumentForm flux={flux} type="debit-note" />}
-      />
+        element={<DocumentForm flux={flux} type="debit-note" />} />
       <Route
         path={"/recibo-x"}
-        element={<DocumentForm flux={flux} type="receipt-x" />}
-      />
+        element={<DocumentForm flux={flux} type="receipt-x" />} />
       <Route
         path={"/recibo"}
-        element={<DocumentForm flux={flux} type="receipt" />}
-      />
+        element={<DocumentForm flux={flux} type="receipt" />} />
       <Route
         path={"/orden-de-compra"}
-        element={<DocumentForm flux={flux} type="purchase-order" />}
-      />
+        element={<DocumentForm flux={flux} type="purchase-order" />} />
       <Route
         path={"/remito"}
-        element={<DocumentForm flux={flux} type="remit" />}
-      />
+        element={<DocumentForm flux={flux} type="remit" />} />
       <Route
         path={"/cheque"}
-        element={<DocumentForm flux={flux} type="check" />}
-      />
+        element={<DocumentForm flux={flux} type="check" />} />
       <Route
         path={"/pagare"}
-        element={<DocumentForm flux={flux} type="promissory-note" />}
-      />
-    </Routes>
+        element={<DocumentForm flux={flux} type="promissory-note" />} />
+    </Routes></>
   );
 }
 
