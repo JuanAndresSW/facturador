@@ -12,18 +12,18 @@ import java.sql.Date;
 public final class Factura {
 
     @Id
-    @Column(name = "id_factura", nullable = false)
+    @Column(name = "id_factura")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idInvoice;
+    private long idInvoice;
 
     @Column(name = "num_factura", nullable = false)
     private int numInvoice;
 
-    @Column(nullable = false, length = 1)
+    @Column(name = "flujo", nullable = false, length = 1)
     private String flux;
 
-    @Column(nullable = false, length = 1)
-    private String type;
+    @Column(name = "tipo", nullable = false, length = 1)
+    private String invoiceType;
 
     @Column(name = "fecha_emision", nullable = false)
     private Date issueDate;
@@ -31,15 +31,16 @@ public final class Factura {
     @Column(name = "forma_pago", nullable = false)
     private String wayToPay;
 
-    @Column(nullable = false, length = 2)
+    @Column(name = "impuesto", nullable = false, length = 2)
     private String tax;
 
-    @Column(nullable = false, length = 1)
+    @Column(name = "iva", nullable = false, length = 1)
     private String vat;
 
+    @Column(name = "observaciones", nullable = false, length = 60)
     private String observations;
 
-    public Factura(Integer idInvoice) {
+    public Factura(long idInvoice) {
         this.idInvoice = idInvoice;
     }
 }

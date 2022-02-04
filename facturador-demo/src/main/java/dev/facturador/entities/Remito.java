@@ -14,16 +14,17 @@ public final class Remito {
     @Id
     @Column(name = "id_remito", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idRemito;
+    private long idRemito;
 
     @Column(name = "num_remito", nullable = false)
     private int numRemito;
 
-    @Column(nullable = false, length = 1)
-    private String flujo;
+    @Column(name = "flujo", nullable = false, length = 1)
+    private String fluxRemito;
 
     @Column(name = "fecha_emision", nullable = false)
-    private LocalDate fechaEmision;
+    private LocalDate issueDate;
 
-    private String observaciones;
+    @Column(name = "observaciones", nullable = false, length = 60)
+    private String observations;
 }

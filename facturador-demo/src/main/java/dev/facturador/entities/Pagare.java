@@ -3,7 +3,7 @@ package dev.facturador.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -12,24 +12,24 @@ import java.sql.Date;
 public final class Pagare {
 
     @Id
-    @Column(name = "id_pagare", nullable = false)
+    @Column(name = "id_pagare")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idPagare;
+    private long idPagare;
 
     @Column(name = "num_pagare", nullable = false)
     private int numPagare;
 
     @Column(name = "fecha_emision", nullable = false)
-    private Date issueDate;
+    private LocalDate issueDate;
 
     @Column(name = "fecha_vencimiento", nullable = false)
-    private Date expirationDate;
+    private LocalDate expirationDate;
 
-    @Column(nullable = false)
+    @Column(name = "beneficiario", nullable = false)
     private String beneficiary;
 
     @Column(name = "cantidad", nullable = false)
-    private double amount;
+    private double amountPagare;
 
     @Column(name = "protesto", nullable = false)
     private boolean protest;
@@ -37,9 +37,9 @@ public final class Pagare {
     @Column(name = "sellado", nullable = false)
     private boolean sellado;
 
-    @Column(nullable = false)
+    @Column(name = "contacto", nullable = false)
     private String contact;
 
-    @Column(nullable = false)
+    @Column(name = "descripcion", nullable = false)
     private String description;
 }

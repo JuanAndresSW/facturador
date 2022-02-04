@@ -13,24 +13,26 @@ public final class Socio {
     @Id
     @Column(name = "id_socio", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idSocio;
+    private long idSocio;
 
-    private String cuit;
+    @Column(name = "cuit", length = 15)
+    private String uniqueKey;
 
-    @Column(nullable = false)
-    private String direccion;
-    @Column(nullable = false)
-    private String nombre;
-    @Column(nullable = false)
-    private String telefono;
-    @Column(nullable = false)
-    private String iva;
-    @Column(nullable = false)
+    @Column(name = "direccion", nullable = false, length = 50)
+    private String address;
+    @Column(name = "nombre", nullable = false, length = 30)
+    private String name;
+    @Column(name = "telefono", nullable = false)
+    private String phoneNumber;
+    @Column(name = "iva", nullable = false)
+    private String vat;
+    @Column(name = "cp", nullable = false)
     private String cp;
 
+    @Column(name = "web", length = 320)
     private String web;
 
-    public Socio(Integer idSocio) {
+    public Socio(long idSocio) {
         this.idSocio = idSocio;
     }
 }

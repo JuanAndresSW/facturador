@@ -3,7 +3,7 @@ package dev.facturador.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -12,32 +12,35 @@ import java.sql.Date;
 public final class Recibo {
 
     @Id
-    @Column(name = "id_recibo", nullable = false)
+    @Column(name = "id_recibo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idRecibo;
+    private long idReceipt;
+
+    @Column(name = "num_recibo", nullable = false)
+    private int numReceipt;
 
     @Column(name = "fecha_emision", nullable = false)
-    private Date issueDate;
+    private LocalDate issueDate;
 
-    @Column(name = "fecha_vencimiento", nullable = false)
-    private Date expirationDate;
+    @Column(name = "tipo", nullable = false, length = 10)
+    private String typeReceipt;
 
-    @Column(nullable = false)
-    private String type;
+    @Column(name = "pagador", nullable = false, length = 40)
+    private String payer;
 
-    @Column(nullable = false)
-    private String pagador;
+    @Column(name = "domicilio", nullable = false, length = 40)
+    private String home;
 
-    @Column(nullable = false)
-    private String domicilio;
-
-    @Column(nullable = false)
+    @Column(name = "descipcion", nullable = false, length = 20)
     private String description;
 
-    @Column(nullable = false)
-    private int amount;
+    @Column(name = "cantidad", nullable = false)
+    private int amountReceipt;
 
-    public Recibo(Integer idRecibo) {
-        this.idRecibo = idRecibo;
+    @Column(name = "flujo", nullable = false, length = 1)
+    private String fluxReceipt;
+
+    public Recibo(long idReceipt) {
+        this.idReceipt = idReceipt;
     }
 }

@@ -6,7 +6,7 @@ import Format from "./Format";
  */
 export default class DocGateway {
   //envía un json con los datos de usuario y blobs con el logo y la foto de perfil
-  public static async submitAccount(account: account) {
+  public static submitAccount(account: account): void {
     //definir datos a enviar
     const data = new FormData();
     data.append("account", Format.account(account));
@@ -19,20 +19,17 @@ export default class DocGateway {
     }
     */
     //enviar y esperar por el código de sesión o el error
-    let url = process.env.REACT_APP_API + 'recibe';
-    
-    alert(JSON.stringify(data));
-    alert(data);
-    alert(JSON.stringify(account));
+    let url = process.env.REACT_APP_API + 'singUp';
 
     let response = await fetch(url, {
       "method": 'POST',
       "body": JSON.stringify(account),
       "headers": {
-         "Content-Type": 'application/json'
+         "Accept": 'application/json',
+         "Content-Type": 'application/json'   
        }
     })
-    //let result = await response.json;
-    alert(JSON.stringify(response.json));
+ 
+
   }
 }

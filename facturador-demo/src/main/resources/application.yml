@@ -1,18 +1,41 @@
+#Los --- y ... indican cuando termina e inicia el YML
 ---
-server:
-  port: 8080
-
+#Configuracion del log
 logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
   pattern:
     dateformat: HH:mm:ss
 
+#Cofiguracion
 spring:
   main:
     banner-mode: off
+  #Configuracion de MySQL
   datasource:
+    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrival=true
+    username: root
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
       max-wait: 20000
       max-active: 50
       max-idle: 20
       min-idle: 15
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+  #Configuracion de Spring Security
+  security:
+    user:
+      name: user
+      password: password
 ...
