@@ -7,7 +7,7 @@ import java.util.List;
 
 @SuppressWarnings("ALL")
 @Entity
-@Table(name="cuenta")
+@Table(name="cuenta_principal")
 @NoArgsConstructor @Getter @Setter
 public final class CuentaPrincipal {
 
@@ -21,10 +21,10 @@ public final class CuentaPrincipal {
     private Comerciante accountOwner;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_detalles_cuenta", nullable = false, unique = true)
-    private DetallesCuenta mainAccountDetails;
+    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
+    private Usuarios userMainAccount;
 
-    @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.ALL)
     private List<CuentaSecundaria> secondaryAccounts;
 
     private void addSecondaryAccount(CuentaSecundaria element){
@@ -37,7 +37,7 @@ public final class CuentaPrincipal {
         return "CuentaPrincipal{" +
                 "idMainAccount=" + idMainAccount +
                 ", accountOwner=" + accountOwner +
-                ", mainAccountDetails=" + mainAccountDetails +
+                ", mainAccountDetails=" + userMainAccount +
                 '}';
     }
 }

@@ -1,8 +1,9 @@
-#Los --- y ... indican cuando termina e inicia el YML
+#Los --- y ... indican cuando inicia y termina el YML
 ---
 #Configuracion del log
 logging:
   level:
+    web: DEBUG
     org:
       springframework:
         security: DEBUG
@@ -15,13 +16,13 @@ logging:
   pattern:
     dateformat: HH:mm:ss
 
-#Cofiguracion
+#Cofiguracion Spring
 spring:
   main:
     banner-mode: off
   #Configuracion de MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrival=true
+    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC
     username: root
     password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -34,9 +35,21 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
   #Configuracion de Spring Security
   security:
     user:
       name: user
       password: password
+#Configuracion de JWT
+security:
+  jwt:
+    secret: thisIsASecrectMyFriend
+    issuer: Main
+    #Este valor dice que la sesion dura dos dias (Para sacarlo "horas * 3600000")
+    ttlMillis: 172800000
 ...

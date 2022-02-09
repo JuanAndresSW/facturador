@@ -1,5 +1,6 @@
 package dev.facturador.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 
@@ -10,13 +11,15 @@ import javax.validation.constraints.NotNull;
  * Modelo del Json para la cuenta
  */
 @Data
-public final class Account {
+public final class RegisterDto {
 
     //Anotaciones para validar el modelo (Ejemplo NotNull dice que no puede recibir un nulo)
+    @JsonProperty("user")
     @NotNull
     @Valid
-    private User user;
+    private UserDto userDto;
+    @JsonProperty("trader")
     @NotNull
     @Valid
-    private Trader trader;
+    private TraderDto traderDto;
 }
