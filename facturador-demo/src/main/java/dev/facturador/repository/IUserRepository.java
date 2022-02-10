@@ -18,10 +18,4 @@ public interface IUserRepository extends JpaRepository<Usuarios, Long> {
     Optional<Usuarios> findByUsername(String username);
     Optional<Usuarios> findByUsernameOrEmail(String username,String email);
     Usuarios findByEmail(String email);
-
-    @Query(value = "SELECT ma FROM Usuarios u JOIN CuentaPrincipal ma ON u.userId = ma.userMainAccount.userId WHERE u.username = :username")
-    CuentaPrincipal usernamePertainToMainAccount(@Param("username") String username);
-
-    @Query(value = "SELECT sa FROM Usuarios u JOIN CuentaSecundaria sa ON u.userId = sa.userSecondaryAccount.userId WHERE u.username = :username")
-    CuentaSecundaria usernamePertainToSecondaryAccount(@Param("username") String username);
 }

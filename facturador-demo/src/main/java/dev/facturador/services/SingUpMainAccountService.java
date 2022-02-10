@@ -21,7 +21,7 @@ public class SingUpMainAccountService implements ISingUpMainAccountService {
     private IUserService detailsService;
 
     /**
-     * Guarda la cuenta principal y encripta el password
+     * Registra la cuenta principal
      */
     @Override
     public void register(CuentaPrincipal mainAccount) {

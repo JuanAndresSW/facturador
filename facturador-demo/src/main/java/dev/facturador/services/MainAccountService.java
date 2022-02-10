@@ -16,6 +16,9 @@ public class MainAccountService implements IMainAccountService {
     @Autowired
     private ICuentaPrincipalRepository repository;
 
+    /**
+     * Devulve la cuenta principal que este relacionada con ese username
+     */
     @Override
     public CuentaPrincipal getMainAccountByUsername(String username) {
         Optional<CuentaPrincipal> mainAccount = repository.findByUsername(username);

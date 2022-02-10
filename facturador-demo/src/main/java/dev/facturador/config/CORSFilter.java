@@ -6,6 +6,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filtro para el Cors
+ */
 @Component
 public class CORSFilter implements Filter {
     @Override

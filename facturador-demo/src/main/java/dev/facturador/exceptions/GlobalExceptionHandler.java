@@ -16,22 +16,20 @@ import java.util.*;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-//Controlador para excepciones
+/**
+ * Clase para manejar las excepciones
+ */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    //Indico que excepcion controla
+    /**
+     * Maneja Excepciones de ConstraintViolationException
+     */
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(BAD_REQUEST)
-    public List<String> handler(ConstraintViolationException ex){
-        List<String> message = new LinkedList<>();
-        if(ex != null){
-            var exs = (ConstraintViolationException) ex;
-            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
-            violations.forEach(x -> message.add(x.getMessage()));
-        }
-        return message;
+    public ResponseEntity<ErrorDetailsDto> handler(ConstraintViolationException ex){
+        ErrorDetailsDto errorDetalles = new ErrorDetailsDto(new Date(), ex.getMessage(), String.valueOf(ex.getCause()));
+        return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -43,11 +41,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Metodo Override maneja MethodArgumentNotValidException
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid
             (MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
         Map<String, String> errores = new HashMap<>();
+
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String name = ((FieldError)error).getField();
             String message = error.getDefaultMessage();

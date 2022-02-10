@@ -1,6 +1,7 @@
 package dev.facturador.controllers;
 
-import dev.facturador.dto.JwtDto;
+import dev.facturador.dto.security.CustomUserDetails;
+import dev.facturador.dto.security.JwtDto;
 import dev.facturador.dto.Message;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.dto.RegisterDto;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,12 +51,12 @@ public final class SIngUpController {
         //Registra
         CuentaPrincipal mainAccountRegistered = mainAccountPrepareForSave(account);
         serviceSingUp.register(mainAccountRegistered);
-        //Generar Token
-        var userLoged = userService.getUserForToken(mainAccountRegistered.getUserMainAccount());
-        var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoged.getUsername(), userLoged.getPassword()));
+        //Autentica los datos
+        var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mainAccountRegistered.getUserMainAccount().getUsername(), account.getUserDto().getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token =jwtProvider.generateToekn(String.valueOf(userLoged.getUserId()), authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        //Token y Response
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String token = jwtProvider.generateToken(userDetails);
         return new ResponseEntity<>(new JwtDto(token, userDetails.getUsername(), userDetails.getAuthorities()), HttpStatus.CREATED);
     }
 }

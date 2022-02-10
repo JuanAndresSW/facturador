@@ -1,16 +1,13 @@
 package dev.facturador.util.translator;
 
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
 import dev.facturador.dto.RegisterDto;
 import dev.facturador.entities.AvatarUsuario;
 import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.entities.Usuarios;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * Traduce dto a Entity
@@ -38,8 +35,11 @@ public final class JSONTranslatorForMainAccount {
      */
     public static CuentaPrincipal mainAccountPrepareForSave(RegisterDto account){
         CuentaPrincipal mainAccount = translatorAccountToMainAccount(account);
-        Argon2 argon = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-        mainAccount.getUserMainAccount().setPassword(argon.hash(2, 1024, 1, mainAccount.getUserMainAccount().getPassword().toCharArray(), StandardCharsets.UTF_8));
+        //Parametros de Argon2
+        // (SaltLength: 16 Bytes, HashLength: 32 Bytes, Paralelismo: 1 solo hilo,
+        // Memoria: 2048 Kilobytes, Iteraciones 2)
+        Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
+        mainAccount.getUserMainAccount().setPassword(argon2.encode(mainAccount.getUserMainAccount().getPassword()));
         return mainAccount;
     }
 

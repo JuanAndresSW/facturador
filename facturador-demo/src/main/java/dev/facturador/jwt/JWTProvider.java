@@ -1,10 +1,9 @@
 package dev.facturador.jwt;
 
-
+import dev.facturador.dto.security.CustomUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -13,11 +12,14 @@ import java.security.Key;
 import java.util.Date;
 
 /**
- * Esta clase genera el token y permite recuperar sus valores
+ * Clase de utilidad para el token
+ * Genera el Token
+ * Puede revisar que no tenga excepciones el Token
+ * Recupera valores del Token
  */
 @Component
 @Slf4j
-public final class JWTProvider {
+public class JWTProvider {
     //Value le asigna un valor que indico en el archivo .properties (En este caso .yml)
     //Usando Expresion Language
     @Value("${security.jwt.secret}")
@@ -32,9 +34,10 @@ public final class JWTProvider {
     /**
      * Crea un nuevo Token
      */
-    public String generateToekn(String id, Authentication authentication) {
+    public String generateToken(CustomUserDetails userDetails) {
         //La forma de autenticacion
-        String subject = authentication.getName();
+        String subject = userDetails.getUsername();
+        String id = String.valueOf(userDetails.getId());
         //El Token se crea con el Algoritmo HS256
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -55,12 +58,12 @@ public final class JWTProvider {
             builder.setExpiration(exp);
         }
 
-        // Construye el JWT, luego lo compacta a un String seguro
+        //Compacta el JWT a un String seguro
         return builder.compact();
     }
 
     /**
-     * Metodo para valida y leer el JWT
+     * Devulve el Value/Subject del token
      */
     public String getValue(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
@@ -69,7 +72,7 @@ public final class JWTProvider {
     }
 
     /**
-     * Metodo para valida y leer el JWT
+     * Devulve el Key/Id del token
      */
     public String getKey(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
@@ -77,6 +80,9 @@ public final class JWTProvider {
                 .parseClaimsJws(jwt).getBody().getId();
     }
 
+    /**
+     * Comrpueba que no tenga excepcines el token
+     */
     public boolean validateToken(String token){
         try {
             Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(token);

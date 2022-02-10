@@ -7,8 +7,26 @@ import lombok.Data;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+/*
+Formato del JSON
+{
+"user": {
+    "username": "fdda",
+    "email": "fadfsa@gmail.com",
+    "password": "1234231244",
+    "avatar": "gfdgdfgdfgreyrthtyujuytjyujkyukuykuykyjh6"
+      },
+"trader": {
+        "businessName": "Jesus LC",
+        "vatCategory": "Mono tributista",
+        "code": "23453217245",
+        "grossIncome": "14-49.543.762-4"
+      }
+}
+ */
+
 /**
- * Modelo del Json para la cuenta
+ * Dto para cuando se registra
  */
 @Data
 public final class RegisterDto {

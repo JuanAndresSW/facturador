@@ -1,11 +1,12 @@
 package dev.facturador.jwt;
 
+
 import dev.facturador.services.CustomUserDetailsService;
+import dev.facturador.dto.security.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Clase JWT es un filtro para JWT
+ */
 @Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
@@ -24,23 +28,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    /**
+     *  Comrpueba que el Token sea valido
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         try{
-            //Puede ser nulo por eso el try
         String token = this.getJWTOfTheRequest(request);
-
         //Entra si el token es valido
         if(StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
             //obtenemos el username del token
             String username = jwtProvider.getValue(token);
 
-            //Cargamos el Usuario Personalizado, segun el username
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-            var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            //establecemos la seguridad
+            //Comprueba si autentico el username
+            CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
+            var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
@@ -50,7 +54,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    //Bearer token de acceso
+    /**
+     * Recupera el Token de la request
+     */
     private String getJWTOfTheRequest(HttpServletRequest request) {
         //Debes agregar el "Authorization" de la request
         String bearerToken = request.getHeader("Authorization");

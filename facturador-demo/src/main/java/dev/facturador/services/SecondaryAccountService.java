@@ -16,6 +16,9 @@ public class SecondaryAccountService implements ISecondaryAccountService {
     @Autowired
     private ICuentaSecundariaRepository repository;
 
+    /**
+     * Devuelve la cuenta secundaria relacionada con ese username
+     */
     @Override
     public CuentaSecundaria getSecondaryAccountByUsername(String username) {
         Optional<CuentaSecundaria> secondaryAccount = repository.findByUsername(username);
