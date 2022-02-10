@@ -11,16 +11,16 @@ import javax.validation.constraints.NotNull;
 Formato del JSON
 {
 "user": {
-    "username": "fdda",
-    "email": "fadfsa@gmail.com",
-    "password": "1234231244",
-    "avatar": "gfdgdfgdfgreyrthtyujuytjyujkyukuykuykyjh6"
+    "username": "reimus",
+    "email": "reimusgamer@gmail.com",
+    "password": "reimus12345",
+    "avatar": "fgsadfjeuiru289j8f72u4f43rt3r43rf34fr43"
       },
 "trader": {
-        "businessName": "Jesus LC",
+        "businessName": "Cristo Rey",
         "vatCategory": "Mono tributista",
-        "code": "23453217245",
-        "grossIncome": "14-49.543.762-4"
+        "code": "25442345434",
+        "grossIncome": "27-41.634.986-6"
       }
 }
  */

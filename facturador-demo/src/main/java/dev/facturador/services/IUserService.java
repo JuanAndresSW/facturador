@@ -1,4 +1,4 @@
-package dev.facturador.services.abstracciones;
+package dev.facturador.services;
 
 import dev.facturador.dto.LoginDto;
 import dev.facturador.entities.Usuarios;

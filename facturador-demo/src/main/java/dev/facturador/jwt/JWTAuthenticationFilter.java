@@ -1,7 +1,7 @@
 package dev.facturador.jwt;
 
 
-import dev.facturador.services.CustomUserDetailsService;
+import dev.facturador.services.impl.CustomUserDetailsService;
 import dev.facturador.dto.security.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package dev.facturador.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Usuarios {
     @Column(nullable = false, length = 320, unique = true)
     private String  email;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private AvatarUsuario avatarUser;
 
@@ -30,5 +32,15 @@ public class Usuarios {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuarios{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

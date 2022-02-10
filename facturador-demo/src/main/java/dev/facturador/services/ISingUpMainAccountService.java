@@ -1,4 +1,4 @@
-package dev.facturador.services.abstracciones;
+package dev.facturador.services;
 
 
 import dev.facturador.entities.CuentaPrincipal;

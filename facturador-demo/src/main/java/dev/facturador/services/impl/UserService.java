@@ -1,9 +1,9 @@
-package dev.facturador.services;
+package dev.facturador.services.impl;
 
 import dev.facturador.dto.LoginDto;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IUserRepository;
-import dev.facturador.services.abstracciones.IUserService;
+import dev.facturador.services.IUserService;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

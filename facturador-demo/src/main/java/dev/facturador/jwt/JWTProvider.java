@@ -10,6 +10,9 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Clase de utilidad para el token
@@ -43,13 +46,15 @@ public class JWTProvider {
 
         long nowMillis = System.currentTimeMillis();
 
-        //Transforma la Key a un byte[], para usar la ApiKey
+        //Transforma la Key byte en Base64, para usar la ApiKey
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
         // Builder de JWT
         JwtBuilder builder = Jwts.builder()
-                .setId(id).setIssuedAt(new Date(nowMillis)).setSubject(subject).setIssuer(issuer)
+                .setId(id).setIssuedAt(new Date(nowMillis)).setSubject(subject)
+                .claim("ROL", userDetails.getAuthorities().stream().toList().get(0).getAuthority())
+                .setIssuer(issuer)
                 .signWith(SignatureAlgorithm.HS256, signingKey);
 
         if (ttlMillis >= 0) {
@@ -67,8 +72,17 @@ public class JWTProvider {
      */
     public String getValue(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
-        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
-                .parseClaimsJws(jwt).getBody().getSubject();
+        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
+                .getBody().getSubject();
+    }
+
+    /**
+     * Devulve el claim (En este caso solo le indique uno el cual es el Rol)
+     */
+    public String getRol(String jwt) {
+        // Recupera el JWT, si no es correcto arroja una excepcion
+        return (String) Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
+                .getBody().get("ROL");
     }
 
     /**
@@ -76,8 +90,13 @@ public class JWTProvider {
      */
     public String getKey(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
-        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
-                .parseClaimsJws(jwt).getBody().getId();
+        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
+                .getBody().getId();
+    }
+
+    public Boolean hasTokenExpirated(String jwt){
+        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
+                .getBody().getExpiration().before(new Date());
     }
 
     /**

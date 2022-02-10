@@ -1,10 +1,9 @@
-package dev.facturador.services;
+package dev.facturador.services.impl;
 
 import dev.facturador.dto.security.CustomUserDetails;
 import dev.facturador.entities.Usuarios;
-import dev.facturador.services.abstracciones.IMainAccountService;
-import dev.facturador.services.abstracciones.ISecondaryAccountService;
-import lombok.RequiredArgsConstructor;
+import dev.facturador.services.IMainAccountService;
+import dev.facturador.services.ISecondaryAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,8 +17,6 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static dev.facturador.dto.security.CustomUserDetails.createUser;
 
 /**
  * Servicio personalizado de UserDetails(Servicio de Spring Security)

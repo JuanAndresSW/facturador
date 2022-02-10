@@ -1,4 +1,4 @@
-package dev.facturador.util.translator;
+package dev.facturador.util;
 
 import dev.facturador.dto.LoginDto;
 import dev.facturador.entities.Usuarios;

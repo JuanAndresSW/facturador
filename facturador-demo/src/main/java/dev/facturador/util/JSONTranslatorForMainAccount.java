@@ -1,11 +1,10 @@
-package dev.facturador.util.translator;
+package dev.facturador.util;
 
 import dev.facturador.dto.RegisterDto;
 import dev.facturador.entities.AvatarUsuario;
 import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.entities.Usuarios;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
  * Traduce dto a Entity
  */
 @Component
-@Slf4j
 public final class JSONTranslatorForMainAccount {
 
     /**
@@ -42,5 +40,4 @@ public final class JSONTranslatorForMainAccount {
         mainAccount.getUserMainAccount().setPassword(argon2.encode(mainAccount.getUserMainAccount().getPassword()));
         return mainAccount;
     }
-
 }

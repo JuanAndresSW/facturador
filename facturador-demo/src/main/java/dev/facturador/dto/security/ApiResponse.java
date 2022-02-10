@@ -9,15 +9,11 @@ import java.util.Collection;
  * JWTdto para el envio del token
  */
 @Getter @Setter @ToString
-public final class JwtDto {
+public final class ApiResponse {
     private String token;
     private String bearer = "Bearer";
-    private String userName;
-    private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtDto(String token, String userName, Collection<? extends GrantedAuthority> authorities) {
+    public ApiResponse(String token) {
         this.token = token;
-        this.userName = userName;
-        this.authorities = authorities;
     }
 }

@@ -1,9 +1,9 @@
-package dev.facturador.services;
+package dev.facturador.services.impl;
 
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.repository.ICuentaPrincipalRepository;
-import dev.facturador.services.abstracciones.IUserService;
-import dev.facturador.services.abstracciones.ISingUpMainAccountService;
+import dev.facturador.services.IUserService;
+import dev.facturador.services.ISingUpMainAccountService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

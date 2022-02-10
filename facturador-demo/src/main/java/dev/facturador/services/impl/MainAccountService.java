@@ -1,8 +1,8 @@
-package dev.facturador.services;
+package dev.facturador.services.impl;
 
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.repository.ICuentaPrincipalRepository;
-import dev.facturador.services.abstracciones.IMainAccountService;
+import dev.facturador.services.IMainAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

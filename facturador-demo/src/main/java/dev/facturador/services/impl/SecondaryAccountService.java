@@ -1,8 +1,8 @@
-package dev.facturador.services;
+package dev.facturador.services.impl;
 
 import dev.facturador.entities.CuentaSecundaria;
 import dev.facturador.repository.ICuentaSecundariaRepository;
-import dev.facturador.services.abstracciones.ISecondaryAccountService;
+import dev.facturador.services.ISecondaryAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

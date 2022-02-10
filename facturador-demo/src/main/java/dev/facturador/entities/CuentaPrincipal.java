@@ -1,5 +1,6 @@
 package dev.facturador.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -24,6 +25,7 @@ public final class CuentaPrincipal {
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
     private Usuarios userMainAccount;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.ALL)
     private List<CuentaSecundaria> secondaryAccounts;
 
@@ -32,6 +34,8 @@ public final class CuentaPrincipal {
         this.secondaryAccounts.add(element);
     }
 
+    //El ToString lo genero sin lombok porque el lombok tomaria el atributo de la relacion bi-direccional
+    //Generando un bucle de toString que da una excepcion
     @Override
     public String toString() {
         return "CuentaPrincipal{" +
