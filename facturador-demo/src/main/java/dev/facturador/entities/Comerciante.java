@@ -22,7 +22,7 @@ public final class Comerciante {
     @Column(name = "iva", nullable = false, length = 25)
     private String vat;
 
-    @Column(name = "ingresos_brutos", nullable = false, length = 12)
+    @Column(name = "ingresos_brutos", nullable = false, length = 15)
     private String grossIncome;
 
     @Column(name = "nombre", nullable = false , length = 30)

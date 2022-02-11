@@ -6,12 +6,19 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filtro para el Cors
+ */
 @Component
 public class CORSFilter implements Filter {
-
+    /**
+     * Metodo init necesario para el ciiclo de vida del filtro
+     * Se ejecuta antes del contructor de CORSFilter (No necesito que haga nada)
+     * @param filterConfig
+     * @throws ServletException
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
@@ -25,8 +32,11 @@ public class CORSFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
+    /**
+     * Necesario para el cilo de vida de CORSFilter
+     * Se ejecuta despues de dejar de utilizar la clase y nuevamente no necesito que haga nada
+     */
     @Override
     public void destroy() {
-
     }
 }

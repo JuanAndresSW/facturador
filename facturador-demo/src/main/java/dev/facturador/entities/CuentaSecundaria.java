@@ -21,8 +21,8 @@ public final class CuentaSecundaria {
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_detalles_cuenta", nullable = false, unique = true, updatable = false)
-    private DetallesCuenta secondaryAccountDetails;
+    @JoinColumn(name = "id_usuario", nullable = false, unique = true, updatable = false)
+    private Usuarios userSecondaryAccount;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_punto_venta", nullable = false)
