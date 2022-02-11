@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/facturador.iml" filepath="$PROJECT_DIR$/.idea/facturador.iml" />
+      <module fileurl="file://$PROJECT_DIR$/facturador-demo/facturador-demo.iml" filepath="$PROJECT_DIR$/facturador-demo/facturador-demo.iml" />
+    </modules>
+  </component>
+</project>

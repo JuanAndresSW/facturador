@@ -1,5 +1,5 @@
-import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Route, Routes} from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Subheader from '../components/SubHeader/Subheader';
 import NavBar from '../components/NavBar/NavBar';
@@ -26,6 +26,10 @@ const tabs = [
 
 //devuelve la página principal dependiente de una sesión iniciada
 export default function Start():JSX.Element {
+    useEffect(() => {
+        Session.refresh();
+    }, []);
+
     return (
     <>  
         <Header />
@@ -34,8 +38,8 @@ export default function Start():JSX.Element {
             {tabs}
         </NavBar>
         <Routes>
-            <Route path='' element={<Navigate to={paths.transaction} />} />
-            <Route path={paths.transaction+"/"} element={<Transaction />} />
+            <Route index element={<Navigate to={paths.transaction} />} />
+            <Route path={paths.transaction+"/*"} element={<Transaction />} />
             <Route path={paths.books+"/*"} element={<Books />}/>
             <Route path={paths.stats+"/*"} element={<Stats />}/>
             <Route path={paths.spots+"/*"} element={<Spots />}/>

@@ -12,7 +12,7 @@ var Valid = /** @class */ (function () {
         return password.length <= 40 && password.length >= 8;
     };
     Valid.code = function (code) {
-        code = code.replace(/ |-/g, "");
+        code = code.replace(/ |\.|-/g, "");
         if (code === "")
             return true;
         if (code.length !== 11)
@@ -40,6 +40,7 @@ var Valid = /** @class */ (function () {
         return /[0-9]{4}$/.test(postalCode);
     };
     Valid.phone = function (phone) {
+        phone = phone.replace(/ |\.|-/g, "");
         if (phone.trim().length == 0)
             return true;
         else

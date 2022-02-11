@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import Valid from "../script/Valid";
 import Gateway from "../script/Gateway";
-import Session from "../script/Session";
-import Retractable from "../components/FormElements/Retractable/Retractable";
 import "../style/form.css";
-import { Routes, useNavigate } from "react-router-dom";
-import { BiCaretDown, BiCaretUp, BiArrowBack } from "react-icons/bi";
-
-//devuelve un formulario de 3 partes para crear una nueva cuenta, comerciante y punto de venta
+import { useNavigate } from "react-router-dom";
+import { BiChevronLeft } from "react-icons/bi";
+/**
+ * devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante
+ */
 export default function SignUp() {
   const navigate = useNavigate();
 
   /*DATOS DEL FORMULARIO*****************************************************/
 
-  //controlador de las 3 partes del formulario
+  //controladores del estado del formulario
   const [active, setActive] = useState("user");
-
-  //controlador del panel retráctil de datos extra del punto de venta
-  const [extraActive, setExtraActive] = useState(true);
+  const [submitButton, setSubmitButton] = useState("Comprobar");
 
   //datos del usuario
   const [user, setUser] = useState({
@@ -38,22 +35,7 @@ export default function SignUp() {
   });
   const [traderError, setTraderError] = useState("");
 
-  //datos del punto de venta
-  const [pointOfSale, setPointOfSale] = useState({
-    name: "",
-    address: "",
-    locality: "",
-    postalCode: "",
-    email: "",
-    phone: "",
-    website: "",
-    color: "#ffffff",
-    logo: null,
-  });
-  const [pointError, setPointError] = useState("");
-
   /*VALIDACIÓN***************************************************************/
-
   const validateUser = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
@@ -105,54 +87,36 @@ export default function SignUp() {
       setTraderError("Ingrese un número de ingresos brutos válido");
       return;
     }
-    setActive("point");
+    submit();
   };
+  /*ENVIAR/RECIBIR*************************************************/
+  async function submit(): Promise<void> {
+    Gateway.submitAccount({ user, trader }, handleResponse);
+    setSubmitButton("Cargando...");
+  }
 
-  const validatePointOfSale = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
-    console.log("activated");
-    setPointError("");
-    e.preventDefault();
-
-    if (!Valid.names(pointOfSale.name)) {
-      setPointError(
-        "El nombre del comercio debe ser de entre 3 y 20 caracteres"
-      );
-      return;
-    }
-    if (!Valid.address(pointOfSale.address)) {
-      setPointError("La dirección debe ser de entre 8 y 40 caracteres");
-      return;
-    }
-    if (!Valid.address(pointOfSale.locality)) {
-      setPointError("La localidad debe ser de entre 8 y 40 caracteres");
-      return;
-    }
-    if (!Valid.postalCode(pointOfSale.postalCode)) {
-      setPointError("Ingrese un código postal válido");
-      return;
-    }
-    if (pointOfSale.email.length > 0) {
-      if (!Valid.email(pointOfSale.email)) {
-        setPointError(
-          "La dirección de correo electrónico ingresada no es válida"
+  function handleResponse(state: number, data: string) {
+    switch (state) {
+      case 0:
+        setSubmitButton(
+          "No se ha podido establecer la comunicación con el servidor"
         );
-        return;
-      }
+        break;
+      case 200:
+        setSubmitButton("La cuenta se ha creado correctamente");
+        console.log(data);
+        break;
+      case 400:
+        setSubmitButton("Hubo un error al validar los datos");
+        break;
+      case 500:
+        setSubmitButton("Hubo un problema con el servidor");
+        break;
+      default:
+        setSubmitButton("Hubo un error desconocido al procesar tus datos");
+        break;
     }
-    if (!Valid.phone(pointOfSale.phone)) {
-      setPointError("El número télefonico debe ser de 10 cifras");
-      return;
-    }
-    if (!Valid.website(pointOfSale.website)) {
-      setPointError("El sitio web ingresado no es válido");
-      return;
-    }
-
-    //enviar objeto al servidor
-    Gateway.submitAccount({user, trader});
-  };
+  }
 
   /*FORMULARIO*****************************************************/
 
@@ -206,30 +170,30 @@ export default function SignUp() {
           </label>
 
           <label>
-              {"Foto de perfil"}
-              <span> (opcional)</span>
-              <input
-                type="file"
-                accept=".png, .jpeg, .jpg, .svg"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files.length > 0)
-                    setUser({
-                      ...user,
-                      avatar: e.target.files.item(0),
-                    });
-                }}
-              ></input>
-            </label>
+            {"Foto de perfil"}
+            <span> (opcional)</span>
+            <input
+              type="file"
+              accept=".png, .jpeg, .jpg, .svg"
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0)
+                  setUser({
+                    ...user,
+                    avatar: e.target.files.item(0),
+                  });
+              }}
+            ></input>
+          </label>
 
           <p className="error">{userError}</p>
 
-          <button onClick={(e) => validateUser(e)}>Comprobar</button>
+          <button onClick={(e) => validateUser(e)}>Siguiente</button>
         </>
       ) : /***************************************************************************/
 
       active === "trader" ? (
         <>
-          <BiArrowBack
+          <BiChevronLeft
             onClick={() => {
               setActive("user");
             }}
@@ -299,7 +263,6 @@ export default function SignUp() {
               maxLength={20}
               value={trader.code}
               onChange={(e) => setTrader({ ...trader, code: e.target.value })}
-              required
             ></input>
           </label>
 
@@ -314,7 +277,6 @@ export default function SignUp() {
                 onChange={(e) =>
                   setTrader({ ...trader, grossIncome: e.target.value })
                 }
-                required
               ></input>
             </label>
           ) : (
@@ -323,148 +285,15 @@ export default function SignUp() {
 
           <p className="error">{traderError}</p>
 
-          <button onClick={(e) => validateTrader(e)}>Comprobar</button>
-        </>
-      ) : /***************************************************************************/
-
-      active === "point" ? (
-        <>
-          <BiArrowBack
-            onClick={() => {
-              setActive("trader");
-            }}
-          />
-          <h1 className="title">Crea tu primer punto de venta</h1>
-          <label>
-            {"Nombre del comercio"}
-            <input
-              type="text"
-              maxLength={20}
-              value={pointOfSale.name}
-              onChange={(e) =>
-                setPointOfSale({ ...pointOfSale, name: e.target.value })
-              }
-              required
-            ></input>
-          </label>
-
-          <label>
-            {"Dirección"}
-            <input
-              type="text"
-              maxLength={40}
-              value={pointOfSale.address}
-              onChange={(e) =>
-                setPointOfSale({ ...pointOfSale, address: e.target.value })
-              }
-              required
-            ></input>
-          </label>
-
-          <label>
-            {"Localidad"}
-            <input
-              type="text"
-              maxLength={20}
-              value={pointOfSale.locality}
-              onChange={(e) =>
-                setPointOfSale({ ...pointOfSale, locality: e.target.value })
-              }
-              required
-            ></input>
-          </label>
-
-          <label>
-            {"Código postal"}
-            <input
-              type="text"
-              maxLength={4}
-              value={pointOfSale.postalCode}
-              onChange={(e) =>
-                setPointOfSale({ ...pointOfSale, postalCode: e.target.value })
-              }
-              required
-            ></input>
-          </label>
-
-          <Retractable
-            active={extraActive}
-            tabHeader={
-              <div onClick={() => setExtraActive(!extraActive)}>
-                <h2>Datos opcionales</h2>
-                {extraActive ? <BiCaretUp /> : <BiCaretDown />}
-              </div>
-            }
+          <button
+            disabled={submitButton !== "Comprobar"}
+            onClick={(e) => validateTrader(e)}
           >
-            <label>
-              {"Logo"}
-              <input
-                type="file"
-                accept=".png, .jpeg, .jpg, .svg"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files.length > 0)
-                    setPointOfSale({
-                      ...pointOfSale,
-                      logo: e.target.files.item(0),
-                    });
-                }}
-              ></input>
-            </label>
-
-            <label>
-              {"Correo electrónico"}
-              <input
-                type="email"
-                maxLength={254}
-                value={pointOfSale.email}
-                onChange={(e) =>
-                  setPointOfSale({ ...pointOfSale, email: e.target.value })
-                }
-              ></input>
-            </label>
-
-            <label>
-              {"Número telefónico"}
-              <input
-                type="tel"
-                maxLength={20}
-                value={pointOfSale.phone}
-                onChange={(e) =>
-                  setPointOfSale({ ...pointOfSale, phone: e.target.value })
-                }
-              ></input>
-            </label>
-
-            <label>
-              {"Sitio web"}
-              <input
-                type="url"
-                maxLength={20}
-                value={pointOfSale.website}
-                onChange={(e) =>
-                  setPointOfSale({ ...pointOfSale, website: e.target.value })
-                }
-              ></input>
-            </label>
-
-            <label>
-              {"Color de los documentos"}
-              <input
-                type="color"
-                value={pointOfSale.color}
-                onChange={(e) =>
-                  setPointOfSale({ ...pointOfSale, color: e.target.value })
-                }
-              ></input>
-            </label>
-          </Retractable>
-
-          <p className="error">{pointError}</p>
-
-          <button onClick={(e) => validatePointOfSale(e)}>Comprobar</button>
+            {submitButton}
+          </button>
         </>
       ) : (
-        <></>
+        <>????</>
       )}
     </form>
   );

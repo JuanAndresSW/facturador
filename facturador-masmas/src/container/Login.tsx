@@ -1,41 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Valid from "../script/Valid";
 import Session from "../script/Session";
 import "../style/form.css";
 import { useNavigate } from "react-router-dom";
 
-type props = {
-  origin?: string;
-};
-
-//devuelve un formulario para iniciar sesión
-export default function LogIn({ origin = "/" }: props) {
+/**devuelve un formulario para iniciar sesión*/
+export default function LogIn() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    //redirigir al inicio si ya existe una sesión
+    if (Session.isAuthenticated()) navigate("/");
+  }, []);
 
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const validate = () => {
+  const submit = (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.preventDefault();
     if ((Valid.names(user) || Valid.email(user)) && Valid.password(password))
       authenticate();
     else setError("Usuario o contraseña incorrecta");
   };
 
-  const submit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    validate();
-  };
-
   function authenticate() {
-    console.log(
-      "%cAuthenticación",
-      "background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);padding:1rem;display:block;width:min-content;font-size:2rem;text-align:center;border-radius:333px"
-    );
-    if (Session.authenticate(user, password)) {
-      Session.open(user);
-      navigate("/");
-    } else setError("Usuario o contraseña incorrecta");
+    Session.tryStart(user, password, handleResponse)
+  }
+
+  function handleResponse(state:number, data:string) {
+    switch (state) {
+      case 0:
+        setError(
+          "No se ha podido establecer la comunicación con el servidor"
+        );
+        break;
+      case 200:
+        setError("");
+        const usr = JSON.parse(data);
+        Session.setSession(usr.code, usr.name, usr.passive, usr.active);
+        navigate("/");
+        break;
+      case 400:
+        setError("Usuario o contraseña incorrecta");
+        break;
+      case 500:
+        setError("Hubo un problema con el servidor");
+        break;
+      default:
+        setError("Hubo un error desconocido al procesar tus datos");
+        break;
+    }
   }
 
   return (
@@ -73,7 +92,7 @@ export default function LogIn({ origin = "/" }: props) {
 
       <p className="error">{error}</p>
 
-      <button type="submit" onMouseDown={validate}>
+      <button type="submit" onMouseDown={(e) => submit(e)}>
         Ingresar
       </button>
     </form>

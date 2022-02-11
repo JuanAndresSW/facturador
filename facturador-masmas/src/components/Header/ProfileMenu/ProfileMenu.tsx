@@ -18,7 +18,7 @@ export default function ProfileMenu():JSX.Element {
 
         <div id="profile-menu-list" className={active?'active':''} ref={wrapperRef}>
             <ul>
-                <li>{Session.getUsername()+`: `}</li>
+                <li>{Session.get('username')+`: `}</li>
                 <li>Configuración</li>
                 <li onMouseDown={()=>logOut()}>Cerrar sesión</li>
             </ul>

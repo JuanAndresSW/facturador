@@ -14,7 +14,7 @@ export default function ProfileMenu() {
                 active ? React.createElement(BiChevronUp, null) : React.createElement(BiChevronDown, null)),
             React.createElement("div", { id: "profile-menu-list", className: active ? 'active' : '', ref: wrapperRef },
                 React.createElement("ul", null,
-                    React.createElement("li", null, Session.getUsername() + ": "),
+                    React.createElement("li", null, Session.get('username') + ": "),
                     React.createElement("li", null, "Configuraci\u00F3n"),
                     React.createElement("li", { onMouseDown: function () { return logOut(); } }, "Cerrar sesi\u00F3n"))))));
 }

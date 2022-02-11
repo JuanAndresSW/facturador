@@ -1,19 +1,17 @@
 .features {
-    //background: center / cover url(../../asset/img/punto.jpg);
     background-color: white;
     width: 100%;
     min-height: 2rem;
-    padding: 2rem 0;
+    padding: 4rem 0;
     box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 20px 20px 0 0;
     div {
         min-height: 15rem;
         margin: 3rem;
         padding: .5rem 1rem;
         width: 85%;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 1);
         border: 1px solid #ccc;
-        border-radius: 15% 55% 15% 55%;
+        border-radius: 15px 555px 15px 555px;
         img {
             width: 15rem;
         }

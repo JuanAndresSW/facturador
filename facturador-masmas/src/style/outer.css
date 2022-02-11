@@ -3,8 +3,8 @@
   background: rgb(0, 99, 199);
   background: linear-gradient(
     45deg,
-    rgba(0, 127, 255, 0.9) 0%,
-    rgba(108, 180, 238, 0.9) 100%
+    rgba(0, 127, 255, 0.7) 0%,
+    rgba(108, 180, 238, 0.7) 100%
   );
   background-size: 400% 400%;
   animation: gradient 60s ease-in infinite;
@@ -25,6 +25,6 @@
 }
 body {
   margin: 0;
-  background: top / cover url(../asset/img/main.jpg) no-repeat fixed;
+  background: top / cover url(../asset/img/main2.jpg) no-repeat fixed;
   min-height: 100vh;
 }

@@ -1,5 +1,7 @@
 /**
  * Aplica el formato necesario a los datos antes de enviarlos al servidor
+ *
+ * No se utiliza por el momento
  */
 var Format = /** @class */ (function () {
     function Format() {
@@ -16,19 +18,21 @@ var Format = /** @class */ (function () {
                 vatCategory: account.trader.vatCategory,
                 code: account.trader.code,
                 grossIncome: account.trader.grossIncome,
-            },
-            pointOfSale: {
-                name: account.pointOfSale.name,
-                address: account.pointOfSale.address,
-                locality: account.pointOfSale.locality,
-                postalCode: account.pointOfSale.postalCode,
-                email: account.pointOfSale.email,
-                phone: account.pointOfSale.phone,
-                website: account.pointOfSale.website,
-                color: account.pointOfSale.color,
-            },
+            }
         });
         return data;
+    };
+    Format.pointOfSale = function (pointOfSale) {
+        return JSON.stringify({
+            name: pointOfSale.name,
+            address: pointOfSale.address,
+            locality: pointOfSale.locality,
+            postalCode: pointOfSale.postalCode,
+            email: pointOfSale.email,
+            phone: pointOfSale.phone,
+            website: pointOfSale.website,
+            color: pointOfSale.color,
+        });
     };
     return Format;
 }());

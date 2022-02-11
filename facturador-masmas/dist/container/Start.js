@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Subheader from '../components/SubHeader/Subheader';
@@ -7,6 +7,7 @@ import Footer from '../components/Footer/Footer';
 import { Transaction, Books, Stats, Spots } from '../components/Main';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { MdClass, MdPoll, MdPinDrop } from 'react-icons/md';
+import Session from '../script/Session';
 var paths = {
     transaction: "/transaccion",
     books: "/libros",
@@ -34,13 +35,16 @@ var tabs = [
 ];
 //devuelve la página principal dependiente de una sesión iniciada
 export default function Start() {
+    useEffect(function () {
+        Session.refresh();
+    }, []);
     return (React.createElement(React.Fragment, null,
         React.createElement(Header, null),
         React.createElement(Subheader, null),
         React.createElement(NavBar, null, tabs),
         React.createElement(Routes, null,
-            React.createElement(Route, { path: '', element: React.createElement(Navigate, { to: paths.transaction }) }),
-            React.createElement(Route, { path: paths.transaction + "/", element: React.createElement(Transaction, null) }),
+            React.createElement(Route, { index: true, element: React.createElement(Navigate, { to: paths.transaction }) }),
+            React.createElement(Route, { path: paths.transaction + "/*", element: React.createElement(Transaction, null) }),
             React.createElement(Route, { path: paths.books + "/*", element: React.createElement(Books, null) }),
             React.createElement(Route, { path: paths.stats + "/*", element: React.createElement(Stats, null) }),
             React.createElement(Route, { path: paths.spots + "/*", element: React.createElement(Spots, null) }),

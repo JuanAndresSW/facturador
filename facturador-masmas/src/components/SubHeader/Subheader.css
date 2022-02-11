@@ -3,9 +3,7 @@
   height: -webkit-min-content;
   height: -moz-min-content;
   height: min-content;
-  border-bottom: 1px solid gainsboro;
   padding: 0.6rem 0.2rem;
-  background-color: white;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
