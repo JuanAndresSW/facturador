@@ -10,9 +10,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Clase de utilidad para el token
@@ -42,7 +39,7 @@ public class JWTProvider {
         String subject = userDetails.getUsername();
         String id = String.valueOf(userDetails.getId());
         //El Token se crea con el Algoritmo HS256
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        var signatureAlgorithm = SignatureAlgorithm.HS256;
 
         long nowMillis = System.currentTimeMillis();
 
@@ -50,25 +47,22 @@ public class JWTProvider {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-        // Builder de JWT
-        JwtBuilder builder = Jwts.builder()
-                .setId(id).setIssuedAt(new Date(nowMillis)).setSubject(subject)
-                .claim("ROL", userDetails.getAuthorities().stream().toList().get(0).getAuthority())
-                .setIssuer(issuer)
-                .signWith(SignatureAlgorithm.HS256, signingKey);
-
+        Date exp = null;
         if (ttlMillis >= 0) {
             long expMillis = nowMillis + ttlMillis;
-            Date exp = new Date(expMillis);
-            builder.setExpiration(exp);
+            exp = new Date(expMillis);
         }
 
         //Compacta el JWT a un String seguro
-        return builder.compact();
+        return Jwts.builder()
+                .setId(id).setIssuedAt(new Date(nowMillis)).setSubject(subject)
+                .claim("ROL", userDetails.getAuthorities().stream().toList().get(0).getAuthority())
+                .setIssuer(issuer).signWith(SignatureAlgorithm.HS256, signingKey)
+                .setExpiration(exp).compact();
     }
 
     /**
-     * Devulve el Value/Subject del token
+     * Devulve el Value/Subject del token, en neustro es el username
      */
     public String getValue(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
@@ -86,7 +80,7 @@ public class JWTProvider {
     }
 
     /**
-     * Devulve el Key/Id del token
+     * Devulve el Key/Id del token (En este caso es el id del usuario)
      */
     public String getKey(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion

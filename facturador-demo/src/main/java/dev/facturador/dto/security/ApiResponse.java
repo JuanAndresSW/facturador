@@ -1,9 +1,6 @@
 package dev.facturador.dto.security;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 /**
  * JWTdto para el envio del token

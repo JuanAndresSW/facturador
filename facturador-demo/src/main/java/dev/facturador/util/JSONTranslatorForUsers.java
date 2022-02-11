@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * Traduce dto Account a Main Account, y realiza el hash de la contraseña
  */
 @Component
-public final class JSONTranslatorForUsers {
+public class JSONTranslatorForUsers {
 
     /**
      * Traduce dto RegisterDto a MainAccount
@@ -35,7 +35,7 @@ public final class JSONTranslatorForUsers {
         //Parametros de Argon2
         // (SaltLength: 16 Bytes, HashLength: 32 Bytes, Paralelismo: 1 solo hilo,
         // Memoria: 2048 Kilobytes, Iteraciones 2)
-        Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
+        var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         user.setPassword(argon2.encode(user.getPassword()));
         return user;
     }

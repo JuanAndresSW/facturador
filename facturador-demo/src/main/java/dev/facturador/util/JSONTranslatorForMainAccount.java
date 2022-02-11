@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
  * Traduce dto a Entity
  */
 @Component
-public final class JSONTranslatorForMainAccount {
+public class JSONTranslatorForMainAccount {
 
     /**
      * Transforma el dto RegisterDto a la entidad CuentaPrincipal
      */
     public static CuentaPrincipal translatorAccountToMainAccount(RegisterDto account){
-        CuentaPrincipal mainAccount = new CuentaPrincipal();
+        var mainAccount = new CuentaPrincipal();
         mainAccount.setAccountOwner(new Comerciante
                 (account.getTraderDto().getCode(), account.getTraderDto().getVatCategory(), account.getTraderDto().getBusinessName()));
         mainAccount.getAccountOwner().setGrossIncome(account.getTraderDto().getGrossIncome());
@@ -32,11 +32,11 @@ public final class JSONTranslatorForMainAccount {
      * Hace el hash de la contraseña
      */
     public static CuentaPrincipal mainAccountPrepareForSave(RegisterDto account){
-        CuentaPrincipal mainAccount = translatorAccountToMainAccount(account);
+        var mainAccount = translatorAccountToMainAccount(account);
         //Parametros de Argon2
         // (SaltLength: 16 Bytes, HashLength: 32 Bytes, Paralelismo: 1 solo hilo,
         // Memoria: 2048 Kilobytes, Iteraciones 2)
-        Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
+        var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         mainAccount.getUserMainAccount().setPassword(argon2.encode(mainAccount.getUserMainAccount().getPassword()));
         return mainAccount;
     }
