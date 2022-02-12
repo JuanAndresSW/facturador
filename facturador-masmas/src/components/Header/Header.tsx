@@ -1,11 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Headroom from "react-headroom";
-import "./Header.css";
-import logo from "assets/svg/logo.svg";
-import ProfileMenu from "./ProfileMenu/ProfileMenu";
-import Session from "utils/Session";
 
+import Headroom from "react-headroom";
+import ProfileMenu from "./ProfileMenu/ProfileMenu";
+
+import Session from "utils/Session";
+import logo from "assets/svg/logo.svg";
+import "./Header.css";
+
+
+//El header cuando se no se ha detectado una sesión de usuario.
 const notLoggedHeader = (
   <Headroom>
     <header>
@@ -24,6 +28,8 @@ const notLoggedHeader = (
     </header>
   </Headroom>
 );
+
+//El header cuando se ha detectado una sesión de usuario.
 const loggedHeader = (
   <header>
     <Link to="/" id="logo">
@@ -34,6 +40,9 @@ const loggedHeader = (
   </header>
 );
 
+/**
+ * Un panel fijado en la parte superior de la pantalla.
+ */
 export default function Header() {
   return Session.isAuthenticated() ? loggedHeader : notLoggedHeader;
 }

@@ -6,7 +6,7 @@ import Const from "utils/Const";
 import "styles/form.css";
 import { useNavigate } from "react-router-dom";
 
-/**devuelve un formulario para iniciar sesión*/
+/**Devuelve un formulario para iniciar sesión.*/
 export default function Login() {
   const navigate = useNavigate();
 

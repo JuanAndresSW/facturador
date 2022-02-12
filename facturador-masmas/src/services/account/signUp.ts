@@ -4,12 +4,12 @@ import fetch from "../fetch";
 /**
 * Envía los datos de usuario y la foto de perfil.
 * @param {account} account Datos de la cuenta del usuario, en forma de objeto.
+* @param callback La función que manejará la respuesta.
 */
 export default async function signUp(account: account, callback: Function): Promise<void> {
   const formattedPromise = formatAccount(account);
   formattedPromise.then(formattedAccount => fetch("signup", formattedAccount, callback));
 }
-
 
 
 /**

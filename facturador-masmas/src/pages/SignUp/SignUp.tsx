@@ -5,18 +5,18 @@ import "styles/form.css";
 import { useNavigate } from "react-router-dom";
 import { BiChevronLeft } from "react-icons/bi";
 /**
- * devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante
+ * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
 export default function SignUp() {
   const navigate = useNavigate();
 
   /*DATOS DEL FORMULARIO*****************************************************/
 
-  //controladores del estado del formulario
+  //Controladores del estado del formulario.
   const [active, setActive] = useState("user");
   const [submitButton, setSubmitButton] = useState("Comprobar");
 
-  //datos del usuario
+  //Datos del usuario.
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -26,7 +26,7 @@ export default function SignUp() {
   const [passwordMatch, setPasswordMatch] = useState("");
   const [userError, setUserError] = useState("");
 
-  //datos del comerciante
+  //Datos del comerciante.
   const [trader, setTrader] = useState({
     businessName: "",
     vatCategory: "",
@@ -36,6 +36,8 @@ export default function SignUp() {
   const [traderError, setTraderError] = useState("");
 
   /*VALIDACIÓN***************************************************************/
+
+  /**Valida los datos del usuario. */
   const validateUser = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
@@ -64,6 +66,7 @@ export default function SignUp() {
     setActive("trader");
   };
 
+  /**Valida los datos del comerciante. */
   const validateTrader = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
@@ -91,33 +94,32 @@ export default function SignUp() {
       setTraderError("Ingrese un número de ingresos brutos válido");
       return;
     }
+
+    //Si todo fue validado, se envian los datos.
     submit();
   };
-  /*ENVIAR/RECIBIR*************************************************/
-  async function submit(): Promise<void> {
+
+  /*ENVIAR Y RECIBIR*************************************************/
+
+  /**Envía al servidor los datos recolectados. */
+  function submit(): void {
     signUp({ user, trader }, handleResponse);
     setSubmitButton("Cargando...");
   }
 
+  /**Maneja la respuesta recibida del servidor. */
   function handleResponse(state: number, data: string) {
     switch (state) {
-      case 0:
-        setTraderError(
-          "No se ha podido establecer la comunicación con el servidor"
-        );
+      case 0: setTraderError("No se ha podido establecer la comunicación con el servidor");
         break;
-      case 200:
-        setTraderError("La cuenta se ha creado correctamente");
+      case 200: setTraderError("La cuenta se ha creado correctamente");
         console.log(data);
         break;
-      case 400:
-        setTraderError("Hubo un error al validar los datos");
+      case 400: setTraderError("Hubo un error al validar los datos");
         break;
-      case 500:
-        setTraderError("Hubo un problema con el servidor");
+      case 500: setTraderError("Hubo un problema con el servidor");
         break;
-      default:
-        setTraderError("Hubo un error desconocido al procesar tus datos");
+      default: setTraderError("Hubo un error desconocido al procesar tus datos");
         break;
     }
   }
