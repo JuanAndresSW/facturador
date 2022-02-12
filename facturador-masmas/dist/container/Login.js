@@ -3,7 +3,7 @@ import Valid from "../script/Valid";
 import Session from "../script/Session";
 import "../style/form.css";
 import { useNavigate } from "react-router-dom";
-//devuelve un formulario para iniciar sesión
+/**devuelve un formulario para iniciar sesión*/
 export default function LogIn() {
     var navigate = useNavigate();
     useEffect(function () {
@@ -22,11 +22,29 @@ export default function LogIn() {
             setError("Usuario o contraseña incorrecta");
     };
     function authenticate() {
-        if (Session.tryStart(user, password)) {
-            navigate("/");
+        Session.tryStart(user, password, handleResponse);
+    }
+    function handleResponse(state, data) {
+        switch (state) {
+            case 0:
+                setError("No se ha podido establecer la comunicación con el servidor");
+                break;
+            case 200:
+                setError("");
+                var usr = JSON.parse(data);
+                Session.setSession(usr.code, usr.name, usr.passive, usr.active);
+                navigate("/");
+                break;
+            case 400:
+                setError("Usuario o contraseña incorrecta");
+                break;
+            case 500:
+                setError("Hubo un problema con el servidor");
+                break;
+            default:
+                setError("Hubo un error desconocido al procesar tus datos");
+                break;
         }
-        else
-            setError("Usuario o contraseña incorrecta");
     }
     return (React.createElement("form", { className: "panel", method: "post", onSubmit: function (e) { return submit(e); } },
         React.createElement("h1", { className: "title" }, "Iniciar sesi\u00F3n"),

@@ -1,9 +1,0 @@
-#command {
-    display: flex;
-    align-items: center;
-    font-size: 2.5rem;
-    width: max-content;
-}
-#command input {
-    font-size: 1rem;
-}

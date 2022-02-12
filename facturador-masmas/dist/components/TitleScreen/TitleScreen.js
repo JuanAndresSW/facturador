@@ -9,7 +9,7 @@ export default function TitleScreen() {
     var _a = useState("text"), loginType = _a[0], setLoginType = _a[1];
     var placeholder = loginType === "text" ? "nombre o email" : "contraseña";
     var _b = useState(""), loginValue = _b[0], setLoginValue = _b[1];
-    var _c = useState(""), errorMessage = _c[0], setErrorMessage = _c[1];
+    var _c = useState(""), error = _c[0], setError = _c[1];
     var _d = useState(false), disable = _d[0], setDisable = _d[1];
     //validar dato y cambiar el tipo de input
     function checkValidity() {
@@ -18,10 +18,10 @@ export default function TitleScreen() {
                 user.name = loginValue.trim();
                 setLoginValue("");
                 setLoginType("password");
-                setErrorMessage("");
+                setError("");
             }
             else
-                setErrorMessage("nombre inválido");
+                setError("nombre inválido");
             return;
         }
         if (loginType === "password") {
@@ -32,19 +32,39 @@ export default function TitleScreen() {
                 setLoginType("text");
             }
             else
-                setErrorMessage("Nombre o contraseña incorrecta");
+                setError("Nombre o contraseña incorrecta");
             setLoginValue("");
             setLoginType("text");
         }
     }
     //autenticar el objeto de usuario
     function authenticate(user) {
-        if (Session.tryStart(user.name, user.password)) {
-            setDisable(true);
-            window.location.reload();
+        Session.tryStart(user.name, user.password, handleResponse);
+    }
+    function handleResponse(state, data) {
+        switch (state) {
+            case 0:
+                setError("No se ha podido establecer la comunicación con el servidor");
+                break;
+            case 200:
+                setError("");
+                setDisable(true);
+                var usr = JSON.parse(data);
+                Session.setSession(usr.code, usr.name, usr.passive, usr.active);
+                window.location.reload();
+                break;
+            case 400:
+                setError("Usuario o contraseña incorrecta");
+                setDisable(false);
+                break;
+            case 500:
+                setDisable(true);
+                setError("Hubo un problema con el servidor");
+                break;
+            default:
+                setError("Hubo un error desconocido al procesar tus datos");
+                break;
         }
-        else
-            setErrorMessage("Nombre o contraseña incorrecta");
     }
     return (React.createElement("div", { className: "title-wrapper" },
         React.createElement("h1", null, "M\u00E1s que un facturador"),
@@ -55,6 +75,6 @@ export default function TitleScreen() {
                 if (e.key === "Enter")
                     checkValidity();
             }, disabled: disable }),
-        React.createElement("button", { type: "button", onClick: function () { return checkValidity(); } }, "Iniciar sesi\u00F3n"),
-        React.createElement("p", { className: "message" }, errorMessage)));
+        React.createElement("button", { disabled: disable, type: "button", onClick: function () { return checkValidity(); } }, "Iniciar sesi\u00F3n"),
+        React.createElement("p", { className: "message" }, error)));
 }

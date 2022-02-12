@@ -28,8 +28,8 @@ public class SIngUpController {
     private CustomBCryptPasswordEncoder passwordEncoder;
 
 
-    @PostMapping("/singup")
-    public ResponseEntity<?> getDataSingUp(@Valid @RequestBody Account account, BindingResult result){
+    @PostMapping("/signup")
+    public ResponseEntity<?> getDataSignUp(@Valid @RequestBody Account account, BindingResult result){
         CuentaPrincipal mainAccount = translatorAccountToMainAccount(account);
         mainAccount.getMainAccountDetails().setPassword(
                 passwordEncoder.encode(mainAccount.getMainAccountDetails().getPassword()));
