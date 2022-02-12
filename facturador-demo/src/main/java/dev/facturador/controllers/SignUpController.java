@@ -14,14 +14,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+//RequestMapping para no tener que repetir /api en todos lados
+
+
+@RestController
+
+@RequestMapping(path = "/api")
 
 /**
  * Controller para el registro del usuario
  */
-@RestController
-//RequestMapping para no tener que repetir /api en todos lados
-@RequestMapping(path = "/api")
-public class SIngUpController {
+public class SignUpController {
     @Autowired
     private ISingUpMainAccountService service;
     @Autowired

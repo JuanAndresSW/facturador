@@ -9,10 +9,10 @@ export default class Session {
 
   /**
    * Establece los valores obtenidos de un login exitoso.
-   * @param token El token de la sesión.
-   * @param name El nombre de usuario.
-   * @param passive La cantidad de patrimonio pasivo.
-   * @param active La cantidad de patrimonio activo.
+   * @property `token` El token de la sesión.
+   * @property `name` El nombre de usuario.
+   * @property `passive` La cantidad de patrimonio pasivo.
+   * @property `active` La cantidad de patrimonio activo.
    */
   public static setSession({token, name, active, passive}: session): void {
     document.cookie = `session=${token}; max-age=1209600; path=/; Secure`;

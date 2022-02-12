@@ -52,11 +52,11 @@ export default function App() {
                         <Route path="/*" element={<Protected reverse={true}><Home /></Protected>} />
                         <Route path="/login" element={<Protected reverse={true}><Login /></Protected>} />
 
-                        <Route path="/account/*" element={<Protected><Account /></Protected>} />
+                        <Route path="/cuenta/*" element={<Protected><Account /></Protected>} />
                         <Route path="/inicio/*" element={<Protected><Start /></Protected>} />
 
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="/about/*" element={<About />} />
+                        <Route path="/sign-up" element={<SignUp />} />
+                        <Route path="/acerca-de/*" element={<About />} />
                         <Route path="*" element={<Error404 />} />
 
                     </Routes>
