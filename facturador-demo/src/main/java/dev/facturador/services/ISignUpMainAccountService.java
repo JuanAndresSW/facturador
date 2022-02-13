@@ -3,6 +3,6 @@ package dev.facturador.services;
 
 import dev.facturador.entities.CuentaPrincipal;
 
-public interface ISingUpMainAccountService {
+public interface ISignUpMainAccountService {
     void register(CuentaPrincipal mainAccount);
 }

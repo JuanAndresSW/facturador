@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { DiGithubBadge } from "react-icons/di";
 import "./Footer.css";
+/**
+ * Una lista de enlaces e información de la aplicación.
+ */
 export default function Footer() {
     return (React.createElement("div", { className: "footer" },
         React.createElement("div", null,

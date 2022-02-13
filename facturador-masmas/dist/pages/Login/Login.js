@@ -5,7 +5,7 @@ import Session from "utils/Session";
 import Const from "utils/Const";
 import "styles/form.css";
 import { useNavigate } from "react-router-dom";
-/**devuelve un formulario para iniciar sesión*/
+/**Devuelve un formulario para iniciar sesión.*/
 export default function Login() {
     var navigate = useNavigate();
     var _a = useState(""), user = _a[0], setUser = _a[1];

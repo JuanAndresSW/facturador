@@ -2,7 +2,7 @@ import { account } from "../../utils/types";
 import fetch from "../fetch";
 
 /**
-* Envía los datos de usuario y la foto de perfil.
+* Envía los datos de usuario y la foto de perfil para ser registrados.
 * @param {account} account Datos de la cuenta del usuario, en forma de objeto.
 * @param callback La función que manejará la respuesta.
 */

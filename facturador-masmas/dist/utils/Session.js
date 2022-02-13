@@ -7,10 +7,10 @@ var Session = /** @class */ (function () {
     }
     /**
      * Establece los valores obtenidos de un login exitoso.
-     * @param token El token de la sesión.
-     * @param name El nombre de usuario.
-     * @param passive La cantidad de patrimonio pasivo.
-     * @param active La cantidad de patrimonio activo.
+     * @property `token` El token de la sesión.
+     * @property `name` El nombre de usuario.
+     * @property `passive` La cantidad de patrimonio pasivo.
+     * @property `active` La cantidad de patrimonio activo.
      */
     Session.setSession = function (_a) {
         var token = _a.token, name = _a.name, active = _a.active, passive = _a.passive;
@@ -30,7 +30,7 @@ var Session = /** @class */ (function () {
         var cookies = document.cookie.split(";");
         for (var _i = 0, cookies_1 = cookies; _i < cookies_1.length; _i++) {
             var cookie = cookies_1[_i];
-            document.cookie = cookie + "=;expires=" + new Date(0).toUTCString();
+            document.cookie = cookie + "=; Secure; expires=" + new Date(0).toUTCString();
         }
         sessionStorage.clear();
     };

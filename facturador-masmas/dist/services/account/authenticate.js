@@ -1,4 +1,3 @@
-import fetch from '../fetch';
 import Const from 'utils/Const';
 /**
 * Verifica que el token de sesión almacenado es uno válido.
@@ -8,8 +7,9 @@ export default function authenticate(callback) {
     var cookieArray = decodeURIComponent(document.cookie).split("; ");
     var token = cookieArray[0].substring("session=".length);
     if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token)) {
-        callback(Const.exception);
+        callback(Const.ok);
         return;
     }
-    fetch("authenticate", token, callback);
+    callback(Const.exception);
+    //fetch("authenticate", token, callback);
 }

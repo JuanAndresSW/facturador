@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `avatar_usuario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `avatar_usuario` (
   `id_avatar` bigint NOT NULL AUTO_INCREMENT,
-  `avatar` varchar(255) NOT NULL,
+  `avatar` MEDIUMTEXT NOT NULL,
   `id_usuario` bigint NOT NULL,
   PRIMARY KEY (`id_avatar`),
   UNIQUE KEY `UK_9r98vdxdtt1tw76ecsrxpv2io` (`id_usuario`),

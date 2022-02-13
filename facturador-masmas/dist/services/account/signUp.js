@@ -36,8 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import fetch from "../fetch";
 /**
-* Envía los datos de usuario y la foto de perfil.
+* Envía los datos de usuario y la foto de perfil para ser registrados.
 * @param {account} account Datos de la cuenta del usuario, en forma de objeto.
+* @param callback La función que manejará la respuesta.
 */
 export default function signUp(account, callback) {
     return __awaiter(this, void 0, void 0, function () {
@@ -56,25 +57,31 @@ export default function signUp(account, callback) {
  */
 function formatAccount(account) {
     return __awaiter(this, void 0, void 0, function () {
-        var c, g, data, _a, _b;
-        var _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var c, g, data, _a, _b, _c;
+        var _d, _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
                 case 0:
                     c = account.trader.code.replace(/ |\.|-/g, "");
                     g = account.trader.grossIncome.replace(/ |\.|-/g, "");
                     _b = (_a = JSON).stringify;
-                    _c = {};
-                    _d = {
+                    _d = {};
+                    _e = {
                         username: account.user.username.trim(),
                         email: account.user.email.trim(),
                         password: account.user.password.trim()
                     };
-                    return [4 /*yield*/, account.user.avatar.text()];
-                case 1:
-                    data = _b.apply(_a, [(_c.user = (_d.avatar = _e.sent(),
-                            _d),
-                            _c.trader = {
+                    if (!(account.user.avatar === null)) return [3 /*break*/, 1];
+                    _c = "";
+                    return [3 /*break*/, 3];
+                case 1: return [4 /*yield*/, account.user.avatar.text()];
+                case 2:
+                    _c = _f.sent();
+                    _f.label = 3;
+                case 3:
+                    data = _b.apply(_a, [(_d.user = (_e.avatar = _c,
+                            _e),
+                            _d.trader = {
                                 businessName: account.trader.businessName.trim(),
                                 vatCategory: account.trader.vatCategory,
                                 code: (c.length !== 0) ? c.slice(0, 2) + '-' +
@@ -84,7 +91,7 @@ function formatAccount(account) {
                                     g.slice(2, 4) + '.' + g.slice(4, 7) + '.' + g.slice(7, 10) +
                                     '-' + g.charAt(10) : '',
                             },
-                            _c)]);
+                            _d)]);
                     return [2 /*return*/, data];
             }
         });

@@ -7,7 +7,7 @@ import dev.facturador.dto.security.ApiResponse;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.dto.RegisterDto;
 import dev.facturador.services.IUserService;
-import dev.facturador.services.ISingUpMainAccountService;
+import dev.facturador.services.ISignUpMainAccountService;
 import static dev.facturador.util.JSONTranslatorForMainAccount.mainAccountPrepareForSave;
 
 import dev.facturador.jwt.JWTProvider;
@@ -31,7 +31,7 @@ import java.util.Date;
 @RequestMapping(path = "/api/auth")
 public final class AuthController {
     @Autowired
-    private ISingUpMainAccountService serviceSingUp;
+    private ISignUpMainAccountService serviceSingUp;
     @Autowired
     private JWTProvider jwtProvider;
     @Autowired

@@ -12,6 +12,8 @@ var Valid = /** @class */ (function () {
         return password.length <= 40 && password.length >= 8;
     };
     Valid.image = function (image) {
+        if (image === null)
+            return true;
         return image.size < 2097152; //2MB
     };
     Valid.code = function (code) {
@@ -20,7 +22,7 @@ var Valid = /** @class */ (function () {
             return true;
         if (code.length !== 11)
             return false;
-        return /[0-9]{2}1[1-9]{7}[0-9]$/.test(code);
+        return /[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(code);
     };
     Valid.vatCategory = function (vatCategory) {
         return (vatCategory !== "" &&
