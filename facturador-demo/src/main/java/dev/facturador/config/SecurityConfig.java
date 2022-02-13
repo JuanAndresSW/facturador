@@ -26,14 +26,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    //Injeccion de depencias
+
     @Autowired
     private CustomUserDetailsService userDetailsService;
     @Autowired
     private JWTEntryPoint jwtEntryPoint;
 
     /**
-     * Bean para el Filtro del Token
+     * Bean necesario para agregar JWTAuthenticationFilter al contexto de Spring
+     * @return retorna una nueva instacia de JWTAuthenticationFilter
      */
     @Bean
     public JWTAuthenticationFilter jwtAuthenticationFilter(){
@@ -41,37 +42,54 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Configuracion para las peticiones http
+     * Configura la seguridad de las peticiones Http
+     * @param http Paramnetro para cofigurar las peticiones
+     * @throws Exception puede arroajr esta excepcion
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //Desactivo el Cross-site Request Forgery (Eso sirve para evitar falcificacion de formularios)
-        //Esto es un ApiRest aqui no hay formularios por eso se desabilita
         http.csrf().disable()
                 //Llama en jwtENtryPoint si ve uan excepcion
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and()
                 //No guardo Cookies, ni sesiones
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                //No hago autenticaciones a las peticiones GET echas a api/*
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").permitAll()
-                //Compru
-                .antMatchers("/api/auth/**").permitAll().anyRequest().authenticated();
-        //Se comprueba que el Token sea valido
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests()
+                //Todas las personas sin importar su autorizacion pueden entrar en api/auth/**
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/").anonymous()
+                //Todas las demas request se autentican (Por ahora...)
+                .anyRequest().authenticated();
+
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-    //Aqui se encuentran lo necesario para el Authenticate de Spring security
+    /**
+     * Indico la instancia de UserDetails que va a manejar el AuthenticationManagerBuilder
+     * tambien indico cual es el encriptador de contraseñas que estoy usando
+     * @param auth es el AuthenticationManagerBuilder a cofigurar
+     * @throws Exception por si envia alguna excepcion
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * Crea el bean para el AuthenticationManager con la implementacion del padre
+     * @return Llama al authenticationManagerBean de la clase padre
+     * @throws Exception por si envia alguna excepcion
+     */
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * Bean para la instacion del encriptador de contraseñas
+     * @return Devuelvo la instacia que utilizo del encriptador en este caso Argon2
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder(16, 32, 1, 2048, 2);

@@ -20,8 +20,7 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JWTProvider {
-    //Value le asigna un valor que indico en el archivo .properties (En este caso .yml)
-    //Usando Expresion Language
+
     @Value("${security.jwt.secret}")
     private String key;
 
@@ -32,7 +31,9 @@ public class JWTProvider {
     private long ttlMillis;
 
     /**
-     * Crea un nuevo Token
+     * Genera el token
+     * @param userDetails De este objeto saca el {username, id, rol} del usuario
+     * @return
      */
     public String generateToken(CustomUserDetails userDetails) {
         //La forma de autenticacion
@@ -40,29 +41,38 @@ public class JWTProvider {
         String id = String.valueOf(userDetails.getId());
         //El Token se crea con el Algoritmo HS256
         var signatureAlgorithm = SignatureAlgorithm.HS256;
-
         long nowMillis = System.currentTimeMillis();
 
         //Transforma la Key byte en Base64, para usar la ApiKey
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-        Date exp = null;
-        if (ttlMillis >= 0) {
-            long expMillis = nowMillis + ttlMillis;
-            exp = new Date(expMillis);
-        }
-
         //Compacta el JWT a un String seguro
         return Jwts.builder()
                 .setId(id).setIssuedAt(new Date(nowMillis)).setSubject(subject)
                 .claim("ROL", userDetails.getAuthorities().stream().toList().get(0).getAuthority())
+                //Este campo indica quien creo el token en este caso no lo manejamo pero lo agrego igual
                 .setIssuer(issuer).signWith(SignatureAlgorithm.HS256, signingKey)
-                .setExpiration(exp).compact();
+                .setExpiration(generateExpirationDate(nowMillis)).compact();
     }
 
     /**
-     * Devulve el Value/Subject del token, en neustro es el username
+     * Genera el timepo de expiracion del token
+     * @param nowMillis Recupera el milisegundo capturado ahora
+     * @return
+     */
+    public Date generateExpirationDate(long nowMillis){
+        long expMillis = 0;
+        if (ttlMillis >= 0) {
+            expMillis = nowMillis + ttlMillis;
+        }
+        return new Date(expMillis);
+    }
+
+    /**
+     * Devuelve el username del usuario
+     * @param jwt Token recibido
+     * @return
      */
     public String getValue(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
@@ -71,7 +81,9 @@ public class JWTProvider {
     }
 
     /**
-     * Devulve el claim (En este caso solo le indique uno el cual es el Rol)
+     * Devuelve el Rol del usuario guardado en el token
+     * @param jwt Token recibido
+     * @return
      */
     public String getRol(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
@@ -80,7 +92,10 @@ public class JWTProvider {
     }
 
     /**
-     * Devulve el Key/Id del token (En este caso es el id del usuario)
+     * Devuelve la key del token
+     * en este caso la key es el id del Usuario
+     * @param jwt Token recibido
+     * @return
      */
     public String getKey(String jwt) {
         // Recupera el JWT, si no es correcto arroja una excepcion
@@ -88,13 +103,21 @@ public class JWTProvider {
                 .getBody().getId();
     }
 
+    /**
+     * Comprueba qeu el token no halla expirado
+     * @param jwt Token recibido
+     * @return
+     */
     public Boolean hasTokenExpirated(String jwt){
         return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
                 .getBody().getExpiration().before(new Date());
     }
 
     /**
-     * Comrpueba que no tenga excepcines el token
+     * Comprueba si el token arroja una excepcion
+     * En caso de excepcion se informa en el log que es lo qeu falla
+     * @param token Token recibido
+     * @return True si es correcto, false en caso de excepcion
      */
     public boolean validateToken(String token){
         try {

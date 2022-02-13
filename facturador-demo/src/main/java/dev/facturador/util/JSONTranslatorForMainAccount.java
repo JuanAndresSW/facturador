@@ -8,14 +8,12 @@ import dev.facturador.entities.Usuarios;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-/**
- * Traduce dto a Entity
- */
 @Component
 public class JSONTranslatorForMainAccount {
 
     /**
-     * Transforma el dto RegisterDto a la entidad CuentaPrincipal
+     * Traduce una un dto a una cuenta principal
+     * @return retorna una cuenta principal
      */
     public static CuentaPrincipal translatorAccountToMainAccount(RegisterDto account){
         var mainAccount = new CuentaPrincipal();
@@ -30,12 +28,11 @@ public class JSONTranslatorForMainAccount {
 
     /**
      * Hace el hash de la contraseña
+     * @param account Dto se traduce a una cuenta principal con el metodo translatorAccountToMainAccount
+     * @return retorna la cuenta principal con el hash echo
      */
     public static CuentaPrincipal mainAccountPrepareForSave(RegisterDto account){
         var mainAccount = translatorAccountToMainAccount(account);
-        //Parametros de Argon2
-        // (SaltLength: 16 Bytes, HashLength: 32 Bytes, Paralelismo: 1 solo hilo,
-        // Memoria: 2048 Kilobytes, Iteraciones 2)
         var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         mainAccount.getUserMainAccount().setPassword(argon2.encode(mainAccount.getUserMainAccount().getPassword()));
         return mainAccount;
