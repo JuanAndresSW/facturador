@@ -4,8 +4,7 @@ import dev.facturador.dto.LoginDto;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IUserRepository;
 import dev.facturador.services.IUserService;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +16,7 @@ import java.util.Optional;
  */
 @Service
 @Transactional
-@NoArgsConstructor
-@Slf4j
+@RequiredArgsConstructor
 public class UserService implements IUserService {
 
     //Injeccion de depencia
@@ -26,7 +24,8 @@ public class UserService implements IUserService {
     private IUserRepository repository;
 
     /**
-     * Regresa el Detalle relacionado con el username
+     * Busca un Usuario segun el username de otro
+     * @param user Usuario del que se sacara el username
      * @return
      */
     @Override
@@ -39,7 +38,9 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Verifica que las credenciales para el Login
+     * Retorna un usuario segun las credenciales indice (username o email cualquiera)
+     * @param user Dto del login con un username o email
+     * @return
      */
     @Override
     public Usuarios getUserWithCrdentials(LoginDto user) {
@@ -51,7 +52,9 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Comprueba si existe segun el Username
+     * Comprueba si existe segun el username
+     * @param username Nombre de usuario a comprobar si existe
+     * @return true si existe false si no
      */
     @Override
     public boolean existsByUsername(String username){
@@ -59,7 +62,9 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Comprueba si existe segun el Email
+     * Comprueba si existe segun el email
+     * @param email email proporcionado
+     * @return true si existe false si no
      */
     @Override
     public boolean existsByEmail(String email){

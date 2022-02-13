@@ -17,9 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Clase JWT es un filtro para JWT
- */
 @Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
@@ -29,7 +26,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private CustomUserDetailsService customUserDetailsService;
 
     /**
-     *  Comrpueba que el Token sea valido
+     * Metodo llamado para comprobar que el token sea valido
+     * @param request Recupera la request con la Api de HttpServlet
+     * @param response Necesario para recibir marcar el filtro
+     * @param filterChain Envia que ha sucedido en el filtro
+     * @throws ServletException Excepcion que puede arrojar sendError
+     * @throws IOException Excepcion que puede arrojar sendError
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -55,13 +57,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Recupera el Token de la request
+     *  Recupera el Token recibido en la Request
+     * @param request Recupera la request con la Api HttpServlet
+     * @return
      */
     private String getJWTOfTheRequest(HttpServletRequest request) {
-        //Debes agregar el "Authorization" de la request
+        //Recupera el Token almacenado en el Header
         String bearerToken = request.getHeader("Authorization");
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.replace("Bearer", "");
         }
         return null;
     }
