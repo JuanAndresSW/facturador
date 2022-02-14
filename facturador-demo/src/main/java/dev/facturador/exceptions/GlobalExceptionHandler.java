@@ -24,7 +24,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
-     * Maneja Excepciones de ConstraintViolationException
+     * Maneja la excepcion de tipo ConstraintViolationException
+     * @param ex Recibe la excepcion ConstraintViolationException
+     * @return Retorna el dto ErrorDetails y envia codigo 400
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorDetailsDto> handler(ConstraintViolationException ex){
@@ -33,7 +35,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Manejua una Excepcion generica
+     * Maneja una excepcion generica si no se maneja la excepcion especifica que se envia entra aqui
+     * @param exception Recibe la excepcion
+     * @param webRequest Intercepta la request
+     * @return Retorna el dto ErrorDetails y envia codigo 400
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetailsDto> manejarGlobalException(Exception exception, WebRequest webRequest){
@@ -42,7 +47,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Metodo Override maneja MethodArgumentNotValidException
+     * Maneja la excepcion MethodArgumentNotValidException
+     * @param ex Recupera la excepcion MethodArgumentNotValidException
+     * @param headers Indica que recibe el header de la request
+     * @param status Indica que recibe el estado actual
+     * @param request Intercepta la request con WebRequest
+     * @return Retorna la respuesta y el estado de 400
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid

@@ -4,7 +4,7 @@ import dev.facturador.dto.security.CustomUserDetails;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.services.IMainAccountService;
 import dev.facturador.services.ISecondaryAccountService;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +22,7 @@ import java.util.List;
  * Servicio personalizado de UserDetails(Servicio de Spring Security)
  */
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
@@ -31,10 +31,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     private ISecondaryAccountService serviceSecondary;
 
     /**
-     * Este metodo carga un Usuario personalizado de spring security
-     * Le Otorga el Rol de MAIN o SECONDARY
-     * Para definir el ROL consulta las dos tablas (principal y secundaria)
-     * Si las dos devulven null se genera un excepcion
+     * Comprueba si el username existe en la base de datos
+     * luego crea un usuario personalizado para comprobaciones con Spring Security
+     * @param username Credencial del usuario ah comprobar
+     * @return Retorna un UserDetails el cual es casteado a CustomUserDetails
+     * @throws UsernameNotFoundException Excepcion arrojada en caso de no existir este usuario
      */
     @Override
     @Transactional
@@ -45,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             return this.userBuilder(userMainExit.getUserMainAccount(), "MAIN");
         }
         //Si no es MAIN entonces es secundaria
-        var userSecondExit = serviceSecondary.getSecondaryAccountByUsername(username);
+        var userSecondExit = serviceSecondary.findSecondaryAccountByUsername(username);
         if(userSecondExit != null){
             return this.userBuilder(userSecondExit.getUserSecondaryAccount(), "SECONDARY");
         }
@@ -54,7 +55,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * Construye el UserDetails personalizado
+     * Crea el CustomUserDetails
+     * @param user Usuario del cual saca las credenciales necesarias
+     * @param rol Rol de este usuario en la aplicacion
+     * @return Retorna un CustomUserDetails
      */
     private UserDetails userBuilder(Usuarios user, String rol){
         List<GrantedAuthority> authorities = new ArrayList<>(2);
