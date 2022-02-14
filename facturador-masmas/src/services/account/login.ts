@@ -6,8 +6,8 @@ import fetch from "services/fetch"
 * @param password Contraseña.
 */
 export default function login(name: string, password: string, callback: Function): void {
-    fetch("login", JSON.stringify({
-      name: name,
+    fetch("auth/login", JSON.stringify({
+      usernameOrEmail: name,
       password: password,
     }), callback);
   }

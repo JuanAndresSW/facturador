@@ -36,17 +36,11 @@ export default function Login() {
         break;
       case Const.ok:
         setError("");
-        Session.setSession(JSON.parse(data));
+        Session.setSession({token: data, name: "test", passive: "0", active: "0"});
         navigate("/");
         break;
-      case Const.bad:
-        setError("Usuario o contraseña incorrecta");
-        break;
-      case Const.exception:
-        setError("Hubo un problema con el servidor");
-        break;
       default:
-        setError("Hubo un error desconocido al procesar tus datos");
+        setError(data);
         break;
     }
   }

@@ -15,6 +15,7 @@ export default class Session {
    * @property `active` La cantidad de patrimonio activo.
    */
   public static setSession({token, name, active, passive}: session): void {
+    if (token === undefined) return;
     document.cookie = `session=${token}; max-age=1209600; path=/; Secure`;
     sessionStorage.setItem("username", name);
     sessionStorage.setItem("active", active.toString());

@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+import Start from "pages/Start/Start";
 import Session from "utils/Session";
+import Home from "pages/Home/Home";
 
 type props = {
   children: ReactNode;
@@ -17,8 +18,8 @@ export default function Protected({ children, reverse = false }: props): JSX.Ele
     <>
       {
         Session.isAuthenticated() ? 
-          reverse ? <Navigate to="/inicio" />  : children :
-          reverse ? children                   : <Navigate to="/inicio" />
+          !reverse ? children  : <Start /> :  //está autenticado;
+          reverse  ? children  : <Home />    //no está autenticado;
       }
     </>
   );

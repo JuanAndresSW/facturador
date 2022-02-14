@@ -8,7 +8,7 @@ import fetch from "../fetch";
 */
 export default async function signUp(account: account, callback: Function): Promise<void> {
   const formattedPromise = formatAccount(account);
-  formattedPromise.then(formattedAccount => fetch("signup", formattedAccount, callback));
+  formattedPromise.then(formattedAccount => fetch("auth/main/signup", formattedAccount, callback));
 }
 
 

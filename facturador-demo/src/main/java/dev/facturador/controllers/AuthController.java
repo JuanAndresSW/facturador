@@ -38,12 +38,12 @@ public final class AuthController {
     private ITraderService serviceTrader;
 
     /**
-     * Registra la cuenta principal
-     * @param account RegisterDto es el dto para el registro contiene usuario y comerciante
-     * @return Token de inicio de sesio / Error con codigo 400
+     * Registra la cuenta principal.
+     * @param account {RegisterDto} El objeto que contiene usuario y comerciante a ser registrado.
+     * @return {HttpEntity} Token de sesión / error 400.
      */
     @PostMapping("/main/signup")
-    public HttpEntity<? extends ApiResponse> singup(@Valid @RequestBody RegisterDto account){
+    public HttpEntity<? extends ApiResponse> signup(@Valid @RequestBody RegisterDto account){
         if(userService.existsByUsername(account.getUserDto().getUsername())){
             return  new ResponseEntity<>(new ErrorDetailsDto(new Date(), "Nombre de usuario ya se encuentra en uso", "Este nombre de usuario ya esta registrado en la base de datos"), HttpStatus.BAD_REQUEST);
         }
@@ -66,9 +66,9 @@ public final class AuthController {
     }
 
     /**
-     * Inicia sesion con un username o email enviado en caso q
-     * @param user Dto recibido para el inicio de sesion
-     * @return retorna el token
+     * Trata de iniciar sesión con un username o email recibido más contraseña.
+     * @param user {LoginDto} DTO recibido para el inicio de sesion.
+     * @return {HttpEntity} Token de sesión / error.
      */
     @PostMapping("/login")
     public HttpEntity<? extends ApiResponse> login(@Valid @RequestBody LoginDto user){

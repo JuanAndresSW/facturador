@@ -4,6 +4,8 @@ import signUp from "services/account/signUp";
 import "styles/form.css";
 import { useNavigate } from "react-router-dom";
 import { BiChevronLeft } from "react-icons/bi";
+import Const from "utils/Const";
+import Session from "utils/Session";
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
@@ -110,16 +112,13 @@ export default function SignUp() {
   /**Maneja la respuesta recibida del servidor. */
   function handleResponse(state: number, data: string) {
     switch (state) {
-      case 0: setTraderError("No se ha podido establecer la comunicación con el servidor");
+      case Const.error: setTraderError("No se ha podido establecer la comunicación con el servidor");
         break;
-      case 200: setTraderError("La cuenta se ha creado correctamente");
-        console.log(data);
+      case Const.created: setTraderError("La cuenta se ha creado correctamente");
+        Session.setSession({token:data, name:user.username, active:"0", passive:"0"});
+        navigate("/inicio");
         break;
-      case 400: setTraderError("Hubo un error al validar los datos");
-        break;
-      case 500: setTraderError("Hubo un problema con el servidor");
-        break;
-      default: setTraderError("Hubo un error desconocido al procesar tus datos");
+      default: setTraderError(data);
         break;
     }
   }

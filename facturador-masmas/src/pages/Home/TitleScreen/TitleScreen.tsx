@@ -5,11 +5,16 @@ import login from 'services/account/login';
 import Valid from "utils/Valid";
 import "styles/form.css";
 import "./TitleScreen.css";
+import { useNavigate } from "react-router-dom";
 
 //objeto de usuario a enviar al servidor
 const user = { name: "", password: "" };
 
 export default function TitleScreen(): JSX.Element {
+
+  //Objeto de navegación de rutas;
+  const navigate = useNavigate();
+
 
   const [loginInputType, setLoginInputType] = useState("text");
   let placeholder = loginInputType === "text" ? "nombre o email" : "contraseña";
@@ -31,7 +36,10 @@ export default function TitleScreen(): JSX.Element {
     if (loginInputType === "password") {
       if (Valid.password(loginValue.trim())) {
         user.password = loginValue.trim();
+
+        //Verificar con el servidor la autenticidad;
         authenticate(user);
+
         setLoginValue("");
         setLoginInputType("text");
       } else setError("Nombre o contraseña incorrecta");
@@ -51,20 +59,11 @@ export default function TitleScreen(): JSX.Element {
         break;
       case Const.ok:
         setError("");
-        setDisable(true);
-        Session.setSession(JSON.parse(data));
+        Session.setSession({token: data, name: "test", passive: "0", active: "0"});
         window.location.reload();
         break;
-      case Const.bad:
-        setError("Usuario o contraseña incorrecta");
-        setDisable(false);
-        break;
-      case Const.exception:
-        setDisable(true);
-        setError("Hubo un problema con el servidor");
-        break;
       default:
-        setError("Hubo un error desconocido al procesar tus datos");
+        setError(data);
         break;
     }
   }

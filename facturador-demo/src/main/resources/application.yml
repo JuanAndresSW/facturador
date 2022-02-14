@@ -22,9 +22,9 @@ spring:
     banner-mode: off
   #Configuracion de MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=false&useTimezone=true&serverTimezone=UTC
     username: root
-    password: ''
+    password: 'root'
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
       max-wait: 20000

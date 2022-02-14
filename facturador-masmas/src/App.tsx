@@ -31,16 +31,11 @@ export default function App() {
     //Comprobar la sesión con el servidor en el primer renderizado.
     useEffect(() => {
         authenticate(handleResponse);
-    }, [])
-
-    //Borrar la sesión si no existe o no es válida.
-    if (!Session.isAuthenticated()) {
-        Session.close();
-    }
+    }, []);
 
     function handleResponse(status: number, data?: string) {
         setLoading(false);
-        if (status === Const.ok) Session.setSession(JSON.parse(data));
+        if (status === Const.ok) Session.setSession({token:data, name:"test", active: "0", passive: "0"});
     }
 
     return (
@@ -53,11 +48,12 @@ export default function App() {
                         <Route path="/login" element={<Protected reverse={true}><Login /></Protected>} />
 
                         <Route path="/cuenta/*" element={<Protected><Account /></Protected>} />
-                        <Route path="/inicio/*" element={<Protected><Start /></Protected>} />
 
-                        <Route path="/sign-up" element={<SignUp />} />
+                        <Route path="/signup" element={<SignUp />} />
                         <Route path="/acerca-de/*" element={<About />} />
                         <Route path="*" element={<Error404 />} />
+
+                        
 
                     </Routes>
                 </Suspense>

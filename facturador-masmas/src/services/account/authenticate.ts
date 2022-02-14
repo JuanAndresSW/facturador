@@ -11,9 +11,10 @@ export default function authenticate(callback: Function): void {
   const token = cookieArray[0].substring("session=".length);
 
   if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token)) {
-    callback(Const.ok);
+    callback(Const.ok, token);
     return;
+  } else {
+    callback(Const.exception);
   }
-  callback(Const.exception);
   //fetch("authenticate", token, callback);
 }
