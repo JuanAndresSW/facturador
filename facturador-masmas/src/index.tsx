@@ -1,29 +1,9 @@
-import React, { Suspense, lazy } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from "react";
 import ReactDOM from "react-dom";
-import FallBack from "./components/FallBack/FallBack";
-import "./style/normalize.css";
-import "./style/outer.css";
-//importar diferidamente los componentes
-const Home = lazy(() => import("./container/Home"));
-const SignUp = lazy(() => import("./container/SignUp"));
-const Login = lazy(() => import("./container/Login"));
-const Account = lazy(() => import("./container/Account"));
-const About = lazy(() => import("./container/About"));
-const Error404 = lazy(() => import("./container/Error404"));
+import App from './App';
+
 //procesar la dirección URL
 ReactDOM.render(
-  <BrowserRouter>
-    <Suspense fallback={<FallBack />}>
-      <Routes>
-        <Route path="/*" element={<Home />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/account/*" element={<Account />} />
-        <Route path="/about/*" element={<About />} />
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-    </Suspense>
-  </BrowserRouter>,
+  <App />,
   document.getElementById("root")
 );

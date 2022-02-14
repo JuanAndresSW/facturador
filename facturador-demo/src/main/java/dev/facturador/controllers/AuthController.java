@@ -44,6 +44,7 @@ public final class AuthController {
      */
     @PostMapping("/main/signup")
     public HttpEntity<? extends ApiResponse> singup(@Valid @RequestBody RegisterDto account){
+
         if(userService.existsByUsername(account.getUserDto().getUsername())){
             return  new ResponseEntity<>(new ErrorDetailsDto(new Date(), "Nombre de usuario ya se encuentra en uso", "Este nombre de usuario ya esta registrado en la base de datos"), HttpStatus.BAD_REQUEST);
         }
@@ -56,6 +57,7 @@ public final class AuthController {
         //Registra
         var mainAccountRegistered = mainAccountPrepareForSave(account);
         serviceSingUp.register(mainAccountRegistered);
+
         //Autentica los datos
         var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mainAccountRegistered.getUserMainAccount().getUsername(), account.getUserDto().getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);

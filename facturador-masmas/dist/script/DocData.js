@@ -8,46 +8,64 @@ var DocData = /** @class */ (function () {
     /**MÉTODOS DE RECUPERACIÓN DEL SERVIDOR********************************************/
     //recupera arrays de puntos de venta, socios y grupos del servidor. Almacena en la sesión
     DocData.fetchFormData = function () {
-        if (sessionStorage.getItem("points-of-sale") === null) {
-            sessionStorage.setItem("points-of-sale", JSON.stringify([
-                {
-                    id: 2,
-                    name: "punto1",
-                    address: "calle1",
-                },
-                {
-                    id: 1,
-                    name: "punto2",
-                    address: "calle2",
-                },
-            ]));
-            sessionStorage.setItem("third-parties", JSON.stringify([
-                {
-                    id: 2,
-                    name: "empresa",
-                    vatType: "monotributista",
-                },
-                {
-                    id: 1,
-                    name: "persona",
-                    vatType: "consumidor final",
-                },
-            ]));
-            sessionStorage.setItem("groups", JSON.stringify([
-                {
-                    id: 2,
-                    name: "grupo A",
-                    members: 22,
-                },
-                {
-                    id: 1,
-                    name: "grupo B",
-                    members: 12,
-                },
-            ]));
-            //determina si los tipos de documentos A Y B deben permitirse
-            sessionStorage.setItem("allowAB", "1");
-        }
+        sessionStorage.setItem("points-of-sale", JSON.stringify([
+            {
+                id: 2,
+                name: "punto1",
+                address: "calle1",
+            },
+            {
+                id: 1,
+                name: "punto2",
+                address: "calle2",
+            },
+            {
+                id: 3,
+                name: "punto2",
+                address: "calle2",
+            },
+            {
+                id: 4,
+                name: "punto2",
+                address: "calle2",
+            },
+            {
+                id: 6,
+                name: "punto2",
+                address: "calle2",
+            },
+            {
+                id: 8,
+                name: "punto2",
+                address: "calle2",
+            },
+        ]));
+        sessionStorage.setItem("third-parties", JSON.stringify([
+            {
+                id: 2,
+                name: "empresa",
+                vatType: "monotributista",
+            },
+            {
+                id: 1,
+                name: "persona",
+                vatType: "consumidor final",
+            },
+        ]));
+        sessionStorage.setItem("groups", JSON.stringify([
+            {
+                id: 2,
+                name: "grupo A",
+                members: 22,
+            },
+            {
+                id: 1,
+                name: "grupo B",
+                members: 12,
+            },
+        ]));
+        //determina si los tipos de documentos A Y B deben permitirse
+        sessionStorage.setItem("allowAB", "1");
         return;
     };
     /*MÉTODOS DE RECUPERACIÓN LOCAL***********************************************/

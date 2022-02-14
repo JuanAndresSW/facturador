@@ -4,12 +4,12 @@ import Header from '../components/Header/Header';
 import Subheader from '../components/SubHeader/Subheader';
 import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
-import { Transaction, Books, Stats, Spots } from '../components/Main';
+import { Operation, Books, Stats, Spots } from '../components/Main';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { MdClass, MdPoll, MdPinDrop } from 'react-icons/md';
 import Session from '../script/Session';
 var paths = {
-    transaction: "/transaccion",
+    operation: "/operacion",
     books: "/libros",
     stats: "/estadisticas",
     spots: "/puntos-de-venta"
@@ -18,8 +18,8 @@ var paths = {
 var tabs = [
     React.createElement("div", { tabHeader: React.createElement(React.Fragment, null,
             React.createElement(AiFillDollarCircle, null),
-            "Transacci\u00F3n"), key: paths.transaction, accessKey: paths.transaction },
-        React.createElement(Transaction, null)),
+            "Operaci\u00F3n"), key: paths.operation, accessKey: paths.operation },
+        React.createElement(Operation, null)),
     React.createElement("div", { tabHeader: React.createElement(React.Fragment, null,
             React.createElement(MdClass, null),
             "Libros"), key: paths.books, accessKey: paths.books },
@@ -43,8 +43,8 @@ export default function Start() {
         React.createElement(Subheader, null),
         React.createElement(NavBar, null, tabs),
         React.createElement(Routes, null,
-            React.createElement(Route, { index: true, element: React.createElement(Navigate, { to: paths.transaction }) }),
-            React.createElement(Route, { path: paths.transaction + "/*", element: React.createElement(Transaction, null) }),
+            React.createElement(Route, { index: true, element: React.createElement(Navigate, { to: paths.operation }) }),
+            React.createElement(Route, { path: paths.operation + "/*", element: React.createElement(Operation, null) }),
             React.createElement(Route, { path: paths.books + "/*", element: React.createElement(Books, null) }),
             React.createElement(Route, { path: paths.stats + "/*", element: React.createElement(Stats, null) }),
             React.createElement(Route, { path: paths.spots + "/*", element: React.createElement(Spots, null) }),
