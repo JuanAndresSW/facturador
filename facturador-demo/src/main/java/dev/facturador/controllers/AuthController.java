@@ -25,6 +25,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping(path = "/api/auth")
+@CrossOrigin
 public final class AuthController {
     @Autowired
     private IMainAccountService serviceSingUp;
@@ -84,5 +85,23 @@ public final class AuthController {
         String token =jwtProvider.generateToken(userDetails);
 
         return new ResponseEntity<>(new ApiResponse(token), HttpStatus.OK);
+    }
+
+    /**
+     * Recibe un token y comprueba que sea valido y que no este expirado
+     * @param token Token a autenticar
+     * @return
+     */
+    @PostMapping("/")
+    public HttpEntity<? extends ApiResponse> authenticate(@RequestParam String token){
+
+
+        return new ResponseEntity<>(new ApiResponse(token), HttpStatus.OK);
+    }
+
+    @PostMapping("/secondary/signup")
+    public HttpEntity<? extends ApiResponse> registerSecondary(@RequestParam String token){
+        //No necesita implementacion por ahora
+        return null;
     }
 }

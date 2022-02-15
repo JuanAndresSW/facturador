@@ -1,5 +1,7 @@
 package dev.facturador.config;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -10,6 +12,8 @@ import java.io.IOException;
  * Filtro para el Cors
  */
 @Component
+//Indica que le da prioridad a este componente
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class CORSFilter implements Filter {
     /**
      * Metodo init necesario para el ciiclo de vida del filtro
@@ -32,10 +36,11 @@ public class CORSFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081/**");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
-        response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
+        response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Expose-Headers", "Location");
         filterChain.doFilter(request, response);
     }

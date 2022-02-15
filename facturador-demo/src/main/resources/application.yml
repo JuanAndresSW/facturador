@@ -1,8 +1,12 @@
 #Los --- y ... indican cuando inicia y termina el YML
 ---
+#Puerto en el que se corre
+server:
+  port: 8080
 #Configuracion del log
 logging:
   level:
+    root: INFO
     web: DEBUG
     org:
       springframework:
@@ -22,7 +26,7 @@ spring:
     banner-mode: off
   #Configuracion de MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
     password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -32,6 +36,7 @@ spring:
       max-idle: 20
       min-idle: 15
   jpa:
+    database: MYSQL
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     open-in-view: false
