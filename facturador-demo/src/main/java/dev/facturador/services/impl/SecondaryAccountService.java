@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class SecondaryAccountService implements ISecondaryAccountService {
 
     @Autowired

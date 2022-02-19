@@ -1,14 +1,19 @@
 package dev.facturador.services.impl;
 
+import dev.facturador.dto.ErrorDetailsDto;
 import dev.facturador.dto.LoginDto;
+import dev.facturador.dto.RegisterDto;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IUserRepository;
 import dev.facturador.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -16,7 +21,6 @@ import java.util.Optional;
  */
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class UserService implements IUserService {
 
     //Injeccion de depencia
@@ -43,12 +47,9 @@ public class UserService implements IUserService {
      * @return
      */
     @Override
-    public Usuarios getUserWithCrdentials(LoginDto user) {
+    public Optional<Usuarios> getUserWithCrdentials(LoginDto user) {
         Optional<Usuarios> userDta = repository.findByUsernameOrEmail(user.getUsernameOrEmail(), user.getUsernameOrEmail());
-        if(!userDta.isEmpty()){
-            return userDta.get();
-        }
-        return null;
+        return userDta;
     }
 
     /**
@@ -70,4 +71,5 @@ public class UserService implements IUserService {
     public boolean existsByEmail(String email){
         return repository.existsByEmail(email);
     }
+
 }

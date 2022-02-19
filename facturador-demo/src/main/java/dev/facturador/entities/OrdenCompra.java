@@ -1,9 +1,9 @@
 package dev.facturador.entities;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -17,19 +17,16 @@ public final class OrdenCompra {
     private long idPurchaseOrder;
 
     @Column(name = "num_orden_compra", nullable = false)
-    private int numPurchaseOrder;
+    private int purchaseOrderNum;
 
-    @Column(name = "flujo", nullable = false, length = 1)
-    private String flux;
+    @Column(name = "id_punto_venta_emisor", nullable = false)
+    private int issuingPointOfSale;
 
     @Column(name = "fecha_emision", nullable = false)
-    private LocalDate issueDate;
+    private LocalDateTime purchaseOrderIssueDate;
 
     @Column(name = "fecha_limite", nullable = false)
     private LocalDate deadline;
-
-    @Column(name = "condiciones", nullable = false, length = 20)
-    private String terms;
 
     @Column(name = "lugar_entrega", nullable = false, length = 20)
     private String dispatchPlace;
@@ -37,10 +34,6 @@ public final class OrdenCompra {
     @Column(name = "nombre_transportista", nullable = false, length = 25)
     private String carrierName;
 
-    @Column(name = "observaciones", nullable = false, length = 60)
-    private String observations;
-
-    public OrdenCompra(Integer idPurchaseOrder) {
-        this.idPurchaseOrder = idPurchaseOrder;
-    }
+    @Column(name = "condiciones", nullable = false, length = 20)
+    private String terms;
 }

@@ -7,11 +7,10 @@ import lombok.*;
  */
 @Getter @Setter @ToString
 public class ApiResponse {
-    private String token;
-    private String bearer = "Bearer";
+    private String response;
 
-    public ApiResponse(String token) {
-        this.token = token;
+    public ApiResponse(String response) {
+        this.response = response;
     }
 
     public ApiResponse() {

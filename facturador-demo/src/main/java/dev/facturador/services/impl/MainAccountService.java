@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class MainAccountService implements IMainAccountService {
 
     @Autowired
@@ -26,7 +25,7 @@ public class MainAccountService implements IMainAccountService {
      */
     @Override
     public void register(CuentaPrincipal mainAccount) {
-        repository.saveAndFlush(mainAccount);
+        repository.save(mainAccount);
     }
 
     /**

@@ -1,9 +1,8 @@
 package dev.facturador.entities;
 
 import lombok.*;
-
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -17,14 +16,11 @@ public final class Remito {
     private long idRemito;
 
     @Column(name = "num_remito", nullable = false)
-    private int numRemito;
+    private int remitoNum;
 
-    @Column(name = "flujo", nullable = false, length = 1)
-    private String fluxRemito;
+    @Column(name = "id_punto_venta_emisor", nullable = false)
+    private int issuingPointOfSale;
 
     @Column(name = "fecha_emision", nullable = false)
-    private LocalDate issueDate;
-
-    @Column(name = "observaciones", nullable = false, length = 60)
-    private String observations;
+    private LocalDateTime remitoIssueDate;
 }

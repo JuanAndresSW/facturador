@@ -2,6 +2,8 @@ package dev.facturador.services.impl;
 
 import dev.facturador.dto.security.CustomUserDetails;
 import dev.facturador.entities.Usuarios;
+import dev.facturador.repository.ICuentaPrincipalRepository;
+import dev.facturador.repository.ICuentaSecundariaRepository;
 import dev.facturador.services.IMainAccountService;
 import dev.facturador.services.ISecondaryAccountService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +28,9 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private IMainAccountService serviceMain;
+    private ICuentaPrincipalRepository repositoryMain;
     @Autowired
-    private ISecondaryAccountService serviceSecondary;
+    private ICuentaSecundariaRepository repositorySecondary;
 
     /**
      * Comprueba si el username existe en la base de datos
@@ -41,14 +43,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //Revisa primero si es MAIN
-        var userMainExit= serviceMain.getMainAccountByUsername(username);
-        if(userMainExit != null){
-            return this.userBuilder(userMainExit.getUserMainAccount(), "MAIN");
+        var userMainExit= repositoryMain.findByUsername(username);
+        if(userMainExit.isPresent()){
+            return this.userBuilder(userMainExit.get().getUserMainAccount(), "MAIN");
         }
         //Si no es MAIN entonces es secundaria
-        var userSecondExit = serviceSecondary.findSecondaryAccountByUsername(username);
-        if(userSecondExit != null){
-            return this.userBuilder(userSecondExit.getUserSecondaryAccount(), "SECONDARY");
+        var userSecondExit = repositorySecondary.findByUsername(username);
+        if(userSecondExit.isPresent()){
+            return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), "SECONDARY");
         }
         //Si ambas dan null
         throw new UsernameNotFoundException("Username dow not exist");

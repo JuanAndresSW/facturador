@@ -3,8 +3,6 @@ package dev.facturador.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +13,7 @@ public final class AvatarUsuario {
     @Id
     @Column(name="id_avatar")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idUserAvatar;
+    private long userAvatarId;
 
     @Column(name="avatar", nullable = false)
     private String avatar;

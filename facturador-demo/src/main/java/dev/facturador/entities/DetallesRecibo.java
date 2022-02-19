@@ -1,7 +1,6 @@
 package dev.facturador.entities;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -16,19 +15,26 @@ public final class DetallesRecibo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idReceiptDetails;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_recibo_x", nullable = false)
-    private ReciboX receiptX;
-
-    @Column(nullable = false)
+    @Column(name = "num", nullable = false)
     private int num;
-
-    @Column(name = "tipo_valores", nullable = false)
-    private String typeValue;
 
     @Column(name = "fecha_deposito", nullable = false)
     private LocalDate depositDate;
 
-    @Column(name = "importe", nullable = false)
+    @Column(name = "importe", nullable = false, scale = 2)
     private double amountReceipt;
+
+    @Column(name = "tipo_valores", nullable = false, length = 255)
+    private String typeValue;
+
+    /*
+        @ManyToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "id_recibo_x", nullable = false)
+     */
+    @Column(name = "id_recibo_x", nullable = false)
+    private int receiptX;
+
+
+
+
 }

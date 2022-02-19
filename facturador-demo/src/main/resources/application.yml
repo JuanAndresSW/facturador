@@ -2,15 +2,17 @@
 ---
 #Puerto en el que se corre
 server:
-  port: 8080
+  port: 8001
 #Configuracion del log
 logging:
   level:
     root: INFO
     web: DEBUG
     org:
-      springframework:
-        security: DEBUG
+      keycloak: INFO
+      keycloak.timer.basic: DEBUG
+      springframework.security: INFO
+      springframework.security.oauth2: INFO
       hibernate:
         SQL: DEBUG
         type:
@@ -19,17 +21,53 @@ logging:
               BasicBinder: TRACE
   pattern:
     dateformat: HH:mm:ss
+#Config keycloak
+keycloak:
+  realm: FacturadorMasmasApplication
+  auth-server-url: http://localhost:8080/
+  resource: oauth2-facturador-app
+  credentials:
+    secret: xU0vJ4AMHZnmRkfuFQFl6QejjrfWA48k
+  use-resource-role-mappings: true
 
+sample:
+  jwe-key-value: classpath:simple.priv
 #Cofiguracion Spring
 spring:
+  #Configuracion de Spring Security with Keycloak
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: oauth2-facturador-app
+            client-secret: xU0vJ4AMHZnmRkfuFQFl6QejjrfWA48k
+            authorization-grant-type: authorization_code
+            sslRequired: external
+            redirect-uri: http://localhost:8080/login/oauth2/code/oauth2-facturador-app
+            scope: openid
+        provider:
+          keycloak:
+            authorization-uri: http://localhost:8080/realms/FacturadorMasmasApplication/protocol/openid-connect/auth
+            token-uri: http://localhost:8080/realms/FacturadorMasmasApplication/protocol/openid-connect/token
+            user-info-uri: http://localhost:8080/realms/FacturadorMasmasApplication/protocol/openid-connect/userinfo
+            jwk-set-uri: http://localhost:8080/realms/FacturadorMasmasApplication/protocol/openid-connect/certs
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/FacturadorMasmasApplication/protocol/openid-connect/certs
+  #Indica que no quiero que salga el banner de Spring en consola
   main:
     banner-mode: off
-  #Configuracion de MySQL
+  #Configuracion para Data Base
   datasource:
     url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
     password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 1
     tomcat:
       max-wait: 20000
       max-active: 50
@@ -43,16 +81,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  #Configuracion de Spring Security
-  security:
-    user:
-      name: user
-      password: password
-#Configuracion de JWT
+
+#Constante JWT
 security:
   jwt:
     secret: thisIsASecrectMyFriend
-    issuer: Main
     #Este valor dice que la sesion dura dos dias (Para sacarlo "horas * 3600000")
     ttlMillis: 172800000
+    header: Authorization
+    prefix: Bearer
+
 ...

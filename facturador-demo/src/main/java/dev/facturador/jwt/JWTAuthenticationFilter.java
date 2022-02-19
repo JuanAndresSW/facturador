@@ -1,72 +1,94 @@
 package dev.facturador.jwt;
 
 
+import dev.facturador.dto.security.UsernamePasswordWithTimeoutAuthenticationToken;
 import dev.facturador.services.impl.CustomUserDetailsService;
 import dev.facturador.dto.security.CustomUserDetails;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JWTProvider jwtProvider;
+    private JWTUtil jwtProvider;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    @Value("${security.jwt.header}")
+    private String HEADER;
+    @Value("${security.jwt.prefix}")
+    private String PREFIX;
 
     /**
      * Metodo llamado para comprobar que el token sea valido
      * @param request Recupera la request con la Api de HttpServlet
      * @param response Necesario para recibir marcar el filtro
      * @param filterChain Envia que ha sucedido en el filtro
-     * @throws ServletException Excepcion que puede arrojar sendError
      * @throws IOException Excepcion que puede arrojar sendError
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+            throws IOException {
 
         try{
-        String token = this.getJWTOfTheRequest(request);
-        //Entra si el token es valido
-        if(StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
-            //obtenemos el username del token
-            String username = jwtProvider.getValue(token);
-
-            //Comprueba si autentico el username
-            CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
-            var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
+            var token = this.getJWTOfTheRequest(request);
+            if(!jwtProvider.validateToken(token)) {
+                SecurityContextHolder.clearContext();
+            }
+            if(jwtProvider.validateToken(token)) {
+                var auth = this.setUpSpringAuthentication(jwtProvider.getValue(token));
+                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+            filterChain.doFilter(request, response);
         }catch (Exception e){
-            log.error("Fail, el metodo doFilter" + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
         }
-        filterChain.doFilter(request, response);
+
     }
 
     /**
-     *  Recupera el Token recibido en la Request
+     * Metodo para autenticarnos dentro del flujo de Spring
+     * @param username Recibe el username para cargar el Usuario y su rol
+     * @return Retorna un usuario autenticado
+     */
+    private UsernamePasswordWithTimeoutAuthenticationToken setUpSpringAuthentication(String username) {
+        var userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordWithTimeoutAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+    }
+
+    /**
+     *  Recupera el Bearer Token recibido en la Header de la request
      * @param request Recupera la request con la Api HttpServlet
-     * @return
+     * @return Si esta bien retorna el Token sin Bearer
      */
     private String getJWTOfTheRequest(HttpServletRequest request) {
         //Recupera el Token almacenado en el Header
-        String bearerToken = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.replace("Bearer", "");
+        var bearerToken = request.getHeader(HEADER);
+        if(this.tokenExists(bearerToken)) {
+            return bearerToken.replace("Bearer ", "");
         }
         return null;
+    }
+
+    /**
+     * Logica para verificacion dle otken
+     * @param token token ah comprobar
+     */
+    private boolean tokenExists(String token) {
+        return StringUtils.hasText(token) && token.startsWith(PREFIX);
     }
 }

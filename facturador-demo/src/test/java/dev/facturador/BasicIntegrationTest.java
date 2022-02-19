@@ -1,6 +1,7 @@
-import dev.facturador.FacturadorMasMasApplication;
+package dev.facturador;
+
 import dev.facturador.dto.security.CustomUserDetails;
-import dev.facturador.jwt.JWTProvider;
+import dev.facturador.jwt.JWTUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
@@ -32,7 +33,7 @@ public class BasicIntegrationTest {
     protected URL base;
 
     @Autowired
-    private JWTProvider provider;
+    private JWTUtil provider;
     @Autowired
     private AuthenticationManager authenticationManager;
     private EntityManager entiy;
@@ -40,7 +41,7 @@ public class BasicIntegrationTest {
     @Test
     public void whenLoggedUserRequestHomePage_TheSuccess()
             throws IllegalStateException, IOException {
-        this.base = new URL("http", "localhost", 8080, "", null);
+        this.base = new URL("http", "localhost", 8001, "", null);
         this.restTemplate = new TestRestTemplate("user", "password", TestRestTemplate.HttpClientOption.ENABLE_REDIRECTS);
         ResponseEntity<String> response = restTemplate.getForEntity(base.toString(), String.class);
 

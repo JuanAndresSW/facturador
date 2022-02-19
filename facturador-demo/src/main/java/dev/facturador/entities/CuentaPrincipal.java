@@ -3,8 +3,9 @@ package dev.facturador.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -15,7 +16,7 @@ public final class CuentaPrincipal {
     @Id
     @Column(name="id_cuenta_principal")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idMainAccount;
+    private long mainAccountId;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="id_comerciante", nullable = false, unique = true)
@@ -25,23 +26,25 @@ public final class CuentaPrincipal {
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
     private Usuarios userMainAccount;
 
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime createDate;
+
     @JsonBackReference
-    @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.ALL)
-    private List<CuentaSecundaria> secondaryAccounts;
+    @OneToMany(mappedBy = "secondaryAccountOwner", cascade = CascadeType.ALL)
+    private Collection<CuentaSecundaria> mainAccountChilds;
 
     private void addSecondaryAccount(CuentaSecundaria element){
-        if(secondaryAccounts == null) secondaryAccounts = new LinkedList<>();
-        this.secondaryAccounts.add(element);
+        if(mainAccountChilds == null) mainAccountChilds = new LinkedList<>();
+        this.mainAccountChilds.add(element);
     }
 
-    //El ToString lo genero sin lombok porque el lombok tomaria el atributo de la relacion bi-direccional
-    //Generando un bucle de toString que da una excepcion
     @Override
     public String toString() {
         return "CuentaPrincipal{" +
-                "idMainAccount=" + idMainAccount +
+                "mainAccountId=" + mainAccountId +
                 ", accountOwner=" + accountOwner +
-                ", mainAccountDetails=" + userMainAccount +
+                ", userMainAccount=" + userMainAccount +
+                ", createDate=" + createDate +
                 '}';
     }
 }

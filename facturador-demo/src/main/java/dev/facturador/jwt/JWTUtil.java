@@ -2,12 +2,16 @@ package dev.facturador.jwt;
 
 import dev.facturador.dto.security.CustomUserDetails;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.impl.DefaultClock;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
 
@@ -19,16 +23,16 @@ import java.util.Date;
  */
 @Component
 @Slf4j
-public class JWTProvider {
+@RequiredArgsConstructor
+public class JWTUtil implements Serializable {
+
+    private static final long serialVersionUID = -3301605591108950415L;
 
     @Value("${security.jwt.secret}")
     private String key;
-
-    @Value("${security.jwt.issuer}")
-    private String issuer;
-
     @Value("${security.jwt.ttlMillis}")
     private long ttlMillis;
+    private Clock clock = DefaultClock.INSTANCE;
 
     /**
      * Genera el token
@@ -36,37 +40,31 @@ public class JWTProvider {
      * @return
      */
     public String generateToken(CustomUserDetails userDetails) {
-        //La forma de autenticacion
         String subject = userDetails.getUsername();
         String id = String.valueOf(userDetails.getId());
-        //El Token se crea con el Algoritmo HS256
-        var signatureAlgorithm = SignatureAlgorithm.HS256;
-        long nowMillis = System.currentTimeMillis();
-
-        //Transforma la Key byte en Base64, para usar la ApiKey
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
-        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-
+        String rol = userDetails.getAuthorities().stream().toList().get(0).getAuthority();
         //Compacta el JWT a un String seguro
         return Jwts.builder()
-                .setId(id).setIssuedAt(new Date(nowMillis)).setSubject(subject)
-                .claim("ROL", userDetails.getAuthorities().stream().toList().get(0).getAuthority())
-                //Este campo indica quien creo el token en este caso no lo manejamo pero lo agrego igual
-                .setIssuer(issuer).signWith(SignatureAlgorithm.HS256, signingKey)
-                .setExpiration(generateExpirationDate(nowMillis)).compact();
+                .setId(id)
+                .setIssuedAt(clock.now())
+                .setSubject(subject)
+                .claim("ROL", rol)
+                .setExpiration(this.calculateExpirationDate(clock.now()))
+                .signWith(SignatureAlgorithm.HS256, convertSecrectToKey()).compact();
+    }
+
+    public Key convertSecrectToKey(){
+        var signatureAlgorithm = SignatureAlgorithm.HS256;
+        byte[] keyByte = DatatypeConverter.parseBase64Binary(key);
+        return new SecretKeySpec(keyByte, signatureAlgorithm.getJcaName());
     }
 
     /**
      * Genera el timepo de expiracion del token
-     * @param nowMillis Recupera el milisegundo capturado ahora
      * @return
      */
-    public Date generateExpirationDate(long nowMillis){
-        long expMillis = 0;
-        if (ttlMillis >= 0) {
-            expMillis = nowMillis + ttlMillis;
-        }
-        return new Date(expMillis);
+    public Date calculateExpirationDate(Date created){
+        return new Date(created.getTime() +ttlMillis);
     }
 
     /**
@@ -75,8 +73,7 @@ public class JWTProvider {
      * @return
      */
     public String getValue(String jwt) {
-        // Recupera el JWT, si no es correcto arroja una excepcion
-        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
+        return Jwts.parser().setSigningKey(convertSecrectToKey()).parseClaimsJws(jwt)
                 .getBody().getSubject();
     }
 
@@ -86,8 +83,7 @@ public class JWTProvider {
      * @return
      */
     public String getRol(String jwt) {
-        // Recupera el JWT, si no es correcto arroja una excepcion
-        return (String) Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
+        return (String) Jwts.parser().setSigningKey(convertSecrectToKey()).parseClaimsJws(jwt)
                 .getBody().get("ROL");
     }
 
@@ -98,24 +94,23 @@ public class JWTProvider {
      * @return
      */
     public String getKey(String jwt) {
-        // Recupera el JWT, si no es correcto arroja una excepcion
-        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
+        return Jwts.parser().setSigningKey(convertSecrectToKey()).parseClaimsJws(jwt)
                 .getBody().getId();
     }
 
     /**
-     * Comprueba qeu el token no halla expirado
+     * Comprueba si el token ha expirado
      * @param jwt Token recibido
      * @return
      */
     public Boolean hasTokenExpirated(String jwt){
-        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key)).parseClaimsJws(jwt)
-                .getBody().getExpiration().before(new Date());
+        return Jwts.parser().setSigningKey(convertSecrectToKey()).parseClaimsJws(jwt)
+                .getBody().getExpiration().before(clock.now());
     }
 
     /**
      * Comprueba si el token arroja una excepcion
-     * En caso de excepcion se informa en el log que es lo qeu falla
+     * En caso de excepcion se informa en el log que es lo que falla
      * @param token Token recibido
      * @return True si es correcto, false en caso de excepcion
      */
@@ -135,5 +130,23 @@ public class JWTProvider {
             log.error("fail en la firma");
         }
         return false;
+    }
+
+    public boolean validatTokenWith(String token, CustomUserDetails userDetails){
+        final String username = this.getValue(token);
+        return (username.equals(userDetails.getUsername()) && !hasTokenExpirated(token));
+    }
+
+    public String refreshToken(String token){
+        final Date createdDate = clock.now();
+        final Date expirationDate = this.calculateExpirationDate(createdDate);
+
+        return Jwts.builder()
+                .setId(this.getKey(token))
+                .setIssuedAt(createdDate)
+                .setSubject(this.getValue(token))
+                .claim("ROL", this.getRol(token))
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, convertSecrectToKey()).compact();
     }
 }

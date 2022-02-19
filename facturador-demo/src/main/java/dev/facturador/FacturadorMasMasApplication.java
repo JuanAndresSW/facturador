@@ -1,15 +1,14 @@
 package dev.facturador;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@Slf4j
 public class FacturadorMasMasApplication {
-	/**
-	 * Inicio Spring boot
-	 * @param args
-	 */
-	public static void main(String[] args) {
+
+	public static void main(String... args) {
 		SpringApplication.run(FacturadorMasMasApplication.class, args);
 	}
 }
