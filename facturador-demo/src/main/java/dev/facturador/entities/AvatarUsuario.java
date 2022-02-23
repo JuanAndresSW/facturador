@@ -8,16 +8,19 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name="avatar_usuario")
-@NoArgsConstructor @Getter @Setter @ToString
+@Table(name = "avatar_usuario")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class AvatarUsuario {
 
     @Id
-    @Column(name="id_avatar")
+    @Column(name = "id_avatar")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userAvatarId;
 
-    @Column(name="avatar", nullable = false)
+    @Column(name = "avatar", nullable = false)
     private String avatar;
 
     @OneToOne(cascade = CascadeType.ALL)

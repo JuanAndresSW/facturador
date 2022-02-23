@@ -3,7 +3,6 @@ package dev.facturador.services.impl;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.repository.ICuentaPrincipalRepository;
 import dev.facturador.services.IMainAccountService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,12 +27,13 @@ public class MainAccountService implements IMainAccountService {
 
     /**
      * Devuelve una cuenta principal relacionada con X Username
+     *
      * @param username Username que deberia estar relacionado
      */
     @Override
     public CuentaPrincipal getMainAccountByUsername(String username) {
         Optional<CuentaPrincipal> mainAccount = repository.findByUsername(username);
-        if(mainAccount.isEmpty()){
+        if (mainAccount.isEmpty()) {
             return null;
         }
         return mainAccount.get();

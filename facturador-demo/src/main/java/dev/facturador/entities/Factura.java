@@ -1,13 +1,20 @@
 package dev.facturador.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "factura")
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class Factura {
 
     @Id
@@ -33,7 +40,7 @@ public final class Factura {
     @Column(name = "iva", nullable = false, length = 1)
     private String vatDetail;
 
-    @Column(name = "forma_pago",length = 255, nullable = false)
+    @Column(name = "forma_pago", length = 255, nullable = false)
     private String wayToPay;
 
 }

@@ -1,13 +1,16 @@
 package dev.facturador.entities;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "doc_inventado")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public final class DocInventado implements Serializable {
     public static final long serialVersinUID = 1L;
 
@@ -28,7 +31,10 @@ public final class DocInventado implements Serializable {
 
 @Embeddable
 @NoArgsConstructor
-@Getter @Setter @ToString @EqualsAndHashCode
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 class DocInventadoPK implements Serializable {
     public static final long serialVersinUID = 1L;
 

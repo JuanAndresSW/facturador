@@ -2,13 +2,17 @@ package dev.facturador.entities;
 
 import dev.facturador.entities.enums.Flujo;
 import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "doc_inicio")
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class DocInicio implements Serializable {
     public static final long serialVersinUID = 1L;
 
@@ -29,8 +33,11 @@ public final class DocInicio implements Serializable {
 
 @Embeddable
 @NoArgsConstructor
-@Getter @Setter @EqualsAndHashCode @ToString
-class DocInicioPK implements Serializable{
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+class DocInicioPK implements Serializable {
     public static final long serialVersinUID = 1L;
 
     @Column(name = "id_punto_venta_emisor")

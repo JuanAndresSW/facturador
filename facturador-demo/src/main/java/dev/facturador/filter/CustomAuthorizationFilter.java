@@ -2,7 +2,6 @@ package dev.facturador.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.util.JWTUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +25,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private JWTUtil jwt;
 
-    public CustomAuthorizationFilter(JWTUtil jwt){
+    public CustomAuthorizationFilter(JWTUtil jwt) {
         this.jwt = jwt;
     }
 
@@ -34,19 +33,19 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         //Si es algunas de estas rutas no necesita autorizacion solo esta intentando iniciar o registrarse
-        if (checkIfAuthorizationIsNotRequired(request)){
+        if (checkIfAuthorizationIsNotRequired(request)) {
             filterChain.doFilter(request, response);
         }
         //De cualquier otra ruta que no sean esas si se comprueba la autorizacion
         if (checkIfAuthorizationIsRequired(request)) {
             String authHeader = request.getHeader(AUTHORIZATION);
-            if(jwt.verifyAuthToken(authHeader)){
+            if (jwt.verifyAuthToken(authHeader)) {
                 try {
                     String token = authHeader.substring("Bearer ".length());
                     var authUser = tokenAuthorizedUser(token, jwt);
                     SecurityContextHolder.getContext().setAuthentication(authUser);
                     filterChain.doFilter(request, response);
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     //Propago el mensaje de error
                     log.error("Error logging in: {}", ex.getMessage());
                     response.setHeader("error", ex.getMessage());

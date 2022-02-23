@@ -1,28 +1,32 @@
 package dev.facturador.controllers;
 
-import dev.facturador.dto.response.*;
 import dev.facturador.dto.LoginDto;
-
-import static dev.facturador.util.SignUtil.createLoginResponse;
-import static dev.facturador.util.SignUtil.getDataFromHeader;
-import static dev.facturador.util.WebClientUtil.*;
-import static dev.facturador.util.WebClientUtil.buildValueLogin;
-
+import dev.facturador.dto.response.IApiResponse;
+import dev.facturador.dto.response.LoginResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.validation.Valid;
 
+import static dev.facturador.util.SignInUtil.createLoginResponse;
+import static dev.facturador.util.SignInUtil.getDataFromHeader;
+import static dev.facturador.util.WebClientUtil.buildValueLogin;
+import static dev.facturador.util.WebClientUtil.responseHeadersToLogin;
+
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/auth")
-public class AuthController {
+public class SignInController {
     @Autowired
-    private WebClient client; //La inicializacion de esto se encuentra en FacturadorApplication
+    private WebClient webClient; //La inicializacion de esto se encuentra en FacturadorApplication
 
     /**
      * ---IMPORTANTE---
@@ -34,9 +38,9 @@ public class AuthController {
      * Y la respuesta la recibo en los headers
      */
     @PostMapping("/login")
-    public HttpEntity<? extends IApiResponse> login(@Valid @RequestBody LoginDto user) {
+    public HttpEntity<? extends IApiResponse> login(@Valid @RequestBody LoginDto tryLogin) {
         //Recupero los header de la respuesta recibida
-        var headers = responseHeadersToLogin(buildValueLogin(user.usernameOrEmail(), user.password()), client);
+        var headers = responseHeadersToLogin(buildValueLogin(tryLogin.usernameOrEmail(), tryLogin.password()), webClient);
         var data = getDataFromHeader(headers);
         LoginResponse response = createLoginResponse(headers, data);
 
@@ -45,10 +49,11 @@ public class AuthController {
 
     /**
      * Comprueba token al iniciar App
+     *
      * @return Si llega aqui es que se autorizo
      */
     @PostMapping()
-    public HttpEntity<String> authenticateToken(){
+    public HttpEntity<String> authenticateToken() {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 

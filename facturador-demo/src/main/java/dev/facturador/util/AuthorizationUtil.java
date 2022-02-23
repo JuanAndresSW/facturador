@@ -10,7 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
 
 
 @Component
@@ -20,12 +21,13 @@ public final class AuthorizationUtil {
     /**
      * Este metodo crea el UsernamePasswordAuthenticationToken este es una clase proporcionada por Spring
      * Este crea un usuario segun los datos del Token
+     *
      * @param token Token con los datos
-     * @param jwt Utileria para llamar metodos del JWT
+     * @param jwt   Utileria para llamar metodos del JWT
      */
-    public static UsernamePasswordAuthenticationToken tokenAuthorizedUser(String token, JWTUtil jwt){
+    public static UsernamePasswordAuthenticationToken tokenAuthorizedUser(String token, JWTUtil jwt) {
         JWTVerifier verifier = JWT.require(jwt.signKey()).build();
-        DecodedJWT decodedJWT= verifier.verify(token);
+        DecodedJWT decodedJWT = verifier.verify(token);
 
         String username = jwt.getSubject(decodedJWT);
         String rol = jwt.getClaimRol(decodedJWT);
@@ -37,14 +39,14 @@ public final class AuthorizationUtil {
     /**
      * Logica para saber si no es necesario el filtro
      */
-    public static boolean checkIfAuthorizationIsNotRequired(HttpServletRequest request){
+    public static boolean checkIfAuthorizationIsNotRequired(HttpServletRequest request) {
         return request.getServletPath().equals("/login") || request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/main/signup");
     }
 
     /**
      * Logica para saber si es necesario el filtro
      */
-    public static boolean checkIfAuthorizationIsRequired(HttpServletRequest request){
+    public static boolean checkIfAuthorizationIsRequired(HttpServletRequest request) {
         return !request.getServletPath().equals("/login") && !request.getServletPath().equals("/api/auth/login") && !request.getServletPath().equals("/api/auth/main/signup");
     }
 

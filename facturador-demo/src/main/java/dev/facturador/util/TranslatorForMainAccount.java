@@ -19,9 +19,10 @@ public class TranslatorForMainAccount {
 
     /**
      * Traduce una un dto a una cuenta principal
+     *
      * @return retorna una cuenta principal
      */
-    public static CuentaPrincipal translatorAccountToMainAccount(RegisterDto account){
+    public static CuentaPrincipal translatorAccountToMainAccount(RegisterDto account) {
         var mainAccount = new CuentaPrincipal();
 
         mainAccount.setAccountOwner(new Comerciante(account.getTraderDto().code(), account.getTraderDto().grossIncome(), account.getTraderDto().businessName()));
@@ -38,10 +39,11 @@ public class TranslatorForMainAccount {
 
     /**
      * Hace el hash de la contraseña
+     *
      * @param account Dto se traduce a una cuenta principal con el metodo translatorAccountToMainAccount
      * @return retorna la cuenta principal con el hash echo
      */
-    public static CuentaPrincipal mainAccountPrepareForSave(RegisterDto account){
+    public static CuentaPrincipal mainAccountPrepareForSave(RegisterDto account) {
         var mainAccount = translatorAccountToMainAccount(account);
         var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         mainAccount.getUserMainAccount().setPassword(argon2.encode(mainAccount.getUserMainAccount().getPassword()));
@@ -50,17 +52,18 @@ public class TranslatorForMainAccount {
 
     /**
      * Logica para definir cual es el IVA
+     *
      * @param account Comprueba cual es el calor que contiene
      * @return retorna un Vat enum
      */
-    private static Vat defineVat(RegisterDto account){
-        if(account.getTraderDto().vatCategory().contains("Responsable")){
+    private static Vat defineVat(RegisterDto account) {
+        if (account.getTraderDto().vatCategory().contains("Responsable")) {
             return Vat.RESPONSABLE_INSCRIPTO;
         }
-        if(account.getTraderDto().vatCategory().contains("Monotributista")){
+        if (account.getTraderDto().vatCategory().contains("Monotributista")) {
             return Vat.MONOTRIBUTISTA;
         }
-        if(account.getTraderDto().vatCategory().contains("Sujeto")){
+        if (account.getTraderDto().vatCategory().contains("Sujeto")) {
             return Vat.SUJETO_EXENTO;
         }
         return null;
@@ -68,12 +71,13 @@ public class TranslatorForMainAccount {
 
     /**
      * Logica para decidir si tiene avatar o no tiene
+     *
      * @param account Comprueba que tenga
-     * @param user Usuario dueño del avatar si es que existe
+     * @param user    Usuario dueño del avatar si es que existe
      * @return retorna la asignacion del avatar
      */
-    private static AvatarUsuario defineIfHaveAvatar(RegisterDto account, Usuarios user){
-        if(!StringUtils.hasText(account.getUserDto().avatar())){
+    private static AvatarUsuario defineIfHaveAvatar(RegisterDto account, Usuarios user) {
+        if (!StringUtils.hasText(account.getUserDto().avatar())) {
             return null;
         }
         return new AvatarUsuario(account.getUserDto().avatar(), user);

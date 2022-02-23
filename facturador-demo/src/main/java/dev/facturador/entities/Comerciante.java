@@ -1,18 +1,23 @@
 package dev.facturador.entities;
 
 import dev.facturador.entities.enums.Vat;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Collection;
 
 @SuppressWarnings("ALL")
 @Entity
-@Table(name="comerciante")
-@NoArgsConstructor @Getter @Setter
+@Table(name = "comerciante")
+@NoArgsConstructor
+@Getter
+@Setter
 public final class Comerciante {
 
     @Id
-    @Column(name="id_comerciante")
+    @Column(name = "id_comerciante")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idTrader;
 
@@ -21,13 +26,13 @@ public final class Comerciante {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "iva", nullable = false,
-            columnDefinition="ENUM('Responsable Inscripto','Monotributista','Sujeto Exento')")
+            columnDefinition = "ENUM('Responsable Inscripto','Monotributista','Sujeto Exento')")
     private Vat vat;
 
     @Column(name = "ingresos_brutos", nullable = false, length = 15)
     private String grossIncome;
 
-    @Column(name = "nombre", nullable = false , length = 20)
+    @Column(name = "nombre", nullable = false, length = 20)
     private String name;
 
     @Column(name = "pasivo", nullable = false)

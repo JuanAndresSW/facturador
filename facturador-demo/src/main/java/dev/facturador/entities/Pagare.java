@@ -1,6 +1,9 @@
 package dev.facturador.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,7 +12,10 @@ import java.time.LocalDateTime;
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "pagare")
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class Pagare {
 
     @Id

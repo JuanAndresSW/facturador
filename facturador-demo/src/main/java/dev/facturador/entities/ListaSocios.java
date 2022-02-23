@@ -2,13 +2,16 @@ package dev.facturador.entities;
 
 import dev.facturador.entities.enums.EstadoSolicitud;
 import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "lista_socios")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public final class ListaSocios implements Serializable {
     public static final long serialVersinUID = 1L;
     @EmbeddedId
@@ -48,7 +51,10 @@ public final class ListaSocios implements Serializable {
 
 @Embeddable
 @NoArgsConstructor
-@Getter @Setter @ToString @EqualsAndHashCode
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 class ListaSociosPK implements Serializable {
     public static final long serialVersinUID = 1L;
 

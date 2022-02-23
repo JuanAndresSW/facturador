@@ -17,7 +17,7 @@ public class TraderService implements ITraderService {
      * Comprueba si ya existe el cuit/cuil en la base de datos
      */
     @Override
-    public boolean existsByUniqueKey(String uniqueKey) {
+    public boolean isExistsTraderByUniquekey(String uniqueKey) {
         return repository.existsByUniqueKey(uniqueKey);
     }
 

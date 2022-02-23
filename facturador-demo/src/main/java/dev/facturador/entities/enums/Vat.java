@@ -7,7 +7,7 @@ public enum Vat {
 
     private String nameVat;
 
-    private Vat(String nameVat){
+    private Vat(String nameVat) {
         this.nameVat = nameVat;
     }
 

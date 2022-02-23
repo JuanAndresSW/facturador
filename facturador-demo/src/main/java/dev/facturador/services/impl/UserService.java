@@ -27,7 +27,7 @@ public class UserService implements IUserService {
     @Override
     public Usuarios getUserByUsername(Usuarios user) {
         Optional<Usuarios> userDta = repository.findByUsername(user.getUsername());
-        if(userDta.isEmpty()){
+        if (userDta.isEmpty()) {
             return null;
         }
         return userDta.get();
@@ -44,11 +44,12 @@ public class UserService implements IUserService {
 
     /**
      * Comprueba si existe segun el username
+     *
      * @param username Nombre de usuario a comprobar si existe
      * @return true si existe false si no
      */
     @Override
-    public boolean existsByUsername(String username){
+    public boolean isExistsUserByUsername(String username) {
         return repository.existsByUsername(username);
     }
 
@@ -56,7 +57,7 @@ public class UserService implements IUserService {
      * Comprueba si existe un usuario con este email
      */
     @Override
-    public boolean existsByEmail(String email){
+    public boolean isExistsUserByEmail(String email) {
         return repository.existsByEmail(email);
     }
 

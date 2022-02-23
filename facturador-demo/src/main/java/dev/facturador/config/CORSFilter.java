@@ -18,6 +18,7 @@ public class CORSFilter implements Filter {
     /**
      * Metodo init necesario para el ciiclo de vida del filtro
      * Se ejecuta antes del contructor de CORSFilter (No necesito que haga nada)
+     *
      * @param filterConfig paremetro de cofiguracion del filtro
      * @throws ServletException posible excepcion
      */
@@ -27,11 +28,12 @@ public class CORSFilter implements Filter {
 
     /**
      * Crea el filtro de Cors
-     * @param request Intercepta la request
+     *
+     * @param request         Intercepta la request
      * @param servletResponse indica que envia una response y se castea para manejarlo con la APi HttpServlet
-     * @param filterChain crea el filtro
+     * @param filterChain     crea el filtro
      * @throws ServletException Puede enviar esta excepcion
-     * @throws IOException Puede enviar esta excepcion
+     * @throws IOException      Puede enviar esta excepcion
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {

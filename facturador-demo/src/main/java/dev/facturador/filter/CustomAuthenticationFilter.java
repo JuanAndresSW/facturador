@@ -1,11 +1,8 @@
 package dev.facturador.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import dev.facturador.dto.security.CustomUserDetails;
 import dev.facturador.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,7 +21,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private final AuthenticationManager authenticationManager;
     private JWTUtil jwt;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwt){
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwt) {
         this.authenticationManager = authenticationManager;
         this.jwt = jwt;
     }

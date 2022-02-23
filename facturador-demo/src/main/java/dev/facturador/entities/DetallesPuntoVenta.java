@@ -1,11 +1,18 @@
 package dev.facturador.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "detalles_punto_venta")
-@Setter @Getter @NoArgsConstructor @ToString
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString
 public final class DetallesPuntoVenta {
     @Id
     @Column(name = "id_detalles_punto_venta")

@@ -1,12 +1,19 @@
 package dev.facturador.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "punto_venta")
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class PuntoVenta {
 
     @Id
@@ -24,7 +31,7 @@ public final class PuntoVenta {
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_comerciante", nullable = false)
+    @JoinColumn(name = "id_comerciante", nullable = false)
     private Comerciante traderOwner;
 
 }

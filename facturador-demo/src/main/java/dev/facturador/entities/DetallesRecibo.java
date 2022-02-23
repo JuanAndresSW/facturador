@@ -1,13 +1,20 @@
 package dev.facturador.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "detalles_recibo")
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class DetallesRecibo {
 
     @Id
@@ -33,8 +40,6 @@ public final class DetallesRecibo {
      */
     @Column(name = "id_recibo_x", nullable = false)
     private int receiptX;
-
-
 
 
 }

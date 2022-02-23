@@ -23,7 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import javax.validation.Valid;
 import java.util.Date;
 
-import static dev.facturador.util.SignUtil.whetherExistsReturnMessage;
+import static dev.facturador.util.SignUpUtil.whenIndicesAreRepeatedReturnErrror;
 import static dev.facturador.util.TranslatorForMainAccount.mainAccountPrepareForSave;
 import static dev.facturador.util.WebClientUtil.buildValueLogin;
 import static dev.facturador.util.WebClientUtil.responseHeadersToLogin;
@@ -31,52 +31,53 @@ import static dev.facturador.util.WebClientUtil.responseHeadersToLogin;
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/auth")
-public class RegisterController {
+public class SignUpController {
     @Autowired
     private IMainAccountService serviceMainAccount;
     @Autowired
-    private WebClient client; //La inicializacion de esto se encuentra en FacturadorApplication
+    private WebClient webClient; //La inicializacion de esto se encuentra en FacturadorApplication
 
     @Autowired
-    private IUserService userService;
+    private IUserService serviceUser;
     @Autowired
-    private ITraderService traderService;
+    private ITraderService serviceTrader;
 
     /**
      * Registra la cuenta principal valida
      * Redirige el flujo de la request al login, recibe la respuesta de este
-     * @param account RegisterDto es el dto para el registro contiene usuario y comerciante
+     *
+     * @param tryRegister RegisterDto es el dto para el registro contiene usuario y comerciante
      * @return Retorna el Acces-Token y el Refresh-Token
      */
     @PostMapping("/main/signup")
-    public HttpEntity<? extends IApiResponse> singup(@Valid @RequestBody RegisterDto account) {
-        //Trae un mensage si es que hay datos repetidos
-        String message = whetherExistsReturnMessage(account, userService, traderService);
-        if(StringUtils.hasText(message)){
-            return  new ResponseEntity<>(new ErrorResponse(new Date(), message), HttpStatus.BAD_REQUEST);
+    public HttpEntity<? extends IApiResponse> singup(@Valid @RequestBody RegisterDto tryRegister) {
+        String message = whenIndicesAreRepeatedReturnErrror(tryRegister, serviceUser, serviceTrader);
+        if (StringUtils.hasText(message)) {
+            return new ResponseEntity<>(new ErrorResponse(new Date(), message), HttpStatus.BAD_REQUEST);
         }
 
-        var mainAccountRegistered = mainAccountPrepareForSave(account);
-        serviceMainAccount.register(mainAccountRegistered);
+        var mainAccountLogged = mainAccountPrepareForSave(tryRegister);
+        serviceMainAccount.register(mainAccountLogged);
 
         //Recupero los header de la respuesta recibida
         var headers = responseHeadersToLogin
-                (buildValueLogin(account.getUserDto().username(), account.getUserDto().password()), client);
+                (buildValueLogin(tryRegister.getUserDto().username(), tryRegister.getUserDto().password()), webClient);
 
         String accesToken = headers.get("Access-token").get(0);
-        String refresToken = headers.get("Refresh-token").get(0);
+        String refreshToken = headers.get("Refresh-token").get(0);
 
-        return new ResponseEntity<>(new RegisterResponse(accesToken, refresToken), HttpStatus.CREATED);
+        return new ResponseEntity<>(new RegisterResponse(accesToken, refreshToken), HttpStatus.CREATED);
     }
 
     /**
      * Registrar Cuenta Secundaria
      * No hay implementacion. Solo se sabe que solo usuario MAIN pueden hacer esto
+     *
      * @return
      */
-    @PostMapping("/secondaryAccounts")
+    @PostMapping("/secondary/signup")
     @PreAuthorize("MAIN")
-    public HttpEntity<? extends IApiResponse> registerSecondary(){
+    public HttpEntity<? extends IApiResponse> registerSecondary() {
         //No necesita implementacion por ahora
         return null;
     }

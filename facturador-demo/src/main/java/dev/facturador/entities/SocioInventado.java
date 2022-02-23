@@ -1,14 +1,20 @@
 package dev.facturador.entities;
 
 import dev.facturador.entities.enums.Vat;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "socio_inventado")
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class SocioInventado {
 
     @Id
@@ -28,7 +34,7 @@ public final class SocioInventado {
     @Column(name = "localidad", length = 20, nullable = false)
     private String lacation;
 
-    @Column(name = "cp", length = 10,nullable = false)
+    @Column(name = "cp", length = 10, nullable = false)
     private String cp;
 
     @Column(name = "iva", nullable = false,

@@ -1,7 +1,10 @@
 package dev.facturador.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -9,17 +12,19 @@ import java.util.LinkedList;
 
 @SuppressWarnings("ALL")
 @Entity
-@Table(name="cuenta_principal")
-@NoArgsConstructor @Getter @Setter
+@Table(name = "cuenta_principal")
+@NoArgsConstructor
+@Getter
+@Setter
 public final class CuentaPrincipal {
 
     @Id
-    @Column(name="id_cuenta_principal")
+    @Column(name = "id_cuenta_principal")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long mainAccountId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_comerciante", nullable = false, unique = true)
+    @JoinColumn(name = "id_comerciante", nullable = false, unique = true)
     private Comerciante accountOwner;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -33,8 +38,8 @@ public final class CuentaPrincipal {
     @OneToMany(mappedBy = "secondaryAccountOwner", cascade = CascadeType.ALL)
     private Collection<CuentaSecundaria> mainAccountChilds;
 
-    private void addSecondaryAccount(CuentaSecundaria element){
-        if(mainAccountChilds == null) mainAccountChilds = new LinkedList<>();
+    private void addSecondaryAccount(CuentaSecundaria element) {
+        if (mainAccountChilds == null) mainAccountChilds = new LinkedList<>();
         this.mainAccountChilds.add(element);
     }
 

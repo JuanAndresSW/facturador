@@ -3,13 +3,16 @@ package dev.facturador.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "operacion_real")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public final class OperacionReal implements Serializable {
     public static final long serialVersinUID = 1L;
     @Id
