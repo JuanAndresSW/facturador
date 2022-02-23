@@ -28,7 +28,8 @@ public final class DocInicio implements Serializable {
 }
 
 @Embeddable
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter @Setter @EqualsAndHashCode @ToString
 class DocInicioPK implements Serializable{
     public static final long serialVersinUID = 1L;
 

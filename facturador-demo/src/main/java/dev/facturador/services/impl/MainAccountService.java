@@ -18,10 +18,8 @@ public class MainAccountService implements IMainAccountService {
     private ICuentaPrincipalRepository repository;
 
     /**
-     * Registra una cuenta principal en la base de datos
-     * Con la persistencia ne cascada se guarda las entidades:
-     * Cuenta Principal, Comerciante, Usuario y Avatar Usuario(si existe)
-     * @param mainAccount Cuenta principal a guardar
+     * Salva una cuenta principal en la base de datos
+     * (esta tambien guarda Usuario[Junto con el Avatar si existe] y Comerciante)
      */
     @Override
     public void register(CuentaPrincipal mainAccount) {
@@ -29,9 +27,8 @@ public class MainAccountService implements IMainAccountService {
     }
 
     /**
-     * Busca si este username esta relacionado con una cuenta principal
-     * @param username Username a comprobar
-     * @return Devuelve una cuenta principal si existe
+     * Devuelve una cuenta principal relacionada con X Username
+     * @param username Username que deberia estar relacionado
      */
     @Override
     public CuentaPrincipal getMainAccountByUsername(String username) {

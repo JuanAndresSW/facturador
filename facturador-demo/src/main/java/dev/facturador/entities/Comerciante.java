@@ -30,6 +30,12 @@ public final class Comerciante {
     @Column(name = "nombre", nullable = false , length = 20)
     private String name;
 
+    @Column(name = "pasivo", nullable = false)
+    private int passive;
+
+    @Column(name = "activo", nullable = false)
+    private int active;
+
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
     private Collection<PuntoVenta> pointOfSaleOutlets;
 

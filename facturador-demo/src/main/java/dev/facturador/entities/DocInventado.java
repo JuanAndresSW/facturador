@@ -27,7 +27,8 @@ public final class DocInventado implements Serializable {
 }
 
 @Embeddable
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter @Setter @ToString @EqualsAndHashCode
 class DocInventadoPK implements Serializable {
     public static final long serialVersinUID = 1L;
 

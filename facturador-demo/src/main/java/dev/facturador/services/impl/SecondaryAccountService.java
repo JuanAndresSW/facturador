@@ -18,9 +18,8 @@ public class SecondaryAccountService implements ISecondaryAccountService {
     private ICuentaSecundariaRepository repository;
 
     /**
-     * Busca si este username esta relacionado con una cuenta secundaria
-     * @param username Username a comprobar
-     * @return Devuelve una cuenta secundaria si existe
+     * Devuelve una cuenta secundaria relacionada con X Username
+     * @param username Username que deberia estar relacionado
      */
     @Override
     public CuentaSecundaria findSecondaryAccountByUsername(String username) {

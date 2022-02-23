@@ -3,11 +3,13 @@ package dev.facturador.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="avatar_usuario")
-@NoArgsConstructor @Getter @Setter
+@NoArgsConstructor @Getter @Setter @ToString
 public final class AvatarUsuario {
 
     @Id

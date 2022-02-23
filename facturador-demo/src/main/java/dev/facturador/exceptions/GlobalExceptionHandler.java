@@ -1,6 +1,6 @@
 package dev.facturador.exceptions;
 
-import dev.facturador.dto.ErrorDetailsDto;
+import dev.facturador.dto.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,13 +23,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Maneja la excepcion de tipo ConstraintViolationException
-     *
-     * @param ex Recibe la excepcion ConstraintViolationException
-     * @return Retorna el dto ErrorDetails y envia codigo 400
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public HttpEntity<ErrorDetailsDto> handler(ConstraintViolationException ex){
-        ErrorDetailsDto errorDetalles = new ErrorDetailsDto(new Date(), ex.getMessage(), String.valueOf(ex.getCause()));
+    public HttpEntity<ErrorResponse> handler(ConstraintViolationException ex){
+        ErrorResponse errorDetalles = new ErrorResponse(new Date(), ex.getMessage(), String.valueOf(ex.getCause()));
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 
@@ -41,8 +38,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return Retorna el dto ErrorDetails y envia codigo 400
      */
     @ExceptionHandler(Exception.class)
-    public HttpEntity<ErrorDetailsDto> hanfleGenericException(Exception exception, WebRequest webRequest){
-        ErrorDetailsDto errorDetalles = new ErrorDetailsDto(new Date(),exception.getMessage(), webRequest.getDescription(false));
+    public HttpEntity<ErrorResponse> hanfleGenericException(Exception exception, WebRequest webRequest){
+        ErrorResponse errorDetalles = new ErrorResponse(new Date(),exception.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 
@@ -54,8 +51,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return Retorna el dto ErrorDetails y envia codigo 404
      */
     @ExceptionHandler(RuntimeException.class)
-    public HttpEntity<ErrorDetailsDto> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest){
-        ErrorDetailsDto errorDetalles = new ErrorDetailsDto(new Date(),exception.getMessage(), webRequest.getDescription(false), exception.getCause().getMessage());
+    public HttpEntity<ErrorResponse> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest){
+        ErrorResponse errorDetalles = new ErrorResponse(new Date(),exception.getMessage(), exception.getLocalizedMessage());
         return new ResponseEntity<>(errorDetalles, HttpStatus.NOT_FOUND);
     }
 

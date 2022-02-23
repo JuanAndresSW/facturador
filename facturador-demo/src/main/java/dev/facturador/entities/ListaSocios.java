@@ -47,7 +47,8 @@ public final class ListaSocios implements Serializable {
 }
 
 @Embeddable
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter @Setter @ToString @EqualsAndHashCode
 class ListaSociosPK implements Serializable {
     public static final long serialVersinUID = 1L;
 

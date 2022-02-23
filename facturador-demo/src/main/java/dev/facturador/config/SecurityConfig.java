@@ -1,21 +1,19 @@
 package dev.facturador.config;
 
-
-import dev.facturador.dto.security.UsernamePasswordWithTimeoutAuthenticationFilter;
-import dev.facturador.jwt.JWTAuthenticationFilter;
-import dev.facturador.jwt.JWTEntryPoint;
+import dev.facturador.filter.CustomAuthenticationFilter;
+import dev.facturador.filter.CustomAuthorizationFilter;
 import dev.facturador.services.impl.CustomUserDetailsService;
+import dev.facturador.util.JWTUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -23,21 +21,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, proxyTargetClass = true)
+
+@Configuration @EnableWebSecurity @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JWTEntryPoint jwtEntryPoint;
-    @Autowired
     private CustomUserDetailsService userDetailsService;
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/webjars/**");
-    }
-
 
     /**
      * Configura la seguridad de las peticiones Http
@@ -46,26 +38,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //Desactivo el Cross-site Request Forgery (Eso sirve para evitar falcificacion de formularios)
+        //Desactivo el crsf y las sesiones agrego la politica de Session Stateless
         http.csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and()
-                //No guardo Cookies, ni sesiones
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-                //Todas las demas request se autentican (Por ahora...)
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //Autorizacion de las request
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated();
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordWithTimeoutAuthenticationFilter.class);
+        //Filtro de Autenticacion esta presenta pero lo que nos importa se llama solo en el login
+        http.addFilter(new CustomAuthenticationFilter(this.authenticationManagerBean(), jwtUtil()));
+        //Se llame al filtro de autorizacion antes de todas las request
+        http.addFilterBefore(new CustomAuthorizationFilter(jwtUtil()), UsernamePasswordAuthenticationFilter.class);
     }
 
-
-    /**
-     * Indico la instancia de UserDetails que va a manejar el AuthenticationManagerBuilder
-     * tambien indico cual es el encriptador de contraseñas que estoy usando
-     * @param auth es el AuthenticationManagerBuilder a cofigurar
-     * @throws Exception por si envia alguna excepcion
-     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
@@ -78,8 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JWTAuthenticationFilter jwtAuthenticationFilter(){
-        return new JWTAuthenticationFilter();
+    public JWTUtil jwtUtil(){
+        return new JWTUtil();
     }
 
     @Bean

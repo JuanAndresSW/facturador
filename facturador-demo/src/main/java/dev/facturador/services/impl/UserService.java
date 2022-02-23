@@ -1,19 +1,13 @@
 package dev.facturador.services.impl;
 
-import dev.facturador.dto.ErrorDetailsDto;
 import dev.facturador.dto.LoginDto;
-import dev.facturador.dto.RegisterDto;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IUserRepository;
 import dev.facturador.services.IUserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -28,9 +22,7 @@ public class UserService implements IUserService {
     private IUserRepository repository;
 
     /**
-     * Busca un Usuario segun el username de otro
-     * @param user Usuario del que se sacara el username
-     * @return
+     * Busca un Usuario segun el username de otro Usuario
      */
     @Override
     public Usuarios getUserByUsername(Usuarios user) {
@@ -42,13 +34,11 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Retorna un usuario segun las credenciales indice (username o email cualquiera)
-     * @param user Dto del login con un username o email
-     * @return
+     * Busca un usuario segun las credenciales pueden ser UsernameOrEmail y la contraseña
      */
     @Override
     public Optional<Usuarios> getUserWithCrdentials(LoginDto user) {
-        Optional<Usuarios> userDta = repository.findByUsernameOrEmail(user.getUsernameOrEmail(), user.getUsernameOrEmail());
+        Optional<Usuarios> userDta = repository.findByUsernameOrEmail(user.usernameOrEmail(), user.usernameOrEmail());
         return userDta;
     }
 
@@ -63,9 +53,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Comprueba si existe segun el email
-     * @param email email proporcionado
-     * @return true si existe false si no
+     * Comprueba si existe un usuario con este email
      */
     @Override
     public boolean existsByEmail(String email){

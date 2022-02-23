@@ -6,12 +6,16 @@ import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.entities.enums.Vat;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+
 @Component
-public class JSONTranslatorForMainAccount {
+@RequiredArgsConstructor
+public class TranslatorForMainAccount {
 
     /**
      * Traduce una un dto a una cuenta principal
@@ -20,15 +24,15 @@ public class JSONTranslatorForMainAccount {
     public static CuentaPrincipal translatorAccountToMainAccount(RegisterDto account){
         var mainAccount = new CuentaPrincipal();
 
-        mainAccount.setAccountOwner(new Comerciante
-                (account.getTraderDto().getCode(), account.getTraderDto().getGrossIncome(), account.getTraderDto().getBusinessName()));
+        mainAccount.setAccountOwner(new Comerciante(account.getTraderDto().code(), account.getTraderDto().grossIncome(), account.getTraderDto().businessName()));
+        mainAccount.setUserMainAccount(new Usuarios(account.getUserDto().username(), account.getUserDto().password(), account.getUserDto().email()));
 
         mainAccount.getAccountOwner().setVat(defineVat(account));
+        mainAccount.getUserMainAccount().setAvatarUser(defineIfHaveAvatar(account, mainAccount.getUserMainAccount()));
+        mainAccount.getAccountOwner().setActive(0);
+        mainAccount.getAccountOwner().setPassive(0);
+        mainAccount.setCreateDate(LocalDateTime.now());
 
-        mainAccount.setUserMainAccount(new Usuarios
-                (account.getUserDto().getUsername(), account.getUserDto().getPassword(), account.getUserDto().getEmail()));
-
-        mainAccount.getUserMainAccount().setAvatarUser(asignAvtar(account, mainAccount.getUserMainAccount()));
         return mainAccount;
     }
 
@@ -50,13 +54,13 @@ public class JSONTranslatorForMainAccount {
      * @return retorna un Vat enum
      */
     private static Vat defineVat(RegisterDto account){
-        if(account.getTraderDto().getVatCategory().contains("Responsable")){
+        if(account.getTraderDto().vatCategory().contains("Responsable")){
             return Vat.RESPONSABLE_INSCRIPTO;
         }
-        if(account.getTraderDto().getVatCategory().contains("Monotributista")){
+        if(account.getTraderDto().vatCategory().contains("Monotributista")){
             return Vat.MONOTRIBUTISTA;
         }
-        if(account.getTraderDto().getVatCategory().contains("Sujeto")){
+        if(account.getTraderDto().vatCategory().contains("Sujeto")){
             return Vat.SUJETO_EXENTO;
         }
         return null;
@@ -68,10 +72,10 @@ public class JSONTranslatorForMainAccount {
      * @param user Usuario dueño del avatar si es que existe
      * @return retorna la asignacion del avatar
      */
-    private static AvatarUsuario asignAvtar(RegisterDto account, Usuarios user){
-        if(!StringUtils.hasText(account.getUserDto().getAvatar())){
+    private static AvatarUsuario defineIfHaveAvatar(RegisterDto account, Usuarios user){
+        if(!StringUtils.hasText(account.getUserDto().avatar())){
             return null;
         }
-        return new AvatarUsuario(account.getUserDto().getAvatar(), user);
+        return new AvatarUsuario(account.getUserDto().avatar(), user);
     }
 }
