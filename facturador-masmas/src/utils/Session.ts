@@ -21,12 +21,13 @@ export default class Session {
     sessionStorage.setItem("active", active.toString());
     sessionStorage.setItem("passive", passive.toString());
   }
-  
-  /** Evalúa si existe una sesión iniciada sin comprobar la legitimidad del token.*/
-  public static isAuthenticated(): boolean {
-    const cookieArray = decodeURIComponent(document.cookie).split("; ");
-    const token = cookieArray[0].substring("session=".length);
-    return /^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token);
+
+  /**
+   * Establece la imagen de avatar de usuario en las cookies.
+   * @param usv 
+   */
+  public static setAvatar(usv: string):void {
+    localStorage.setItem('avatar', usv);
   }
 
   /** Borra la sesión.*/
@@ -41,24 +42,39 @@ export default class Session {
 
   //GETTERS
 
+  public static getToken():string {
+    const cookieArray = decodeURIComponent(document.cookie).split("; ");
+    return cookieArray[0].substring("session=".length);
+  }
+
   public static getUsername():string {
     return sessionStorage.getItem('username') === null ?
     '?' : sessionStorage.getItem('username');
   }
   public static getActive():string {
     return sessionStorage.getItem('active') === null ?
-    '?' : '$'+sessionStorage.getItem('active');
+    '?' : sessionStorage.getItem('active');
   }
   public static getPassive():string {
     return sessionStorage.getItem('passive') === null ?
-    '?' : '$'+sessionStorage.getItem('passive');
+    '?' :  sessionStorage.getItem('passive');
   }
   public static getNetWorth():string {
-    if (sessionStorage.getItem('passive') === null || sessionStorage.getItem('active') === null) {
+    if (sessionStorage.getItem('passive') === undefined || sessionStorage.getItem('active') === undefined) {
       return '?';
     }
-    return '$'+(parseFloat(Session.getActive()) - 
-    parseFloat(Session.getPassive()))
+    return '$'+ ((parseFloat(Session.getActive())) - 
+                (parseFloat(Session.getPassive())))
     .toPrecision(2).toString();
+  }
+  public static getAvatar():string {
+    const USVString = localStorage.getItem("avatar");
+    if (USVString === null) return '';
+    try {
+      const blob = new Blob([USVString]);
+      return URL.createObjectURL(blob);
+    } catch (invalidUSVString) {
+      return '';
+    }
   }
 }

@@ -58,7 +58,6 @@
 #profile-menu-list.active {
   -webkit-animation: retract .1s ease-in forwards;
           animation: retract .1s ease-in forwards;
-  overflow: hidden;
 }
 
 @-webkit-keyframes retract {

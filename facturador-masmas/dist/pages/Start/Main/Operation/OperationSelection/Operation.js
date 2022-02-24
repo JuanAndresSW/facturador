@@ -1,7 +1,6 @@
 import React from "react";
 import { BiHistory, BiLogInCircle, BiLogOutCircle, BiTransferAlt, } from "react-icons/bi";
 import Documents from "./Documents";
-import "./Operation.css";
 import { NavLink, Route, Routes } from "react-router-dom";
 export default function Operation() {
     return (React.createElement(Routes, null,

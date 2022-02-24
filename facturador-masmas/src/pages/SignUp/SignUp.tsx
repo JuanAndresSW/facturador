@@ -1,103 +1,72 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+//Componentes de formulario.
+import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/formComponents';
+import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
+
+//Relacionado a la cuenta.
+import {account} from 'utils/types';
 import Valid from "utils/Valid";
-import signUp from "services/account/signUp";
-import "styles/form.css";
-import { useNavigate } from "react-router-dom";
-import { BiChevronLeft } from "react-icons/bi";
-import Const from "utils/Const";
 import Session from "utils/Session";
+import signUp from "services/account/signUp";
+
+
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
 export default function SignUp() {
-  const navigate = useNavigate();
 
-  /*DATOS DEL FORMULARIO*****************************************************/
+  const navigate = useNavigate();
 
   //Controladores del estado del formulario.
   const [active, setActive] = useState("user");
   const [submitButton, setSubmitButton] = useState("Comprobar");
 
+  /*DATOS DEL FORMULARIO*****************************************************/
+
   //Datos del usuario.
-  const [user, setUser] = useState({
-    username: "",
-    email: "",
-    password: "",
-    avatar: null,
-  });
+  const [username, setUsername]           = useState("");
+  const [email, setEmail]                 = useState("");
+  const [password, setPassword]           = useState("");
+  const [avatar, setAvatar]               = useState(null);
   const [passwordMatch, setPasswordMatch] = useState("");
-  const [userError, setUserError] = useState("");
+  const [userError, setUserError]         = useState("");
 
   //Datos del comerciante.
-  const [trader, setTrader] = useState({
-    businessName: "",
-    vatCategory: "",
-    code: "",
-    grossIncome: "",
-  });
-  const [traderError, setTraderError] = useState("");
+  const [businessName, setBusinessName]   = useState("");
+  const [vatCategory, setVatCategory]     = useState("");
+  const [code, setCode]                   = useState("");
+  const [grossIncome, setGrossIncome]     = useState("");
+  const [traderError, setTraderError]     = useState("");
+
 
   /*VALIDACIÓN***************************************************************/
 
   /**Valida los datos del usuario. */
-  const validateUser = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
+  function validateUser(): void {
     setUserError("");
-    e.preventDefault();
-    if (!Valid.names(user.username)) {
-      setUserError("El nombre debe ser de entre 3 y 20 caracteres");
-      return;
-    }
-    if (!Valid.email(user.email)) {
-      setUserError("Ingrese una dirección válida de email");
-      return;
-    }
-    if (!Valid.password(user.password)) {
-      setUserError("La contraseña debe ser de entre 8 y 40 caracteres");
-      return;
-    }
-    if (user.password !== passwordMatch) {
-      setUserError("Las contraseñas no coinciden");
-      return;
-    }
-    if (!Valid.image(user.avatar)) {
-      setUserError("La imágen no debe superar los 2MB");
-      return;
-    }
+
+    if (!Valid.names(username))      { setUserError("El nombre debe ser de entre 3 y 20 caracteres");     return; }
+    if (!Valid.email(email))         { setUserError("Ingrese una dirección válida de email");             return; }
+    if (!Valid.password(password))   { setUserError("La contraseña debe ser de entre 8 y 40 caracteres"); return; }
+    if (password !== passwordMatch)  { setUserError("Las contraseñas no coinciden");                      return; }
+    if (!Valid.image(avatar))        { setUserError("La imágen no debe superar los 2MB");                 return; }
+
     setActive("trader");
   };
 
   /**Valida los datos del comerciante. */
-  const validateTrader = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
+  function validateTrader(): void {
     setTraderError("");
-    e.preventDefault();
-    if (!Valid.names(trader.businessName)) {
-      setTraderError("La razón social debe ser de entre 3 y 20 caracteres");
-      return;
-    }
-    if (!Valid.vatCategory(trader.vatCategory)) {
-      setTraderError("Seleccione una categoría");
-      return;
-    }
-    if (!Valid.code(trader.code)) {
-      setTraderError(
-        `Ingrese un${
-          trader.vatCategory === "Monotributista"
-            ? " C.U.I.L. válido"
-            : "a C.U.I.T válida"
-        }`
-      );
-      return;
-    }
-    if (!Valid.code(trader.grossIncome)) {
-      setTraderError("Ingrese un número de ingresos brutos válido");
-      return;
-    }
 
-    //Si todo fue validado, se envian los datos.
+    if (!Valid.names(businessName))       { setTraderError("La razón social debe ser de entre 3 y 20 caracteres");  return; }
+    if (!Valid.vatCategory(vatCategory))  { setTraderError("Seleccione una categoría");                             return; }
+    if (!Valid.code(code))                { setTraderError
+      (`Ingrese un${vatCategory === "Monotributista"? " C.U.I.L. válido": "a C.U.I.T. válida"}`);                    return; }
+    if (!Valid.code(grossIncome))         { setTraderError("Ingrese un número de ingresos brutos válido");          return; }
+
+    //Si todo fue validado, se envían los datos.
     submit();
   };
 
@@ -105,209 +74,80 @@ export default function SignUp() {
 
   /**Envía al servidor los datos recolectados. */
   function submit(): void {
-    signUp({ user, trader }, handleResponse);
+    const account: account = {
+      user: {
+        username: username,
+        email: email,
+        password: password,
+        avatar: avatar,
+      },
+      trader: {
+        businessName: businessName,
+        vatCategory: vatCategory,
+        code: code,
+        grossIncome: grossIncome,
+      }
+    }
+    signUp(account, handleResponse);
     setSubmitButton("Cargando...");
   }
 
   /**Maneja la respuesta recibida del servidor. */
   function handleResponse(state: number, data: string) {
-    switch (state) {
-      case Const.error: setTraderError("No se ha podido establecer la comunicación con el servidor");
-        break;
-      case Const.created: setTraderError("La cuenta se ha creado correctamente");
-        Session.setSession({token:data, name:user.username, active:"0", passive:"0"});
-        navigate("/inicio");
-        break;
-      default: setTraderError(data);
-        break;
-    }
+    if (state === 201) {
+      setTraderError("");
+      setSubmitButton("");
+      Session.setSession({ token: data, name: username, active: "0", passive: "0" });
+      navigate("/inicio");
+    } else setTraderError(data); setSubmitButton("");
   }
 
   /*FORMULARIO*****************************************************/
 
   return (
-    <form className="panel" method="post">
-      {active === "user" ? (
-        <>
-          <h1 className="title">Datos de la cuenta</h1>
-          <label>
-            {"¿Cómo quieres que te identifiquemos?"}
-            <input
-              type="text"
-              maxLength={20}
-              value={user.username}
-              onChange={(e) => setUser({ ...user, username: e.target.value })}
-              required
-            ></input>
-          </label>
+    active === "user" ?
+    
+    <Form title="Datos de la cuenta" onSubmit={validateUser}>
+      <Link to="/"><BiHome /></Link>
+          
+      <Field icon={<BiText />} label="¿Cómo quieres que te identifiquemos?" 
+      bind={[username, setUsername]} validator={Valid.names(username)} />
+      <Field icon={<BiAt />} label="Tu dirección de correo electrónico"
+      bind={[email, setEmail]} validator={Valid.email(email)} />
+      <Field icon={<BiKey/>} label="Elige una contraseña" 
+      bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
+      <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
+      type="password" validator={password===passwordMatch} />
+      <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} />
+            
+      <ErrorMessage message={userError} />
 
-          <label>
-            {"Tu dirección de correo electrónico"}
-            <input
-              type="email"
-              maxLength={254}
-              value={user.email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
-              required
-            ></input>
-          </label>
+      <Submit text="Siguiente" />
 
-          <label>
-            {"Elige una contraseña"}
-            <input
-              type="password"
-              maxLength={40}
-              value={user.password}
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-              required
-            />
-          </label>
+    </Form>
+    :
+    active === "trader" ?
 
-          <label>
-            {"Vuelve a escribir la contraseña"}
-            <input
-              type="password"
-              maxLength={128}
-              value={passwordMatch}
-              onChange={(e) => setPasswordMatch(e.target.value)}
-              required
-            ></input>
-          </label>
+    <Form title="Datos del comercio" onSubmit={validateTrader}>
+      {submitButton === "Comprobar" ? <BiChevronLeft onClick={() => setActive("user")} /> : null}
 
-          <label>
-            {"Foto de perfil"}
-            <span> (opcional)</span>
-            <input
-              type="file"
-              accept=".png, .jpeg, .jpg, .svg"
-              onChange={(e) => {
-                if (e.target.files && e.target.files.length > 0)
-                  setUser({
-                    ...user,
-                    avatar: e.target.files.item(0),
-                  });
-              }}
-            ></input>
-          </label>
+      <Field icon={<BiIdCard />}label="Escribe tu razón social" bind={[businessName, setBusinessName]}
+      validator={Valid.names(businessName)} />
 
-          <p className="error">{userError}</p>
+      <Radio legend="Selecciona una categoría:" bind={[vatCategory, setVatCategory]}
+      options={["Responsable Inscripto", "Monotributista", "Sujeto Exento"]} />
 
-          <button onClick={(e) => validateUser(e)}>Siguiente</button>
-        </>
-      ) : /***************************************************************************/
+      <Field label={"C.U.I." + (vatCategory === "Monotributista" ? "L." : "T.")}
+      note="(si no eliges uno, se generará uno falso)" bind={[code, setCode]}
+      validator={Valid.code(code)} icon={<BiHash />} />
 
-      active === "trader" ? (
-        <>
-          {submitButton === "Comprobar" ? (
-            <BiChevronLeft
-              onClick={() => {
-                setActive("user");
-              }}
-            />
-          ) : (
-            <></>
-          )}
-          <h1 className="title">Datos del comercio</h1>
-          <label>
-            {"Escribe tu razón social"}
-            <input
-              type="text"
-              maxLength={20}
-              value={trader.businessName}
-              onChange={(e) =>
-                setTrader({ ...trader, businessName: e.target.value })
-              }
-              required
-            ></input>
-          </label>
+      <Field label="Número de ingresos brutos" note="(si no eliges uno, se generará uno falso)"
+      bind={[grossIncome, setGrossIncome]} icon={<BiWallet />} validator={Valid.code(grossIncome)} />
 
-          <label>
-            {"Selecciona una categoría:"}
-            <label className="small">
-              <input
-                type="radio"
-                name="vat"
-                checked={trader.vatCategory === "Responsable Inscripto"}
-                value={"Responsable Inscripto"}
-                onChange={(e) =>
-                  setTrader({ ...trader, vatCategory: e.target.value })
-                }
-                required
-              />
-              Responsable Inscripto
-            </label>
-            <label className="small">
-              <input
-                type="radio"
-                name="vat"
-                checked={trader.vatCategory === "Monotributista"}
-                value={"Monotributista"}
-                onChange={(e) =>
-                  setTrader({ ...trader, vatCategory: e.target.value })
-                }
-                required
-              />
-              Responsable Monotributista
-            </label>
-            <label className="small">
-              <input
-                type="radio"
-                name="vat"
-                checked={trader.vatCategory === "Sujeto Exento"}
-                value={"Sujeto Exento"}
-                onChange={(e) =>
-                  setTrader({ ...trader, vatCategory: e.target.value })
-                }
-                required
-              />
-              Exento
-            </label>
-          </label>
+      <ErrorMessage message={traderError} />
 
-          <label>
-            {"C.U.I." + (trader.vatCategory === "Monotributista" ? "L." : "T.")}
-            <span> (si no eliges uno, se generará uno falso)</span>
-            <input
-              type="text"
-              maxLength={20}
-              value={trader.code}
-              onChange={(e) => setTrader({ ...trader, code: e.target.value })}
-            ></input>
-          </label>
-
-          {trader.vatCategory === "Responsable Inscripto" ? (
-            <label>
-              {"Número de ingresos brutos"}
-              <span> (si no eliges uno, se generará uno falso)</span>
-              <input
-                type="text"
-                maxLength={20}
-                value={trader.grossIncome}
-                onChange={(e) =>
-                  setTrader({ ...trader, grossIncome: e.target.value })
-                }
-              ></input>
-            </label>
-          ) : (
-            <></>
-          )}
-
-          <p className="error">{traderError}</p>
-
-          {submitButton === ("Comprobar" || "Cargando...") ? (
-            <button
-              disabled={submitButton !== "Comprobar"}
-              onClick={(e) => validateTrader(e)}
-            >
-              {submitButton}
-            </button>
-          ) : (
-            <></>
-          )}
-        </>
-      ) : (
-        <>????</>
-      )}
-    </form>
+      {submitButton === "Comprobar" ? <Submit text={submitButton} />: submitButton}
+    </Form>
+    : null
   );
 }

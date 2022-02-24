@@ -5,11 +5,11 @@ import Features from "./Features/Features";
 import Phone from "./Phone/Phone";
 import Footer from "components/Footer/Footer";
 
-//Devuelve la página principal cuando no hay sesión válida en las cookies
+/**Devuelve la página principal cuando no hay sesión válida en las cookies*/
 export default function Home(): JSX.Element {
   return (
     <>
-      <Header />
+      <Header isAuthenticated={false} />
       <TitleScreen />
       <Features />
       <Phone />

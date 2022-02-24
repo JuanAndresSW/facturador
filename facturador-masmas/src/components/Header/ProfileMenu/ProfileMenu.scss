@@ -41,7 +41,6 @@
 }
 #profile-menu-list.active {
     animation: retract .1s ease-in forwards;
-    overflow: hidden;
 }
 @keyframes retract {
 	0% {

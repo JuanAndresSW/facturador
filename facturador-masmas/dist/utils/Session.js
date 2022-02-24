@@ -14,16 +14,19 @@ var Session = /** @class */ (function () {
      */
     Session.setSession = function (_a) {
         var token = _a.token, name = _a.name, active = _a.active, passive = _a.passive;
+        if (token === undefined)
+            return;
         document.cookie = "session=".concat(token, "; max-age=1209600; path=/; Secure");
         sessionStorage.setItem("username", name);
         sessionStorage.setItem("active", active.toString());
         sessionStorage.setItem("passive", passive.toString());
     };
-    /** Evalúa si existe una sesión iniciada sin comprobar la legitimidad del token.*/
-    Session.isAuthenticated = function () {
-        var cookieArray = decodeURIComponent(document.cookie).split("; ");
-        var token = cookieArray[0].substring("session=".length);
-        return /^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token);
+    /**
+     * Establece la imagen de avatar de usuario en las cookies.
+     * @param usv
+     */
+    Session.setAvatar = function (usv) {
+        localStorage.setItem('avatar', usv);
     };
     /** Borra la sesión.*/
     Session.close = function () {
@@ -35,25 +38,41 @@ var Session = /** @class */ (function () {
         sessionStorage.clear();
     };
     //GETTERS
+    Session.getToken = function () {
+        var cookieArray = decodeURIComponent(document.cookie).split("; ");
+        return cookieArray[0].substring("session=".length);
+    };
     Session.getUsername = function () {
         return sessionStorage.getItem('username') === null ?
             '?' : sessionStorage.getItem('username');
     };
     Session.getActive = function () {
         return sessionStorage.getItem('active') === null ?
-            '?' : '$' + sessionStorage.getItem('active');
+            '?' : sessionStorage.getItem('active');
     };
     Session.getPassive = function () {
         return sessionStorage.getItem('passive') === null ?
-            '?' : '$' + sessionStorage.getItem('passive');
+            '?' : sessionStorage.getItem('passive');
     };
     Session.getNetWorth = function () {
-        if (sessionStorage.getItem('passive') === null || sessionStorage.getItem('active') === null) {
+        if (sessionStorage.getItem('passive') === undefined || sessionStorage.getItem('active') === undefined) {
             return '?';
         }
-        return '$' + (parseFloat(Session.getActive()) -
-            parseFloat(Session.getPassive()))
+        return '$' + ((parseFloat(Session.getActive())) -
+            (parseFloat(Session.getPassive())))
             .toPrecision(2).toString();
+    };
+    Session.getAvatar = function () {
+        var USVString = localStorage.getItem("avatar");
+        if (USVString === null)
+            return '';
+        try {
+            var blob = new Blob([USVString]);
+            return URL.createObjectURL(blob);
+        }
+        catch (invalidUSVString) {
+            return '';
+        }
     };
     return Session;
 }());

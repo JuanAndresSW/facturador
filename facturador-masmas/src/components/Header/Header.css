@@ -82,8 +82,5 @@ header #logged-header {
   #logo * {
     display: none;
   }
-  header {
-    display: block;
-  }
 }
 /*# sourceMappingURL=Header.css.map */

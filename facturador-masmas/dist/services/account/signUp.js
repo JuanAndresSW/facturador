@@ -37,15 +37,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import fetch from "../fetch";
 /**
 * Envía los datos de usuario y la foto de perfil para ser registrados.
-* @param {account} account Datos de la cuenta del usuario, en forma de objeto.
-* @param callback La función que manejará la respuesta.
+* @param {account} account    - Datos de la cuenta del usuario, en forma de objeto.
+* @param {Function} callback  - La función que manejará la respuesta.
 */
 export default function signUp(account, callback) {
     return __awaiter(this, void 0, void 0, function () {
         var formattedPromise;
         return __generator(this, function (_a) {
             formattedPromise = formatAccount(account);
-            formattedPromise.then(function (formattedAccount) { return fetch("signup", formattedAccount, callback); });
+            formattedPromise.then(function (formattedAccount) {
+                fetch("auth/main/signup", { body: formattedAccount }, callback);
+            });
             return [2 /*return*/];
         });
     });

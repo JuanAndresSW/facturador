@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Headroom from "react-headroom";
 import ProfileMenu from "./ProfileMenu/ProfileMenu";
-import Session from "utils/Session";
 import logo from "assets/svg/logo.svg";
 import "./Header.css";
 //El header cuando se no se ha detectado una sesión de usuario.
@@ -24,7 +23,9 @@ var loggedHeader = (React.createElement("header", null,
         React.createElement(ProfileMenu, null))));
 /**
  * Un panel fijado en la parte superior de la pantalla.
+ * @param isAuthenticated Si existe una sesión de usuario presente.
  */
-export default function Header() {
-    return Session.isAuthenticated() ? loggedHeader : notLoggedHeader;
+export default function Header(_a) {
+    var isAuthenticated = _a.isAuthenticated;
+    return isAuthenticated ? loggedHeader : notLoggedHeader;
 }

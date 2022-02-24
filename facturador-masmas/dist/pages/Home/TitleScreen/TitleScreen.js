@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import Const from "utils/Const";
 import Session from "utils/Session";
 import login from 'services/account/login';
 import Valid from "utils/Valid";
 import "styles/form.css";
 import "./TitleScreen.css";
+import { useNavigate } from "react-router-dom";
 //objeto de usuario a enviar al servidor
 var user = { name: "", password: "" };
 export default function TitleScreen() {
+    //Objeto de navegación de rutas;
+    var navigate = useNavigate();
     var _a = useState("text"), loginInputType = _a[0], setLoginInputType = _a[1];
     var placeholder = loginInputType === "text" ? "nombre o email" : "contraseña";
     var _b = useState(""), loginValue = _b[0], setLoginValue = _b[1];
@@ -29,6 +31,7 @@ export default function TitleScreen() {
         if (loginInputType === "password") {
             if (Valid.password(loginValue.trim())) {
                 user.password = loginValue.trim();
+                //Verificar con el servidor la autenticidad;
                 authenticate(user);
                 setLoginValue("");
                 setLoginInputType("text");
@@ -44,28 +47,13 @@ export default function TitleScreen() {
         login(user.name, user.password, handleResponse);
     }
     function handleResponse(state, data) {
-        switch (state) {
-            case Const.error:
-                setError("No se ha podido establecer la comunicación con el servidor");
-                break;
-            case Const.ok:
-                setError("");
-                setDisable(true);
-                Session.setSession(JSON.parse(data));
-                window.location.reload();
-                break;
-            case Const.bad:
-                setError("Usuario o contraseña incorrecta");
-                setDisable(false);
-                break;
-            case Const.exception:
-                setDisable(true);
-                setError("Hubo un problema con el servidor");
-                break;
-            default:
-                setError("Hubo un error desconocido al procesar tus datos");
-                break;
+        if (state === 200) {
+            setError("");
+            Session.setSession({ token: data, name: "test", passive: "0", active: "0" });
+            window.location.reload();
         }
+        else
+            setError(data);
     }
     return (React.createElement("div", { className: "title-wrapper" },
         React.createElement("h1", null, "M\u00E1s que un facturador"),

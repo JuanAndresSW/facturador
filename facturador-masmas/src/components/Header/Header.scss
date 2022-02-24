@@ -14,9 +14,6 @@ header {
             width: 4rem;
             height: 4rem;
         }
-        p {
-
-        }
     }
     #header-links{
         display: flex;
@@ -45,5 +42,4 @@ header {
 }
 @media (max-width: 600px) {
     #logo * {display: none;}
-    header {display: block;}
 }

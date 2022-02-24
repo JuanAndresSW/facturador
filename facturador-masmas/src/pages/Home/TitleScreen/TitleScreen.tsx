@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Const from "utils/Const";
 import Session from "utils/Session";
 import login from 'services/account/login';
 import Valid from "utils/Valid";
@@ -53,19 +52,11 @@ export default function TitleScreen(): JSX.Element {
     login(user.name, user.password, handleResponse);
   }
   function handleResponse(state:number, data:string) {
-    switch (state) {
-      case Const.error:
-        setError("No se ha podido establecer la comunicación con el servidor");
-        break;
-      case Const.ok:
-        setError("");
-        Session.setSession({token: data, name: "test", passive: "0", active: "0"});
-        window.location.reload();
-        break;
-      default:
-        setError(data);
-        break;
-    }
+    if (state === 200) {
+      setError("");
+      Session.setSession({token: data, name: "test", passive: "0", active: "0"});
+      window.location.reload();
+    } else setError(data);
   }
 
   return (

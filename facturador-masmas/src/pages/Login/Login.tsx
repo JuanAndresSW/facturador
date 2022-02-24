@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import Valid from "utils/Valid";
-import login from "services/account/login";
-import Session from "utils/Session";
-import Const from "utils/Const";
-import "styles/form.css";
 import { useNavigate } from "react-router-dom";
+import login from "services/account/login";
+
+//Utilidades.
+import Valid from "utils/Valid";
+import Session from "utils/Session";
+
+//Componentes de formulario.
+import {Form, Field, ErrorMessage, Submit} from 'components/formComponents';
+import { BiKey, BiUser } from "react-icons/bi";
+
 
 /**Devuelve un formulario para iniciar sesión.*/
 export default function Login() {
@@ -14,75 +19,32 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const submit = (
-    e:
-      | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
-    e.preventDefault();
+  function submit(): void {
     if ((Valid.names(user) || Valid.email(user)) && Valid.password(password))
-      authenticate();
+      login(user, password, handleResponse)
     else setError("Usuario o contraseña incorrecta");
   };
 
-  function authenticate() {
-    login(user, password, handleResponse)
-  }
-
   function handleResponse(state:number, data:string) {
-    switch (state) {
-      case Const.error:
-        setError("No se ha podido establecer la comunicación con el servidor");
-        break;
-      case Const.ok:
-        setError("");
-        Session.setSession({token: data, name: "test", passive: "0", active: "0"});
-        navigate("/");
-        break;
-      default:
-        setError(data);
-        break;
-    }
+    if (state === 200) {
+      setError("");
+      Session.setSession({token: data, name: "test", passive: "0", active: "0"});
+      navigate("/");
+    } else setError(data);
   }
 
   return (
-    <form className="panel" method="post" onSubmit={(e) => submit(e)}>
-      <h1 className="title">Iniciar sesión</h1>
+    <Form onSubmit={submit} title="Iniciar sesión">
 
-      <label>
-        {" "}
-        Nombre o correo electrónico
-        <input
-          name="name"
-          type="text"
-          maxLength={254}
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
-          required
-        ></input>
-      </label>
+      <Field icon={<BiUser />} label="Nombre o correo electrónico" bind={[user, setUser]} />
+      <Field icon={<BiKey />} label="Contraseña" type="password" bind={[password, setPassword]} />
 
-      <label>
-        {" "}
-        Contraseña
-        <input
-          name="password"
-          type="password"
-          maxLength={128}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        ></input>
-      </label>
-      <a href="about:blank" target="_blank" className="special">
-        Olvidé mi contraseña
-      </a>
+      <ErrorMessage message={error} />
 
-      <p className="error">{error}</p>
+      <Submit text="Ingresar" />
 
-      <button type="submit" onMouseDown={(e) => submit(e)}>
-        Ingresar
-      </button>
-    </form>
+      <a href="about:blank" target="_blank" className="link">Olvidé mi contraseña</a>
+
+    </Form>
   );
 }

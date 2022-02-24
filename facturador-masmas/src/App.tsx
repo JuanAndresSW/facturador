@@ -1,14 +1,12 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import FallBack from 'components/Fallback/Fallback';
-import Const from "utils/Const";
 
 //Controladores de la sesión.
 import authenticate from "services/account/authenticate";
 import Session from "utils/Session";
 
 //Routing.
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Protected from 'components/Routing/Protected';
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 //Estilos globales.
 import "styles/normalize.css";
@@ -26,7 +24,7 @@ const Error404 = lazy(() => import("pages/Error/Error404"));
 /**El componente global de la aplicación. */
 export default function App() {
 
-    const [loading, setLoading] = useState(true);
+    const [auth, setAuth] = useState(undefined);
 
     //Comprobar la sesión con el servidor en el primer renderizado.
     useEffect(() => {
@@ -34,26 +32,27 @@ export default function App() {
     }, []);
 
     function handleResponse(status: number, data?: string) {
-        setLoading(false);
-        if (status === Const.ok) Session.setSession({token:data, name:"test", active: "0", passive: "0"});
+        if (status === 200) {
+            setAuth(true);
+            Session.setSession({token:data, name:"test", active: "0", passive: "0"});
+        } else setAuth(false);
     }
 
     return (
-        loading ? <FallBack /> :
+        (auth === undefined) ? <FallBack /> :
             <BrowserRouter>
                 <Suspense fallback={<FallBack />}>
                     <Routes>
 
-                        <Route path="/*" element={<Protected reverse={true}><Home /></Protected>} />
-                        <Route path="/login" element={<Protected reverse={true}><Login /></Protected>} />
+                        <Route path="/" element={auth? <Home /> : <Navigate to={"/inicio"} />} />   
+                        <Route path="/login" element={!auth? <Login /> : <Navigate to={"/inicio"} />} />
 
-                        <Route path="/cuenta/*" element={<Protected><Account /></Protected>} />
+                        <Route path="/inicio/*" element={!auth? <Start /> : <Navigate to={"/login"} />} />
+                        <Route path="/cuenta" element={auth? <Account /> : <Navigate to={"/login"} />} />
 
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/acerca-de/*" element={<About />} />
-                        <Route path="*" element={<Error404 />} />
-
-                        
+                        <Route path="*" element={<Error404 />} />      
 
                     </Routes>
                 </Suspense>

@@ -7,69 +7,70 @@ export default function fetchFormData(callback: Function): void {
         pointsOfSale: [
             {
                 id: 2,
-                name: "punto1",
-                address: "calle1",
+                tooltip: "punto1",
+                value: "calle1",
             },
             {
                 id: 1,
-                name: "punto2",
-                address: "calle2",
+                tooltip: "punto2",
+                value: "calle2",
             },
             {
                 id: 3,
-                name: "punto3",
-                address: "calle3",
+                tooltip: "punto3",
+                value: "calle3",
             },
             {
                 id: 4,
-                name: "punto4",
-                address: "calle4",
+                tooltip: "punto4",
+                value: "calle4",
             },
             {
                 id: 6,
-                name: "punto5",
-                address: "calle5",
+                tooltip: "punto5",
+                value: "calle5",
             },
             {
                 id: 8,
-                name: "punto6",
-                address: "calle6",
+                tooltip: "punto6",
+                value: "calle6",
             }
         ],
         partners: [
             {
                 id: 1,
-                name: "socio A",
-                address: "ciudad A"
+                tooltip: "socio A",
+                value: "ciudad A"
             },
             {
                 id: 2,
-                name: "socio B",
-                address: "ciudad B"
+                tooltip: "socio B",
+                value: "ciudad B"
             },
             {
                 id: 3,
-                name: "socio C",
-                address: "ciudad C"
+                tooltip: "socio C",
+                value: "ciudad C"
             }
         ],
         groups: [
             {
                 id: 1,
-                name: "group A",
-                address: "ciudad A"
+                value: "group A",
+                tooltip: "4 integrantes"
             },
             {
                 id: 2,
-                name: "socio B",
-                address: "ciudad B"
+                value: "socio B",
+                tooltip: "20 integrantes"
             },
             {
                 id: 3,
-                name: "socio C",
-                address: "ciudad C"
+                value: "socio C",
+                tooltip: "2 integrantes"
             }
-        ]
+        ],
+        root: true
 
     }))
 }

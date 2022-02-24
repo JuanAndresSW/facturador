@@ -1,14 +1,16 @@
-import { account } from "../../utils/types";
+import { account } from "utils/types";
 import fetch from "../fetch";
 
 /**
 * Envía los datos de usuario y la foto de perfil para ser registrados.
-* @param {account} account Datos de la cuenta del usuario, en forma de objeto.
-* @param callback La función que manejará la respuesta.
+* @param {account} account    - Datos de la cuenta del usuario, en forma de objeto.
+* @param {Function} callback  - La función que manejará la respuesta.
 */
 export default async function signUp(account: account, callback: Function): Promise<void> {
   const formattedPromise = formatAccount(account);
-  formattedPromise.then(formattedAccount => fetch("auth/main/signup", formattedAccount, callback));
+  formattedPromise.then(formattedAccount => {
+    fetch("auth/main/signup", {body: formattedAccount}, callback)
+  });
 }
 
 
@@ -18,8 +20,10 @@ export default async function signUp(account: account, callback: Function): Prom
  * @returns Un string JSON con el formato correcto.
  */
 async function formatAccount(account: account): Promise<string> {
+
   const c = account.trader.code.replace(/ |\.|-/g, "");
   const g = account.trader.grossIncome.replace(/ |\.|-/g, "");
+  
   const data = JSON.stringify({
     user: {
       username: account.user.username.trim(),
