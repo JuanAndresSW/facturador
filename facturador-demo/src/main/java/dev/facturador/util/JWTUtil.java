@@ -72,6 +72,14 @@ public final class JWTUtil {
     }
 
     /**
+     * @param token Token a decodificar
+     * @return Retorna el decodificador del token de este podes sacar los valor del token
+     */
+    public DecodedJWT createDecoder(String token) {
+        return JWT.require(this.signKey()).build().verify(token);
+    }
+
+    /**
      * @param decodedJWT Decoder del token
      * @return Retorna el subject asignado en este es el username
      */
