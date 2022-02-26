@@ -41,14 +41,6 @@ public final class CuentaPrincipal {
     @JsonBackReference
     @OneToMany(mappedBy = "secondaryAccountOwner", cascade = CascadeType.ALL)
     private Collection<CuentaSecundaria> mainAccountChilds;
-<<<<<<< HEAD
-
-    private void addSecondaryAccount(CuentaSecundaria element) {
-        if (mainAccountChilds == null) mainAccountChilds = new LinkedList<>();
-        this.mainAccountChilds.add(element);
-    }
-
-=======
 
     public static CuentaPrincipal createMainAccountForRegister(RegisterBo tryRegister) {
         var account = new CuentaPrincipal();
@@ -88,8 +80,6 @@ public final class CuentaPrincipal {
         return argon2.encode(password);
     }
 
-
->>>>>>> 25a016802cd666b6a85a59aa0e1b8c1741d89337
     @Override
     public String toString() {
         return "CuentaPrincipal{" +

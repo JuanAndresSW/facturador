@@ -59,8 +59,6 @@ public final class Comerciante {
         this.name = name;
     }
 
-<<<<<<< HEAD
-=======
     public static Vat defineVat(String vat) {
         if (vat.contains("Responsable")) {
             return Vat.RESPONSABLE_INSCRIPTO;
@@ -74,7 +72,6 @@ public final class Comerciante {
         return null;
     }
 
->>>>>>> 25a016802cd666b6a85a59aa0e1b8c1741d89337
     @Override
     public String toString() {
         return "Comerciante{" +

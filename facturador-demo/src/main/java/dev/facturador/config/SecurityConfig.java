@@ -70,12 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
     }
 
-<<<<<<< HEAD
-=======
     @Bean
     public JWTUtil jwtUtil() {
         return new JWTUtil();
     }
 
->>>>>>> 25a016802cd666b6a85a59aa0e1b8c1741d89337
 }
