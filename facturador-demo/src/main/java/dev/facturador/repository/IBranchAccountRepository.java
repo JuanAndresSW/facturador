@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ICuentaSecundariaRepository extends JpaRepository<CuentaSecundaria, Long> {
+public interface IBranchAccountRepository extends JpaRepository<CuentaSecundaria, Long> {
 
     @Query(value = "FROM CuentaSecundaria sa WHERE sa.userSecondaryAccount.username = :username")
     Optional<CuentaSecundaria> findByUsername(@Param("username") String username);

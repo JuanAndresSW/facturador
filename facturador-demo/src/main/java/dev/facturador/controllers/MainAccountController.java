@@ -4,20 +4,19 @@ import dev.facturador.bo.RegisterBo;
 import dev.facturador.dto.ErrorResponse;
 import dev.facturador.dto.IApiResponse;
 import dev.facturador.dto.RegisterResponse;
-import dev.facturador.entities.CuentaPrincipal;
 import dev.facturador.services.IMainAccountService;
 import dev.facturador.util.MainAccountUtil;
-import dev.facturador.util.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.validation.Valid;
@@ -31,7 +30,7 @@ import static dev.facturador.entities.CuentaPrincipal.createMainAccountForRegist
 public class MainAccountController {
     private static final String REGISTER_MAIN = "/auth/mainaccounts";
     @Autowired
-    private IMainAccountService serviceMainAccount;
+    private IMainAccountService mainAccountService;
     @Autowired
     private MainAccountUtil mainAccountUtil;
 
@@ -45,19 +44,31 @@ public class MainAccountController {
      */
     @PostMapping(REGISTER_MAIN)
     public HttpEntity<? extends IApiResponse> singup(@Valid @RequestBody RegisterBo tryRegister) {
-        String message = mainAccountUtil.whenIndicesAreRepeatedReturnErrror(tryRegister);
+        String message = mainAccountUtil.whenIndicesAreRepeatedReturnErrror(tryRegister, mainAccountService);
         if (StringUtils.hasText(message)) {
             return new ResponseEntity<>(new ErrorResponse(new Date(), message), HttpStatus.BAD_REQUEST);
         }
 
         var mainAccountLogged = createMainAccountForRegister(tryRegister);
-        serviceMainAccount.register(mainAccountLogged);
-        WebClientUtil webClientUtil = new WebClientUtil(WebClient.builder().baseUrl("http://localhost:8080").build());
-        var headers = webClientUtil.responseHeadersToLogin(webClientUtil.buildValueLogin
-                (tryRegister.getUserBo().username(), tryRegister.getUserBo().password()));
+        mainAccountService.register(mainAccountLogged);
+
+        var headers = callFilterLogin(tryRegister.getUserBo().username(), tryRegister.getUserBo().password());
         String accesToken = headers.get("Access-token").get(0);
         String refreshToken = headers.get("Refresh-token").get(0);
 
         return new ResponseEntity<>(new RegisterResponse(accesToken, refreshToken), HttpStatus.CREATED);
+    }
+
+    private HttpHeaders callFilterLogin(String usernameOrEmail, String password) {
+        WebClient client = WebClient.builder().baseUrl("http://localhost:8080").build();
+        MultiValueMap<String, String> bodyValue = new LinkedMultiValueMap<>();
+        bodyValue.add("usernameOrEmail", usernameOrEmail);
+        bodyValue.add("password", password);
+
+        return client.post().uri("/login")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .accept(MediaType.ALL)
+                .body(BodyInserters.fromFormData(bodyValue))
+                .retrieve().toEntity(String.class).block().getHeaders();
     }
 }

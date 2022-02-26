@@ -1,6 +1,5 @@
 package dev.facturador.entities;
 
-import dev.facturador.bo.RegisterBo;
 import dev.facturador.entities.enums.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

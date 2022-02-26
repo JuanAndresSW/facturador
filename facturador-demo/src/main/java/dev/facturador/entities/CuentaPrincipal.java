@@ -15,8 +15,6 @@ import java.time.ZoneId;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static dev.facturador.entities.Comerciante.defineVat;
-
 @SuppressWarnings("ALL")
 @Entity
 @Table(name = "cuenta_principal")
@@ -24,7 +22,6 @@ import static dev.facturador.entities.Comerciante.defineVat;
 @Getter
 @Setter
 public final class CuentaPrincipal {
-
     @Id
     @Column(name = "id_cuenta_principal")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +42,7 @@ public final class CuentaPrincipal {
     @OneToMany(mappedBy = "secondaryAccountOwner", cascade = CascadeType.ALL)
     private Collection<CuentaSecundaria> mainAccountChilds;
 
-    private void addSecondaryAccount(CuentaSecundaria element) {
-        if (mainAccountChilds == null) mainAccountChilds = new LinkedList<>();
-        this.mainAccountChilds.add(element);
-    }
-
-    public static CuentaPrincipal createMainAccountForRegister(RegisterBo tryRegister){
+    public static CuentaPrincipal createMainAccountForRegister(RegisterBo tryRegister) {
         var account = new CuentaPrincipal();
         account.setCreateDate(LocalDateTime.now(ZoneId.systemDefault()));
         account.setAccountOwner(new Comerciante(tryRegister.getTraderBo().code(), tryRegister.getTraderBo().grossIncome(), tryRegister.getTraderBo().businessName(), 0, 0));
@@ -65,12 +57,12 @@ public final class CuentaPrincipal {
         if (vatName.contains("Sujeto")) {
             account.getAccountOwner().setVat(Vat.SUJETO_EXENTO);
         }
-        String passwordHashed =  hashPassword(tryRegister);
+        String passwordHashed = hashPassword(tryRegister);
         account.setUserMainAccount(new Usuarios
                 (tryRegister.getUserBo().username(), passwordHashed, tryRegister.getUserBo().email()));
 
         if (StringUtils.hasText(tryRegister.getUserBo().avatar())) {
-           account.getUserMainAccount().setAvatarUser(new AvatarUsuario(tryRegister.getUserBo().avatar(), account.getUserMainAccount()) );
+            account.getUserMainAccount().setAvatarUser(new AvatarUsuario(tryRegister.getUserBo().avatar(), account.getUserMainAccount()));
         }
 
         return account;
@@ -78,6 +70,7 @@ public final class CuentaPrincipal {
 
     /**
      * Se encarga del hash de la contrseña
+     *
      * @param account RegisterBo contiene la contraseña
      * @return String
      */
