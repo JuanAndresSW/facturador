@@ -129,13 +129,15 @@ public class JWTUtil {
 
     public CustomUserDetails createUserAuthenticatedByRefreshToken(String authHeader, HttpServletResponse response) throws IOException {
         try {
+            log.info("---ENTRE AL TRY DEL REFRESH TOKEN---");
             String token = authHeader.substring("Bearer ".length());
             var decodedJWT = createDecoder(token);
+            log.info("---CREE EL DECODED---");
             String username = getSubject(decodedJWT);
+            log.info("---RECUPERE EL USERNAME---");
             var userDetailsService = new CustomUserDetailsService();
+            log.info("---CREE EL CUSTOM USER DETAILS SERVICE---");
             return (CustomUserDetails) userDetailsService.loadUserByUsername(username);
-
-
         } catch (Exception ex) {
             log.error("Error logging in: {}", ex.getMessage());
             response.setHeader("error", ex.getMessage());

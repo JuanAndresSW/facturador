@@ -1,7 +1,7 @@
 package dev.facturador.controllers;
 
 import dev.facturador.dto.IApiResponse;
-import dev.facturador.services.ISecondaryAccountService;
+import dev.facturador.services.IBranchAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping(path = "/api")
-public class SecondaryAccountController {
+public class BranchAccountController {
     private static final String REGISTER_SECONDARY = "/secondaryaccounts";
     @Autowired
-    private ISecondaryAccountService secondaryAccountService;
+    private IBranchAccountService secondaryAccountService;
 
     /**
      * Registrar Cuenta Secundaria
