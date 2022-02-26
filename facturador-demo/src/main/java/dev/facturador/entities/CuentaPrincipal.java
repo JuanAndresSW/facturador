@@ -1,14 +1,21 @@
 package dev.facturador.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import dev.facturador.bo.RegisterBo;
+import dev.facturador.entities.enums.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.LinkedList;
+
+import static dev.facturador.entities.Comerciante.defineVat;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -42,6 +49,44 @@ public final class CuentaPrincipal {
         if (mainAccountChilds == null) mainAccountChilds = new LinkedList<>();
         this.mainAccountChilds.add(element);
     }
+
+    public static CuentaPrincipal createMainAccountForRegister(RegisterBo tryRegister){
+        var account = new CuentaPrincipal();
+        account.setCreateDate(LocalDateTime.now(ZoneId.systemDefault()));
+        account.setAccountOwner(new Comerciante(tryRegister.getTraderBo().code(), tryRegister.getTraderBo().grossIncome(), tryRegister.getTraderBo().businessName(), 0, 0));
+
+        String vatName = tryRegister.getTraderBo().vatCategory();
+        if (vatName.contains("Responsable")) {
+            account.getAccountOwner().setVat(Vat.RESPONSABLE_INSCRIPTO);
+        }
+        if (vatName.contains("Mono")) {
+            account.getAccountOwner().setVat(Vat.MONOTRIBUTISTA);
+        }
+        if (vatName.contains("Sujeto")) {
+            account.getAccountOwner().setVat(Vat.SUJETO_EXENTO);
+        }
+        String passwordHashed =  hashPassword(tryRegister);
+        account.setUserMainAccount(new Usuarios
+                (tryRegister.getUserBo().username(), passwordHashed, tryRegister.getUserBo().email()));
+
+        if (StringUtils.hasText(tryRegister.getUserBo().avatar())) {
+           account.getUserMainAccount().setAvatarUser(new AvatarUsuario(tryRegister.getUserBo().avatar(), account.getUserMainAccount()) );
+        }
+
+        return account;
+    }
+
+    /**
+     * Se encarga del hash de la contrseña
+     * @param account RegisterBo contiene la contraseña
+     * @return String
+     */
+    private static String hashPassword(RegisterBo account) {
+        var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
+        String password = account.getUserBo().password();
+        return argon2.encode(password);
+    }
+
 
     @Override
     public String toString() {

@@ -13,4 +13,7 @@ public interface ICuentaPrincipalRepository extends JpaRepository<CuentaPrincipa
     @Query(value = "FROM CuentaPrincipal am WHERE am.userMainAccount.username = :username")
     Optional<CuentaPrincipal> findByUsername(@Param("username") String username);
 
+    Boolean existsByUserMainAccountUsername(String username);
+    Boolean existsByUserMainAccountEmail(String email);
+    Boolean existsByAccountOwnerUniqueKey(String uniqueKey);
 }

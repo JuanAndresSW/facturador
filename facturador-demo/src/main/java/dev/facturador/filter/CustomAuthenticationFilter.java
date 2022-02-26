@@ -1,6 +1,6 @@
 package dev.facturador.filter;
 
-import dev.facturador.dto.security.CustomUserDetails;
+import dev.facturador.bo.security.CustomUserDetails;
 import dev.facturador.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +33,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String password = request.getParameter("password");
         var authenticationToken = new UsernamePasswordAuthenticationToken(usernameOrEmail, password);
 
-        setDetails(request, authenticationToken);
         return this.authenticationManager.authenticate(authenticationToken);
     }
 
@@ -42,13 +41,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             (HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         var user = (CustomUserDetails) authResult.getPrincipal();
         var URL = request.getRequestURI().toString();
-
         String accesToken = jwt.createAccesToken(user, URL);
         String refreshToken = jwt.createRefreshToken(user, URL);
 
         response.setHeader("Access-token", accesToken);
         response.setHeader("Refresh-token", refreshToken);
-
         response.addHeader("user-data", user.getUsername());
         response.addHeader("user-data", user.getAuthorities().stream().toList().get(0).getAuthority());
         response.addHeader("user-data", String.valueOf(user.getActive()));

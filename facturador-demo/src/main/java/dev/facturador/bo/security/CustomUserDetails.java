@@ -1,4 +1,4 @@
-package dev.facturador.dto.security;
+package dev.facturador.bo.security;
 
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;

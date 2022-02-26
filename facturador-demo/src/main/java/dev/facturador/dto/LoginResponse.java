@@ -1,4 +1,4 @@
-package dev.facturador.dto.response;
+package dev.facturador.dto;
 
 public record LoginResponse(String username, Integer activos, Integer pasivos, String accesToken,
                             String refreshToken) implements IApiResponse {

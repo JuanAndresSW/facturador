@@ -1,19 +1,19 @@
 package dev.facturador.util;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import dev.facturador.dto.security.CustomUserDetails;
+import dev.facturador.bo.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
 
-@Component
 @RequiredArgsConstructor
-public final class JWTUtil {
+public class JWTUtil {
     private final String secrectKey;
     private final long expDateDefined;
 
@@ -27,10 +27,11 @@ public final class JWTUtil {
     }
 
     /**
-     * Crea el Token de Acceso
+     * Crea el {@code Access Token}
      *
-     * @param user Usuario que crea el Token
-     * @param url  URL desde donde se crea este token
+     * @param user {@link CustomUserDetails} Informacion del usuario
+     * @param url  {@code URL} desde donde se crea
+     * @return Token {@link JWT} en forma de String compacto
      */
     public String createAccesToken(CustomUserDetails user, String url) {
         return JWT.create()
@@ -43,10 +44,11 @@ public final class JWTUtil {
     }
 
     /**
-     * Crea el token de Refresh
+     * Crea el {@code Refresh Token}
      *
-     * @param user Usuario que la crea
-     * @param url  URL desde donde se crea
+     * @param user {@link CustomUserDetails} Informacion del usuario
+     * @param url  {@code URL} desde donde se crea
+     * @return Token {@link JWT} en forma de String compacto
      */
     public String createRefreshToken(CustomUserDetails user, String url) {
         return JWT.create()
@@ -58,38 +60,50 @@ public final class JWTUtil {
     }
 
     /**
-     * @return Devuelve el Algoritmo utilizado para firmar el token
+     * Crea el {@link Algorithm} con el que se cifra el Token
+     * <br/>
+     * Tambien sirve para el {@link JWTVerifier}  del Token
+     * @return {@link Algorithm} de cifrado y des-cifrado del Token
      */
     public Algorithm signKey() {
         return Algorithm.HMAC256(DatatypeConverter.parseBase64Binary(secrectKey));
     }
 
     /**
-     * @return Comprueba que el Bearer token este presente
+     * Verifica que el Token sea Bearer
+     * @param auth El token a autenticar
+     * @return {@code Boolean}
      */
     public boolean verifyAuthToken(String auth) {
         return StringUtils.hasText(auth) && auth.startsWith("Bearer ");
     }
 
     /**
-     * @param token Token a decodificar
-     * @return Retorna el decodificador del token de este podes sacar los valor del token
+     * Construye el {@link JWTVerifier} <br/>
+     * Y con el {@code token} creo el {@link DecodedJWT}
+     *
+     * @param token El {@code token} que se quiere decodificar
+     * @return {@link DecodedJWT} Decodificador del {@code token}
      */
     public DecodedJWT createDecoder(String token) {
         return JWT.require(this.signKey()).build().verify(token);
     }
 
     /**
-     * @param decodedJWT Decoder del token
-     * @return Retorna el subject asignado en este es el username
+     * Retorna el Subject del token
+     * @param decodedJWT {@link DecodedJWT} del token
+     * @return String
      */
     public String getSubject(DecodedJWT decodedJWT) {
         return decodedJWT.getSubject();
     }
 
     /**
-     * @param decodedJWT Decoder del token
-     * @return Retorna un claim del rol
+     * Recupero el {@link Claim} {@code "rol"} del Token
+     * <br/>
+     * Y lo retorno como String
+     * @param decodedJWT {@link DecodedJWT} del token
+     * @return String
      */
     public String getClaimRol(DecodedJWT decodedJWT) {
         return decodedJWT.getClaim("rol").asString();

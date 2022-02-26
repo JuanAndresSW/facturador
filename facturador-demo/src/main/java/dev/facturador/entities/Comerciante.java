@@ -1,5 +1,6 @@
 package dev.facturador.entities;
 
+import dev.facturador.bo.RegisterBo;
 import dev.facturador.entities.enums.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,17 +45,32 @@ public final class Comerciante {
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
     private Collection<PuntoVenta> pointOfSaleOutlets;
 
-    public Comerciante(String uniqueKey, Vat vat, String grossIncome, String name) {
+    public Comerciante(String uniqueKey, String grossIncome, String name, int active, int passive) {
         this.uniqueKey = uniqueKey;
         this.vat = vat;
         this.grossIncome = grossIncome;
         this.name = name;
+        this.active = active;
+        this.passive = passive;
     }
 
     public Comerciante(String uniqueKey, String grossIncome, String name) {
         this.uniqueKey = uniqueKey;
         this.grossIncome = grossIncome;
         this.name = name;
+    }
+
+    public static Vat defineVat(String vat) {
+        if (vat.contains("Responsable")) {
+            return Vat.RESPONSABLE_INSCRIPTO;
+        }
+        if (vat.contains("Monotributista")) {
+            return Vat.MONOTRIBUTISTA;
+        }
+        if (vat.contains("Sujeto")) {
+            return Vat.SUJETO_EXENTO;
+        }
+        return null;
     }
 
     @Override

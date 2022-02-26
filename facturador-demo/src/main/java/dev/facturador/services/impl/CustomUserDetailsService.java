@@ -1,6 +1,6 @@
 package dev.facturador.services.impl;
 
-import dev.facturador.dto.security.CustomUserDetails;
+import dev.facturador.bo.security.CustomUserDetails;
 import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.ICuentaPrincipalRepository;

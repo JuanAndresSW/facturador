@@ -1,6 +1,6 @@
 package dev.facturador.services.impl;
 
-import dev.facturador.dto.LoginDto;
+import dev.facturador.bo.LoginBo;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IUserRepository;
 import dev.facturador.services.IUserService;
@@ -16,8 +16,6 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserService implements IUserService {
-
-    //Injeccion de depencia
     @Autowired
     private IUserRepository repository;
 
@@ -37,19 +35,16 @@ public class UserService implements IUserService {
      * Busca un usuario segun las credenciales pueden ser UsernameOrEmail y la contraseña
      */
     @Override
-    public Optional<Usuarios> getUserWithCrdentials(LoginDto user) {
+    public Optional<Usuarios> getUserWithCrdentials(LoginBo user) {
         Optional<Usuarios> userDta = repository.findByUsernameOrEmail(user.usernameOrEmail(), user.usernameOrEmail());
         return userDta;
     }
 
     /**
      * Comprueba si existe segun el username
-     *
-     * @param username Nombre de usuario a comprobar si existe
-     * @return true si existe false si no
      */
     @Override
-    public boolean isExistsUserByUsername(String username) {
+    public boolean existsByUsername(String username) {
         return repository.existsByUsername(username);
     }
 
@@ -57,7 +52,7 @@ public class UserService implements IUserService {
      * Comprueba si existe un usuario con este email
      */
     @Override
-    public boolean isExistsUserByEmail(String email) {
+    public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }
 

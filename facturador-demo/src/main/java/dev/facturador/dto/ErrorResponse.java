@@ -1,4 +1,4 @@
-package dev.facturador.dto.response;
+package dev.facturador.dto;
 
 import java.util.Date;
 

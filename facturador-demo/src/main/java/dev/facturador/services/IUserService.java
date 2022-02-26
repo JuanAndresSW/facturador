@@ -1,6 +1,6 @@
 package dev.facturador.services;
 
-import dev.facturador.dto.LoginDto;
+import dev.facturador.bo.LoginBo;
 import dev.facturador.entities.Usuarios;
 
 import java.util.Optional;
@@ -8,9 +8,9 @@ import java.util.Optional;
 public interface IUserService {
     Usuarios getUserByUsername(Usuarios username);
 
-    Optional<Usuarios> getUserWithCrdentials(LoginDto user);
+    Optional<Usuarios> getUserWithCrdentials(LoginBo user);
 
-    boolean isExistsUserByUsername(String username);
+    boolean existsByUsername(String username);
 
-    boolean isExistsUserByEmail(String email);
+    boolean existsByEmail(String email);
 }
