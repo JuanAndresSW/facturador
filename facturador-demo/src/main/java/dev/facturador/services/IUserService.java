@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IUserService {
     Usuarios getUserByUsername(Usuarios username);
 
-    Optional<Usuarios> getUserWithCrdentials(LoginBo user);
+    Optional<Usuarios> getUserWithCrdentials(String usernameOrEmail);
 
     boolean existsByUsername(String username);
 

@@ -6,6 +6,7 @@ import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IMainAccountRepository;
 import dev.facturador.repository.IBranchAccountRepository;
 import dev.facturador.repository.IUserRepository;
+import dev.facturador.services.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private IBranchAccountRepository repositoryBranch;
     @Autowired
-    private IUserRepository repositoryUser;
+    private IUserService userService;
 
     /**
      * Busca un usuario personalizado con un username o email como credencial
@@ -44,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 
         log.info("---ENTRO AL LOAD USER BY USERNAME---");
-        var user = repositoryUser.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+        var user = userService.getUserWithCrdentials(usernameOrEmail);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("Username do not exist");
         }
@@ -56,7 +57,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         var userSecondExit = repositoryBranch.findByUsername(user.get().getUsername());
         if (userSecondExit.isPresent()) {
-            return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
+            return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "BRANCH");
         }
 
         //Si llega aqui este usuario no existe

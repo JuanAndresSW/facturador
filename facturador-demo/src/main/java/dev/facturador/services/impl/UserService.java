@@ -35,8 +35,8 @@ public class UserService implements IUserService {
      * Busca un usuario segun las credenciales pueden ser UsernameOrEmail y la contraseña
      */
     @Override
-    public Optional<Usuarios> getUserWithCrdentials(LoginBo user) {
-        Optional<Usuarios> userDta = repository.findByUsernameOrEmail(user.usernameOrEmail(), user.usernameOrEmail());
+    public Optional<Usuarios> getUserWithCrdentials(String usernameOrEmail) {
+        Optional<Usuarios> userDta = repository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
         return userDta;
     }
 
