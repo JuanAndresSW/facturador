@@ -1,8 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import FallBack from 'components/Fallback/Fallback';
+import SplashScreen from 'components/SplashScreen/SplashScreen';
 //Controladores de la sesión.
-import authenticate from "services/account/authenticate";
-import Session from "utils/Session";
+import Session from "services/Session";
 //Routing.
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 //Estilos globales.
@@ -21,19 +20,18 @@ export default function App() {
     var _a = useState(undefined), auth = _a[0], setAuth = _a[1];
     //Comprobar la sesión con el servidor en el primer renderizado.
     useEffect(function () {
-        authenticate(handleResponse);
+        Session.getByToken(handleResponse);
     }, []);
     function handleResponse(status, data) {
         if (status === 200) {
             setAuth(true);
-            Session.setSession({ token: data, name: "test", active: "0", passive: "0" });
         }
         else
             setAuth(false);
     }
-    return ((auth === undefined) ? React.createElement(FallBack, null) :
+    return ((auth === undefined) ? React.createElement(SplashScreen, null) :
         React.createElement(BrowserRouter, null,
-            React.createElement(Suspense, { fallback: React.createElement(FallBack, null) },
+            React.createElement(Suspense, { fallback: React.createElement(SplashScreen, null) },
                 React.createElement(Routes, null,
                     React.createElement(Route, { path: "/", element: auth ? React.createElement(Home, null) : React.createElement(Navigate, { to: "/inicio" }) }),
                     React.createElement(Route, { path: "/login", element: !auth ? React.createElement(Login, null) : React.createElement(Navigate, { to: "/inicio" }) }),

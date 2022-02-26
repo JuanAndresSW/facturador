@@ -1,9 +1,11 @@
 package dev.facturador.services.impl;
 
 import dev.facturador.dto.security.CustomUserDetails;
+import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.Usuarios;
-import dev.facturador.services.IMainAccountService;
-import dev.facturador.services.ISecondaryAccountService;
+import dev.facturador.repository.ICuentaPrincipalRepository;
+import dev.facturador.repository.ICuentaSecundariaRepository;
+import dev.facturador.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,9 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Servicio personalizado de UserDetails(Servicio de Spring Security)
@@ -26,44 +28,52 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private IMainAccountService serviceMain;
+    private ICuentaPrincipalRepository repositoryMain;
     @Autowired
-    private ISecondaryAccountService serviceSecondary;
+    private ICuentaSecundariaRepository repositorySecondary;
+    @Autowired
+    private IUserRepository repositoryUser;
 
     /**
-     * Comprueba si el username existe en la base de datos
-     * luego crea un usuario personalizado para comprobaciones con Spring Security
-     * @param username Credencial del usuario ah comprobar
-     * @return Retorna un UserDetails el cual es casteado a CustomUserDetails
+     * Crea un Usuario Custom de Spring Security segun la crdencial de login puede ser usernameOrEmail
+     *
+     * @param usernameOrEmail Credencial del usuario ah comprobar
      * @throws UsernameNotFoundException Excepcion arrojada en caso de no existir este usuario
      */
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //Revisa primero si es MAIN
-        var userMainExit= serviceMain.getMainAccountByUsername(username);
-        if(userMainExit != null){
-            return this.userBuilder(userMainExit.getUserMainAccount(), "MAIN");
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+        var user = loadByUsernameOrEmail(usernameOrEmail);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("Username do not exist");
         }
-        //Si no es MAIN entonces es secundaria
-        var userSecondExit = serviceSecondary.findSecondaryAccountByUsername(username);
-        if(userSecondExit != null){
-            return this.userBuilder(userSecondExit.getUserSecondaryAccount(), "SECONDARY");
+        var userMainExit = repositoryMain.findByUsername(user.get().getUsername());
+        if (userMainExit.isPresent()) {
+            return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), "MAIN");
         }
-        //Si ambas dan null
-        throw new UsernameNotFoundException("Username dow not exist");
+        //Si llega aqui no es main y prueba si es secondary
+        var userSecondExit = repositorySecondary.findByUsername(user.get().getUsername());
+        if (userSecondExit.isPresent()) {
+            return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
+        }
+        //Si llega aqui este usuario no existe
+        throw new UsernameNotFoundException("Username do not exist");
     }
 
     /**
-     * Crea el CustomUserDetails
      * @param user Usuario del cual saca las credenciales necesarias
-     * @param rol Rol de este usuario en la aplicacion
-     * @return Retorna un CustomUserDetails
+     * @param rol  Rol de este usuario en la aplicacion
+     * @return Crea el CustomUserDetails
      */
-    private UserDetails userBuilder(Usuarios user, String rol){
-        List<GrantedAuthority> authorities = new ArrayList<>(2);
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+rol));
+    private UserDetails userBuilder(Usuarios user, Comerciante trader, String rol) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(rol));
 
-        return new CustomUserDetails(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), authorities);
+        return new CustomUserDetails(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), trader.getActive(), trader.getPassive(), authorities);
     }
+
+    private Optional<Usuarios> loadByUsernameOrEmail(String usernameOrEmail) {
+        return repositoryUser.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+    }
+
 }

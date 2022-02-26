@@ -1,12 +1,17 @@
 #Los --- y ... indican cuando inicia y termina el YML
 ---
+#Puerto en el que se corre
+server:
+  port: 8080
 #Configuracion del log
 logging:
   level:
+    root: INFO
     web: DEBUG
     org:
       springframework:
-        security: DEBUG
+        security: INFO
+        web: DEBUG
       hibernate:
         SQL: DEBUG
         type:
@@ -18,11 +23,16 @@ logging:
 
 #Cofiguracion Spring
 spring:
+  #Indica que no quiero que salga el banner de Spring en consola
   main:
     banner-mode: off
-  #Configuracion de MySQL
+  #Configuracion para Data Base
   datasource:
+<<<<<<< HEAD
     url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=false&useTimezone=true&serverTimezone=UTC
+=======
+    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
+>>>>>>> e2b5084f83f4cefa6a063f8c54771f72d1041fcd
     username: root
     password: 'root'
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -32,22 +42,18 @@ spring:
       max-idle: 20
       min-idle: 15
   jpa:
+    database: MYSQL
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
-  #Configuracion de Spring Security
-  security:
-    user:
-      name: user
-      password: password
-#Configuracion de JWT
+
+#Constante JWT
 security:
   jwt:
     secret: thisIsASecrectMyFriend
-    issuer: Main
-    #Este valor dice que la sesion dura dos dias (Para sacarlo "horas * 3600000")
+    #Este valor dice que la sesion dura dos dias (Para sacarlo "horas * 3 600 000")
     ttlMillis: 172800000
 ...

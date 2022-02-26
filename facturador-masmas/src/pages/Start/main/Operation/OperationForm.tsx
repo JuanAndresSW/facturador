@@ -1,43 +1,51 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
+//React.
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import fetchFormData from "services/operation/fetchFormData";
-import Cond from 'utils/Cond';
-
-//Componentes de documento generado.
-import { Invoice, CreditNote, DebitNote, Receipt, PurchaseOrder, Remittance, Check, PromissoryNote, } from "./documents";
 
 //Componentes del formulario.
 import { DateInput, ErrorMessage, Field, Form, Radio, Select, Submit, Switch, Table, Textarea } from "components/formComponents";
-import { Section } from 'components/layout'
+import { Section, Cond, FlexDiv } from 'components/layout'
 import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
 
-//Tipos.
-import {document} from 'utils/types'
+//Elementos de documento generado.
+import { Invoice, CreditNote, DebitNote, Receipt, PurchaseOrder, Remittance, Check, PromissoryNote, } from "./documents";
+
+//Utilidades.
+import getDocumentTitle from 'utils/getDocumentTitle';
+
+//Servicios.
+import PointOfSale from 'services/PointOfSale';
+import Partner from 'services/Partner';
+import Group from 'services/Group';
+
 type props = {
   flux: "in" | "out";
   type: ("purchase-order" | "remittance" | "invoice" | "debit-note" | "credit-note" | "receipt-x" | "receipt" | "promissory-note" | "check" | "other");
 };
 
 /**
- * Devuelve un formulario que recolecta los datos necesitados por el back-end para generar un documento.
+ * Devuelve un formulario que recolecta los datos necesitados por el back-end para generar un documento comercial.
  * @param flux Flujo de emisión del documento. Valores aceptados: 'in' | 'out'.
  * @param type Tipo de documento comercial en inglés y kebab-case.
  */
 export default function OperationForm({ flux, type }: props): JSX.Element {
 
   //Solicitar los datos a mostrar en el primer renderizado.
-  useEffect(() => fetchFormData(handleResponse), []);
-  function handleResponse(state: number, data: string): void {
-    if (state === 200) {
-      setDisplay({
-        ...display,
-        pointsOfSale: JSON.parse(data).pointsOfSale,
-        partners: JSON.parse(data).partners,
-        groups: JSON.parse(data).groups,
-        root: JSON.parse(data).root,
-      });
-    } else setError(data);
-  }
+  useEffect(() => {
+
+    PointOfSale.getArray((state:number,data:string)=>{
+      if (state===200) setDisplay({...display, pointsOfSale: JSON.parse(data)});
+    });
+
+    Partner.getArray((state:number,data:string)=>{
+      if (state===200) setDisplay({...display, partners: JSON.parse(data)});
+    });
+
+    Group.getArray((state:number,data:string)=>{
+      if (state===200) setDisplay({...display, groups: JSON.parse(data)});
+    });
+
+  }, []);
 
   //Los datos del servidor necesarios para mostrar el formulario.
   const [display, setDisplay] = useState({
@@ -47,8 +55,8 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
     root: false,
   })
 
-  //Mensaje de error.
-  const [error, setError] = useState("hello");
+  //Mensaje de error al generar el documento.
+  const [error, setError] = useState("hello world");
 
   // #### Los datos a ser enviados al servidor. #### //
   //Todos.
@@ -75,17 +83,17 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 
 
   return (
-    <Form title={getTitle(type, flux)}>
+    <Form title={getDocumentTitle(type, flux)}>
 
       <ErrorMessage message={error} />
 
       <Section label="Partícipes">
 
-        <Div>
+        <FlexDiv>
           <Select options={display.pointsOfSale} bind={[pointOfSale, setPointOfSale]}
             fallback={display.root ? "No tienes ningún punto de venta. Crea tu primero:" : ""} />
           <PlusIcon link={"/"} cond={display.root} />
-        </Div>
+        </FlexDiv>
 
         <Cond bool={flux==="in"}>
           <BiChevronsUp style={{ margin: "1.2rem auto", display: "block", cursor: "default", fontSize: "2rem", color: "white" }} />
@@ -97,14 +105,14 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 
         <Switch falseIcon={<BiUser />} trueIcon={<BiGroup />} bind={[useGroup, setUseGroup]} />
 
-        <Div>
+        <FlexDiv>
           <Select
             options={useGroup ? display.groups : display.partners}
             bind={useGroup ? [group, setGroup] : [partner, setPartner]}
             fallback={useGroup ? "No tienes ningún grupo. Crea tu primero:" : "No tienes ningún socio. Crea tu primero:"}
           />
           <PlusIcon link="/" cond={display.root} />
-        </Div>
+        </FlexDiv>
 
       </Section>
 
@@ -161,41 +169,16 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
   );
 }
 
-/**Encuentra un título apropiado para el formulario.*/
-function getTitle(type: string, flux: string): string {
-  let title: string;
-  switch (type) {
-    case "purchase-order":  title = "Nueva orden de compra "; break;
-    case "remittance":      title = "Nuevo remito "; break;
-    case "invoice":         title = "Nueva factura "; break;
-    case "debit-note":      title = "Nueva nota de débito "; break;
-    case "credit-note":     title = "Nueva nota de crédito "; break;
-    case "receipt-x":       title = "Nuevo recibo X "; break;
-    case "receipt":         title = "Nuevo recibo simple "; break;
-    case "promissory-note": title = "Nuevo pagaré "; break;
-    case "check":           title = "Nuevo cheque "; break;
-    case "other":           title = "Nueva operación "; break;
-    default: return "Algo salió mal";
-  }
-  switch (flux) {
-    case "in":  title += "de entrada"; break;
-    case "out": title += "de salida"; break;
-    default: return;
-  }
-  return title;
-}
 
-const PlusIcon: FC<{ link: string, cond: boolean }> = ({ link, cond }) => {
+//# Los siguientes elementos son muy simples, por eso se decidió no moverlos a archivos separados. #//
+
+/**
+ * Un signo + con Link a la dirección especificada cuando la condición 'cond' es cumplida.
+ * Valor null en caso contrario.
+ */
+const PlusIcon: React.FC<{ link: string, cond: boolean }> = ({ link, cond }) => {
   return cond ?
   <Link to={link} style={{ flex: .5, marginTop: ".3rem", fontSize: "2rem", display: "block", textAlign: "center", color: "#fff" }}>
     <BiPlusCircle />
   </Link> : null
-}
-
-const Div: FC<{ children: ReactNode }> = ({children}) => {
-  return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {children}
-    </div>
-  )
 }

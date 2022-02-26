@@ -1,12 +1,18 @@
 package dev.facturador.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "productos")
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public final class Productos {
 
     @Id
@@ -14,16 +20,16 @@ public final class Productos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idProduct;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_transaccion", nullable = false)
-    private Transaccion transaction;
-
     @Column(name = "cantidad", nullable = false)
     private int amountProducts;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "precio", nullable = false)
+    @Column(name = "precio", nullable = false, scale = 2)
     private double price;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_punto_venta_dueño", nullable = false, referencedColumnName = "id_punto_venta")
+    private PuntoVenta pointOfSaleOwnerProduct;
 }

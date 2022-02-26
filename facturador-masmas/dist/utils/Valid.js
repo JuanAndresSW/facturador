@@ -1,4 +1,7 @@
-/**Define métodos de validación de datos.*/
+/**
+ * Define métodos de validación de datos.
+ * Cada método devuelve un boolean significando la validez del dato argumentado.
+*/
 var Valid = /** @class */ (function () {
     function Valid() {
     }

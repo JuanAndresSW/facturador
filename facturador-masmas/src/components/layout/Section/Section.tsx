@@ -6,6 +6,9 @@ type props = {
     label?: string;
 }
 
+/**
+ * Un envoltorio visible con título opcional 'label'.
+ */
 export default function Section({children, label}:props): JSX.Element {
     return (
         <div className="section">

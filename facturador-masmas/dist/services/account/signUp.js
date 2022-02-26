@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import fetch from "../fetch";
+import fetch from "api/fetch";
 /**
 * Envía los datos de usuario y la foto de perfil para ser registrados.
 * @param {account} account    - Datos de la cuenta del usuario, en forma de objeto.
@@ -46,7 +46,7 @@ export default function signUp(account, callback) {
         return __generator(this, function (_a) {
             formattedPromise = formatAccount(account);
             formattedPromise.then(function (formattedAccount) {
-                fetch("auth/main/signup", { body: formattedAccount }, callback);
+                fetch("post", "auth/main/signup", { body: formattedAccount }, callback);
             });
             return [2 /*return*/];
         });

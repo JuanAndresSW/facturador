@@ -1,13 +1,17 @@
 package dev.facturador.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
-@NoArgsConstructor @Getter @Setter
+@NoArgsConstructor
+@Getter
+@Setter
 public class Usuarios {
 
     @Id
@@ -15,14 +19,14 @@ public class Usuarios {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @Column(nullable = false, length = 30, unique = true)
-    private String username;
+    @Column(nullable = false, length = 128, unique = true)
+    private String email;
 
     @Column(nullable = false, length = 128)
     private String password;
 
-    @Column(nullable = false, length = 320, unique = true)
-    private String  email;
+    @Column(nullable = false, length = 20, unique = true)
+    private String username;
 
     @JsonBackReference
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)

@@ -2,19 +2,24 @@ package dev.facturador.services.impl;
 
 import dev.facturador.repository.IComercianteRepository;
 import dev.facturador.services.ITraderService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
+@Transactional
 public class TraderService implements ITraderService {
 
     @Autowired
     private IComercianteRepository repository;
 
+    /**
+     * Comprueba si ya existe el cuit/cuil en la base de datos
+     */
     @Override
-    public boolean existsByCode(String uniqueKey) {
+    public boolean isExistsTraderByUniquekey(String uniqueKey) {
         return repository.existsByUniqueKey(uniqueKey);
     }
+
+
 }

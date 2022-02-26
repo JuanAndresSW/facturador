@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 //Componentes de formulario.
 import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
+//Relacionado a la cuenta.
 import Valid from "utils/Valid";
-import Session from "utils/Session";
-import signUp from "services/account/signUp";
+import RootAccount from "services/RootAccount";
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
@@ -95,7 +95,7 @@ export default function SignUp() {
                 grossIncome: grossIncome,
             }
         };
-        signUp(account, handleResponse);
+        RootAccount.register(account, handleResponse);
         setSubmitButton("Cargando...");
     }
     /**Maneja la respuesta recibida del servidor. */
@@ -103,7 +103,6 @@ export default function SignUp() {
         if (state === 201) {
             setTraderError("");
             setSubmitButton("");
-            Session.setSession({ token: data, name: username, active: "0", passive: "0" });
             navigate("/inicio");
         }
         else

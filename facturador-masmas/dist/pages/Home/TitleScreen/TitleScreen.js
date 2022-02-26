@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import Session from "utils/Session";
-import login from 'services/account/login';
+import Session from "services/Session";
 import Valid from "utils/Valid";
 import "styles/form.css";
 import "./TitleScreen.css";
 import { useNavigate } from "react-router-dom";
 //objeto de usuario a enviar al servidor
-var user = { name: "", password: "" };
+var user = { usernameOrEmail: "", password: "" };
 export default function TitleScreen() {
     //Objeto de navegación de rutas;
     var navigate = useNavigate();
@@ -19,7 +18,7 @@ export default function TitleScreen() {
     function checkValidity() {
         if (loginInputType === "text") {
             if (Valid.names(loginValue.trim()) || Valid.email(loginValue.trim())) {
-                user.name = loginValue.trim();
+                user.usernameOrEmail = loginValue.trim();
                 setLoginValue("");
                 setLoginInputType("password");
                 setError("");
@@ -42,14 +41,13 @@ export default function TitleScreen() {
             setLoginInputType("text");
         }
     }
-    //autenticar el objeto de usuario
+    //Autenticar el objeto de usuario.
     function authenticate(user) {
-        login(user.name, user.password, handleResponse);
+        Session.getByCredentials(user.usernameOrEmail, user.password, handleResponse);
     }
     function handleResponse(state, data) {
         if (state === 200) {
             setError("");
-            Session.setSession({ token: data, name: "test", passive: "0", active: "0" });
             window.location.reload();
         }
         else

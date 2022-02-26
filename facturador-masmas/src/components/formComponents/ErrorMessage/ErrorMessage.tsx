@@ -7,9 +7,9 @@ type props = {
 }
 
 /**
- * @returns Un formulario.
+ * @returns Un mensaje de error sincronizado con 'message', siendo una pieza de estado.
  */
-export default function Form({message}:props): JSX.Element {
+export default function ErrorMessage({message}:props): JSX.Element {
     return (
         <p className="error">
             {message.length > 1? <BiErrorCircle /> : null}

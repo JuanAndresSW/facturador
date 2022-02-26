@@ -1,47 +1,55 @@
 package dev.facturador.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 @SuppressWarnings("ALL")
 @Entity
-@Table(name="cuenta_principal")
-@NoArgsConstructor @Getter @Setter
+@Table(name = "cuenta_principal")
+@NoArgsConstructor
+@Getter
+@Setter
 public final class CuentaPrincipal {
 
     @Id
-    @Column(name="id_cuenta_principal")
+    @Column(name = "id_cuenta_principal")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idMainAccount;
+    private long mainAccountId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_comerciante", nullable = false, unique = true)
+    @JoinColumn(name = "id_comerciante", nullable = false, unique = true)
     private Comerciante accountOwner;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
     private Usuarios userMainAccount;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "mainAccount", cascade = CascadeType.ALL)
-    private List<CuentaSecundaria> secondaryAccounts;
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime createDate;
 
-    private void addSecondaryAccount(CuentaSecundaria element){
-        if(secondaryAccounts == null) secondaryAccounts = new LinkedList<>();
-        this.secondaryAccounts.add(element);
+    @JsonBackReference
+    @OneToMany(mappedBy = "secondaryAccountOwner", cascade = CascadeType.ALL)
+    private Collection<CuentaSecundaria> mainAccountChilds;
+
+    private void addSecondaryAccount(CuentaSecundaria element) {
+        if (mainAccountChilds == null) mainAccountChilds = new LinkedList<>();
+        this.mainAccountChilds.add(element);
     }
 
-    //El ToString lo genero sin lombok porque el lombok tomaria el atributo de la relacion bi-direccional
-    //Generando un bucle de toString que da una excepcion
     @Override
     public String toString() {
         return "CuentaPrincipal{" +
-                "idMainAccount=" + idMainAccount +
+                "mainAccountId=" + mainAccountId +
                 ", accountOwner=" + accountOwner +
-                ", mainAccountDetails=" + userMainAccount +
+                ", userMainAccount=" + userMainAccount +
+                ", createDate=" + createDate +
                 '}';
     }
 }

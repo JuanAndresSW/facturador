@@ -1,5 +1,5 @@
 package dev.facturador.services;
 
 public interface ITraderService {
-    boolean existsByCode(String uniqueKey);
+    boolean isExistsTraderByUniquekey(String uniqueKey);
 }

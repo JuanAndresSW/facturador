@@ -1,14 +1,11 @@
 package dev.facturador.dto.security;
 
-import dev.facturador.entities.Usuarios;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.io.Serial;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * User Details Personalizado
@@ -22,30 +19,23 @@ public class CustomUserDetails implements UserDetails {
     private String username;
     private String password;
     private String email;
+    private int active;
+    private int passive;
     private Collection<? extends GrantedAuthority> authorities;
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
 
-    public CustomUserDetails(long id, String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
+
+    public CustomUserDetails(long id, String username, String password, String email, int active, int passive, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
-        if(authorities != null){
-            this.authorities = new HashSet<>(authorities);
-        } else{
+        this.active = active;
+        this.passive = passive;
+        if (authorities != null) {
+            this.authorities = authorities;
+        } else {
             this.authorities = null;
         }
-    }
-
-    public static CustomUserDetails createUser(Usuarios user, String rol) {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+rol));
-
-        return new CustomUserDetails
-                (user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), authorities);
     }
 
     @Override
@@ -56,6 +46,11 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     public long getId() {
@@ -84,6 +79,22 @@ public class CustomUserDetails implements UserDetails {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public int getPassive() {
+        return passive;
+    }
+
+    public void setPassive(int passive) {
+        this.passive = passive;
     }
 
     @Override

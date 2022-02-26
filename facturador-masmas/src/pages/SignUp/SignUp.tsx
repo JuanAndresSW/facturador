@@ -6,10 +6,8 @@ import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/form
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
 
 //Relacionado a la cuenta.
-import {account} from 'utils/types';
 import Valid from "utils/Valid";
-import Session from "utils/Session";
-import signUp from "services/account/signUp";
+import MainAccount, {mainAccount} from "services/MainAccount";
 
 
 /**
@@ -74,7 +72,7 @@ export default function SignUp() {
 
   /**Envía al servidor los datos recolectados. */
   function submit(): void {
-    const account: account = {
+    const account: mainAccount = {
       user: {
         username: username,
         email: email,
@@ -88,7 +86,7 @@ export default function SignUp() {
         grossIncome: grossIncome,
       }
     }
-    signUp(account, handleResponse);
+    MainAccount.register(account, handleResponse);
     setSubmitButton("Cargando...");
   }
 
@@ -97,7 +95,6 @@ export default function SignUp() {
     if (state === 201) {
       setTraderError("");
       setSubmitButton("");
-      Session.setSession({ token: data, name: username, active: "0", passive: "0" });
       navigate("/inicio");
     } else setTraderError(data); setSubmitButton("");
   }

@@ -1,52 +1,60 @@
 package dev.facturador.entities;
 
-import lombok.*;
+import dev.facturador.entities.enums.Vat;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collection;
 
 @SuppressWarnings("ALL")
 @Entity
-@Table(name="comerciante")
-@NoArgsConstructor @Getter @Setter
+@Table(name = "comerciante")
+@NoArgsConstructor
+@Getter
+@Setter
 public final class Comerciante {
 
     @Id
-    @Column(name="id_comerciante")
+    @Column(name = "id_comerciante")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idTrader;
 
-    @Column(name = "clave_unica", nullable = false, length = 15, updatable = false)
+    @Column(name = "clave_unica", nullable = false, length = 15, updatable = false, unique = true)
     private String uniqueKey;
 
-    @Column(name = "iva", nullable = false, length = 25)
-    private String vat;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "iva", nullable = false,
+            columnDefinition = "ENUM('Responsable Inscripto','Monotributista','Sujeto Exento')")
+    private Vat vat;
 
     @Column(name = "ingresos_brutos", nullable = false, length = 15)
     private String grossIncome;
 
-    @Column(name = "nombre", nullable = false , length = 30)
+    @Column(name = "nombre", nullable = false, length = 20)
     private String name;
 
-    @OneToMany(mappedBy = "pointOfSaleOwner", cascade = CascadeType.ALL)
-    private List<PuntoVenta> pointOfSaleOutlets;
+    @Column(name = "pasivo", nullable = false)
+    private int passive;
 
-    public Comerciante(String uniqueKey, String vat, String grossIncome, String name) {
+    @Column(name = "activo", nullable = false)
+    private int active;
+
+    @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
+    private Collection<PuntoVenta> pointOfSaleOutlets;
+
+    public Comerciante(String uniqueKey, Vat vat, String grossIncome, String name) {
         this.uniqueKey = uniqueKey;
         this.vat = vat;
         this.grossIncome = grossIncome;
         this.name = name;
     }
 
-    public Comerciante(String uniqueKey, String vat, String name) {
+    public Comerciante(String uniqueKey, String grossIncome, String name) {
         this.uniqueKey = uniqueKey;
-        this.vat = vat;
+        this.grossIncome = grossIncome;
         this.name = name;
-    }
-
-    private void addPointOfSale(PuntoVenta element){
-        if(pointOfSaleOutlets == null) pointOfSaleOutlets = new LinkedList<>();
-        this.pointOfSaleOutlets.add(element);
     }
 
     @Override
@@ -54,7 +62,7 @@ public final class Comerciante {
         return "Comerciante{" +
                 "idTrader=" + idTrader +
                 ", uniqueKey='" + uniqueKey + '\'' +
-                ", vat='" + vat + '\'' +
+                ", vat=" + vat.getNameVat() +
                 ", grossIncome='" + grossIncome + '\'' +
                 ", name='" + name + '\'' +
                 '}';

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import login from "services/account/login";
+import Session from "services/Session";
 
 //Utilidades.
 import Valid from "utils/Valid";
-import Session from "utils/Session";
 
 //Componentes de formulario.
 import {Form, Field, ErrorMessage, Submit} from 'components/formComponents';
@@ -15,20 +14,19 @@ import { BiKey, BiUser } from "react-icons/bi";
 export default function Login() {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState("");
+  const [usernameOrEmail, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   function submit(): void {
-    if ((Valid.names(user) || Valid.email(user)) && Valid.password(password))
-      login(user, password, handleResponse)
+    if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password))
+      Session.getByCredentials(usernameOrEmail, password, handleResponse)
     else setError("Usuario o contraseña incorrecta");
   };
 
   function handleResponse(state:number, data:string) {
     if (state === 200) {
       setError("");
-      Session.setSession({token: data, name: "test", passive: "0", active: "0"});
       navigate("/");
     } else setError(data);
   }
@@ -36,7 +34,7 @@ export default function Login() {
   return (
     <Form onSubmit={submit} title="Iniciar sesión">
 
-      <Field icon={<BiUser />} label="Nombre o correo electrónico" bind={[user, setUser]} />
+      <Field icon={<BiUser />} label="Nombre o correo electrónico" bind={[usernameOrEmail, setUser]} />
       <Field icon={<BiKey />} label="Contraseña" type="password" bind={[password, setPassword]} />
 
       <ErrorMessage message={error} />
