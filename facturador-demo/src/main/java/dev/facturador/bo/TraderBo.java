@@ -1,4 +1,4 @@
-package dev.facturador.dto;
+package dev.facturador.bo;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 /**
  * Dto del Json para el Comerciante
  */
-public record TraderDto(
+public record TraderBo(
         @NotEmpty(message = "NotEmpity") @Length(min = 3, max = 20) String businessName,
         @NotEmpty(message = "NotEmpity") String vatCategory,
         @NotEmpty(message = "NotEmpity") @Length(min = 11, max = 15) String code,

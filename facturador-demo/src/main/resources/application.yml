@@ -1,4 +1,3 @@
-#Los --- y ... indican cuando inicia y termina el YML
 ---
 #Puerto en el que se corre
 server:
@@ -10,8 +9,7 @@ logging:
     web: DEBUG
     org:
       springframework:
-        security: INFO
-        web: DEBUG
+        web.server.adapter.HttpWebHandlerAdapter: DEBUG
       hibernate:
         SQL: DEBUG
         type:
@@ -23,6 +21,8 @@ logging:
 
 #Cofiguracion Spring
 spring:
+  mvc:
+    log-request-details: true
   #Indica que no quiero que salga el banner de Spring en consola
   main:
     banner-mode: off
@@ -44,8 +44,9 @@ spring:
     open-in-view: false
     properties:
       hibernate:
+        dialect:
+          storage_engine: innodb
         format_sql: true
-
 #Constante JWT
 security:
   jwt:

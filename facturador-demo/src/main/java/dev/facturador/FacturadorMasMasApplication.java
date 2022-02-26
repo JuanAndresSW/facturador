@@ -11,9 +11,4 @@ public class FacturadorMasMasApplication {
     public static void main(String... args) {
         SpringApplication.run(FacturadorMasMasApplication.class, args);
     }
-
-    @Bean
-    public WebClient webClient() {
-        return WebClient.builder().baseUrl("http://localhost:8080").build();
-    }
 }

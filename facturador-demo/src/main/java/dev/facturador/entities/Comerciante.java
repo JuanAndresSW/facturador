@@ -44,11 +44,13 @@ public final class Comerciante {
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
     private Collection<PuntoVenta> pointOfSaleOutlets;
 
-    public Comerciante(String uniqueKey, Vat vat, String grossIncome, String name) {
+    public Comerciante(String uniqueKey, String grossIncome, String name, int active, int passive) {
         this.uniqueKey = uniqueKey;
         this.vat = vat;
         this.grossIncome = grossIncome;
         this.name = name;
+        this.active = active;
+        this.passive = passive;
     }
 
     public Comerciante(String uniqueKey, String grossIncome, String name) {
@@ -57,6 +59,22 @@ public final class Comerciante {
         this.name = name;
     }
 
+<<<<<<< HEAD
+=======
+    public static Vat defineVat(String vat) {
+        if (vat.contains("Responsable")) {
+            return Vat.RESPONSABLE_INSCRIPTO;
+        }
+        if (vat.contains("Monotributista")) {
+            return Vat.MONOTRIBUTISTA;
+        }
+        if (vat.contains("Sujeto")) {
+            return Vat.SUJETO_EXENTO;
+        }
+        return null;
+    }
+
+>>>>>>> 25a016802cd666b6a85a59aa0e1b8c1741d89337
     @Override
     public String toString() {
         return "Comerciante{" +

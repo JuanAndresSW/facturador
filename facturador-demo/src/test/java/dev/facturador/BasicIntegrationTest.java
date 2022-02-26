@@ -1,6 +1,6 @@
 package dev.facturador;
 
-import dev.facturador.dto.LoginDto;
+import dev.facturador.bo.LoginBo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.SpringBootConfiguration;
@@ -23,7 +23,7 @@ public class BasicIntegrationTest {
 
     @Test
     public void whenLoggedUserRequestHomePage_TheSuccess() {
-        LoginDto loginUser = null;
+        LoginBo loginUser = null;
     }
 
 

@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public final class CuentaSecundaria {
-
     @Id
     @Column(name = "id_cuenta_secundaria")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

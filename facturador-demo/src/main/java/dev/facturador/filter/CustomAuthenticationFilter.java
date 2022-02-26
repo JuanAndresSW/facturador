@@ -1,6 +1,6 @@
 package dev.facturador.filter;
 
-import dev.facturador.dto.security.CustomUserDetails;
+import dev.facturador.bo.security.CustomUserDetails;
 import dev.facturador.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +33,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String password = request.getParameter("password");
         var authenticationToken = new UsernamePasswordAuthenticationToken(usernameOrEmail, password);
 
+<<<<<<< HEAD
         setDetails(request, authenticationToken);
+=======
+>>>>>>> 25a016802cd666b6a85a59aa0e1b8c1741d89337
         return this.authenticationManager.authenticate(authenticationToken);
     }
 
@@ -42,6 +45,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             (HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         var user = (CustomUserDetails) authResult.getPrincipal();
         var URL = request.getRequestURI().toString();
+<<<<<<< HEAD
 
         String accesToken = jwt.createAccesToken(user, URL);
         String refreshToken = jwt.createRefreshToken(user, URL);
@@ -49,6 +53,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setHeader("Access-token", accesToken);
         response.setHeader("Refresh-token", refreshToken);
 
+=======
+        String accesToken = jwt.createAccesToken(user.getUsername(), user.getAuthorities().stream().toList().get(0).getAuthority(), URL);
+        String refreshToken = jwt.createRefreshToken(user.getUsername(), URL);
+
+        response.setHeader("Access-token", accesToken);
+        response.setHeader("Refresh-token", refreshToken);
+>>>>>>> 25a016802cd666b6a85a59aa0e1b8c1741d89337
         response.addHeader("user-data", user.getUsername());
         response.addHeader("user-data", user.getAuthorities().stream().toList().get(0).getAuthority());
         response.addHeader("user-data", String.valueOf(user.getActive()));

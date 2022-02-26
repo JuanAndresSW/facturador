@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Setter
 @ToString
 public final class AvatarUsuario {
-
     @Id
     @Column(name = "id_avatar")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

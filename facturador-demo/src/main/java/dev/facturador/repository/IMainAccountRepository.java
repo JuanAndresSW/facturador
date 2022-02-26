@@ -9,8 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ICuentaPrincipalRepository extends JpaRepository<CuentaPrincipal, Long> {
+public interface IMainAccountRepository extends JpaRepository<CuentaPrincipal, Long> {
     @Query(value = "FROM CuentaPrincipal am WHERE am.userMainAccount.username = :username")
     Optional<CuentaPrincipal> findByUsername(@Param("username") String username);
 
+    Boolean existsByUserMainAccountUsername(String username);
+
+    Boolean existsByUserMainAccountEmail(String email);
+
+    Boolean existsByAccountOwnerUniqueKey(String uniqueKey);
 }

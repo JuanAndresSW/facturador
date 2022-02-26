@@ -1,6 +1,6 @@
 package dev.facturador.exceptions;
 
-import dev.facturador.dto.response.ErrorResponse;
+import dev.facturador.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

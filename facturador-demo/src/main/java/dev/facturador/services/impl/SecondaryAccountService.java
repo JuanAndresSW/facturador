@@ -1,7 +1,7 @@
 package dev.facturador.services.impl;
 
 import dev.facturador.entities.CuentaSecundaria;
-import dev.facturador.repository.ICuentaSecundariaRepository;
+import dev.facturador.repository.IBranchAccountRepository;
 import dev.facturador.services.ISecondaryAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class SecondaryAccountService implements ISecondaryAccountService {
 
     @Autowired
-    private ICuentaSecundariaRepository repository;
+    private IBranchAccountRepository repository;
 
     /**
      * Devuelve una cuenta secundaria relacionada con X Username

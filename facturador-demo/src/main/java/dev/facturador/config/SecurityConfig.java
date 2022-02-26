@@ -43,7 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Autorizacion de las request
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/auth/refresh").permitAll()
+                .antMatchers("/api/auth/login").permitAll()
+                .antMatchers("/api/auth/mainaccounts").permitAll()
                 .anyRequest().authenticated();
 
         //Filtro de Autenticacion esta presenta pero lo que nos importa se llama solo en el login
@@ -64,13 +66,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JWTUtil jwtUtil() {
-        return new JWTUtil();
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
     }
 
+<<<<<<< HEAD
+=======
+    @Bean
+    public JWTUtil jwtUtil() {
+        return new JWTUtil();
+    }
+
+>>>>>>> 25a016802cd666b6a85a59aa0e1b8c1741d89337
 }

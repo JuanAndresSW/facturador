@@ -1,10 +1,10 @@
 package dev.facturador.services.impl;
 
-import dev.facturador.dto.security.CustomUserDetails;
+import dev.facturador.bo.security.CustomUserDetails;
 import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.Usuarios;
-import dev.facturador.repository.ICuentaPrincipalRepository;
-import dev.facturador.repository.ICuentaSecundariaRepository;
+import dev.facturador.repository.IMainAccountRepository;
+import dev.facturador.repository.IBranchAccountRepository;
 import dev.facturador.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,52 +26,63 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-
     @Autowired
-    private ICuentaPrincipalRepository repositoryMain;
+    private IMainAccountRepository repositoryMain;
     @Autowired
-    private ICuentaSecundariaRepository repositorySecondary;
+    private IBranchAccountRepository repositorySecondary;
     @Autowired
     private IUserRepository repositoryUser;
 
     /**
-     * Crea un Usuario Custom de Spring Security segun la crdencial de login puede ser usernameOrEmail
+     * Busca un usuario personalizado con un username o email como credencial
      *
-     * @param usernameOrEmail Credencial del usuario ah comprobar
-     * @throws UsernameNotFoundException Excepcion arrojada en caso de no existir este usuario
+     * @param usernameOrEmail Parametro para crear el usuario
+     * @return Un {@link CustomUserDetails} usuario personalizado apra Srping Security
+     * @throws UsernameNotFoundException Si el usuario no existe arroja este excepcion
      */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        var user = loadByUsernameOrEmail(usernameOrEmail);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Username do not exist");
+        //Si no contiene arroba doy por echo que es un username
+        if(!usernameOrEmail.contains("@")){
+            var userMainExit = repositoryMain.findByUsername(usernameOrEmail);
+            if (userMainExit.isPresent()) {
+                return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), "MAIN");
+            }
+            //Si llega aqui no es main y prueba si es secondary
+            var userSecondExit = repositorySecondary.findByUsername(usernameOrEmail);
+            if (userSecondExit.isPresent()) {
+                return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
+            }
         }
-        var userMainExit = repositoryMain.findByUsername(user.get().getUsername());
-        if (userMainExit.isPresent()) {
-            return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), "MAIN");
+        //Si contiene doy por echo que puede ser ambos
+        if(usernameOrEmail.contains("@")){
+            var user = loadByUsernameOrEmail(usernameOrEmail);
+            if (user.isEmpty()) {
+                throw new UsernameNotFoundException("Username do not exist");
+            }
+            var userMainExit = repositoryMain.findByUsername(user.get().getUsername());
+            if (userMainExit.isPresent()) {
+                return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), "MAIN");
+            }
+            //Si llega aqui no es main y prueba si es secondary
+            var userSecondExit = repositorySecondary.findByUsername(user.get().getUsername());
+            if (userSecondExit.isPresent()) {
+                return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
+            }
         }
-        //Si llega aqui no es main y prueba si es secondary
-        var userSecondExit = repositorySecondary.findByUsername(user.get().getUsername());
-        if (userSecondExit.isPresent()) {
-            return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
-        }
+
         //Si llega aqui este usuario no existe
         throw new UsernameNotFoundException("Username do not exist");
     }
 
-    /**
-     * @param user Usuario del cual saca las credenciales necesarias
-     * @param rol  Rol de este usuario en la aplicacion
-     * @return Crea el CustomUserDetails
-     */
+
     private UserDetails userBuilder(Usuarios user, Comerciante trader, String rol) {
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(rol));
 
         return new CustomUserDetails(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), trader.getActive(), trader.getPassive(), authorities);
     }
-
     private Optional<Usuarios> loadByUsernameOrEmail(String usernameOrEmail) {
         return repositoryUser.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
     }
