@@ -6,7 +6,7 @@ import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IMainAccountRepository;
 import dev.facturador.repository.IBranchAccountRepository;
 import dev.facturador.repository.IUserRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,19 +17,18 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 /**
  * Servicio personalizado de UserDetails(Servicio de Spring Security)
  */
+@Slf4j
 @Service
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private IMainAccountRepository repositoryMain;
     @Autowired
-    private IBranchAccountRepository repositorySecondary;
+    private IBranchAccountRepository repositoryBranch;
     @Autowired
     private IUserRepository repositoryUser;
 
@@ -43,33 +42,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        //Si no contiene arroba doy por echo que es un username
-        if(!usernameOrEmail.contains("@")){
-            var userMainExit = repositoryMain.findByUsername(usernameOrEmail);
-            if (userMainExit.isPresent()) {
-                return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), "MAIN");
-            }
-            //Si llega aqui no es main y prueba si es secondary
-            var userSecondExit = repositorySecondary.findByUsername(usernameOrEmail);
-            if (userSecondExit.isPresent()) {
-                return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
-            }
+
+        log.info("---ENTRO AL LOAD USER BY USERNAME---");
+        var user = repositoryUser.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("Username do not exist");
         }
-        //Si contiene doy por echo que puede ser ambos
-        if(usernameOrEmail.contains("@")){
-            var user = loadByUsernameOrEmail(usernameOrEmail);
-            if (user.isEmpty()) {
-                throw new UsernameNotFoundException("Username do not exist");
-            }
-            var userMainExit = repositoryMain.findByUsername(user.get().getUsername());
-            if (userMainExit.isPresent()) {
-                return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), "MAIN");
-            }
-            //Si llega aqui no es main y prueba si es secondary
-            var userSecondExit = repositorySecondary.findByUsername(user.get().getUsername());
-            if (userSecondExit.isPresent()) {
-                return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
-            }
+        log.info("----EL USER SI EXISTE----");
+        var userMainExit = repositoryMain.findByUsername(user.get().getUsername());
+        if (userMainExit.isPresent()) {
+            return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), "MAIN");
+        }
+
+        var userSecondExit = repositoryBranch.findByUsername(user.get().getUsername());
+        if (userSecondExit.isPresent()) {
+            return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), "SECONDARY");
         }
 
         //Si llega aqui este usuario no existe
@@ -83,8 +70,4 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new CustomUserDetails(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), trader.getActive(), trader.getPassive(), authorities);
     }
-    private Optional<Usuarios> loadByUsernameOrEmail(String usernameOrEmail) {
-        return repositoryUser.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
-    }
-
 }

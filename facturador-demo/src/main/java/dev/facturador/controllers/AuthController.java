@@ -86,19 +86,24 @@ public class AuthController {
      */
     @PostMapping(REFRESH_TOKEN)
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info("---ENTRO AL METODO---");
         String authHeader = request.getHeader(AUTHORIZATION);
+        log.info("---RCUPERO EL HEADER---");
         var jwt = new JWTUtil();
         if (jwt.verifyAuthToken(authHeader)) {
-                var user = jwt.createUserAuthenticatedByRefreshToken(authHeader, response);
-                var URL = request.getRequestURI().toString();
-                String accesToken = jwt.createAccesToken(user.getUsername(), user.getAuthorities().stream().toList().get(0).getAuthority(), URL);
-                String refreshToken = jwt.createRefreshToken(user.getUsername(), URL);
-
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("Access-Token", accesToken);
-                tokens.put("Refresh-Token", refreshToken);
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+            log.info("--EL TOKEN BEARER ES VALIDO---");
+            var user = jwt.createUserAuthenticatedByRefreshToken(authHeader, response);
+            log.info("---CREE EL CUSTOM USER DETAILS--");
+            var URL = request.getRequestURI().toString();
+            log.info("---RECUPERE LA URL---");
+            String accesToken = jwt.createAccesToken(user.getUsername(), user.getAuthorities().stream().toList().get(0).getAuthority(), URL);
+            String refreshToken = jwt.createRefreshToken(user.getUsername(), URL);
+            log.info("---SE CREO LOS TOKENS---");
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("Access-Token", accesToken);
+            tokens.put("Refresh-Token", refreshToken);
+            response.setContentType(APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), tokens);
         } else {
             throw new RuntimeException("Refresh token is mising");
         }

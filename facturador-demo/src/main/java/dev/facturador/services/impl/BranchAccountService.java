@@ -2,7 +2,7 @@ package dev.facturador.services.impl;
 
 import dev.facturador.entities.CuentaSecundaria;
 import dev.facturador.repository.IBranchAccountRepository;
-import dev.facturador.services.ISecondaryAccountService;
+import dev.facturador.services.IBranchAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class SecondaryAccountService implements ISecondaryAccountService {
+public class BranchAccountService implements IBranchAccountService {
 
     @Autowired
     private IBranchAccountRepository repository;
