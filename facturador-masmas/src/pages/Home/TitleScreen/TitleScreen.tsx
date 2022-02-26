@@ -51,9 +51,10 @@ export default function TitleScreen(): JSX.Element {
   }
   function handleResponse(state:number, data:string) {
     if (state === 200) {
+      console.log("data: "+data);
       setError("");
       window.location.reload();
-    } else setError(data);
+    } else setError(data); console.log("data: "+data);
   }
 
   return (

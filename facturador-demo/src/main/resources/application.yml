@@ -28,11 +28,7 @@ spring:
     banner-mode: off
   #Configuracion para Data Base
   datasource:
-<<<<<<< HEAD
-    url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=false&useTimezone=true&serverTimezone=UTC
-=======
     url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
->>>>>>> e2b5084f83f4cefa6a063f8c54771f72d1041fcd
     username: root
     password: 'root'
     driver-class-name: com.mysql.cj.jdbc.Driver
