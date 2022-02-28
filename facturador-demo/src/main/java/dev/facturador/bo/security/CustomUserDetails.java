@@ -1,16 +1,18 @@
 package dev.facturador.bo.security;
 
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * User Details Personalizado
  */
-@ToString
+@ToString @Getter @Setter @EqualsAndHashCode @NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -21,21 +23,25 @@ public class CustomUserDetails implements UserDetails {
     private String email;
     private int active;
     private int passive;
-    private Collection<? extends GrantedAuthority> authorities;
+    private CustomUserRole role;
+    private Boolean enabled;
 
-
-    public CustomUserDetails(long id, String username, String password, String email, int active, int passive, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(long id,
+                             String username,
+                             String password,
+                             String email,
+                             int active,
+                             int passive,
+                             CustomUserRole role,
+                             Boolean enable) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.active = active;
         this.passive = passive;
-        if (authorities != null) {
-            this.authorities = authorities;
-        } else {
-            this.authorities = null;
-        }
+        this.role = role;
+        this.enabled = enable;
     }
 
     @Override
@@ -50,51 +56,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public int getActive() {
-        return active;
-    }
-
-    public void setActive(int active) {
-        this.active = active;
-    }
-
-    public int getPassive() {
-        return passive;
-    }
-
-    public void setPassive(int passive) {
-        this.passive = passive;
+        var authority = new SimpleGrantedAuthority(this.role.name());
+        return Collections.singletonList(authority);
     }
 
     @Override
@@ -114,6 +77,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

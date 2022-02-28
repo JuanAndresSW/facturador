@@ -1,15 +1,15 @@
 ---
 #Puerto en el que se corre
 server:
-  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
 #Configuracion del log
 logging:
   level:
     root: INFO
     web: DEBUG
     org:
-      springframework:
-        web.server.adapter.HttpWebHandlerAdapter: DEBUG
       hibernate:
         SQL: DEBUG
         type:
@@ -21,16 +21,13 @@ logging:
 
 #Cofiguracion Spring
 spring:
-  mvc:
-    log-request-details: true
-  #Indica que no quiero que salga el banner de Spring en consola
   main:
     banner-mode: off
   #Configuracion para Data Base
   datasource:
+    password: admin
     url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
-    password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
       max-wait: 20000
@@ -47,10 +44,4 @@ spring:
         dialect:
           storage_engine: innodb
         format_sql: true
-#Constante JWT
-security:
-  jwt:
-    secret: thisIsASecrectMyFriend
-    #Este valor dice que la sesion dura dos dias (Para sacarlo "horas * 3 600 000")
-    ttlMillis: 172800000
 ...

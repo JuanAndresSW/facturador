@@ -32,7 +32,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String usernameOrEmail = request.getParameter("usernameOrEmail");
         String password = request.getParameter("password");
         var authenticationToken = new UsernamePasswordAuthenticationToken(usernameOrEmail, password);
-
+        log.info("---PASEE EL PRIMERO METODO---");
         return this.authenticationManager.authenticate(authenticationToken);
     }
 
@@ -42,8 +42,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         var user = (CustomUserDetails) authResult.getPrincipal();
         var URL = request.getRequestURI().toString();
         String accesToken = jwt.createAccesToken(user.getUsername(), user.getAuthorities().stream().toList().get(0).getAuthority(), URL);
-        String refreshToken = jwt.createRefreshToken(user.getUsername(), URL);
-
+        String refreshToken = jwt.createRefreshToken(user.getUsername(), user.getAuthorities().stream().toList().get(0).getAuthority(), URL);
         response.setHeader("Access-token", accesToken);
         response.setHeader("Refresh-token", refreshToken);
         response.addHeader("user-data", user.getUsername());

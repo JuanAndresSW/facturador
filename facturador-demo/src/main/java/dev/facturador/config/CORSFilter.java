@@ -8,11 +8,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Filtro para el Cors
- */
 @Component
-//Indica que le da prioridad a este componente
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CORSFilter implements Filter {
     /**

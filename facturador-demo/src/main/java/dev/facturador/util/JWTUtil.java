@@ -64,11 +64,12 @@ public class JWTUtil {
      * @param url  {@code URL} desde donde se crea
      * @return Token {@link JWT} en forma de String compacto
      */
-    public String createRefreshToken(String username, String url) {
+    public String createRefreshToken(String username, String rol, String url) {
         return JWT.create()
                 .withSubject(username)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined + 14400000))
+                .withClaim("rol", rol)
                 .withIssuer(url)
                 .sign(signKey());
     }
@@ -127,50 +128,14 @@ public class JWTUtil {
         return decodedJWT.getClaim("rol").asString();
     }
 
-    public CustomUserDetails createUserAuthenticatedByRefreshToken(String authHeader, HttpServletResponse response) throws IOException {
-        try {
-            log.info("---ENTRE AL TRY DEL REFRESH TOKEN---");
-            String token = authHeader.substring("Bearer ".length());
-            var decodedJWT = createDecoder(token);
-            log.info("---CREE EL DECODED---");
-            String username = getSubject(decodedJWT);
-            log.info("---RECUPERE EL USERNAME---");
-            var userDetailsService = new CustomUserDetailsService();
-            log.info("---CREE EL CUSTOM USER DETAILS SERVICE---");
-            return (CustomUserDetails) userDetailsService.loadUserByUsername(username);
-        } catch (Exception ex) {
-            log.error("Error logging in: {}", ex.getMessage());
-            response.setHeader("error", ex.getMessage());
-            response.setStatus(FORBIDDEN.value());
-            Map<String, String> error = new HashMap<>();
-            error.put("error-message", ex.getMessage());
-            response.setContentType(APPLICATION_JSON_VALUE);
-
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
-        }
-        return null;
-    }
-
-    public UsernamePasswordAuthenticationToken createUserAuthenticatedByAccessToken(String authHeader, HttpServletResponse response) throws IOException {
-        try {
+    public UsernamePasswordAuthenticationToken createUserByToken(String authHeader) throws Exception{
             String token = authHeader.substring("Bearer ".length());
             var decodedJWT = createDecoder(token);
             String username = getSubject(decodedJWT);
             String rol = getClaimRol(decodedJWT);
             Collection<GrantedAuthority> authorities = new HashSet<>();
             authorities.add(new SimpleGrantedAuthority(rol));
+            log.info("---CREE EL USER AUTH TOKEN---");
             return new UsernamePasswordAuthenticationToken(username, null, authorities);
-
-        } catch (Exception ex) {
-            log.error("Error logging in: {}", ex.getMessage());
-            response.setHeader("error", ex.getMessage());
-            response.setStatus(FORBIDDEN.value());
-            Map<String, String> error = new HashMap<>();
-            error.put("error-message", ex.getMessage());
-            response.setContentType(APPLICATION_JSON_VALUE);
-
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
-        }
-        return null;
     }
 }
