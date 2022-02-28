@@ -58,15 +58,19 @@ public class AuthController {
         bodyValue.add("password", tryLogin.password());
 
         var client = WebClient.builder().baseUrl("http://localhost:8080").build();
+        log.info("no es web client");
         var headers = Objects.requireNonNull(client.post().uri("/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.ALL)
                 .body(BodyInserters.fromFormData(bodyValue))
                 .retrieve().toEntity(String.class).block()).getHeaders();
 
+        log.info("no es login :(");
+
         var data = getDataFromHeader(headers);
         var response = createLoginResponse(headers, data);
 
+        log.info("nonsense");
         return ResponseEntity.ok().body(response);
     }
 

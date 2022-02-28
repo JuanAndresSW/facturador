@@ -80,6 +80,7 @@ public final class CuentaPrincipal {
         return argon2.encode(password);
     }
 
+
     @Override
     public String toString() {
         return "CuentaPrincipal{" +

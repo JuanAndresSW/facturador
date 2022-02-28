@@ -30,7 +30,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/facturador-mas?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
-    password: 'root'
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
       max-wait: 20000

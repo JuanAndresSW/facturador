@@ -32,9 +32,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         if (isNotRequiredAuthorization(request)) {
+            log.info("WHY");
             filterChain.doFilter(request, response);
         }
         if (isRequiredAuthorization(request)) {
+            log.info(":)");
             String authHeader = request.getHeader(AUTHORIZATION);
             if(!jwt.verifyAuthToken(authHeader)){
                 filterChain.doFilter(request, response);
