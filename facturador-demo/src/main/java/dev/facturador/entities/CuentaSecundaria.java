@@ -27,11 +27,11 @@ public final class CuentaSecundaria {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
-    private Usuarios userSecondaryAccount;
+    private Usuarios userBranchAccount;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cuenta_principal", nullable = false)
-    private CuentaPrincipal secondaryAccountOwner;
+    private CuentaPrincipal accountBranchOwner;
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime createDate;

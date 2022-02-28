@@ -135,7 +135,6 @@ public class JWTUtil {
             String rol = getClaimRol(decodedJWT);
             Collection<GrantedAuthority> authorities = new HashSet<>();
             authorities.add(new SimpleGrantedAuthority(rol));
-            log.info("---CREE EL USER AUTH TOKEN---");
             return new UsernamePasswordAuthenticationToken(username, null, authorities);
     }
 }

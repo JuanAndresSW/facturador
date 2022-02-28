@@ -16,8 +16,6 @@ public interface IMainAccountRepository extends JpaRepository<CuentaPrincipal, L
     Optional<CuentaPrincipal> findByUserMainAccountUsernameOrUserMainAccountEmail(String username, String email);
 
     Boolean existsByUserMainAccountUsername(String username);
-
     Boolean existsByUserMainAccountEmail(String email);
-
     Boolean existsByAccountOwnerUniqueKey(String uniqueKey);
 }

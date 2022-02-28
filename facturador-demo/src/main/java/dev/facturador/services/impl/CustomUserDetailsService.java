@@ -6,20 +6,14 @@ import dev.facturador.entities.Comerciante;
 import dev.facturador.entities.Usuarios;
 import dev.facturador.repository.IMainAccountRepository;
 import dev.facturador.repository.IBranchAccountRepository;
-import dev.facturador.repository.IUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Servicio personalizado de UserDetails(Servicio de Spring Security)
@@ -31,8 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private IMainAccountRepository repositoryMain;
     @Autowired
     private IBranchAccountRepository repositoryBranch;
-    @Autowired
-    private IUserRepository repositoryUser;
 
     /**
      * Busca un usuario personalizado con un username o email como credencial
@@ -44,23 +36,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        log.info("---ENTRO AL LOAD USER BY USERNAME---");
-        var main = repositoryMain.findByUserMainAccountUsernameOrUserMainAccountEmail(usernameOrEmail, usernameOrEmail);
-        main.ifPresent(cuentaPrincipal -> log.info("---MAIN ACCUENT IS: {}", cuentaPrincipal.toString()));
-
-        var user = repositoryUser.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Username do not exist");
-        }
-        log.info("----EL USER SI EXISTE----");
-        var userMainExit = repositoryMain.findByUsername(user.get().getUsername());
+        var userMainExit = repositoryMain.findByUserMainAccountUsernameOrUserMainAccountEmail
+                (usernameOrEmail, usernameOrEmail);
         if (userMainExit.isPresent()) {
             return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), CustomUserRole.MAIN);
         }
 
-        var userSecondExit = repositoryBranch.findByUsername(user.get().getUsername());
+        var userSecondExit = repositoryBranch.findByUserBranchAccountUsernameOrUserBranchAccountEmail
+                (usernameOrEmail, usernameOrEmail);
         if (userSecondExit.isPresent()) {
-            return this.userBuilder(userSecondExit.get().getUserSecondaryAccount(), userSecondExit.get().getSecondaryAccountOwner().getAccountOwner(), CustomUserRole.BRANCH);
+            return this.userBuilder(userSecondExit.get().getUserBranchAccount(), userSecondExit.get().getAccountBranchOwner().getAccountOwner(), CustomUserRole.BRANCH);
         }
 
         //Si llega aqui este usuario no existe

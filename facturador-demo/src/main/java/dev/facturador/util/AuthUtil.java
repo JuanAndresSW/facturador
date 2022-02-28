@@ -83,9 +83,7 @@ public class AuthUtil {
      */
     public HttpEntity<String> callFilter(LoginBo tryLogin){
         var values = translateJsonToValueMap(tryLogin);
-        log.info("---LOS VALORES PASARON VIEN---");
         var client = WebClient.builder().baseUrl("http://localhost:8080").build();
-        log.info("---WEB CLIENT PASO BIEN---");
         return client.post().uri("/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.ALL)

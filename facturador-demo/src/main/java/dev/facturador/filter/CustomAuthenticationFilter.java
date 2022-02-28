@@ -32,7 +32,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String usernameOrEmail = request.getParameter("usernameOrEmail");
         String password = request.getParameter("password");
         var authenticationToken = new UsernamePasswordAuthenticationToken(usernameOrEmail, password);
-        log.info("---PASEE EL PRIMERO METODO---");
         return this.authenticationManager.authenticate(authenticationToken);
     }
 

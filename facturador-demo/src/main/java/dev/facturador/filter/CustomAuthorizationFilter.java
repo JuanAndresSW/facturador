@@ -37,7 +37,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         if (isNotRequiredAuthorization(request)) {
-            log.info("---ACA TENGO QUE ESTAR EN EL LOGIN--");
             filterChain.doFilter(request, response);
         }
         if (isRequiredAuthorization(request)) {

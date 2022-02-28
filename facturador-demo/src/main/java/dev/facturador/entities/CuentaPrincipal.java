@@ -13,7 +13,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
-import java.util.LinkedList;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -39,7 +38,7 @@ public final class CuentaPrincipal {
     private LocalDateTime createDate;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "secondaryAccountOwner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accountBranchOwner", cascade = CascadeType.ALL)
     private Collection<CuentaSecundaria> mainAccountChilds;
 
     public static CuentaPrincipal createMainAccountForRegister(RegisterBo tryRegister) {

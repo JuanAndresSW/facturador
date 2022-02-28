@@ -33,7 +33,6 @@ public class AuthController {
     @Autowired
     private AuthUtil util;
 
-
     /**
      * Este metodo recupero los headers de la respuesta de {@code callFilter}
      * Crea un {@link LoginResponse} con la respuesta de lo headers
@@ -44,7 +43,6 @@ public class AuthController {
     @PostMapping(LOGIN)
     public HttpEntity<? extends IApiResponse> createResponse(@Valid @RequestBody LoginBo tryLogin){
         var headers = util.callFilter(tryLogin).getHeaders();
-        log.info("----RECUPERA LOS HEADERS----");
         var response = util.createLoginResponseWithHeaders(headers);
 
         return ResponseEntity.ok().body(response);
