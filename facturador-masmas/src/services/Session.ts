@@ -9,7 +9,6 @@ export type session = {
  * Servicio de sesión de usuario. Permite obtener y solicitar los tokens
  * de acceso y de refrescamiento.
  */
-
 export default class Session {
 
   /**
@@ -31,10 +30,10 @@ export default class Session {
   * @param {string}   [password]        - Contraseña.
   * @param {Function} [callback]        - Función de manejo de respuesta.
   */
-  public static getByCredentials(name: string, password: string, callback: Function): void {
+  public static getByCredentials(usernameOrEmail: string, password: string, callback: Function): void {
     fetch("POST", "auth/login", {
       body: JSON.stringify({
-        usernameOrEmail: name.trim(),
+        usernameOrEmail: usernameOrEmail.trim(),
         password: password.trim(),
       })
     }, callback);
@@ -80,22 +79,7 @@ export default class Session {
     return sessionStorage.getItem('username') === null ?
     '?' : sessionStorage.getItem('username');
   }
-  public static getActive():string {
-    return sessionStorage.getItem('active') === null ?
-    '?' : sessionStorage.getItem('active');
-  }
-  public static getPassive():string {
-    return sessionStorage.getItem('passive') === null ?
-    '?' :  sessionStorage.getItem('passive');
-  }
-  public static getNetWorth():string {
-    if (sessionStorage.getItem('passive') === undefined || sessionStorage.getItem('active') === undefined) {
-      return '?';
-    }
-    return '$'+ ((parseFloat(Session.getActive())) - 
-                (parseFloat(Session.getPassive())))
-    .toPrecision(2).toString();
-  }
+  
   public static getAvatar():string {
     const USVString = localStorage.getItem("avatar");
     if (USVString === null) return '';

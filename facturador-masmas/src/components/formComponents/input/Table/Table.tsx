@@ -1,6 +1,6 @@
 import React from "react";
 import { BsFileMinusFill, BsFillPlusSquareFill } from "react-icons/bs";
-import DateInput from "../DateInput/DateInput";
+import DateTime from "../DateTime/DateTime";
 import Field from "../Field/Field";
 import './Table.css';
 
@@ -68,7 +68,7 @@ export default function Table({ label = "", headers, maxRows, bind }: props): JS
                             {
                             headers[colIndex].type === "date" ?
                             (
-                                <DateInput value={cell} onChange={(value:string)=>
+                                <DateTime value={cell} onChange={(value:string)=>
                                 setter(rowIndex, colIndex, value)} />
                             )
                             :
@@ -89,11 +89,26 @@ export default function Table({ label = "", headers, maxRows, bind }: props): JS
                         <td onClick={removeRow}><BsFileMinusFill /></td> : null}
                     </tr>
                 )}
-                {bind[0].length < maxRows ?
-                <tr><td/><td onClick={addRow}
-                ><BsFillPlusSquareFill /></td><td /></tr>
-                : null}
+                
             </tbody>
+
+
+            {bind[0].length < maxRows ?
+            <tfoot>
+                <tr>
+                {
+                    headers.map((h, index)=>
+                        (index+1 === headers.length)?
+                        <td key={h.th}>
+                            <BsFillPlusSquareFill onClick={addRow} />
+                        </td>
+                        :<td key={h.th} />
+                    )
+                }
+                </tr>
+            </tfoot>
+            : null}
+
         </table>
         </>
     );

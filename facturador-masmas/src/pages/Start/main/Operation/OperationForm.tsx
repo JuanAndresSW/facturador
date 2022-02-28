@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 //Componentes del formulario.
-import { DateInput, ErrorMessage, Field, Form, Radio, Select, Submit, Switch, Table, Textarea } from "components/formComponents";
+import { DateTime, ErrorMessage, Field, Form, Radio, Select, Submit, Switch, Table, Textarea } from "components/formComponents";
 import { Section, Cond, FlexDiv } from 'components/layout'
 import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
 
@@ -18,6 +18,7 @@ import PointOfSale from 'services/PointOfSale';
 import Partner from 'services/Partner';
 import Group from 'services/Group';
 
+//Tipos.
 type props = {
   flux: "in" | "out";
   type: ("purchase-order" | "remittance" | "invoice" | "debit-note" | "credit-note" | "receipt-x" | "receipt" | "promissory-note" | "check" | "other");
@@ -34,29 +35,22 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
   useEffect(() => {
 
     PointOfSale.getArray((state:number,data:string)=>{
-      if (state===200) setDisplay({...display, pointsOfSale: JSON.parse(data)});
+      if (state===200) setDisplayPointsOfSale(JSON.parse(data));
     });
-
     Partner.getArray((state:number,data:string)=>{
-      if (state===200) setDisplay({...display, partners: JSON.parse(data)});
+      if (state===200) setDisplayPartners(JSON.parse(data));
     });
-
     Group.getArray((state:number,data:string)=>{
-      if (state===200) setDisplay({...display, groups: JSON.parse(data)});
+      if (state===200) setDisplayGroups(JSON.parse(data));
     });
 
   }, []);
 
-  //Los datos del servidor necesarios para mostrar el formulario.
-  const [display, setDisplay] = useState({
-    pointsOfSale: undefined,
-    partners: undefined,
-    groups: undefined,
-    root: false,
-  })
-
-  //Mensaje de error al generar el documento.
-  const [error, setError] = useState("hello world");
+  // #### Los datos del servidor necesarios para mostrar el formulario. #### //
+  const [displayPointsOfSale, setDisplayPointsOfSale] = useState(undefined);
+  const [displayPartners, setDisplayPartners] = useState(undefined);
+  const [displayGroups, setDisplayGroups] = useState(undefined);
+  const [displayRoot, setDisplayRoot] = useState(false);
 
   // #### Los datos a ser enviados al servidor. #### //
   //Todos.
@@ -68,8 +62,11 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
   const [productTable, setProductTable] =   useState([["1", "", "1"]]);
   const [vat, setVat] =                     useState("21%");
   const [observations, setObservations] =   useState("");
+  //Recibo x y recibo
+  const [payer, setPayer] =                 useState("");
+  const [payerAddress, setPayerAdress] =    useState("");
+  const [paymentTime, setPaymentTime] =     useState("");
   //Recibo x.
-  const [payer, setPayer] =                         useState("");
   const [paymentMethods, setPaymentMethods] =       useState([["", "", ""]]);
   const [paymentImputation, setPaymentImputation] = useState([["", "", "", ""]]);
   const [detailOfValues, setDetailOfValues] =       useState([["", "", "", "", ""]]);
@@ -79,9 +76,12 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
   const [preferredDate, setPreferredDate] = useState("");
   const [dispatchPlace, setDispatchPlace] = useState("");
   const [deliverer, setDeliverer] =         useState("");
-  /*[document, React.Dispatch<React.SetStateAction<document>>]*/
+
+  //Mensaje de error al generar el documento.
+  const [error, setError] = useState("hello world");
 
 
+  // #### El formulario #### //
   return (
     <Form title={getDocumentTitle(type, flux)}>
 
@@ -90,9 +90,9 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
       <Section label="Partícipes">
 
         <FlexDiv>
-          <Select options={display.pointsOfSale} bind={[pointOfSale, setPointOfSale]}
-            fallback={display.root ? "No tienes ningún punto de venta. Crea tu primero:" : ""} />
-          <PlusIcon link={"/"} cond={display.root} />
+          <Select options={displayPointsOfSale} bind={[pointOfSale, setPointOfSale]}
+            fallback={displayRoot ? "No tienes ningún punto de venta. Crea tu primero:" : ""} />
+          <Cond bool={displayRoot}><PlusIcon link={"/"} /></Cond>
         </FlexDiv>
 
         <Cond bool={flux==="in"}>
@@ -107,11 +107,11 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 
         <FlexDiv>
           <Select
-            options={useGroup ? display.groups : display.partners}
+            options={useGroup ? displayGroups : displayPartners}
             bind={useGroup ? [group, setGroup] : [partner, setPartner]}
             fallback={useGroup ? "No tienes ningún grupo. Crea tu primero:" : "No tienes ningún socio. Crea tu primero:"}
           />
-          <PlusIcon link="/" cond={display.root} />
+          <PlusIcon link="/" />
         </FlexDiv>
 
       </Section>
@@ -130,8 +130,10 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
           bind={[vat, setVat]} />
         </Cond>
 
-        <Cond bool={("receipt-x").includes(type)}>
+        <Cond bool={("receipt-x"+"receipt").includes(type)}>
           <Field label="Pagador" bind={[payer, setPayer]} />
+        </Cond>
+        <Cond bool={("receipt-x").includes(type)}>
           <Table label="Forma de pago"
             headers={[{ th: "Cheque",type:"number"}, { th: "Documentos", type:"number" }, { th: "Efectivo",type:"number"}]}
             bind={[paymentMethods, setPaymentMethods]} maxRows={1}
@@ -157,9 +159,14 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
           <Field label="Vendedor de preferencia" bind={[seller, setSeller]} />
           <Radio legend="Condiciones de venta" options={["Al contado", "Cuenta corriente", "Cheque", "Pagaré"]}
           bind={[conditions, setConditions]} />
-          <DateInput label="Fecha de preferencia "value={preferredDate} onChange={setPreferredDate} nonPast={true} />
+          <DateTime label="Fecha de preferencia "value={preferredDate} onChange={setPreferredDate} nonPast={true} />
           <Field label="Lugar de entrega" bind={[dispatchPlace, setDispatchPlace]} />
           <Field label="Transportista" bind={[deliverer, setDeliverer]} />
+        </Cond>
+
+        <Cond bool={("receipt-x"+"receipt").includes(type)}>
+          <Field label="Domicilio de pago" bind={[payerAddress, setPayerAdress]} />
+          <DateTime label="" type="time" value={paymentTime} onChange={setPaymentTime} />
         </Cond>
       </Section>
 
@@ -176,9 +183,9 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
  * Un signo + con Link a la dirección especificada cuando la condición 'cond' es cumplida.
  * Valor null en caso contrario.
  */
-const PlusIcon: React.FC<{ link: string, cond: boolean }> = ({ link, cond }) => {
-  return cond ?
+const PlusIcon: React.FC<{ link: string }> = ({ link }) => {
+  return (
   <Link to={link} style={{ flex: .5, marginTop: ".3rem", fontSize: "2rem", display: "block", textAlign: "center", color: "#fff" }}>
     <BiPlusCircle />
-  </Link> : null
+  </Link>)
 }

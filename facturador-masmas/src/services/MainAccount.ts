@@ -25,7 +25,7 @@ export default class MainAccount {
     public static async register(account: mainAccount, callback: Function): Promise<void> {
         const formattedPromise = this.formatAccount(account);
         formattedPromise.then(formattedAccount => {
-            fetch("POST", "auth/main/signup", { body: formattedAccount }, callback)
+            fetch("POST", "auth/mainaccounts", { body: formattedAccount }, callback)
         });
     }
 

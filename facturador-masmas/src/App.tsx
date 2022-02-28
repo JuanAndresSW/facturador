@@ -45,7 +45,7 @@ export default function App() {
                         <Route path="/" element={!auth? <Home /> : <Navigate to={"/inicio"} />} />   
                         <Route path="/login" element={!auth? <Login /> : <Navigate to={"/inicio"} />} />
 
-                        <Route path="/inicio/*" element={auth? <Start /> : <Navigate to={"/login"} />} />
+                        <Route path="/inicio/*" element={!auth? <Start /> : <Navigate to={"/login"} />} />
                         <Route path="/cuenta" element={auth? <Account /> : <Navigate to={"/login"} />} />
 
                         <Route path="/signup" element={<SignUp />} />

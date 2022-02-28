@@ -1,9 +1,9 @@
 import React from "react";
-import './DateInput.css';
+import './DateTime.css';
 
 type props = {
     label?: string;
-    note?: string;
+    type?: ("date"|"datetime"|"time"|"week"|"month");
     nonPast?: boolean;
     value: string;
     onChange: Function;
@@ -12,12 +12,12 @@ type props = {
 /**
  * Un campo de escritura.
  * @param label - El título del input.
- * @param note - Nota extra acerca del input.
+ * @param type - Tipo de input temporal.
  * @param nonPast - Si no debe aceptar valores anteriores a la fecha actual.
  * @param value - Array desestructurado asociado al valor del input.
  * @param onChange - Función que manejará el valor en el envento de un cambio.
  */
-export default function DateInput({ label = "", note, value, onChange, nonPast=false }: props): JSX.Element {
+export default function DateTime({ label = "", type="date", value, onChange, nonPast=false }: props): JSX.Element {
 
     let date = new Date();
     const minDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
@@ -27,10 +27,10 @@ export default function DateInput({ label = "", note, value, onChange, nonPast=f
     }
     return (
         <label> {label}
-        <span> {note}</span>
             <input
+                className="datetime"
                 min={minDate}
-                type={"date"}
+                type={type}
                 value={value}
                 onChange={e => change(e.target.value)}
             ></input>

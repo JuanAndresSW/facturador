@@ -3,15 +3,12 @@ import Session from "services/Session";
 import Valid from "utils/Valid";
 import "./TitleScreen.css";
 import { useNavigate } from "react-router-dom";
+import { ErrorMessage, Submit } from "components/formComponents";
 
 //objeto de usuario a enviar al servidor
 const user = { usernameOrEmail: "", password: "" };
 
 export default function TitleScreen(): JSX.Element {
-
-  //Objeto de navegación de rutas;
-  const navigate = useNavigate();
-
 
   const [loginInputType, setLoginInputType] = useState("text");
   let placeholder = loginInputType === "text" ? "nombre o email" : "contraseña";
@@ -34,6 +31,7 @@ export default function TitleScreen(): JSX.Element {
       if (Valid.password(loginValue.trim())) {
         user.password = loginValue.trim();
 
+        console.log(user);
         //Verificar con el servidor la autenticidad;
         authenticate(user);
 
@@ -53,7 +51,7 @@ export default function TitleScreen(): JSX.Element {
     if (state === 200) {
       console.log("data: "+data);
       setError("");
-      window.location.reload();
+      window.location.reload(); //can be moved to Session: login is safe to reload.
     } else setError(data); console.log("data: "+data);
   }
 
@@ -82,7 +80,7 @@ export default function TitleScreen(): JSX.Element {
         Iniciar sesión
       </button>
 
-      <p className="message">{error}</p>
+      <ErrorMessage message={error}/>
     </div>
   );
 }
