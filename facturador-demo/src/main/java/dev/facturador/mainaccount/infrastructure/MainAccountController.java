@@ -1,8 +1,6 @@
 package dev.facturador.mainaccount.infrastructure;
 
-import dev.facturador.gategay.responsecore.IApiResponse;
-import dev.facturador.infrastructurecore.exception.ErrorResponse;
-import dev.facturador.mainaccount.application.MainAccountUtil;
+import dev.facturador.auth.domain.dto.LoginResponse;
 import dev.facturador.mainaccount.domain.bo.RegisterBo;
 import dev.facturador.mainaccount.domain.dto.RegisterResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +19,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
-
-import static dev.facturador.mainaccount.domain.CuentaPrincipal.createMainAccountForRegister;
 
 @Slf4j
 @RestController
@@ -32,8 +27,6 @@ public class MainAccountController {
     private static final String REGISTER_MAIN = "/auth/mainaccounts";
     @Autowired
     private IMainAccountService mainAccountService;
-    @Autowired
-    private MainAccountUtil mainAccountUtil;
 
     /**
      * Registra la cuenta principal en la base de datos
@@ -41,16 +34,15 @@ public class MainAccountController {
      * Redirige al login y recupera de la respuesta el {@code Access Token} y {@code Refresh Token}
      *
      * @param tryRegister {@link RegisterBo} Bussines Object para recibir el JSON
-     * @return {@link HttpEntity} con el body de {@link IApiResponse} object
+     * @return {@link HttpEntity} con el body de {@link LoginResponse}
      */
     @PostMapping(REGISTER_MAIN)
     public HttpEntity singup(@Valid @RequestBody RegisterBo tryRegister) throws URISyntaxException {
-        String message = mainAccountUtil.whenIndicesAreRepeatedReturnErrror(tryRegister, mainAccountService);
+        String message = mainAccountService.whenIndicesAreRepeatedReturnErrror(tryRegister);
         if (StringUtils.hasText(message)) {
             return ResponseEntity.badRequest().body(message);
         }
-        var mainAccountLogged = createMainAccountForRegister(tryRegister);
-        mainAccountService.register(mainAccountLogged);
+        mainAccountService.register(tryRegister);
 
         var headers = callFilterLogin(tryRegister.getUserBo().username(), tryRegister.getUserBo().password());
         String accesToken = headers.get("Access-token").get(0);

@@ -5,7 +5,6 @@ import dev.facturador.auth.domain.CustomUserDetails;
 import dev.facturador.auth.domain.bo.LoginBo;
 import dev.facturador.auth.domain.dto.LoginResponse;
 import dev.facturador.auth.infrastructure.CustomAuthenticationFilter;
-import dev.facturador.infrastructurecore.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

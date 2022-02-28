@@ -1,6 +1,6 @@
 package dev.facturador.trader.domain;
 
-import dev.facturador.entities.enums.Vat;
+import dev.facturador.gategay.enums.Vat;
 import dev.facturador.pointofsale.domain.PuntoVenta;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

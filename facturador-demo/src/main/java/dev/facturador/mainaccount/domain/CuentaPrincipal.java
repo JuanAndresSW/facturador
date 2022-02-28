@@ -2,7 +2,7 @@ package dev.facturador.mainaccount.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.facturador.branchaccount.domain.CuentaSecundaria;
-import dev.facturador.entities.enums.Vat;
+import dev.facturador.gategay.enums.Vat;
 import dev.facturador.mainaccount.domain.bo.RegisterBo;
 import dev.facturador.trader.domain.Comerciante;
 import dev.facturador.user.domain.Usuarios;

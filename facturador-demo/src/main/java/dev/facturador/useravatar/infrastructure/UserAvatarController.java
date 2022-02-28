@@ -1,6 +1,6 @@
 package dev.facturador.useravatar.infrastructure;
 
-import dev.facturador.infrastructurecore.JWTUtil;
+import dev.facturador.auth.application.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

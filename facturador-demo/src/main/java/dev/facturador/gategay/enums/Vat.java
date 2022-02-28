@@ -1,4 +1,4 @@
-package dev.facturador.entities.enums;
+package dev.facturador.gategay.enums;
 
 public enum Vat {
     RESPONSABLE_INSCRIPTO("Responsable Inscripto"),

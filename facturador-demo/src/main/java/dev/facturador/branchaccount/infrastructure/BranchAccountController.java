@@ -1,6 +1,5 @@
 package dev.facturador.branchaccount.infrastructure;
 
-import dev.facturador.gategay.responsecore.IApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -23,7 +22,7 @@ public class BranchAccountController {
      */
     @PostMapping(REGISTER_SECONDARY)
     @PreAuthorize("MAIN")
-    public HttpEntity<? extends IApiResponse> registerSecondary() {
+    public HttpEntity registerSecondary() {
         //No necesita implementacion por ahora
         return null;
     }

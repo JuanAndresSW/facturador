@@ -1,7 +1,7 @@
 package dev.facturador.gategay.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.facturador.infrastructurecore.JWTUtil;
+import dev.facturador.auth.application.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.auth.application.AuthUtil;
 import dev.facturador.auth.domain.bo.LoginBo;
 import dev.facturador.auth.domain.dto.LoginResponse;
-import dev.facturador.gategay.responsecore.IApiResponse;
-import dev.facturador.infrastructurecore.JWTUtil;
+import dev.facturador.auth.application.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -41,7 +40,7 @@ public class AuthController {
      * @return {@link ResponseEntity} con el body de {@link LoginResponse}
      */
     @PostMapping(LOGIN)
-    public HttpEntity<? extends IApiResponse> createResponse(@Valid @RequestBody LoginBo tryLogin) {
+    public HttpEntity createResponse(@Valid @RequestBody LoginBo tryLogin) {
         var headers = util.callFilter(tryLogin).getHeaders();
         var response = util.createLoginResponseWithHeaders(headers);
 

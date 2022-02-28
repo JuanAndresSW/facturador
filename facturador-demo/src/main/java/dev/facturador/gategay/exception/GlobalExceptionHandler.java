@@ -1,4 +1,4 @@
-package dev.facturador.infrastructurecore.exception;
+package dev.facturador.gategay.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

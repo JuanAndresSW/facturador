@@ -1,4 +1,4 @@
-package dev.facturador.infrastructurecore;
+package dev.facturador.auth.application;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

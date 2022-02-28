@@ -1,6 +1,6 @@
 package dev.facturador.partneruntrue.domain;
 
-import dev.facturador.entities.enums.Vat;
+import dev.facturador.gategay.enums.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

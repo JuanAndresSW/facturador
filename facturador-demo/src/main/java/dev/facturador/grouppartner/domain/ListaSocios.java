@@ -1,6 +1,6 @@
 package dev.facturador.grouppartner.domain;
 
-import dev.facturador.entities.enums.EstadoSolicitud;
+import dev.facturador.gategay.enums.EstadoSolicitud;
 import dev.facturador.pointofsale.domain.PuntoVenta;
 import dev.facturador.trader.domain.Comerciante;
 import lombok.*;

@@ -1,6 +1,6 @@
 package dev.facturador.docinicio.domain;
 
-import dev.facturador.entities.enums.Flujo;
+import dev.facturador.gategay.enums.Flujo;
 import dev.facturador.pointofsale.domain.PuntoVenta;
 import lombok.*;
 

@@ -3,7 +3,7 @@ package dev.facturador.gategay.config;
 import dev.facturador.auth.application.CustomUserDetailsService;
 import dev.facturador.auth.infrastructure.CustomAuthenticationFilter;
 import dev.facturador.gategay.filter.CustomAuthorizationFilter;
-import dev.facturador.infrastructurecore.JWTUtil;
+import dev.facturador.auth.application.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
