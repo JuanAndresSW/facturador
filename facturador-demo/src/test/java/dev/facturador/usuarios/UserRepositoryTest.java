@@ -3,8 +3,8 @@ package dev.facturador.usuarios;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import dev.facturador.entities.Usuarios;
-import dev.facturador.repository.IUserRepository;
+import dev.facturador.user.domain.Usuarios;
+import dev.facturador.user.domain.IUserRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
