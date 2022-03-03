@@ -1,12 +1,13 @@
 package dev.facturador.partneruntrue.domain;
 
-import dev.facturador.gategay.enums.Vat;
+import dev.facturador.shared.domain.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -15,8 +16,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-public final class SocioInventado {
-
+public final class SocioInventado implements Serializable {
+    public static final Long serialVersinUID = 1L;
     @Id
     @Column(name = "id_socio_inventado", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

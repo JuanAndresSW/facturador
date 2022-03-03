@@ -1,7 +1,7 @@
 package dev.facturador.docinicio.domain;
 
-import dev.facturador.gategay.enums.Flujo;
 import dev.facturador.pointofsale.domain.PuntoVenta;
+import dev.facturador.shared.domain.Flujo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public final class DocInicio implements Serializable {
-    public static final long serialVersinUID = 1L;
+    public static final Long serialVersinUID = 1L;
 
     @EmbeddedId
     private DocInicioPK docInicioPK;
@@ -34,15 +34,16 @@ public final class DocInicio implements Serializable {
 
 @Embeddable
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
 @ToString
 class DocInicioPK implements Serializable {
-    public static final long serialVersinUID = 1L;
+    public static final Long serialVersinUID = 1L;
 
     @Column(name = "id_punto_venta_emisor")
-    private long issuingPointOfSaleId;
+    private long issuingPointOfSale;
     @Column(name = "fecha_creacion")
     private LocalDateTime dateOfIssueIni;
 }

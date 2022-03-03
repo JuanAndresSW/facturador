@@ -2,11 +2,11 @@ package dev.facturador.mainaccount.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.facturador.branchaccount.domain.CuentaSecundaria;
-import dev.facturador.gategay.enums.Vat;
-import dev.facturador.mainaccount.domain.bo.RegisterBo;
+import dev.facturador.mainaccount.domain.bo.RegisterRequest;
+import dev.facturador.shared.domain.Vat;
 import dev.facturador.trader.domain.Comerciante;
+import dev.facturador.user.domain.AvatarUsuario;
 import dev.facturador.user.domain.Usuarios;
-import dev.facturador.useravatar.domain.AvatarUsuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +14,7 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
@@ -45,9 +46,9 @@ public final class CuentaPrincipal {
     @OneToMany(mappedBy = "accountBranchOwner", cascade = CascadeType.ALL)
     private Collection<CuentaSecundaria> mainAccountChilds;
 
-    public static CuentaPrincipal createMainAccountForRegister(RegisterBo tryRegister) {
+    public static CuentaPrincipal createMainAccountForRegister(RegisterRequest tryRegister) {
         var account = new CuentaPrincipal();
-        account.setCreateDate(LocalDateTime.now(ZoneId.systemDefault()));
+        account.setCreateDate(LocalDateTime.now(Clock.systemDefaultZone()));
         account.setAccountOwner(new Comerciante(tryRegister.getTraderBo().code(), tryRegister.getTraderBo().grossIncome(), tryRegister.getTraderBo().businessName(), 0, 0));
 
         String vatName = tryRegister.getTraderBo().vatCategory();
@@ -74,10 +75,10 @@ public final class CuentaPrincipal {
     /**
      * Se encarga del hash de la contrseña
      *
-     * @param account RegisterBo contiene la contraseña
+     * @param account RegisterRequest contiene la contraseña
      * @return String
      */
-    private static String hashPassword(RegisterBo account) {
+    private static String hashPassword(RegisterRequest account) {
         var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         String password = account.getUserBo().password();
         return argon2.encode(password);

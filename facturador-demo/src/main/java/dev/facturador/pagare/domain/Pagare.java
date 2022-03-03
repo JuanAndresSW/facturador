@@ -1,5 +1,6 @@
 package dev.facturador.pagare.domain;
 
+import dev.facturador.docinicio.domain.DocInicio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -26,11 +26,12 @@ public final class Pagare {
     @Column(name = "num_pagare", nullable = false)
     private int pagareNum;
 
-    @Column(name = "id_punto_venta_emisor", nullable = false)
-    private int issuingPointOfSale;
-
-    @Column(name = "fecha_emision", nullable = false)
-    private LocalDateTime pagareIssueDate;
+    @JoinColumns(value = {
+            @JoinColumn(name = "id_punto_venta_emisor", referencedColumnName = "id_punto_venta_emisor", nullable = false),
+            @JoinColumn(name = "fecha_emision", referencedColumnName = "fecha_creacion", nullable = false)
+    })
+    @OneToOne(cascade = CascadeType.ALL)
+    private DocInicio skeletonDocOfPagare;
 
     @Column(name = "cantidad", nullable = false, scale = 2)
     private double amountPagare;

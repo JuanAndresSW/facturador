@@ -2,9 +2,11 @@ package dev.facturador.auth.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.auth.domain.CustomUserDetails;
-import dev.facturador.auth.domain.bo.LoginBo;
+import dev.facturador.auth.domain.FactoryMaps;
+import dev.facturador.auth.domain.bo.LoginRequest;
 import dev.facturador.auth.domain.dto.LoginResponse;
 import dev.facturador.auth.infrastructure.CustomAuthenticationFilter;
+import dev.facturador.shared.infrastructure.JWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +15,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -35,44 +35,25 @@ public class AuthUtil {
     @Autowired
     private CustomUserDetailsService serviceCustomUerDetails;
 
+    @Autowired
+    private FactoryMaps generator;
+
     /**
-     * Recupera la informacion guardada en los headers
+     * Crea el LoginResponse con la informacion de los headers
      *
-     * @param headers
-     * @return
+     * @param headers {@link HttpHeaders}
+     * @return El dto {@link LoginResponse}
      */
     public LoginResponse createLoginResponseWithHeaders(HttpHeaders headers) {
-        var data = new HashMap<String, String>();
-
-        data.put("access", Objects.requireNonNull(headers.get("Access-token")).get(0));
-        data.put("refresh", Objects.requireNonNull(headers.get("Refresh-token")).get(0));
-        data.put("username", Objects.requireNonNull(headers.get("user-data")).get(0));
-        data.put("rol", Objects.requireNonNull(headers.get("user-data")).get(1));
-
+        var data = generator.createDataFromHeaders(headers);
         if (data.get("rol").equals("MAIN")) {
             String active = headers.get("user-data").get(2);
             String passive = headers.get("user-data").get(3);
             if (StringUtils.hasText(active) && StringUtils.hasText(passive)) {
-
                 return new LoginResponse(data.get("username"), parseInt(active), parseInt(passive), data.get("access"), data.get("refresh"));
             }
         }
         return new LoginResponse(data.get("username"), data.get("access"), data.get("refresh"));
-    }
-
-    /**
-     * Este metodo recibe el JSON con el {@link LoginBo} y lo transforma a <br/>
-     * {@code application/x-www-form-urlencoded} esto lo hace con la clase {@link MultiValueMap}
-     *
-     * @param tryLogin JSON {@link LoginBo}
-     * @return {@link MultiValueMap}
-     */
-    public MultiValueMap<String, String> translateJsonToValueMap(LoginBo tryLogin) {
-        MultiValueMap<String, String> bodyValue = new LinkedMultiValueMap<>();
-        bodyValue.add("usernameOrEmail", tryLogin.usernameOrEmail());
-        bodyValue.add("password", tryLogin.password());
-
-        return bodyValue;
     }
 
     /**
@@ -82,8 +63,8 @@ public class AuthUtil {
      * @param tryLogin Informacion de login en crudo
      * @return {@link ResponseEntity} con la respuesta de la request
      */
-    public HttpEntity<String> callFilter(LoginBo tryLogin) {
-        var values = translateJsonToValueMap(tryLogin);
+    public HttpEntity<String> callFilter(LoginRequest tryLogin) {
+        var values = generator.translateJsonToValueMap(tryLogin);
         var client = WebClient.builder().baseUrl("http://localhost:8080").build();
         return client.post().uri("/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -93,20 +74,19 @@ public class AuthUtil {
     }
 
     /**
-     * Crea un usuaro autenticado con {@link JWTUtil} {@code createUserByToken} <br/>
+     * Crea un usuaro autenticado con {@link JWT} {@code createUserByToken} <br/>
      * Recupero el {@link CustomUserDetails} de este usuario
      *
      * @param authHeader Bearer Token recuperado del header
-     * @param jwt        {@link JWTUtil} para las utilidades
+     * @param jwt        {@link JWT} para las utilidades
      * @param response   {@link HttpServletResponse} este parametro sirbe para controlar si este metodo causa una excepcion
      * @return Envia un {@link CustomUserDetails}
      */
-    public CustomUserDetails creteUserWithToken(String authHeader, JWTUtil jwt, HttpServletResponse response) throws Exception {
+    public CustomUserDetails creteUserWithToken(String authHeader, JWT jwt, HttpServletResponse response) throws IOException {
         try {
-            if (jwt.verifyAuthToken(authHeader)) {
-                String token = authHeader.substring("Bearer ".length());
-                var decodedJWT = jwt.createDecoder(token);
-                String username = jwt.getSubject(decodedJWT);
+            if (jwt.verifyToken(authHeader)) {
+                var token = authHeader.substring("Bearer ".length());
+                var username = jwt.createDecoder(token).getSubject();
 
                 return (CustomUserDetails) serviceCustomUerDetails.loadUserByUsername(username);
             } else {
@@ -122,14 +102,11 @@ public class AuthUtil {
 
             new ObjectMapper().writeValue(response.getOutputStream(), error);
         }
-        throw new Exception("Se rompio todo");
+        throw new RuntimeException("Se rompio todo");
     }
 
-    public HashMap<String, String> createTokenResponse(String accesToken, String refreshToken) {
-        var tokens = new HashMap<String, String>();
-        tokens.put("Access-Token", accesToken);
-        tokens.put("Refresh-Token", refreshToken);
-
-        return tokens;
+    public HashMap<String, String> bringBackMapOfTokens(String access, String refresh) {
+        return generator.createTokenResponse(access, refresh);
     }
+
 }

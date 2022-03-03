@@ -5,7 +5,7 @@ import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/form
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
 //Relacionado a la cuenta.
 import Valid from "utils/Valid";
-import RootAccount from "services/RootAccount";
+import MainAccount from "services/MainAccount";
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
@@ -95,7 +95,7 @@ export default function SignUp() {
                 grossIncome: grossIncome,
             }
         };
-        RootAccount.register(account, handleResponse);
+        MainAccount.register(account, handleResponse);
         setSubmitButton("Cargando...");
     }
     /**Maneja la respuesta recibida del servidor. */

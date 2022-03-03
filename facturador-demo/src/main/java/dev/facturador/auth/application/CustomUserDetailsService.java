@@ -1,5 +1,6 @@
 package dev.facturador.auth.application;
 
+import com.auth0.jwt.JWT;
 import dev.facturador.auth.domain.CustomUserDetails;
 import dev.facturador.auth.domain.CustomUserRole;
 import dev.facturador.branchaccount.domain.IBranchAccountRepository;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,16 +37,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        var userMainExit = repositoryMain.findByUserMainAccountUsernameOrUserMainAccountEmail
+
+        var userMainAccount = repositoryMain.findByUserMainAccountUsernameOrUserMainAccountEmail
                 (usernameOrEmail, usernameOrEmail);
-        if (userMainExit.isPresent()) {
-            return this.userBuilder(userMainExit.get().getUserMainAccount(), userMainExit.get().getAccountOwner(), CustomUserRole.MAIN);
+        if (userMainAccount.isPresent()) {
+            return this.userBuilder(userMainAccount.get().getUserMainAccount(), userMainAccount.get().getAccountOwner(), CustomUserRole.MAIN);
         }
 
-        var userSecondExit = repositoryBranch.findByUserBranchAccountUsernameOrUserBranchAccountEmail
+        var userBranchAccount = repositoryBranch.findByUserBranchAccountUsernameOrUserBranchAccountEmail
                 (usernameOrEmail, usernameOrEmail);
-        if (userSecondExit.isPresent()) {
-            return this.userBuilder(userSecondExit.get().getUserBranchAccount(), userSecondExit.get().getAccountBranchOwner().getAccountOwner(), CustomUserRole.BRANCH);
+        if (userBranchAccount.isPresent()) {
+            return this.userBuilder(userBranchAccount.get().getUserBranchAccount(), userBranchAccount.get().getAccountBranchOwner().getAccountOwner(), CustomUserRole.BRANCH);
         }
 
         //Si llega aqui este usuario no existe

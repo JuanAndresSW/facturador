@@ -9,7 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 import React from "react";
 import { BsFileMinusFill, BsFillPlusSquareFill } from "react-icons/bs";
-import DateInput from "../DateInput/DateInput";
+import DateTime from "../DateTime/DateTime";
 import Field from "../Field/Field";
 import './Table.css';
 /**
@@ -54,29 +54,30 @@ export default function Table(_a) {
                 React.createElement("tr", null, headers.map(function (header, index) {
                     return React.createElement("th", { key: index }, header.th);
                 }))),
-            React.createElement("tbody", null,
-                bind[0].map(function (row, rowIndex) {
-                    return React.createElement("tr", { key: rowIndex },
-                        //Slice es usado para no exceder el número de columnas.
-                        row.slice(0, headers.length).map(function (cell, colIndex) {
-                            return React.createElement("td", { key: colIndex }, headers[colIndex].type === "date" ?
-                                (React.createElement(DateInput, { value: cell, onChange: function (value) {
-                                        return setter(rowIndex, colIndex, value);
-                                    } }))
-                                :
-                                    (React.createElement(Field, { type: headers[colIndex].type === "number" ? "number" : "text", bind: [cell,
-                                            function (value) { return setter(rowIndex, colIndex, value); }] })));
-                        }),
-                        (rowIndex + 1 === bind[0].length && rowIndex > 0) ?
-                            React.createElement("td", { onClick: removeRow },
-                                React.createElement(BsFileMinusFill, null)) : null);
-                }),
-                bind[0].length < maxRows ?
-                    React.createElement("tr", null,
-                        React.createElement("td", null),
-                        React.createElement("td", { onClick: addRow },
-                            React.createElement(BsFillPlusSquareFill, null)),
-                        React.createElement("td", null))
-                    : null))));
+            React.createElement("tbody", null, bind[0].map(function (row, rowIndex) {
+                return React.createElement("tr", { key: rowIndex },
+                    //Slice es usado para no exceder el número de columnas.
+                    row.slice(0, headers.length).map(function (cell, colIndex) {
+                        return React.createElement("td", { key: colIndex }, headers[colIndex].type === "date" ?
+                            (React.createElement(DateTime, { value: cell, onChange: function (value) {
+                                    return setter(rowIndex, colIndex, value);
+                                } }))
+                            :
+                                (React.createElement(Field, { type: headers[colIndex].type === "number" ? "number" : "text", bind: [cell,
+                                        function (value) { return setter(rowIndex, colIndex, value); }] })));
+                    }),
+                    (rowIndex + 1 === bind[0].length && rowIndex > 0) ?
+                        React.createElement("td", { onClick: removeRow },
+                            React.createElement(BsFileMinusFill, null)) : null);
+            })),
+            bind[0].length < maxRows ?
+                React.createElement("tfoot", null,
+                    React.createElement("tr", null, headers.map(function (h, index) {
+                        return (index + 1 === headers.length) ?
+                            React.createElement("td", { key: h.th },
+                                React.createElement(BsFillPlusSquareFill, { onClick: addRow }))
+                            : React.createElement("td", { key: h.th });
+                    })))
+                : null)));
 }
 ;

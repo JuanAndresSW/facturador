@@ -1,7 +1,7 @@
 package dev.facturador.user.application;
 
-import dev.facturador.user.domain.IUserRepository;
 import dev.facturador.user.domain.Usuarios;
+import dev.facturador.user.domain.repository.IUserRepository;
 import dev.facturador.user.infrastructure.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,8 +35,7 @@ public class UserService implements IUserService {
      */
     @Override
     public Optional<Usuarios> getUserWithCrdentials(String usernameOrEmail) {
-        Optional<Usuarios> userDta = repository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
-        return userDta;
+        return repository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
     }
 
     /**

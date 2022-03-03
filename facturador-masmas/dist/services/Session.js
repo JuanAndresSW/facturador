@@ -13,12 +13,11 @@ var Session = /** @class */ (function () {
     Session.getByToken = function (callback) {
         var token = this.getAccessToken();
         if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token)) {
-            callback(200, token);
+            fetch("GET", "/auth", { token: token }, callback);
             return;
         }
         else
             callback(400);
-        fetch("get", "/auth", { token: token }, callback);
     };
     /**
     * Trata de iniciar sesión con los credenciales proporcionados.
@@ -26,10 +25,10 @@ var Session = /** @class */ (function () {
     * @param {string}   [password]        - Contraseña.
     * @param {Function} [callback]        - Función de manejo de respuesta.
     */
-    Session.getByCredentials = function (name, password, callback) {
-        fetch("post", "auth/login", {
+    Session.getByCredentials = function (usernameOrEmail, password, callback) {
+        fetch("POST", "auth/login", {
             body: JSON.stringify({
-                usernameOrEmail: name.trim(),
+                usernameOrEmail: usernameOrEmail.trim(),
                 password: password.trim(),
             })
         }, callback);

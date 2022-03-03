@@ -11,7 +11,8 @@ export default function ProfileMenu() {
         UserAvatar.getAvatar(handleResponse);
     }, []);
     function handleResponse(state, data) {
-        setImg(URL.createObjectURL(new Blob([data])));
+        if (state === 200)
+            setImg(URL.createObjectURL(new Blob([data])));
     }
     //Navegación al cerrar sesión.
     function logOut() {

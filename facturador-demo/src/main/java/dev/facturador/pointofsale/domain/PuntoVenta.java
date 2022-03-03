@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -15,8 +16,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-public final class PuntoVenta {
-
+public final class PuntoVenta implements Serializable {
+    public static final Long serialVersinUID = 1L;
     @Id
     @Column(name = "id_punto_venta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

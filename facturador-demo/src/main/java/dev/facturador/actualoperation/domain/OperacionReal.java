@@ -1,9 +1,11 @@
 package dev.facturador.actualoperation.domain;
 
+import dev.facturador.docinicio.domain.DocInicio;
 import dev.facturador.grouppartner.domain.ListaSocios;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,41 +25,47 @@ public final class OperacionReal implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns(value = {
-            @JoinColumn(name = "id_comerciante_dueño_uno", referencedColumnName = "id_comerciante_solicitante", nullable = false),
-            @JoinColumn(name = "id_punto_venta_socio_uno", referencedColumnName = "id_punto_venta_solicitante", nullable = false),
-            @JoinColumn(name = "id_comerciante_dueño_dos", referencedColumnName = "id_comerciante_solicitado", nullable = false),
-            @JoinColumn(name = "id_punto_venta_socio_dos", referencedColumnName = "id_punto_venta_solicitado", nullable = false)
+            @JoinColumn(name = "id_comerciante_dueño_uno", referencedColumnName = "id_comerciante_solicitante",
+                    updatable = false, insertable = false),
+            @JoinColumn(name = "id_punto_venta_socio_uno", referencedColumnName = "id_punto_venta_solicitante",
+                    updatable = false, insertable = false),
+            @JoinColumn(name = "id_comerciante_dueño_dos", referencedColumnName = "id_comerciante_solicitado",
+                    updatable = false, insertable = false),
+            @JoinColumn(name = "id_punto_venta_socio_dos", referencedColumnName = "id_punto_venta_solicitado",
+                    updatable = false, insertable = false)
     })
     private ListaSocios operationReallySos;
-/*
+
     @OneToOne
     @JoinColumns(value = {
-            @JoinColumn(name = "id_emisor_doc_real", referencedColumnName = "id_punto_venta_emisor"),
-            @JoinColumn(name = "fecha_creacion_doc_inv", referencedColumnName = "fecha_creacion")
+            @JoinColumn(name = "id_punto_venta_emisor_doc", referencedColumnName = "id_punto_venta_emisor",
+                    updatable = false, insertable = false),
+            @JoinColumn(name = "fecha_creacion_doc", referencedColumnName = "fecha_creacion",
+                    updatable = false, insertable = false)
     })
     private DocInicio entryDocReally;
- */
 
-    @Column(name = "fecha_creacion_doc", nullable = false, updatable = false)
-    private LocalDateTime creationDate;
-    @Column(name = "id_emisor_doc_real", nullable = false)
-    private long realDocIssuer;
-    @Column(name = "num_doc_real", nullable = false)
-    private int docNum;
+
 }
-/*
+
 @Embeddable
-@NoArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 class OperacionRealPK implements Serializable {
-    public static final long serialVersinUID = 1L;
+    public static final Long serialVersinUID = 1L;
 
-    @Column(name = "id_comerciante_solicitante")
-    private long traderRequesterId;
-    @Column(name = "id_punto_venta_solicitante")
-    private long pointOfSaleRequesterId;
-    @Column(name = "id_comerciante_solicitado")
+    @Column(name = "id_comerciante_dueño_uno")
+    private long traderRequester;
+    @Column(name = "id_punto_venta_socio_uno")
+    private long pointOfSaleRequester;
+    @Column(name = "id_comerciante_dueño_dos")
     private long traderRequestedId;
-    @Column(name = "id_punto_venta_solicitado")
+    @Column(name = "id_punto_venta_socio_dos")
     private long pointOfSaleRequested;
+    @Column(name = "id_punto_venta_emisor_doc")
+    private long docIssuingPointOfSale;
+    @Column(name = "fecha_creacion_doc")
+    private LocalDateTime createAt;
 }
-*/

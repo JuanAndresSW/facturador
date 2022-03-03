@@ -2,9 +2,10 @@ package dev.facturador.auth.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.auth.application.AuthUtil;
-import dev.facturador.auth.domain.bo.LoginBo;
+import dev.facturador.auth.application.JWTOfAuth;
+import dev.facturador.auth.domain.bo.LoginRequest;
 import dev.facturador.auth.domain.dto.LoginResponse;
-import dev.facturador.auth.application.JWTUtil;
+import dev.facturador.shared.infrastructure.JWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -36,11 +37,11 @@ public class AuthController {
      * Este metodo recupero los headers de la respuesta de {@code callFilter}
      * Crea un {@link LoginResponse} con la respuesta de lo headers
      *
-     * @param tryLogin Es {@link LoginBo} Bussines Object preparado para reciber el JSON
+     * @param tryLogin Es {@link LoginRequest} Bussines Object preparado para reciber el JSON
      * @return {@link ResponseEntity} con el body de {@link LoginResponse}
      */
     @PostMapping(LOGIN)
-    public HttpEntity createResponse(@Valid @RequestBody LoginBo tryLogin) {
+    public HttpEntity createResponse(@Valid @RequestBody LoginRequest tryLogin) {
         var headers = util.callFilter(tryLogin).getHeaders();
         var response = util.createLoginResponseWithHeaders(headers);
 
@@ -64,14 +65,14 @@ public class AuthController {
     @PostMapping(REFRESH_TOKEN)
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String authHeader = request.getHeader(AUTHORIZATION);
-        var jwt = new JWTUtil();
+        JWT jwt = new JWTOfAuth();
         var userDetails = util.creteUserWithToken(authHeader, jwt, response);
 
         String URL = request.getRequestURI().toString();
         String rol = userDetails.getAuthorities().stream().toList().get(0).getAuthority();
         String username = userDetails.getUsername();
 
-        var tokens = util.createTokenResponse(
+        var tokens = util.bringBackMapOfTokens(
                 jwt.createAccesToken(username, rol, URL),
                 jwt.createRefreshToken(username, rol, URL));
 

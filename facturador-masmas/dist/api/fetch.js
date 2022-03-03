@@ -2,7 +2,7 @@
  * Implementa una capa de abstracción para la API XMLHR.
  * Permite realizar operaciones get, post, put y delete, enviando los datos
  * a un URL, y pudiendo adjuntar un JWT opcional.
- * @param {("get"|"post"|"put"|"delete")} [method] - El método HTTP a ser utilizado.
+ * @param {("GET"|"POST"|"PUT"|"DELETE")} [method] - El método HTTP a ser utilizado.
  * @param {string} [url]            - Sufijo del url del recurso.
  * @param {string} [content.body]   - Cuerpo opcional de la petición.
  * @param {string} [content.token]  - Token JWT opcional de la petición.
@@ -18,12 +18,12 @@ export default function fetch(method, url, content, callback) {
         return;
     }
     //Configurar la request.
-    url = process.env.BASE_URL + url;
+    url = process.env.REACT_APP_API + url;
     xhr.onreadystatechange = handleResponse;
     xhr.timeout = 15000;
     xhr.ontimeout = function () { callback(0, "Se ha agotado el tiempo de espera del servidor"); return; };
     //Abrir la request.
-    xhr.open("POST", url, true);
+    xhr.open(method, url, true);
     if (content.body !== undefined)
         xhr.setRequestHeader("Content-Type", "application/json");
     if (content.token !== undefined)
@@ -32,10 +32,15 @@ export default function fetch(method, url, content, callback) {
     //Manejar la respuesta.
     function handleResponse() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 0)
+            if (xhr.status === 0) {
                 callback(0, "No se ha podido establecer la comunicación con el servidor");
-            else
-                callback(xhr.status, xhr.responseText);
+                return;
+            }
+            if (xhr.status === 404) {
+                callback(404, "No se ha encontrado el recurso solicitado");
+                return;
+            }
+            callback(xhr.status, xhr.responseText);
             return;
         }
     }

@@ -1,5 +1,6 @@
 package dev.facturador.remito.domain;
 
+import dev.facturador.docinicio.domain.DocInicio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,9 +26,10 @@ public final class Remito {
     @Column(name = "num_remito", nullable = false)
     private int remitoNum;
 
-    @Column(name = "id_punto_venta_emisor", nullable = false)
-    private int issuingPointOfSale;
-
-    @Column(name = "fecha_emision", nullable = false)
-    private LocalDateTime remitoIssueDate;
+    @JoinColumns(value = {
+            @JoinColumn(name = "id_punto_venta_emisor", referencedColumnName = "id_punto_venta_emisor", nullable = false),
+            @JoinColumn(name = "fecha_emision", referencedColumnName = "fecha_creacion", nullable = false)
+    })
+    @OneToOne(cascade = CascadeType.ALL)
+    private DocInicio skeletonDocOfRemito;
 }

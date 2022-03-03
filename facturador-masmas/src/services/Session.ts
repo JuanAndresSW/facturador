@@ -16,11 +16,23 @@ export default class Session {
   * @param {Function} callback - La función que maneja la respuesta.
   */
   public static getByToken(callback: Function): void {
+    const accessToken = this.getAccessToken();
+    const refreshToken = this.getRefreshToken();
 
-    const token = this.getAccessToken();
-    if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token)) {
-      fetch("GET","/auth", { token: token }, callback);
-      return;
+    const handleRefreshTokenResponse = (status:number, data:string) => {  
+      console.log("Refresh was executed => refreshToken validation status: "+status)
+      if (status === 200) {this.setSession(JSON.parse(data)); callback(200);}
+      callback(status);
+    };
+    const handleAccessTokenResponse = (status:number) => { 
+      console.log("accessToken validation status: "+status)
+      if (status === 200) callback(200);
+      else fetch("POST","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
+    };
+
+    if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
+      console.log("token validado:"+accessToken)
+      fetch("POST","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
     } else callback(400);
   }
 
@@ -44,10 +56,10 @@ export default class Session {
    * @param {string} [session.accessToken] - El JWT usado para autenticar peticiones.
    * @param {string} [session.refreshToken] - El JWT usado para autenticar una solicitud de renovación de token de accesso.
    */
-  private static setSession({ accessToken, refreshToken }: session): void {
-    if (accessToken === undefined || refreshToken === undefined) return;
-    document.cookie = `accessToken=${accessToken}; max-age=1209600; path=/; Secure`;
-    document.cookie = `refreshToken=${refreshToken}; max-age=1209600; path=/; Secure`;
+  public static setSession(session: session): void {
+    if (session.accessToken === undefined || session.refreshToken === undefined) {console.log("tokens were not validated");return};
+    document.cookie = `accessToken=${session.accessToken}; max-age=1209600; path=/; Secure`; //Should be 'access'
+    document.cookie = `refreshToken=${session.refreshToken}; max-age=1209600; path=/; Secure`;
   }
 
   /** Forza la expiración de los tokens de sesión. Recarga la ubicación actual al finalizar.*/
@@ -57,6 +69,8 @@ export default class Session {
     }
     window.location.reload();
   }
+
+  //GETTERS
 
   /** Recupera el token de acceso del array de cookies. */
   public static getAccessToken(): string {
@@ -71,7 +85,7 @@ export default class Session {
   }
 
 
-  //GETTERS
+  
 
 
 

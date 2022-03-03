@@ -1,5 +1,6 @@
 package dev.facturador.purchaseorder.domain;
 
+import dev.facturador.docinicio.domain.DocInicio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,11 +27,12 @@ public final class OrdenCompra {
     @Column(name = "num_orden_compra", nullable = false)
     private int purchaseOrderNum;
 
-    @Column(name = "id_punto_venta_emisor", nullable = false)
-    private int issuingPointOfSale;
-
-    @Column(name = "fecha_emision", nullable = false)
-    private LocalDateTime purchaseOrderIssueDate;
+    @JoinColumns(value = {
+            @JoinColumn(name = "id_punto_venta_emisor", referencedColumnName = "id_punto_venta_emisor", nullable = false),
+            @JoinColumn(name = "fecha_emision", referencedColumnName = "fecha_creacion", nullable = false)
+    })
+    @OneToOne(cascade = CascadeType.ALL)
+    private DocInicio skeletonDocOfPurchaseOrder;
 
     @Column(name = "fecha_limite", nullable = false)
     private LocalDate deadline;

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import dev.facturador.user.domain.Usuarios;
-import dev.facturador.user.domain.IUserRepository;
+import dev.facturador.user.domain.repository.IUserRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

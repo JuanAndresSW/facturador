@@ -29,7 +29,7 @@ CREATE TABLE `avatar_usuario` (
   PRIMARY KEY (`id_avatar`),
   UNIQUE KEY `id_usuario_UNIQUE` (`id_usuario`),
   CONSTRAINT `id_usuario_fk` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,9 @@ CREATE TABLE `cheque` (
   `serie` varchar(1) NOT NULL,
   PRIMARY KEY (`id_cheque`),
   KEY `id_punto_venta_emisor_cheque_fk_idx` (`id_punto_venta_emisor`),
-  KEY `fecha_creacion_cheque_fk_idx` (`fecha_emision`)
+  KEY `fecha_creacion_cheque_fk_idx` (`fecha_emision`),
+  KEY `reference_doc_inicio_cheque_idx` (`id_punto_venta_emisor`,`fecha_emision`),
+  CONSTRAINT `reference_doc_inicio_cheque` FOREIGN KEY (`id_punto_venta_emisor`, `fecha_emision`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -89,7 +91,7 @@ CREATE TABLE `comerciante` (
   `pasivo` int NOT NULL,
   PRIMARY KEY (`id_comerciante`),
   UNIQUE KEY `clave_unica_UNIQUE` (`clave_unica`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +122,7 @@ CREATE TABLE `cuenta_principal` (
   KEY `id_usuario_main_fk_idx` (`id_usuario`),
   CONSTRAINT `id_comerciante_main_fk` FOREIGN KEY (`id_comerciante`) REFERENCES `comerciante` (`id_comerciante`),
   CONSTRAINT `id_usuario_main_fk` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,12 +255,16 @@ DROP TABLE IF EXISTS `doc_inventado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doc_inventado` (
-  `punto_venta_emisor_doc_inv` int unsigned NOT NULL,
   `id_socio_inv_receptor` int unsigned NOT NULL,
+  `punto_venta_emisor_doc_inv` int unsigned NOT NULL,
   `fecha_creacion_doc_inv` datetime NOT NULL,
-  PRIMARY KEY (`punto_venta_emisor_doc_inv`,`id_socio_inv_receptor`,`fecha_creacion_doc_inv`),
+  PRIMARY KEY (`id_socio_inv_receptor`,`punto_venta_emisor_doc_inv`,`fecha_creacion_doc_inv`),
   KEY `id_socio_inventado_fk_idx` (`id_socio_inv_receptor`),
-  KEY `fecha_creacion_inv_fk_idx` (`fecha_creacion_doc_inv`)
+  KEY `fecha_creacion_inv_fk_idx` (`fecha_creacion_doc_inv`),
+  KEY `id_punto_venta_emisor_inv_fk_idx` (`punto_venta_emisor_doc_inv`),
+  KEY `reference_doc_inicio_fk_idx` (`punto_venta_emisor_doc_inv`,`fecha_creacion_doc_inv`),
+  CONSTRAINT `id_socio_inv_fk` FOREIGN KEY (`id_socio_inv_receptor`) REFERENCES `socio_inventado` (`id_socio_inventado`),
+  CONSTRAINT `reference_doc_inicio_fk` FOREIGN KEY (`punto_venta_emisor_doc_inv`, `fecha_creacion_doc_inv`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -287,7 +293,9 @@ CREATE TABLE `factura` (
   `impuesto` varchar(2) NOT NULL,
   `iva` varchar(1) NOT NULL,
   `forma_pago` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_factura`)
+  PRIMARY KEY (`id_factura`),
+  KEY `reference_doc_inicio_factura_idx` (`id_punto_venta_emisor`,`fecha_emision`),
+  CONSTRAINT `reference_doc_inicio_factura` FOREIGN KEY (`id_punto_venta_emisor`, `fecha_emision`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -343,23 +351,17 @@ DROP TABLE IF EXISTS `operacion_real`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `operacion_real` (
-  `id_op_real` int unsigned NOT NULL AUTO_INCREMENT,
   `id_comerciante_dueño_uno` int unsigned NOT NULL,
   `id_punto_venta_socio_uno` int unsigned NOT NULL,
   `id_comerciante_dueño_dos` int unsigned NOT NULL,
   `id_punto_venta_socio_dos` int unsigned NOT NULL,
+  `id_punto_venta_emisor_doc` int unsigned NOT NULL,
   `fecha_creacion_doc` datetime NOT NULL,
-  `id_emisor_doc_real` int unsigned NOT NULL,
-  `num_doc_real` int unsigned NOT NULL,
-  PRIMARY KEY (`id_op_real`),
-  KEY `id_comerciante_dueño_uno_fk_idx` (`id_comerciante_dueño_uno`),
-  KEY `id_punto_venta_socio_uno_fk_idx` (`id_punto_venta_socio_uno`),
-  KEY `id_comerciante_dueño_dos_fk_idx` (`id_comerciante_dueño_dos`),
-  KEY `id_punto_venta_socio_dos_fk_idx` (`id_punto_venta_socio_dos`),
-  CONSTRAINT `id_comerciante_dueño_dos_fk` FOREIGN KEY (`id_comerciante_dueño_dos`) REFERENCES `lista_socios` (`id_comerciante_solicitado`),
-  CONSTRAINT `id_comerciante_dueño_uno_fk` FOREIGN KEY (`id_comerciante_dueño_uno`) REFERENCES `lista_socios` (`id_comerciante_solicitante`),
-  CONSTRAINT `id_punto_venta_socio_dos_fk` FOREIGN KEY (`id_punto_venta_socio_dos`) REFERENCES `lista_socios` (`id_punto_venta_solicitado`),
-  CONSTRAINT `id_punto_venta_socio_uno_fk` FOREIGN KEY (`id_punto_venta_socio_uno`) REFERENCES `lista_socios` (`id_punto_venta_solicitante`)
+  PRIMARY KEY (`id_comerciante_dueño_uno`,`id_punto_venta_socio_uno`,`id_comerciante_dueño_dos`,`id_punto_venta_socio_dos`,`id_punto_venta_emisor_doc`,`fecha_creacion_doc`),
+  KEY `reference_doc_inicio_real_fk_idx` (`id_punto_venta_emisor_doc`,`fecha_creacion_doc`),
+  KEY `reference_lista_socios_fk_idx` (`id_comerciante_dueño_uno`,`id_punto_venta_socio_uno`,`id_comerciante_dueño_dos`,`id_punto_venta_socio_dos`),
+  CONSTRAINT `reference_doc_inicio_real_fk` FOREIGN KEY (`id_punto_venta_emisor_doc`, `fecha_creacion_doc`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`),
+  CONSTRAINT `reference_lista_socios_fk` FOREIGN KEY (`id_comerciante_dueño_uno`, `id_punto_venta_socio_uno`, `id_comerciante_dueño_dos`, `id_punto_venta_socio_dos`) REFERENCES `lista_socios` (`id_comerciante_solicitante`, `id_punto_venta_solicitante`, `id_comerciante_solicitado`, `id_punto_venta_solicitado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci KEY_BLOCK_SIZE=2;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -388,7 +390,9 @@ CREATE TABLE `orden_compra` (
   `lugar_entrega` varchar(20) NOT NULL,
   `nombre_transportista` varchar(25) NOT NULL,
   `condiciones` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_orden_compra`)
+  PRIMARY KEY (`id_orden_compra`),
+  KEY `reference_doc_inicio_orden_compra_idx` (`id_punto_venta_emisor`,`fecha_emision`),
+  CONSTRAINT `reference_doc_inicio_orden_compra` FOREIGN KEY (`id_punto_venta_emisor`, `fecha_emision`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -419,7 +423,9 @@ CREATE TABLE `pagare` (
   `fecha_vencimiento` date NOT NULL,
   `protesto` bit(1) NOT NULL,
   `sellado` bit(1) NOT NULL,
-  PRIMARY KEY (`id_pagare`)
+  PRIMARY KEY (`id_pagare`),
+  KEY `reference_doc_inicio_pagare_idx` (`id_punto_venta_emisor`,`fecha_emision`),
+  CONSTRAINT `reference_doc_inicio_pagare` FOREIGN KEY (`id_punto_venta_emisor`, `fecha_emision`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -504,7 +510,9 @@ CREATE TABLE `recibo` (
   `domicilio` varchar(40) NOT NULL,
   `pagador` varchar(40) NOT NULL,
   `tipo` varchar(10) NOT NULL,
-  PRIMARY KEY (`id_recibo`)
+  PRIMARY KEY (`id_recibo`),
+  KEY `reference_doc_inicio_recibo_idx` (`id_punto_venta_emisor`,`fecha_emision`),
+  CONSTRAINT `reference_doc_inicio_recibo` FOREIGN KEY (`id_punto_venta_emisor`, `fecha_emision`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -535,7 +543,9 @@ CREATE TABLE `recibo_x` (
   `horario` time NOT NULL,
   `pagador` varchar(40) NOT NULL,
   `domicilio_pago` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_recibo_x`)
+  PRIMARY KEY (`id_recibo_x`),
+  KEY `reference_doc_inicio_recibo_x_idx` (`id_punto_venta_emisor`,`fecha_emision`),
+  CONSTRAINT `reference_doc_inicio_recibo_x` FOREIGN KEY (`id_punto_venta_emisor`, `fecha_emision`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -560,7 +570,9 @@ CREATE TABLE `remito` (
   `num_remito` int unsigned NOT NULL,
   `id_punto_venta_emisor` int unsigned NOT NULL,
   `fecha_emision` datetime NOT NULL,
-  PRIMARY KEY (`id_remito`)
+  PRIMARY KEY (`id_remito`),
+  KEY `reference_doc_inicio_remito_idx` (`id_punto_venta_emisor`,`fecha_emision`),
+  CONSTRAINT `reference_doc_inicio_remito` FOREIGN KEY (`id_punto_venta_emisor`, `fecha_emision`) REFERENCES `doc_inicio` (`id_punto_venta_emisor`, `fecha_creacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -617,7 +629,7 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `UK_kfsp0s1tflm1cwlj8idhqsad0` (`email`),
   UNIQUE KEY `UK_m2dvbwfge291euvmk6vkkocao` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -638,4 +650,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-23 13:23:15
+-- Dump completed on 2022-03-02  1:17:25

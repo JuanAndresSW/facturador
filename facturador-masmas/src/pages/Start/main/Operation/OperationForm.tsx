@@ -179,10 +179,7 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 
 //# Los siguientes elementos son muy simples, por eso se decidió no moverlos a archivos separados. #//
 
-/**
- * Un signo + con Link a la dirección especificada cuando la condición 'cond' es cumplida.
- * Valor null en caso contrario.
- */
+/**Un signo + con Link a la dirección especificada.*/
 const PlusIcon: React.FC<{ link: string }> = ({ link }) => {
   return (
   <Link to={link} style={{ flex: .5, marginTop: ".3rem", fontSize: "2rem", display: "block", textAlign: "center", color: "#fff" }}>

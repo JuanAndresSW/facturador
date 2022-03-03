@@ -4,7 +4,7 @@ import {BiChevronLeft, BiHistory,BiLogInCircle,BiLogOutCircle,BiTransferAlt,} fr
 import {Section, Option} from 'components/layout';
 import DocumentForm from "./OperationForm";
 
-
+/**Pantalla de selección de tipos de operaciones.*/
 export default function Operation() {
   return (
     <Routes>
@@ -33,7 +33,7 @@ const OperationSelectionScreen = (
 );
 
 
-//Pantalla de selección de tipos de documentos.
+/**Pantalla de selección de tipos de documentos comerciales.*/
 function Documents({ flux }: {flux:("in"|"out")}): JSX.Element {
   const navigate = useNavigate();
   return (

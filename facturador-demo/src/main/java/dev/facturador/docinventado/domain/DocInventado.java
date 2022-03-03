@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public final class DocInventado implements Serializable {
-    public static final long serialVersinUID = 1L;
+    public static final Long serialVersinUID = 1L;
 
     @EmbeddedId
     private DocInventadoPK docUnTruePK;
@@ -38,7 +38,7 @@ public final class DocInventado implements Serializable {
 @ToString
 @EqualsAndHashCode
 class DocInventadoPK implements Serializable {
-    public static final long serialVersinUID = 1L;
+    public static final Long serialVersinUID = 1L;
 
     @Column(name = "punto_venta_emisor_doc_inv", nullable = false)
     private long issuingPointOfSale;

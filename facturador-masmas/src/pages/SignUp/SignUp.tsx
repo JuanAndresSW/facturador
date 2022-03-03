@@ -8,6 +8,7 @@ import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet 
 //Relacionado a la cuenta.
 import Valid from "utils/Valid";
 import MainAccount, {mainAccount} from "services/MainAccount";
+import Session from "services/Session";
 
 
 /**
@@ -18,8 +19,9 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   //Controladores del estado del formulario.
-  const [active, setActive] = useState("user");
-  const [submitButton, setSubmitButton] = useState("Comprobar");
+  const [active, setActive]: 
+  [("user"|"trader"), React.Dispatch<React.SetStateAction<("user"|"trader")>>] = useState("user");
+  const [sending, setSending] = useState(false);
 
   /*DATOS DEL FORMULARIO*****************************************************/
 
@@ -61,7 +63,7 @@ export default function SignUp() {
     if (!Valid.names(businessName))       { setTraderError("La razón social debe ser de entre 3 y 20 caracteres");  return; }
     if (!Valid.vatCategory(vatCategory))  { setTraderError("Seleccione una categoría");                             return; }
     if (!Valid.code(code))                { setTraderError
-      (`Ingrese un${vatCategory === "Monotributista"? " C.U.I.L. válido": "a C.U.I.T. válida"}`);                    return; }
+      (`Ingrese un${vatCategory === "Monotributista"? " C.U.I.L. válido": "a C.U.I.T. válida"}`);                   return; }
     if (!Valid.code(grossIncome))         { setTraderError("Ingrese un número de ingresos brutos válido");          return; }
 
     //Si todo fue validado, se envían los datos.
@@ -87,16 +89,17 @@ export default function SignUp() {
       }
     }
     MainAccount.register(account, handleResponse);
-    setSubmitButton("Cargando...");
+    setSending(true);
   }
 
   /**Maneja la respuesta recibida del servidor. */
   function handleResponse(state: number, data: string) {
+    setSending(false);
     if (state === 201) {
+      Session.setSession(JSON.parse(data))
       setTraderError("");
-      setSubmitButton("");
       navigate("/inicio");
-    } else setTraderError(data); setSubmitButton("");
+    } else setTraderError(data);
   }
 
   /*FORMULARIO*****************************************************/
@@ -126,7 +129,7 @@ export default function SignUp() {
     active === "trader" ?
 
     <Form title="Datos del comercio" onSubmit={validateTrader}>
-      {submitButton === "Comprobar" ? <BiChevronLeft onClick={() => setActive("user")} /> : null}
+      {sending? null : <BiChevronLeft onClick={() => setActive("user")} /> }
 
       <Field icon={<BiIdCard />}label="Escribe tu razón social" bind={[businessName, setBusinessName]}
       validator={Valid.names(businessName)} />
@@ -143,7 +146,7 @@ export default function SignUp() {
 
       <ErrorMessage message={traderError} />
 
-      {submitButton === "Comprobar" ? <Submit text={submitButton} />: submitButton}
+      {sending? "Cargando..." : <Submit text="Enviar" />}
     </Form>
     : null
   );

@@ -33,7 +33,7 @@ export default function App() {
         React.createElement(BrowserRouter, null,
             React.createElement(Suspense, { fallback: React.createElement(SplashScreen, null) },
                 React.createElement(Routes, null,
-                    React.createElement(Route, { path: "/", element: auth ? React.createElement(Home, null) : React.createElement(Navigate, { to: "/inicio" }) }),
+                    React.createElement(Route, { path: "/", element: !auth ? React.createElement(Home, null) : React.createElement(Navigate, { to: "/inicio" }) }),
                     React.createElement(Route, { path: "/login", element: !auth ? React.createElement(Login, null) : React.createElement(Navigate, { to: "/inicio" }) }),
                     React.createElement(Route, { path: "/inicio/*", element: !auth ? React.createElement(Start, null) : React.createElement(Navigate, { to: "/login" }) }),
                     React.createElement(Route, { path: "/cuenta", element: auth ? React.createElement(Account, null) : React.createElement(Navigate, { to: "/login" }) }),

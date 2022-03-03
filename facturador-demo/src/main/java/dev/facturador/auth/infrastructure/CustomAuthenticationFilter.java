@@ -1,7 +1,8 @@
 package dev.facturador.auth.infrastructure;
 
+import dev.facturador.auth.application.JWTOfAuth;
 import dev.facturador.auth.domain.CustomUserDetails;
-import dev.facturador.auth.application.JWTUtil;
+import dev.facturador.shared.infrastructure.JWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,11 +20,11 @@ import java.io.IOException;
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
-    private JWTUtil jwt;
+    private final JWT<UsernamePasswordAuthenticationToken> jwt;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwt) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        this.jwt = jwt;
+        this.jwt = new JWTOfAuth();
     }
 
     @Override

@@ -1,12 +1,12 @@
 package dev.facturador.check.domain;
 
+import dev.facturador.docinicio.domain.DocInicio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -25,13 +25,14 @@ public final class Cheque {
     @Column(name = "num_cheque", nullable = false)
     private int numCheck;
 
-    @Column(name = "id_punto_venta_emisor", nullable = false)
-    private int issuingPointOfSale;
+    @JoinColumns(value = {
+            @JoinColumn(name = "id_punto_venta_emisor", referencedColumnName = "id_punto_venta_emisor", nullable = false),
+            @JoinColumn(name = "fecha_emision", referencedColumnName = "fecha_creacion", nullable = false)
+    })
+    @OneToOne(cascade = CascadeType.ALL)
+    private DocInicio skeletonDocOfCheck;
 
-    @Column(name = "fecha_emision", nullable = false, updatable = false)
-    private LocalDateTime checkIssueDate;
-
-    @Column(nullable = false, length = 1)
+    @Column(name = "serie", nullable = false, length = 1)
     private String serie;
 
     @Column(name = "cantidad", nullable = false, scale = 2)

@@ -1,12 +1,13 @@
 package dev.facturador.trader.domain;
 
-import dev.facturador.gategay.enums.Vat;
 import dev.facturador.pointofsale.domain.PuntoVenta;
+import dev.facturador.shared.domain.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @SuppressWarnings("ALL")
@@ -15,7 +16,8 @@ import java.util.Collection;
 @NoArgsConstructor
 @Getter
 @Setter
-public final class Comerciante {
+public final class Comerciante implements Serializable {
+    public static final Long serialVersinUID = 1L;
 
     @Id
     @Column(name = "id_comerciante")
@@ -47,7 +49,6 @@ public final class Comerciante {
 
     public Comerciante(String uniqueKey, String grossIncome, String name, int active, int passive) {
         this.uniqueKey = uniqueKey;
-        this.vat = vat;
         this.grossIncome = grossIncome;
         this.name = name;
         this.active = active;

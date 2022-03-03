@@ -1,12 +1,12 @@
 package dev.facturador.invoice.domain;
 
+import dev.facturador.docinicio.domain.DocInicio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -25,11 +25,12 @@ public final class Factura {
     @Column(name = "num_factura", nullable = false)
     private int invoiceNum;
 
-    @Column(name = "id_punto_venta_emisor", nullable = false)
-    private int pointOfSaleIssuerInvoice;
-
-    @Column(name = "fecha_emision", nullable = false, updatable = false)
-    private LocalDateTime invoiceIssueDate;
+    @JoinColumns(value = {
+            @JoinColumn(name = "id_punto_venta_emisor", referencedColumnName = "id_punto_venta_emisor", nullable = false),
+            @JoinColumn(name = "fecha_emision", referencedColumnName = "fecha_creacion", nullable = false)
+    })
+    @OneToOne(cascade = CascadeType.ALL)
+    private DocInicio skeletonDocOfInvoice;
 
     @Column(name = "tipo", nullable = false, length = 1)
     private String invoiceType;

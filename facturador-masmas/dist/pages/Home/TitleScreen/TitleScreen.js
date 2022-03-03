@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import Session from "services/Session";
 import Valid from "utils/Valid";
-import "styles/form.css";
 import "./TitleScreen.css";
-import { useNavigate } from "react-router-dom";
+import { ErrorMessage } from "components/formComponents";
 //objeto de usuario a enviar al servidor
 var user = { usernameOrEmail: "", password: "" };
 export default function TitleScreen() {
-    //Objeto de navegación de rutas;
-    var navigate = useNavigate();
     var _a = useState("text"), loginInputType = _a[0], setLoginInputType = _a[1];
     var placeholder = loginInputType === "text" ? "nombre o email" : "contraseña";
     var _b = useState(""), loginValue = _b[0], setLoginValue = _b[1];
@@ -47,11 +44,13 @@ export default function TitleScreen() {
     }
     function handleResponse(state, data) {
         if (state === 200) {
+            console.log("data: " + data);
             setError("");
-            window.location.reload();
+            window.location.reload(); //can be moved to Session: login is safe to reload.
         }
         else
             setError(data);
+        console.log("data: " + data);
     }
     return (React.createElement("div", { className: "title-wrapper" },
         React.createElement("h1", null, "M\u00E1s que un facturador"),
@@ -63,5 +62,5 @@ export default function TitleScreen() {
                     checkValidity();
             }, disabled: disable }),
         React.createElement("button", { disabled: disable, type: "button", onClick: function () { return checkValidity(); } }, "Iniciar sesi\u00F3n"),
-        React.createElement("p", { className: "message" }, error)));
+        React.createElement(ErrorMessage, { message: error })));
 }

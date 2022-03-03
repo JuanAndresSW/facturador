@@ -1,7 +1,7 @@
 package dev.facturador.grouppartner.domain;
 
-import dev.facturador.gategay.enums.EstadoSolicitud;
 import dev.facturador.pointofsale.domain.PuntoVenta;
+import dev.facturador.shared.domain.EstadoSolicitud;
 import dev.facturador.trader.domain.Comerciante;
 import lombok.*;
 
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public final class ListaSocios implements Serializable {
-    public static final long serialVersinUID = 1L;
+    public static final Long serialVersinUID = 1L;
     @EmbeddedId
     private ListaSociosPK listaSociosPK;
 
@@ -58,7 +58,7 @@ public final class ListaSocios implements Serializable {
 @ToString
 @EqualsAndHashCode
 class ListaSociosPK implements Serializable {
-    public static final long serialVersinUID = 1L;
+    public static final Long serialVersinUID = 1L;
 
     @Column(name = "id_comerciante_solicitante", nullable = false)
     private long traderRequesterId;
