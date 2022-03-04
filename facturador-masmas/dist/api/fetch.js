@@ -1,14 +1,12 @@
 /**
  * Implementa una capa de abstracción para la API XMLHR.
- * Permite realizar operaciones get, post, put y delete, enviando los datos
+ * Permite realizar operaciones get, post, put, delete y scan del header enviando los datos
  * a un URL, y pudiendo adjuntar un JWT opcional.
- * @param {("GET"|"POST"|"PUT"|"DELETE")} [method] - El método HTTP a ser utilizado.
- * @param {string} [url]            - Sufijo del url del recurso.
- * @param {string} [content.body]   - Cuerpo opcional de la petición.
- * @param {string} [content.token]  - Token JWT opcional de la petición.
- * @param {Function} [callback]     - Función para manejar la respuesta.
- * Siempre se invoca con dos argumentos: un código de estado de la petición, y el contenido,
- * pudiendo ser un mensaje de error o los datos de respuesta.
+ * @param {("GET"|"POST"|"PUT"|"DELETE"|"HEAD")} [method] - El método HTTP a ser utilizado.
+ * @param {string}   [url]            - Sufijo del url del recurso.
+ * @param {string}   [content.body]   - Cuerpo opcional de la petición.
+ * @param {string}   [content.token]  - Token JWT opcional de la petición.
+ * @param {Function} [callback]       - Función para manejar la respuesta. Siempre se invoca con dos argumentos: un código de estado de la petición, y el contenido, pudiendo ser un mensaje de error o los datos de respuesta.
  */
 export default function fetch(method, url, content, callback) {
     //Definir la request.
@@ -27,7 +25,7 @@ export default function fetch(method, url, content, callback) {
     if (content.body !== undefined)
         xhr.setRequestHeader("Content-Type", "application/json");
     if (content.token !== undefined)
-        xhr.setRequestHeader("Token", 'Bearer' + content.token);
+        xhr.setRequestHeader("Authorization", 'Bearer ' + content.token);
     xhr.send(content.body);
     //Manejar la respuesta.
     function handleResponse() {
@@ -41,7 +39,6 @@ export default function fetch(method, url, content, callback) {
                 return;
             }
             callback(xhr.status, xhr.responseText);
-            return;
         }
     }
 }

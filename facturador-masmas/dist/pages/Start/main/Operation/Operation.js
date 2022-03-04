@@ -3,6 +3,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { BiChevronLeft, BiHistory, BiLogInCircle, BiLogOutCircle, BiTransferAlt, } from "react-icons/bi";
 import { Section, Option } from 'components/layout';
 import DocumentForm from "./OperationForm";
+/**Pantalla de selección de tipos de operaciones.*/
 export default function Operation() {
     return (React.createElement(Routes, null,
         React.createElement(Route, { index: true, element: OperationSelectionScreen }),
@@ -18,7 +19,7 @@ var OperationSelectionScreen = (React.createElement(React.Fragment, null,
     React.createElement(Section, { label: "Otras operaciones" },
         React.createElement(Option, { label: "Registar un egreso o ingreso", icon: React.createElement(BiTransferAlt, null), link: "./registro" }),
         React.createElement(Option, { label: "Ver o continuar con una transacci\u00F3n", icon: React.createElement(BiHistory, null), link: "./historial" }))));
-//Pantalla de selección de tipos de documentos.
+/**Pantalla de selección de tipos de documentos comerciales.*/
 function Documents(_a) {
     var flux = _a.flux;
     var navigate = useNavigate();

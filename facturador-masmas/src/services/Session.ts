@@ -20,18 +20,15 @@ export default class Session {
     const refreshToken = this.getRefreshToken();
 
     const handleRefreshTokenResponse = (status:number, data:string) => {  
-      console.log("Refresh was executed => refreshToken validation status: "+status)
       if (status === 200) {this.setSession(JSON.parse(data)); callback(200);}
       callback(status);
     };
     const handleAccessTokenResponse = (status:number) => { 
-      console.log("accessToken validation status: "+status)
       if (status === 200) callback(200);
       else fetch("POST","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
     };
 
     if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
-      console.log("token validado:"+accessToken)
       fetch("POST","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
     } else callback(400);
   }
@@ -54,11 +51,11 @@ export default class Session {
   /**
    * Establece los valores obtenidos de una solicitud de login exitosa.
    * @param {string} [session.accessToken] - El JWT usado para autenticar peticiones.
-   * @param {string} [session.refreshToken] - El JWT usado para autenticar una solicitud de renovación de token de accesso.
+   * @param {string} [session.refreshToken] - El JWT usado para autenticar una solicitud de renovación de token de acceso.
    */
   public static setSession(session: session): void {
-    if (session.accessToken === undefined || session.refreshToken === undefined) {console.log("tokens were not validated");return};
-    document.cookie = `accessToken=${session.accessToken}; max-age=1209600; path=/; Secure`; //Should be 'access'
+    if (session.accessToken === undefined || session.refreshToken === undefined) return;
+    document.cookie = `accessToken=${session.accessToken}; max-age=1209600; path=/; Secure`;
     document.cookie = `refreshToken=${session.refreshToken}; max-age=1209600; path=/; Secure`;
   }
 

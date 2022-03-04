@@ -23,17 +23,14 @@ const Error404 = lazy(() => import("pages/Error/Error404"));
 /**El componente global de la aplicación. */
 export default function App() {
 
-    console.log("app was executed")
-
     //Determina si se le debe dar permisos de sesión al usuario.
     const [auth, setAuth] = useState(undefined);
 
     //Comprobar la sesión con el servidor en el primer renderizado.
-    useEffect(() => {Session.getByToken(handleResponse); console.log("session.getbytoken was executed");}, []);
+    useEffect(() => Session.getByToken(handleResponse), []);
 
     //Comprobar la respuesta final del servidor.
     function handleResponse(status: number) {
-        console.log("Response final: "+status)
         if (status === 200) {setAuth(true); }
         else setAuth(false);
     }

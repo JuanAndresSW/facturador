@@ -6,6 +6,7 @@ import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet 
 //Relacionado a la cuenta.
 import Valid from "utils/Valid";
 import MainAccount from "services/MainAccount";
+import Session from "services/Session";
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
@@ -13,7 +14,7 @@ export default function SignUp() {
     var navigate = useNavigate();
     //Controladores del estado del formulario.
     var _a = useState("user"), active = _a[0], setActive = _a[1];
-    var _b = useState("Comprobar"), submitButton = _b[0], setSubmitButton = _b[1];
+    var _b = useState(false), sending = _b[0], setSending = _b[1];
     /*DATOS DEL FORMULARIO*****************************************************/
     //Datos del usuario.
     var _c = useState(""), username = _c[0], setUsername = _c[1];
@@ -96,18 +97,18 @@ export default function SignUp() {
             }
         };
         MainAccount.register(account, handleResponse);
-        setSubmitButton("Cargando...");
+        setSending(true);
     }
     /**Maneja la respuesta recibida del servidor. */
     function handleResponse(state, data) {
+        setSending(false);
         if (state === 201) {
+            Session.setSession(JSON.parse(data));
             setTraderError("");
-            setSubmitButton("");
             navigate("/inicio");
         }
         else
             setTraderError(data);
-        setSubmitButton("");
     }
     /*FORMULARIO*****************************************************/
     return (active === "user" ?
@@ -124,12 +125,12 @@ export default function SignUp() {
         :
             active === "trader" ?
                 React.createElement(Form, { title: "Datos del comercio", onSubmit: validateTrader },
-                    submitButton === "Comprobar" ? React.createElement(BiChevronLeft, { onClick: function () { return setActive("user"); } }) : null,
+                    sending ? null : React.createElement(BiChevronLeft, { onClick: function () { return setActive("user"); } }),
                     React.createElement(Field, { icon: React.createElement(BiIdCard, null), label: "Escribe tu raz\u00F3n social", bind: [businessName, setBusinessName], validator: Valid.names(businessName) }),
                     React.createElement(Radio, { legend: "Selecciona una categor\u00EDa:", bind: [vatCategory, setVatCategory], options: ["Responsable Inscripto", "Monotributista", "Sujeto Exento"] }),
                     React.createElement(Field, { label: "C.U.I." + (vatCategory === "Monotributista" ? "L." : "T."), note: "(si no eliges uno, se generar\u00E1 uno falso)", bind: [code, setCode], validator: Valid.code(code), icon: React.createElement(BiHash, null) }),
                     React.createElement(Field, { label: "N\u00FAmero de ingresos brutos", note: "(si no eliges uno, se generar\u00E1 uno falso)", bind: [grossIncome, setGrossIncome], icon: React.createElement(BiWallet, null), validator: Valid.code(grossIncome) }),
                     React.createElement(ErrorMessage, { message: traderError }),
-                    submitButton === "Comprobar" ? React.createElement(Submit, { text: submitButton }) : submitButton)
+                    sending ? "Cargando..." : React.createElement(Submit, { text: "Enviar" }))
                 : null);
 }

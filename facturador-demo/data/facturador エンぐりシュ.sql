@@ -232,7 +232,7 @@ CREATE TABLE `operation` (
   `id_point_of_sale` int unsigned NOT NULL,
   `date_of_issue` datetime NOT NULL,
   `flux` enum('I','O') NOT NULL,
-  `description` varchar(60) DEFAULT NULL,
+  `description_of_values` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id_point_of_sale`,`date_of_issue`),
   CONSTRAINT `id_point_of_sale_fk` FOREIGN KEY (`id_point_of_sale`) REFERENCES `point_of_sale` (`id_point_of_sale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -386,7 +386,7 @@ CREATE TABLE `purchase_order` (
   `num_purchase_order` int unsigned NOT NULL,
   `id_point_of_sale` int unsigned NOT NULL,
   `date_of_issue` datetime NOT NULL,
-  `deadline` date NOT NULL,
+  `delivery_deadline` date NOT NULL,
   `place_of_delivery` varchar(20) NOT NULL,
   `carrier` varchar(25) NOT NULL,
   `conditions` varchar(20) NOT NULL,
@@ -420,7 +420,7 @@ CREATE TABLE `promissory_note` (
   `amount` decimal(10,2) NOT NULL,
   `beneficiary` varchar(255) NOT NULL,
   `contact` varchar(255) NOT NULL,
-  `deadline` date NOT NULL,
+  `payment_deadline` date NOT NULL,
   `protest` bit(1) NOT NULL,
   `stamped` bit(1) NOT NULL,
   PRIMARY KEY (`id_promissory_note`),
@@ -507,6 +507,7 @@ CREATE TABLE `receipt` (
   `id_point_of_sale` int unsigned NOT NULL,
   `date_of_issue` datetime NOT NULL,
   `amount` int NOT NULL,
+  `payment_deadline`
   `address` varchar(40) NOT NULL,
   `payer` varchar(40) NOT NULL,
   `type` varchar(10) NOT NULL,
@@ -540,9 +541,9 @@ CREATE TABLE `receipt_x` (
   `cash` decimal(10,2) NOT NULL,
   `documents` decimal(10,2) NOT NULL,
   `check` decimal(10,2) NOT NULL,
-  `time` time NOT NULL,
+  `payment_time` time NOT NULL,
   `payer` varchar(40) NOT NULL,
-  `payment_address` varchar(20) NOT NULL,
+  `payer_address` varchar(20) NOT NULL,
   PRIMARY KEY (`id_receipt_x`),
   KEY `reference_operation_receipt_x_idx` (`id_point_of_sale`,`date_of_issue`),
   CONSTRAINT `reference_operation_receipt_x` FOREIGN KEY (`id_point_of_sale`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale`, `date_of_issue`)

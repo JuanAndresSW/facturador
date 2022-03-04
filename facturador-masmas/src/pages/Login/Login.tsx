@@ -34,7 +34,7 @@ export default function Login() {
     if (state === 200) {
       Session.setSession(JSON.parse(data));
       setError("");
-      navigate("/");
+      window.location.reload();
     } else setError(data);
   }
 

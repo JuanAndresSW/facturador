@@ -11,10 +11,24 @@ var Session = /** @class */ (function () {
     * @param {Function} callback - La función que maneja la respuesta.
     */
     Session.getByToken = function (callback) {
-        var token = this.getAccessToken();
-        if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token)) {
-            fetch("GET", "/auth", { token: token }, callback);
-            return;
+        var _this = this;
+        var accessToken = this.getAccessToken();
+        var refreshToken = this.getRefreshToken();
+        var handleRefreshTokenResponse = function (status, data) {
+            if (status === 200) {
+                _this.setSession(JSON.parse(data));
+                callback(200);
+            }
+            callback(status);
+        };
+        var handleAccessTokenResponse = function (status) {
+            if (status === 200)
+                callback(200);
+            else
+                fetch("POST", "auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
+        };
+        if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
+            fetch("POST", "auth/init", { token: accessToken }, handleAccessTokenResponse); //should be "HEAD"
         }
         else
             callback(400);
@@ -36,14 +50,13 @@ var Session = /** @class */ (function () {
     /**
      * Establece los valores obtenidos de una solicitud de login exitosa.
      * @param {string} [session.accessToken] - El JWT usado para autenticar peticiones.
-     * @param {string} [session.refreshToken] - El JWT usado para autenticar una solicitud de renovación de token de accesso.
+     * @param {string} [session.refreshToken] - El JWT usado para autenticar una solicitud de renovación de token de acceso.
      */
-    Session.setSession = function (_a) {
-        var accessToken = _a.accessToken, refreshToken = _a.refreshToken;
-        if (accessToken === undefined || refreshToken === undefined)
+    Session.setSession = function (session) {
+        if (session.accessToken === undefined || session.refreshToken === undefined)
             return;
-        document.cookie = "accessToken=".concat(accessToken, "; max-age=1209600; path=/; Secure");
-        document.cookie = "refreshToken=".concat(refreshToken, "; max-age=1209600; path=/; Secure");
+        document.cookie = "accessToken=".concat(session.accessToken, "; max-age=1209600; path=/; Secure");
+        document.cookie = "refreshToken=".concat(session.refreshToken, "; max-age=1209600; path=/; Secure");
     };
     /** Forza la expiración de los tokens de sesión. Recarga la ubicación actual al finalizar.*/
     Session.close = function () {
@@ -53,6 +66,7 @@ var Session = /** @class */ (function () {
         }
         window.location.reload();
     };
+    //GETTERS
     /** Recupera el token de acceso del array de cookies. */
     Session.getAccessToken = function () {
         var cookieArray = decodeURIComponent(document.cookie).split("; ");

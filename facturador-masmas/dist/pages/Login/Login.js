@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+//Servicio.
 import Session from "services/Session";
 //Utilidades.
 import Valid from "utils/Valid";
@@ -20,9 +21,14 @@ export default function Login() {
     }
     ;
     function handleResponse(state, data) {
+        if (state === 404) {
+            setError("Usuario o contraseña incorrecta");
+            return;
+        }
         if (state === 200) {
+            Session.setSession(JSON.parse(data));
             setError("");
-            navigate("/");
+            window.location.reload();
         }
         else
             setError(data);
