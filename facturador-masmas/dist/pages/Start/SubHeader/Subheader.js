@@ -1,15 +1,14 @@
-import Session from "utils/Session";
 import React from "react";
 import "./Subheader.css";
 export default function Subheader() {
     return (React.createElement("div", { className: "subheader" },
         React.createElement("p", null,
             "activos: ",
-            Session.getActive()),
+            "Session.getActive()"),
         React.createElement("p", null,
             "pasivos: ",
-            Session.getPassive()),
+            "Session.getPassive()"),
         React.createElement("p", null,
             "patrimonio neto: ",
-            Session.getNetWorth())));
+            "Session.getNetWorth()")));
 }

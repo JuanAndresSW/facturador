@@ -9,6 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 import React from "react";
 import { BsFileMinusFill, BsFillPlusSquareFill } from "react-icons/bs";
+import DateTime from "../DateTime/DateTime";
 import Field from "../Field/Field";
 import './Table.css';
 /**
@@ -25,21 +26,20 @@ import './Table.css';
 export default function Table(_a) {
     var _b = _a.label, label = _b === void 0 ? "" : _b, headers = _a.headers, maxRows = _a.maxRows, bind = _a.bind;
     /**Actualiza el valor de una celda de la tabla */
-    function setter(rowIndex, colIndex, value, number) {
-        if (number === void 0) { number = false; }
+    function setter(rowIndex, colIndex, value) {
         //Ignorar si la celda es numérica y el número es negativo.
-        if (number && parseInt(value) < 1)
+        if (headers[colIndex].type === "number" && parseInt(value) < 1)
             return;
         if (value.length > 20)
             return;
         //Hacer una shallow copy y modificarla para forzar re-renderizado.
         var table = __spreadArray([], bind[0], true);
-        table[rowIndex][colIndex] = number ? parseInt(value).toString() : value;
+        table[rowIndex][colIndex] = headers[colIndex].type === "number" ? parseInt(value).toString() : value;
         bind[1](table);
     }
     function addRow() {
         var table = __spreadArray([], bind[0], true);
-        table.push(headers.map(function (header) { return header.number ? "1" : ""; }));
+        table.push(headers.map(function () { return ""; }));
         bind[1](table);
     }
     function removeRow() {
@@ -54,25 +54,30 @@ export default function Table(_a) {
                 React.createElement("tr", null, headers.map(function (header, index) {
                     return React.createElement("th", { key: index }, header.th);
                 }))),
-            React.createElement("tbody", null,
-                bind[0].map(function (row, rowIndex) {
-                    return React.createElement("tr", { key: rowIndex },
-                        //Slice es usado para no exceder el número de columnas.
-                        row.slice(0, headers.length).map(function (cell, colIndex) {
-                            return React.createElement("td", { key: colIndex },
-                                React.createElement(Field, { type: headers[colIndex].number ? "number" : "text", bind: [cell,
-                                        function (value) { return setter(rowIndex, colIndex, value, headers[colIndex].number); }] }));
-                        }),
-                        (rowIndex + 1 === bind[0].length && rowIndex > 0) ?
-                            React.createElement("td", { onClick: removeRow },
-                                React.createElement(BsFileMinusFill, null)) : null);
-                }),
-                bind[0].length < maxRows ?
-                    React.createElement("tr", null,
-                        React.createElement("td", null),
-                        React.createElement("td", { onClick: addRow },
-                            React.createElement(BsFillPlusSquareFill, null)),
-                        React.createElement("td", null))
-                    : null))));
+            React.createElement("tbody", null, bind[0].map(function (row, rowIndex) {
+                return React.createElement("tr", { key: rowIndex },
+                    //Slice es usado para no exceder el número de columnas.
+                    row.slice(0, headers.length).map(function (cell, colIndex) {
+                        return React.createElement("td", { key: colIndex }, headers[colIndex].type === "date" ?
+                            (React.createElement(DateTime, { value: cell, onChange: function (value) {
+                                    return setter(rowIndex, colIndex, value);
+                                } }))
+                            :
+                                (React.createElement(Field, { type: headers[colIndex].type === "number" ? "number" : "text", bind: [cell,
+                                        function (value) { return setter(rowIndex, colIndex, value); }] })));
+                    }),
+                    (rowIndex + 1 === bind[0].length && rowIndex > 0) ?
+                        React.createElement("td", { onClick: removeRow },
+                            React.createElement(BsFileMinusFill, null)) : null);
+            })),
+            bind[0].length < maxRows ?
+                React.createElement("tfoot", null,
+                    React.createElement("tr", null, headers.map(function (h, index) {
+                        return (index + 1 === headers.length) ?
+                            React.createElement("td", { key: h.th },
+                                React.createElement(BsFillPlusSquareFill, { onClick: addRow }))
+                            : React.createElement("td", { key: h.th });
+                    })))
+                : null)));
 }
 ;

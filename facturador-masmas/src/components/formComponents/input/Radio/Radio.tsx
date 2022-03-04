@@ -23,7 +23,7 @@ export default function Radio({ legend = "", note, options, bind }: props): JSX.
             
 
                 {options.map((option, index) =>
-                    <label className="small" key={index}>
+                    <label className="radio" key={index}>
                         <input
                             type="radio"
                             name={legend}

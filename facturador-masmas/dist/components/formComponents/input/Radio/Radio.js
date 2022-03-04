@@ -15,7 +15,7 @@ export default function Radio(_a) {
             " ",
             note),
         options.map(function (option, index) {
-            return React.createElement("label", { className: "small", key: index },
+            return React.createElement("label", { className: "radio", key: index },
                 React.createElement("input", { type: "radio", name: legend, checked: option === bind[0], className: option === bind[0] ? "radio-checked" : "", value: option, onChange: function (e) { return bind[1](e.target.value); } }),
                 option);
         })));

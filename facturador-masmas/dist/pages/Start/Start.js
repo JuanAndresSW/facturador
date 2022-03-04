@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Header from 'components/Header/Header';
+import Header from 'components/layout/Header/Header';
 import Subheader from './SubHeader/Subheader';
 import NavBar from './NavBar/NavBar';
-import Footer from 'components/Footer/Footer';
+import Footer from 'components/layout/Footer/Footer';
 import { Operation, Books, Stats, Spots } from './main';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { MdClass, MdPoll, MdPinDrop } from 'react-icons/md';
