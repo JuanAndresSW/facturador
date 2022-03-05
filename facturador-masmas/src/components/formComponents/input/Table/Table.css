@@ -1,0 +1,41 @@
+table {
+    display: block;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    padding: .2rem;
+    overflow-x: auto;
+}
+table thead {
+    cursor: default;
+}
+table svg {
+    display: block;
+    text-align: center;
+    margin: .4rem auto;
+    padding: 0 .4rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+}
+table svg:hover {
+    cursor: pointer;
+    color: white;
+    transition: .1s;
+    transform: scale(1.2);
+}
+tbody label {
+    margin: 0;
+}
+thead tr th {
+    color: white;
+    border: 1px solid rgba(220, 220, 220, 0.5);
+    font-family: monospace;
+    font-weight: normal;
+    font-size: 1rem;
+    padding: .2rem;
+    border-radius: 3px;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(2, 61, 109, 0.6) 100%);
+}

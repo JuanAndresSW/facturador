@@ -86,7 +86,7 @@ DROP TABLE IF EXISTS `details_point_of_sale`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `details_point_of_sale` (
-  `preferencia_color` varchar(6) NOT NULL,
+  `preference_color` varchar(6) NOT NULL,
   `logo` mediumtext NOT NULL,
   `id_point_of_sale` int unsigned NOT NULL,
   PRIMARY KEY (`id_point_of_sale`),
@@ -147,7 +147,7 @@ CREATE TABLE `invoice` (
   `type` enum('A','B','C') NOT NULL,
   `tax` varchar(2) NOT NULL,
   `vat` varchar(1) NOT NULL,
-  `paymen_formt` varchar(255) NOT NULL,
+  `paymen_form` varchar(255) NOT NULL,
   PRIMARY KEY (`id_invoice`),
   KEY `reference_operation_invoice_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
   CONSTRAINT `reference_operation_invoice_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
@@ -193,40 +193,39 @@ LOCK TABLES `main_account` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `non_registred_operation`
+-- Table structure for table `non_registered_operation`
 --
 
-DROP TABLE IF EXISTS `non_registred_operation`;
+DROP TABLE IF EXISTS `non_registered_operation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `non_registred_operation` (
+CREATE TABLE `non_registered_operation` (
   `id_non_registred_partner_requested` int unsigned NOT NULL,
   `id_point_of_sale_requester` int unsigned NOT NULL,
   `date_of_issue` datetime NOT NULL,
   PRIMARY KEY (`id_non_registred_partner_requested`,`id_point_of_sale_requester`,`date_of_issue`),
   KEY `reference_operation_in_non_registred_fk_idx` (`id_point_of_sale_requester`,`date_of_issue`),
-  CONSTRAINT `id_non_registred_partner_operation_fk` FOREIGN KEY (`id_non_registred_partner_requested`) REFERENCES `non_registred_partner` (`id_non_registred_partner`),
-  CONSTRAINT `reference_operation_in_non_registred_fk` FOREIGN KEY (`id_point_of_sale_requester`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
+  CONSTRAINT `reference_operation_in_non_registered_fk` FOREIGN KEY (`id_point_of_sale_requester`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `non_registred_operation`
+-- Dumping data for table `non_registered_operation`
 --
 
-LOCK TABLES `non_registred_operation` WRITE;
-/*!40000 ALTER TABLE `non_registred_operation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `non_registred_operation` ENABLE KEYS */;
+LOCK TABLES `non_registered_operation` WRITE;
+/*!40000 ALTER TABLE `non_registered_operation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `non_registered_operation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `non_registred_partner`
+-- Table structure for table `non_registered_partner`
 --
 
-DROP TABLE IF EXISTS `non_registred_partner`;
+DROP TABLE IF EXISTS `non_registered_partner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `non_registred_partner` (
+CREATE TABLE `non_registered_partner` (
   `id_non_registred_partner` int unsigned NOT NULL AUTO_INCREMENT,
   `unique_key` varchar(15) NOT NULL,
   `address` varchar(50) NOT NULL,
@@ -240,12 +239,12 @@ CREATE TABLE `non_registred_partner` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `non_registred_partner`
+-- Dumping data for table `non_registered_partner`
 --
 
-LOCK TABLES `non_registred_partner` WRITE;
-/*!40000 ALTER TABLE `non_registred_partner` DISABLE KEYS */;
-/*!40000 ALTER TABLE `non_registred_partner` ENABLE KEYS */;
+LOCK TABLES `non_registered_partner` WRITE;
+/*!40000 ALTER TABLE `non_registered_partner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `non_registered_partner` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -259,7 +258,7 @@ CREATE TABLE `operation` (
   `id_point_of_sale_issuing` int unsigned NOT NULL,
   `date_of_issue` datetime NOT NULL,
   `flux` enum('I','O') NOT NULL,
-  `descripcion` varchar(60) DEFAULT NULL,
+  `description` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id_point_of_sale_issuing`,`date_of_issue`),
   CONSTRAINT `id_point_of_sale_operation_fk` FOREIGN KEY (`id_point_of_sale_issuing`) REFERENCES `point_of_sale` (`id_point_of_sale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -640,4 +639,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-05  7:25:46
+-- Dump completed on 2022-03-05 11:08:09

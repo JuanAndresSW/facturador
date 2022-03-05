@@ -1,0 +1,33 @@
+.section-header div {
+    display: flex;
+    align-items: center;
+    flex-flow: nowrap;
+    justify-content: space-between;
+    margin: 3rem 0;
+    padding: 0 1rem;
+    color: gray;
+    cursor: default;
+    border-bottom: 1px solid gainsboro;
+    
+}
+.section-header h2 {
+   font-size: .7rem;
+}
+.section-header svg {
+    display: block;
+}
+.active {
+    animation: retract .1s linear forwards;
+    overflow: hidden;
+}
+@keyframes retract {
+	0% {
+	height: 0;
+	}
+    50% {
+        height: 5rem;
+    }
+	100% {
+		height: max-content;
+	}
+}

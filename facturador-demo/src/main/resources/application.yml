@@ -1,12 +1,15 @@
-#Los --- y ... indican cuando inicia y termina el YML
 ---
+#Puerto en el que se corre
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
 #Configuracion del log
 logging:
   level:
+    root: INFO
     web: DEBUG
     org:
-      springframework:
-        security: DEBUG
       hibernate:
         SQL: DEBUG
         type:
@@ -20,10 +23,10 @@ logging:
 spring:
   main:
     banner-mode: off
-  #Configuracion de MySQL
+  #Configuracion para Data Base
   datasource:
     password: admin
-    url: jdbc:mysql://localhost:3306/facturador-db?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
@@ -38,10 +41,7 @@ spring:
     open-in-view: false
     properties:
       hibernate:
+        dialect:
+          storage_engine: innodb
         format_sql: true
-  #Configuracion de Spring Security
-  security:
-    user:
-      name: user
-      password: password
 ...

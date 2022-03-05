@@ -1,24 +1,32 @@
-/**Define métodos de validación de datos.*/
+/**
+ * Define métodos de validación de datos.
+ * Cada método devuelve un boolean significando la validez del dato argumentado.
+*/
 export default class Valid {
   public static names(name: string): boolean {
     return name.trim().length <= 20 && name.trim().length >= 3;
   }
+
   public static email(email: string): boolean {
     return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
   }
+
   public static password(password: string): boolean {
     return password.length <= 40 && password.length >= 8;
   }
+
   public static image(image: File):boolean {
     if (image === null) return true;
     return image.size < 2097152; //2MB
   }
+
   public static code(code: string): boolean {
     code = code.replace(/ |\.|-/g, "");
     if (code === "") return true;
     if (code.length !== 11) return false;
     return /[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(code);
   }
+
   public static vatCategory(vatCategory: string): boolean {
     return (
       vatCategory !== "" &&
@@ -27,17 +35,21 @@ export default class Valid {
         vatCategory === "Sujeto Exento")
     );
   }
+
   public static address(address: string): boolean {
     return address.length <= 40 && address.length >= 8;
   }
+
   public static postalCode(postalCode: string): boolean {
     return /[0-9]{4}$/.test(postalCode);
   }
+
   public static phone(phone: string): boolean {
     phone = phone.replace(/ |\.|-/g, "");
     if (phone.trim().length === 0) return true;
     else return /^\d{10}$/.test(phone);
   }
+
   public static website(url: string): boolean {
     if (url.trim().length === 0) return true;
     var regexp =

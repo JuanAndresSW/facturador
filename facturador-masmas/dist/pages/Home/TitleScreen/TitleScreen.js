@@ -1,81 +1,65 @@
 import React, { useState } from "react";
-import Const from "utils/Const";
-import Session from "utils/Session";
-import login from 'services/account/login';
+import Session from "services/Session";
 import Valid from "utils/Valid";
-import "styles/form.css";
 import "./TitleScreen.css";
-//objeto de usuario a enviar al servidor
-var user = { name: "", password: "" };
+import { ErrorMessage } from "components/formComponents";
 export default function TitleScreen() {
-    var _a = useState("text"), loginInputType = _a[0], setLoginInputType = _a[1];
-    var placeholder = loginInputType === "text" ? "nombre o email" : "contraseña";
-    var _b = useState(""), loginValue = _b[0], setLoginValue = _b[1];
+    //Controladores del formulario.
+    var _a = useState(false), loading = _a[0], setLoading = _a[1];
+    var _b = useState("text"), loginInputType = _b[0], setLoginInputType = _b[1];
     var _c = useState(""), error = _c[0], setError = _c[1];
-    var _d = useState(false), disable = _d[0], setDisable = _d[1];
-    //validar dato y cambiar el tipo de input
-    function checkValidity() {
-        if (loginInputType === "text") {
-            if (Valid.names(loginValue.trim()) || Valid.email(loginValue.trim())) {
-                user.name = loginValue.trim();
-                setLoginValue("");
-                setLoginInputType("password");
-                setError("");
-            }
-            else
-                setError("nombre inválido");
+    //Valores del formulario.
+    var _d = useState(""), usernameOrEmail = _d[0], setUsernameOrEmail = _d[1];
+    var _e = useState(""), password = _e[0], setPassword = _e[1];
+    //Reinicia los valores.
+    function reset() {
+        setError("");
+        setUsernameOrEmail("");
+        setPassword("");
+        setLoginInputType("text");
+    }
+    //Validar los datos. Si son validados, se envían al servidor.
+    function validate() {
+        if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password)) {
+            reset();
+            send();
             return;
         }
-        if (loginInputType === "password") {
-            if (Valid.password(loginValue.trim())) {
-                user.password = loginValue.trim();
-                authenticate(user);
-                setLoginValue("");
-                setLoginInputType("text");
-            }
-            else
-                setError("Nombre o contraseña incorrecta");
-            setLoginValue("");
-            setLoginInputType("text");
-        }
+        setError("Nombre o contraseña incorrecta");
     }
-    //autenticar el objeto de usuario
-    function authenticate(user) {
-        login(user.name, user.password, handleResponse);
+    //Envía los datos de usuario al servidor.
+    function send() {
+        setLoading(true);
+        Session.getByCredentials(usernameOrEmail, password, handleResponse);
     }
+    //Maneja la respuesta del servidor.
     function handleResponse(state, data) {
-        switch (state) {
-            case Const.error:
-                setError("No se ha podido establecer la comunicación con el servidor");
-                break;
-            case Const.ok:
-                setError("");
-                setDisable(true);
-                Session.setSession(JSON.parse(data));
-                window.location.reload();
-                break;
-            case Const.bad:
-                setError("Usuario o contraseña incorrecta");
-                setDisable(false);
-                break;
-            case Const.exception:
-                setDisable(true);
-                setError("Hubo un problema con el servidor");
-                break;
-            default:
-                setError("Hubo un error desconocido al procesar tus datos");
-                break;
+        setLoading(false);
+        if (state === 200) {
+            reset();
+            Session.setSession(JSON.parse(data));
+            window.location.reload();
+            return;
         }
+        if (state === 404) {
+            setError("Usuario o contraseña incorrecta");
+            return;
+        }
+        reset();
+        setError(data);
     }
     return (React.createElement("div", { className: "title-wrapper" },
         React.createElement("h1", null, "M\u00E1s que un facturador"),
         React.createElement("h2", null, "facturador++ fue dise\u00F1ado para facilitar el proceso contable para peque\u00F1as empresas y empresas simuladas."),
-        React.createElement("input", { type: loginInputType, name: "name", placeholder: placeholder, value: loginValue, onChange: function (e) {
-                setLoginValue(e.target.value);
-            }, onKeyPress: function (e) {
-                if (e.key === "Enter")
-                    checkValidity();
-            }, disabled: disable }),
-        React.createElement("button", { disabled: disable, type: "button", onClick: function () { return checkValidity(); } }, "Iniciar sesi\u00F3n"),
-        React.createElement("p", { className: "message" }, error)));
+        React.createElement("input", { type: loginInputType, placeholder: loginInputType === "text" ? "nombre o email" : "contraseña", value: loginInputType === "text" ? usernameOrEmail : password, onChange: loginInputType === "text" ?
+                function (e) { return setUsernameOrEmail(e.target.value.trim()); } : function (e) { return setPassword(e.target.value.trim()); }, onKeyPress: loginInputType === "text" ?
+                function (e) { if (e.key === "Enter") {
+                    setError("");
+                    setLoginInputType("password");
+                } } :
+                function (e) { if (e.key === "Enter")
+                    validate(); } }),
+        React.createElement("button", { disabled: loading, onClick: loginInputType === "text" ?
+                function () { setError(""); setLoginInputType("password"); } : validate }, "Iniciar sesi\u00F3n"),
+        React.createElement(ErrorMessage, { message: error })));
 }

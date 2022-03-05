@@ -2,6 +2,8 @@ import React from "react";
 import { BiChevronLeft } from "react-icons/bi";
 import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import DocumentForm from "../OperationForm/OperationForm";
+import "./Operation.css";
+import "styles/form.css";
 export default function Documents(_a) {
     var flux = _a.flux;
     var navigate = useNavigate();

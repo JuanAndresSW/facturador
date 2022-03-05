@@ -1,15 +1,16 @@
-import Const from 'utils/Const';
+import fetch from '../fetch';
+import Session from 'utils/Session';
 /**
 * Verifica que el token de sesión almacenado es uno válido.
-* @param callback La función que maneja la respuesta.
+* @param {Function} callback - La función que maneja la respuesta.
 */
 export default function authenticate(callback) {
-    var cookieArray = decodeURIComponent(document.cookie).split("; ");
-    var token = cookieArray[0].substring("session=".length);
+    var token = Session.getToken();
     if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(token)) {
-        callback(Const.ok);
+        callback(200, token);
         return;
     }
-    callback(Const.exception);
-    //fetch("authenticate", token, callback);
+    else
+        callback(400);
+    fetch("", { token: token }, callback);
 }
