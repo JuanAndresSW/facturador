@@ -1,6 +1,6 @@
 package dev.facturador.mainaccount.application;
 
-import dev.facturador.mainaccount.domain.CuentaPrincipal;
+import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.IMainAccountRepository;
 import dev.facturador.mainaccount.domain.bo.RegisterRequest;
 import dev.facturador.mainaccount.infrastructure.IMainAccountService;
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static dev.facturador.mainaccount.domain.CuentaPrincipal.createMainAccountForRegister;
+import static dev.facturador.mainaccount.domain.MainAccount.createMainAccountForRegister;
 
 @Service
 @Transactional
@@ -28,22 +28,6 @@ public class MainAccountService implements IMainAccountService {
     public void register(RegisterRequest tryRegister) {
         var mainAccountLogged = createMainAccountForRegister(tryRegister);
         repository.save(mainAccountLogged);
-    }
-
-    /**
-     * Recupera una {@link CuentaPrincipal} con el username proporcionado <br/>
-     * Utilizando la clase {@link Optional} para asegurar los {@link NullPointerException}
-     *
-     * @param username Referencia para encontrar la {@link CuentaPrincipal}
-     * @return devuelve un {@link Optional} de {@link CuentaPrincipal}
-     */
-    @Override
-    public CuentaPrincipal getMainAccountByUsername(String username) {
-        Optional<CuentaPrincipal> mainAccount = repository.findByUsername(username);
-        if (mainAccount.isEmpty()) {
-            return null;
-        }
-        return mainAccount.get();
     }
 
     @Override

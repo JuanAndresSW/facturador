@@ -3,7 +3,7 @@ package dev.facturador.usuarios;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import dev.facturador.user.domain.Usuarios;
+import dev.facturador.user.domain.User;
 import dev.facturador.user.domain.repository.IUserRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,8 @@ public class UserRepositoryTest {
     private IUserRepository repository;
 
     @Before
-    private Usuarios saveForTest(){
-        var user = new Usuarios("marquitos", "marquitos123", "marquitos@gmail.com");
+    private User saveForTest(){
+        var user = new User("marquitos", "marquitos123", "marquitos@gmail.com");
         var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         user.setPassword(argon2.encode(user.getPassword()));
         return repository.save(user);

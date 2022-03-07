@@ -1,7 +1,7 @@
 package dev.facturador.branchaccount.infrastructure;
 
-import dev.facturador.branchaccount.domain.CuentaSecundaria;
+import dev.facturador.branchaccount.domain.BranchAccount;
 
 public interface IBranchAccountService {
-    CuentaSecundaria findSecondaryAccountByUsername(String username);
+    BranchAccount findSecondaryAccountByUsername(String username);
 }

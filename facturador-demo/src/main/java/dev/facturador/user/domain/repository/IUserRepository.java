@@ -1,17 +1,17 @@
 package dev.facturador.user.domain.repository;
 
-import dev.facturador.user.domain.Usuarios;
+import dev.facturador.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 
-public interface IUserRepository extends JpaRepository<Usuarios, Long> {
+public interface IUserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
 
-    Optional<Usuarios> findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
-    Optional<Usuarios> findByUsernameOrEmail(String username, String email);
+    Optional<User> findByUsernameOrEmail(String username, String email);
 }

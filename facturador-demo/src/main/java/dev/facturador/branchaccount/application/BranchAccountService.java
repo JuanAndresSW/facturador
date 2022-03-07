@@ -1,6 +1,6 @@
 package dev.facturador.branchaccount.application;
 
-import dev.facturador.branchaccount.domain.CuentaSecundaria;
+import dev.facturador.branchaccount.domain.BranchAccount;
 import dev.facturador.branchaccount.domain.IBranchAccountRepository;
 import dev.facturador.branchaccount.infrastructure.IBranchAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ public class BranchAccountService implements IBranchAccountService {
      * @param username Username que deberia estar relacionado
      */
     @Override
-    public CuentaSecundaria findSecondaryAccountByUsername(String username) {
-        Optional<CuentaSecundaria> secondaryAccount = repository.findByUsername(username);
+    public BranchAccount findSecondaryAccountByUsername(String username) {
+        Optional<BranchAccount> secondaryAccount = repository.findByUsername(username);
         if (secondaryAccount.isEmpty()) {
             return null;
         }

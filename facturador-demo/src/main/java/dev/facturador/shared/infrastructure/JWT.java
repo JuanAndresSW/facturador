@@ -9,7 +9,7 @@ import java.util.Date;
 
 public interface JWT<T> {
     String secrectKey = "$argon2id$v=19$m=2048,t=2,p=1$F7XsIVx3YSVL6tGdyeGyrA$dLXD9Clq4po8/dL6b0IudGmgGyr+4cHNTM4fjqG5LDw";
-    long expDateDefined = 28800000;
+    long expDateDefined = 14400000;
 
     T createUserByToken(String authHeader);
 
@@ -27,12 +27,11 @@ public interface JWT<T> {
                 .sign(signKey());
     }
 
-    default String createRefreshToken(String username, String rol, String url) {
+    default String createRefreshToken(String username, String url) {
         return com.auth0.jwt.JWT.create()
                 .withSubject(username)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
-                .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined + 14400000))
-                .withClaim("rol", rol)
+                .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined + 259200000))
                 .withIssuer(url)
                 .sign(signKey());
     }
