@@ -12,6 +12,12 @@ import java.util.HashSet;
 
 public final class JWTOfAuth implements JWT<UsernamePasswordAuthenticationToken> {
 
+    /**
+     * Crea un usuario con el Bearer JWT
+     *
+     * @param authHeader Bearer JWT
+     * @return {@link UsernamePasswordAuthenticationToken} user
+     */
     @Override
     public UsernamePasswordAuthenticationToken createUserByToken(String authHeader) {
         var token = authHeader.substring("Bearer ".length());

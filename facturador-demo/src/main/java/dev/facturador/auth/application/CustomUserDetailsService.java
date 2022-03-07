@@ -1,12 +1,11 @@
 package dev.facturador.auth.application;
 
-import com.auth0.jwt.JWT;
 import dev.facturador.auth.domain.CustomUserDetails;
 import dev.facturador.auth.domain.CustomUserRole;
 import dev.facturador.branchaccount.domain.IBranchAccountRepository;
 import dev.facturador.mainaccount.domain.IMainAccountRepository;
-import dev.facturador.trader.domain.Comerciante;
-import dev.facturador.user.domain.Usuarios;
+import dev.facturador.trader.domain.Trader;
+import dev.facturador.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,7 +54,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-    private UserDetails userBuilder(Usuarios user, Comerciante trader, CustomUserRole rol) {
+    private UserDetails userBuilder(User user, Trader trader, CustomUserRole rol) {
         return new CustomUserDetails(
                 user.getUserId(),
                 user.getUsername(),

@@ -1,6 +1,6 @@
 package dev.facturador.user.application;
 
-import dev.facturador.user.domain.Usuarios;
+import dev.facturador.user.domain.User;
 import dev.facturador.user.domain.repository.IUserRepository;
 import dev.facturador.user.infrastructure.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ public class UserService implements IUserService {
      * Busca un Usuario segun el username de otro Usuario
      */
     @Override
-    public Usuarios getUserByUsername(Usuarios user) {
-        Optional<Usuarios> userDta = repository.findByUsername(user.getUsername());
+    public User getUserByUsername(User user) {
+        Optional<User> userDta = repository.findByUsername(user.getUsername());
         if (userDta.isEmpty()) {
             return null;
         }
@@ -34,7 +34,7 @@ public class UserService implements IUserService {
      * Busca un usuario segun las credenciales pueden ser UsernameOrEmail y la contraseña
      */
     @Override
-    public Optional<Usuarios> getUserWithCrdentials(String usernameOrEmail) {
+    public Optional<User> getUserWithCrdentials(String usernameOrEmail) {
         return repository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
     }
 

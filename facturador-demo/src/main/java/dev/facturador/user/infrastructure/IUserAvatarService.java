@@ -1,8 +1,8 @@
 package dev.facturador.user.infrastructure;
 
-import dev.facturador.user.domain.AvatarUsuario;
+import dev.facturador.user.domain.UserAvatar;
 
 public interface IUserAvatarService {
 
-    AvatarUsuario getAvatarUsuarioByUsername(String username);
+    UserAvatar getAvatarUsuarioByUsername(String username);
 }

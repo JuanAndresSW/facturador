@@ -63,7 +63,7 @@ public class AuthUtil {
      * @param tryLogin Informacion de login en crudo
      * @return {@link ResponseEntity} con la respuesta de la request
      */
-    public HttpEntity<String> callFilter(LoginRequest tryLogin) {
+    public HttpEntity<String> callLogin(LoginRequest tryLogin) {
         var values = generator.translateJsonToValueMap(tryLogin);
         var client = WebClient.builder().baseUrl("http://localhost:8080").build();
         return client.post().uri("/login")

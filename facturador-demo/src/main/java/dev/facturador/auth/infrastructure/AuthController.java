@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,8 +38,8 @@ public class AuthController {
      * @return {@link ResponseEntity} con el body de {@link LoginResponse}
      */
     @PostMapping(LOGIN)
-    public HttpEntity createResponse(@Valid @RequestBody LoginRequest tryLogin) {
-        var headers = util.callFilter(tryLogin).getHeaders();
+    public HttpEntity createLoginResponse(@Valid @RequestBody LoginRequest tryLogin) {
+        var headers = util.callLogin(tryLogin).getHeaders();
         var response = util.createLoginResponseWithHeaders(headers);
 
         return ResponseEntity.ok().body(response);
@@ -50,16 +47,18 @@ public class AuthController {
 
     /**
      * Este metodo es simplemente pasa por el filtro para comprobar que el {@code Access-Token} sea valido
+     * @return
      */
-    @PostMapping(INIT_APP)
-    public HttpEntity<String> initApp() {
-        return ResponseEntity.ok().body("Success");
+    @RequestMapping(path = INIT_APP, method = RequestMethod.HEAD)
+    public void initApp(HttpServletResponse response) {
+        response.setHeader("Authenticated", "Success");
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     /**
      * Actulizo el {@code Access-Token} con el {@code Refresh-Token}
      *
-     * @param request  Objeto {@link HttpServletRequest} es la request como tal
+     * @param request  Objeto {@link HttpServletRequest} recibe la request
      * @param response Objeto {@link HttpServletResponse} marca la respuesta de la {@code request}
      */
     @PostMapping(REFRESH_TOKEN)
@@ -74,7 +73,7 @@ public class AuthController {
 
         var tokens = util.bringBackMapOfTokens(
                 jwt.createAccesToken(username, rol, URL),
-                jwt.createRefreshToken(username, rol, URL));
+                jwt.createRefreshToken(username, URL));
 
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);

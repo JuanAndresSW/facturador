@@ -7,10 +7,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 
-public interface IBranchAccountRepository extends JpaRepository<CuentaSecundaria, Long> {
-    @Query(value = "FROM CuentaSecundaria sa WHERE sa.userBranchAccount.username = :username")
-    Optional<CuentaSecundaria> findByUsername(@Param("username") String username);
+public interface IBranchAccountRepository extends JpaRepository<BranchAccount, Long> {
+    @Query(value = "FROM BranchAccount sa WHERE sa.userBranchAccount.username = :username")
+    Optional<BranchAccount> findByUsername(@Param("username") String username);
 
-    Optional<CuentaSecundaria> findByUserBranchAccountUsernameOrUserBranchAccountEmail(String username, String email);
+    Optional<BranchAccount> findByUserBranchAccountUsernameOrUserBranchAccountEmail(String username, String email);
 
 }

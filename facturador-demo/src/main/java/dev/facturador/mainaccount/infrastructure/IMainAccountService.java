@@ -1,13 +1,11 @@
 package dev.facturador.mainaccount.infrastructure;
 
-import dev.facturador.mainaccount.domain.CuentaPrincipal;
+import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.bo.RegisterRequest;
 
 import java.util.Optional;
 
 public interface IMainAccountService {
-    CuentaPrincipal getMainAccountByUsername(String username);
-
     void register(RegisterRequest tryRegister);
 
     Optional<String> existsByUsernameOfUsuarios(String username);

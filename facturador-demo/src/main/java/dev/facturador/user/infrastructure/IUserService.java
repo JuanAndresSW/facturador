@@ -1,13 +1,13 @@
 package dev.facturador.user.infrastructure;
 
-import dev.facturador.user.domain.Usuarios;
+import dev.facturador.user.domain.User;
 
 import java.util.Optional;
 
 public interface IUserService {
-    Usuarios getUserByUsername(Usuarios username);
+    User getUserByUsername(User username);
 
-    Optional<Usuarios> getUserWithCrdentials(String usernameOrEmail);
+    Optional<User> getUserWithCrdentials(String usernameOrEmail);
 
     boolean existsByUsername(String username);
 

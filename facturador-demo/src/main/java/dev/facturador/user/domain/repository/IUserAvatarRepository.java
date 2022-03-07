@@ -1,11 +1,11 @@
 package dev.facturador.user.domain.repository;
 
-import dev.facturador.user.domain.AvatarUsuario;
+import dev.facturador.user.domain.UserAvatar;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface IUserAvatarRepository extends JpaRepository<AvatarUsuario, Long> {
+public interface IUserAvatarRepository extends JpaRepository<UserAvatar, Long> {
 
-    Optional<AvatarUsuario> findByUsuarioUsername(String username);
+    Optional<UserAvatar> findByUserUsername(String username);
 }
