@@ -1,4 +1,4 @@
-/**Encuentra un título apropiado para el formulario.*/
+/**Encuentra un título apropiado para el formulario de documentos comerciales.*/
 export default function getTitle(type: string, flux: string): string {
     let title: string;
     switch (type) {

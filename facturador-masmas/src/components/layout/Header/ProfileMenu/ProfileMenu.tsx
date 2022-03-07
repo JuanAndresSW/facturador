@@ -10,14 +10,12 @@ export default function ProfileMenu(): JSX.Element {
     //Imágen de avatar de usuario.
     const [img, setImg] = useState(undefined);
 
-    useEffect(()=>{
-        UserAvatar.getAvatar(handleResponse);
+    //Pedir la imágen en el primer renderizado.
+    useEffect(() => {
+        UserAvatar.getAvatar((HTTPState: number, URLObject: string) => {
+            if (HTTPState === 200) setImg(URLObject);
+        });
     }, []);
-
-    function handleResponse(state: number, data: string) {
-        if (state === 200)
-        setImg(URL.createObjectURL(new Blob([data])));  
-    }
 
     //Navegación al cerrar sesión.
     function logOut(): void {

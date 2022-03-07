@@ -1,4 +1,5 @@
 import fetch from 'api/fetch';
+import {fileToBase64} from 'utils/conversions';
 
 export type mainAccount = {
     user: {
@@ -44,7 +45,7 @@ export default class MainAccount {
                 username: account.user.username.trim(),
                 email: account.user.email.trim(),
                 password: account.user.password.trim(),
-                avatar: account.user.avatar === null ? "" : await account.user.avatar.text(),
+                avatar: account.user.avatar === null ? "" : await fileToBase64(account.user.avatar)
             },
             trader: {
                 businessName: account.trader.businessName.trim(),

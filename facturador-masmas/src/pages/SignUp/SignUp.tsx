@@ -17,6 +17,7 @@ import Session from "services/Session";
 export default function SignUp() {
 
   const navigate = useNavigate();
+  
 
   //Controladores del estado del formulario.
   const [active, setActive]: 
@@ -99,6 +100,7 @@ export default function SignUp() {
       Session.setSession(JSON.parse(data))
       setTraderError("");
       navigate("/inicio");
+      window.location.reload();
     } else setTraderError(data);
   }
 

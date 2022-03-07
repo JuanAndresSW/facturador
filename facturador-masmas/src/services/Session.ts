@@ -29,7 +29,7 @@ export default class Session {
     };
 
     if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
-      fetch("POST","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
+      fetch("HEAD","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
     } else callback(400);
   }
 
@@ -62,9 +62,9 @@ export default class Session {
   /** Forza la expiración de los tokens de sesión. Recarga la ubicación actual al finalizar.*/
   public static close(): void {
     for (let cookie of document.cookie.split(";")) {
-      document.cookie = cookie + "=; Secure; expires=" + new Date(0).toUTCString();
+      document.cookie = cookie + "=; Secure; path=/; expires=" + new Date(0).toUTCString();
     }
-    window.location.reload();
+    window.location.reload(); //SHOULD STORE OLD TOKENS FOR SECURITY
   }
 
   //GETTERS
@@ -76,29 +76,18 @@ export default class Session {
   }
 
   /** Recupera el token de refrescamiento del array de cookies. */
-  public static getRefreshToken(): string {
+  private static getRefreshToken(): string {
     const cookieArray = decodeURIComponent(document.cookie).split("; ");
     return cookieArray[0].substring("refreshToken=".length);
   }
-
-
-  
+}
 
 
 
-  /* public static getUsername():string {
-    return sessionStorage.getItem('username') === null ?
-    '?' : sessionStorage.getItem('username');
-  }
-  
-  public static getAvatar():string {
-    const USVString = localStorage.getItem("avatar");
-    if (USVString === null) return '';
-    try {
-      const blob = new Blob([USVString]);
-      return URL.createObjectURL(blob);
-    } catch (invalidUSVString) {
-      return '';
-    }
-  }*/
-} 
+/**
+ * username	"test1"
+ * activos	0
+ * pasivos	0
+ * accessToken	
+ * refreshToken	
+ */
