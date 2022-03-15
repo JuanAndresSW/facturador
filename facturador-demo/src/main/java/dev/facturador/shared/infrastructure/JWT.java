@@ -27,7 +27,7 @@ public interface JWT<T> {
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined))
                 .withIssuer(url)
-                .withClaim("rol", rol.stream().toList())
+                .withClaim("rol", rol.stream().toList().get(0).getAuthority())
                 .sign(signKey());
     }
 
