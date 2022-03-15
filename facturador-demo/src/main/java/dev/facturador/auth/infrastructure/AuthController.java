@@ -47,6 +47,7 @@ public class AuthController {
 
     /**
      * Este metodo es simplemente pasa por el filtro para comprobar que el {@code Access-Token} sea valido
+     *
      * @return
      */
     @RequestMapping(path = INIT_APP, method = RequestMethod.HEAD)
@@ -68,7 +69,7 @@ public class AuthController {
         var userDetails = util.creteUserWithToken(authHeader, jwt, response);
 
         String URL = request.getRequestURI().toString();
-        String rol = userDetails.getAuthorities().stream().toList().get(0).getAuthority();
+        var rol = userDetails.getAuthorities();
         String username = userDetails.getUsername();
 
         var tokens = util.bringBackMapOfTokens(

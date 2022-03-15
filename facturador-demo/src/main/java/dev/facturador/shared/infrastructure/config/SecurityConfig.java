@@ -2,11 +2,13 @@ package dev.facturador.shared.infrastructure.config;
 
 import dev.facturador.auth.application.CustomUserDetailsService;
 import dev.facturador.auth.infrastructure.CustomAuthenticationFilter;
+import dev.facturador.shared.infrastructure.exception.JWTEntryPoint;
 import dev.facturador.shared.infrastructure.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,14 +21,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+    private final JWTEntryPoint unauthorizedHandler;
 
     /**
      * Configura la seguridad de las peticiones Http
@@ -36,20 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //Desactivo el crsf y las sesiones agrego la politica de Session Stateless
         http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
         //Autorizacion de las request
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/auth/refresh").permitAll()
                 .antMatchers("/api/auth/login").permitAll()
-                .antMatchers("/api/auth/mainaccounts").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/mainaccounts").permitAll()
                 .anyRequest().authenticated();
 
-        //Filtro de Autenticacion esta presenta pero lo que nos importa se llama solo en el login
+        //Filtros
         http.addFilter(new CustomAuthenticationFilter(this.authenticationManagerBean()));
-        //Se llame al filtro de autorizacion antes de todas las request
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

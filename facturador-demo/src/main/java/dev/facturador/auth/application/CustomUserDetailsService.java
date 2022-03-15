@@ -3,17 +3,21 @@ package dev.facturador.auth.application;
 import dev.facturador.auth.domain.CustomUserDetails;
 import dev.facturador.auth.domain.CustomUserRole;
 import dev.facturador.branchaccount.domain.IBranchAccountRepository;
-import dev.facturador.mainaccount.domain.IMainAccountRepository;
+import dev.facturador.mainaccount.domain.MainAccountRepository;
 import dev.facturador.trader.domain.Trader;
 import dev.facturador.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Servicio personalizado de UserDetails(Servicio de Spring Security)
@@ -22,12 +26,12 @@ import javax.transaction.Transactional;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
-    private IMainAccountRepository repositoryMain;
+    private MainAccountRepository repositoryMain;
     @Autowired
     private IBranchAccountRepository repositoryBranch;
 
     /**
-     * Busca un usuario personalizado con un username o email como credencial
+     * Busca un usuario personalizado con un newUsername o email como credencial
      *
      * @param usernameOrEmail Parametro para crear el usuario
      * @return Un {@link CustomUserDetails} usuario personalizado para Srping Security
@@ -55,6 +59,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
     private UserDetails userBuilder(User user, Trader trader, CustomUserRole rol) {
+        Set<GrantedAuthority> authoritySet = Collections.singleton(new SimpleGrantedAuthority(rol.name()));
         return new CustomUserDetails(
                 user.getUserId(),
                 user.getUsername(),
@@ -62,7 +67,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getEmail(),
                 trader.getActive(),
                 trader.getPassive(),
-                CustomUserRole.MAIN,
+                authoritySet,
                 true);
     }
 }
