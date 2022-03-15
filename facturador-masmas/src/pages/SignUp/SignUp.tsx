@@ -97,6 +97,7 @@ export default function SignUp() {
   /**Maneja la respuesta recibida del servidor. */
   function handleResponse(state: number, data: string) {
     setSending(false);
+    console.log("SIGNUP: "+data);
     if (state === 201) {
       Session.setSession(JSON.parse(data))
       setTraderError("");

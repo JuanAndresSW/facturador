@@ -30,7 +30,8 @@ export default function App() {
     useEffect(() => Session.getByToken(handleResponse), []);
 
     //Comprobar la respuesta final del servidor.
-    function handleResponse(status: number) {
+    function handleResponse(status: number, data:string) {
+        console.log("APP: "+data);
         if (status === 200) setAuth(true);
         else setAuth(false);
     }
@@ -44,8 +45,8 @@ export default function App() {
                         <Route path="/" element={!auth? <Home /> : <Navigate to={"/inicio"} />} />   
                         <Route path="/login" element={!auth? <Login /> : <Navigate to={"/inicio"} />} />
 
-                        <Route path="/inicio/*" element={!auth? <Start /> : <Navigate to={"/login"} />} />
-                        <Route path="/cuenta" element={!auth? <Account /> : <Navigate to={"/login"} />} />
+                        <Route path="/inicio/*" element={auth? <Start /> : <Navigate to={"/login"} />} />
+                        <Route path="/cuenta" element={auth? <Account /> : <Navigate to={"/login"} />} />
 
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/acerca-de/*" element={<About />} />

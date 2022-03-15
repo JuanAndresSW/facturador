@@ -26,25 +26,25 @@ export default class MainAccount {
      */
     public static async create(account: mainAccount, callback: Function): Promise<void> {
         const formattedAccount = await formatAccount(account);
-        fetch("POST", "auth/mainaccounts", { body: formattedAccount }, callback);
+        fetch("POST", "mainaccounts", { body: formattedAccount }, callback);
     }
 
     public static retrieve(callback: Function): void {
-        fetch("GET", `auth/mainaccounts/${sessionStorage.getItem("username")}`, { token: Session.getAccessToken() }, callback);
+        fetch("GET", `mainaccounts/${sessionStorage.getItem("username")}`, { token: Session.getAccessToken() }, callback);
     }
 
     public static update(account:any, callback:Function) {
-        fetch("PUT", "auth/mainaccounts", 
+        fetch("PUT", "mainaccounts", 
         { body: JSON.stringify(account), token:Session.getAccessToken() }, callback);
     }
 
     public static delete(code:string, callback:Function) {
-        fetch("DELETE", "auth/mainaccounts", { body: code, token:Session.getAccessToken() }, callback);
+        fetch("DELETE", "mainaccounts", { body: code, token:Session.getAccessToken() }, callback);
     }
 
     /**Solicita que un código de eliminación de cuenta sea enviado por email al propietario de la cuenta.*/
     public static requestDeletePermission(callback:Function) {
-        fetch("HEAD", "auth/mainaccounts", { token:Session.getAccessToken() }, callback);
+        fetch("HEAD", "mainaccounts", { token:Session.getAccessToken() }, callback);
     }
 }
 

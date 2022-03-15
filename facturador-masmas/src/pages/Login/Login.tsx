@@ -30,6 +30,7 @@ export default function Login() {
 
   function handleResponse(state:number, data:string):void {
     setLoading(false);
+    console.log("LOGIN: "+data);
     if (state === 404) {
       setError("Usuario o contraseña incorrecta");
       return;

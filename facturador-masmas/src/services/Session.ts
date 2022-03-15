@@ -3,6 +3,7 @@ import fetch from 'api/fetch';
 export type session = {
   accessToken: string;
   refreshToken: string;
+  //username: string;
 };
 
 /**
