@@ -19,7 +19,7 @@ public class UserService implements IUserService {
     private IUserRepository repository;
 
     /**
-     * Busca un Usuario segun el username de otro Usuario
+     * Busca un Usuario segun el newUsername de otro Usuario
      */
     @Override
     public User getUserByUsername(User user) {
@@ -39,7 +39,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Comprueba si existe segun el username
+     * Comprueba si existe segun el newUsername
      */
     @Override
     public boolean existsByUsername(String username) {

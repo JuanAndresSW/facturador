@@ -14,6 +14,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -33,8 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class AuthUtil {
     @Autowired
-    private CustomUserDetailsService serviceCustomUerDetails;
-
+    private UserDetailsService serviceCustomUerDetails;
     @Autowired
     private FactoryMaps generator;
 
@@ -50,10 +50,10 @@ public class AuthUtil {
             String active = headers.get("user-data").get(2);
             String passive = headers.get("user-data").get(3);
             if (StringUtils.hasText(active) && StringUtils.hasText(passive)) {
-                return new LoginResponse(data.get("username"), parseInt(active), parseInt(passive), data.get("access"), data.get("refresh"));
+                return new LoginResponse(data.get("newUsername"), data.get("rol"), parseInt(active), parseInt(passive), data.get("access"), data.get("refresh"));
             }
         }
-        return new LoginResponse(data.get("username"), data.get("access"), data.get("refresh"));
+        return new LoginResponse(data.get("newUsername"), data.get("rol"), data.get("access"), data.get("refresh"));
     }
 
     /**

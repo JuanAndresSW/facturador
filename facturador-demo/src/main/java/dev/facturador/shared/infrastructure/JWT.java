@@ -2,10 +2,14 @@ package dev.facturador.shared.infrastructure;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public interface JWT<T> {
     String secrectKey = "$argon2id$v=19$m=2048,t=2,p=1$F7XsIVx3YSVL6tGdyeGyrA$dLXD9Clq4po8/dL6b0IudGmgGyr+4cHNTM4fjqG5LDw";
@@ -17,13 +21,13 @@ public interface JWT<T> {
         return Boolean.TRUE.equals(StringUtils.hasText(auth) && auth.startsWith("Bearer "));
     }
 
-    default String createAccesToken(String username, String rol, String url) {
+    default String createAccesToken(String username, Collection<? extends GrantedAuthority> rol, String url) {
         return com.auth0.jwt.JWT.create()
                 .withSubject(username)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined))
                 .withIssuer(url)
-                .withClaim("rol", rol)
+                .withClaim("rol", rol.stream().toList())
                 .sign(signKey());
     }
 

@@ -1,7 +1,6 @@
 package dev.facturador.user.application;
 
 import dev.facturador.shared.infrastructure.JWT;
-import org.springframework.stereotype.Component;
 
 public final class JWTOfUser implements JWT<String> {
 
