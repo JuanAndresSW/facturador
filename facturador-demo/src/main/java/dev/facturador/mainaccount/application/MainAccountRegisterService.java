@@ -3,7 +3,7 @@ package dev.facturador.mainaccount.application;
 import dev.facturador.mainaccount.domain.MainAccountRepository;
 import dev.facturador.mainaccount.domain.vo.agregate.RegisterRequest;
 import dev.facturador.mainaccount.infrastructure.IFactoryMainAccount;
-import dev.facturador.mainaccount.infrastructure.IMainAccountRegisterService;
+import dev.facturador.mainaccount.infrastructure.service.IMainAccountRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

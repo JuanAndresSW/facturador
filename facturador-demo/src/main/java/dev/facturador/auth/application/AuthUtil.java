@@ -50,7 +50,13 @@ public class AuthUtil {
             String active = headers.get("user-data").get(2);
             String passive = headers.get("user-data").get(3);
             if (StringUtils.hasText(active) && StringUtils.hasText(passive)) {
-                return new LoginResponse(data.get("newUsername"), data.get("rol"), parseInt(active), parseInt(passive), data.get("access"), data.get("refresh"));
+                return new LoginResponse(
+                        data.get("username"),
+                        data.get("rol"),
+                        parseInt(active),
+                        parseInt(passive),
+                        data.get("access"),
+                        data.get("refresh"));
             }
         }
         return new LoginResponse(data.get("newUsername"), data.get("rol"), data.get("access"), data.get("refresh"));

@@ -4,7 +4,7 @@ import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.MainAccountRepository;
 import dev.facturador.mainaccount.domain.vo.agregate.UpdateRequest;
 import dev.facturador.mainaccount.infrastructure.IFactoryMainAccount;
-import dev.facturador.mainaccount.infrastructure.IMainAccountUpdateService;
+import dev.facturador.mainaccount.infrastructure.service.IMainAccountUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package dev.facturador.mainaccount.infrastructure;
+package dev.facturador.mainaccount.infrastructure.service;
 
 public interface IMainAccountDeleteService {
 

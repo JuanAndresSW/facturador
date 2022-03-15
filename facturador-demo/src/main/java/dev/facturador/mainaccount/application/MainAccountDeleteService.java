@@ -1,7 +1,7 @@
 package dev.facturador.mainaccount.application;
 
 import dev.facturador.mainaccount.domain.MainAccountRepository;
-import dev.facturador.mainaccount.infrastructure.IMainAccountDeleteService;
+import dev.facturador.mainaccount.infrastructure.service.IMainAccountDeleteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
