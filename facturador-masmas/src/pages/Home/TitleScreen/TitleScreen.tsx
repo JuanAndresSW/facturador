@@ -29,6 +29,7 @@ export default function TitleScreen(): JSX.Element {
       send();
       return;
     }
+    reset();
     setError("Nombre o contraseña incorrecta");
   }
 

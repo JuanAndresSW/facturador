@@ -25,10 +25,10 @@ var Session = /** @class */ (function () {
             if (status === 200)
                 callback(200);
             else
-                fetch("POST", "auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
+                fetch("HEAD", "auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
         };
         if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
-            fetch("POST", "auth/init", { token: accessToken }, handleAccessTokenResponse); //should be "HEAD"
+            fetch("HEAD", "auth/init", { token: accessToken }, handleAccessTokenResponse); //should be "HEAD"
         }
         else
             callback(400);
@@ -62,9 +62,10 @@ var Session = /** @class */ (function () {
     Session.close = function () {
         for (var _i = 0, _a = document.cookie.split(";"); _i < _a.length; _i++) {
             var cookie = _a[_i];
-            document.cookie = cookie + "=; Secure; expires=" + new Date(0).toUTCString();
+            document.cookie = cookie + "=; Secure; path=/; expires=" + new Date(0).toUTCString();
         }
-        window.location.reload();
+        localStorage.removeItem("avatar");
+        window.location.reload(); //SHOULD STORE OLD TOKENS FOR SECURITY
     };
     //GETTERS
     /** Recupera el token de acceso del array de cookies. */
@@ -80,3 +81,10 @@ var Session = /** @class */ (function () {
     return Session;
 }());
 export default Session;
+/**
+ * username	"test1"
+ * activos	0
+ * pasivos	0
+ * accessToken
+ * refreshToken
+ */

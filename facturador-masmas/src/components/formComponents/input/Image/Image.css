@@ -1,0 +1,30 @@
+.image {
+    width: max-content;
+    margin: 1rem auto;
+    cursor: pointer;
+    position: relative;
+}
+.image input {
+    display: none;
+}
+.image img {
+    background-color: rgba(0, 0, 0, 0.4);
+    align-content: center;
+    display: block;
+    width: 10rem;
+    height: 10rem;
+    margin: .5rem auto;
+    border-radius: 50%;
+    border: 1px solid transparent;
+}
+
+.image svg {
+    font-size: 1.4rem;
+    display: block;
+    position: absolute;
+    bottom: 8.2rem;
+    right: 0rem;
+}
+.image svg:hover {
+    color: aliceblue;
+}

@@ -17,6 +17,6 @@ export default function Field(_a) {
             note),
         React.createElement("div", { className: validator ? "field-wrap" : "field-wrap invalid" },
             icon !== undefined ? icon : null,
-            React.createElement("input", { className: "field", type: type, value: bind[0], onChange: function (e) { return bind[1](e.target.value); } }))));
+            React.createElement("input", { className: "field", type: type, value: bind[0] ? bind[0] : "", onChange: function (e) { return bind[1](e.target.value); } }))));
 }
 ;

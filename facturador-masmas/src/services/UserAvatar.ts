@@ -2,19 +2,23 @@ import fetch from 'api/fetch';
 import Session from './Session';
 import { base64ToBlob } from 'utils/conversions';
 
-export default class userAvatar {
+export default class UserAvatar {
     /**
-     * Recupera un URLOBject correspondiente al avatar de usuario del propietario del token de acceso almacenado.
+     * Recupera un URLObject correspondiente al avatar de usuario del propietario del token de acceso almacenado.
      * @param callback La función que procesará la respuesta. 
      */
-    public static getAvatar(callback: Function): void {
-        const returnAsURLObject = async (state:number, base64:string):Promise<string> => {
-            if (state !== 200) {callback(400); return;}
+    public static retrieve(callback: Function): void {
+        const returnAsFile = async (state:number, base64:string):Promise<string> => {
+            if (state !== 200) {callback(state); return;}
+            //Devolver la interpretación URL del string.
             const blob = await base64ToBlob(base64.slice(22));
-            callback(200, URL.createObjectURL(blob));
+            callback(200, blob);
+            //Almacenar en localstorage si no está almacenado.
+            if (localStorage.getItem("avatar") === null) localStorage.setItem("avatar", base64);
             return;
         }
 
-        fetch("GET","useravatars",{token:Session.getAccessToken()}, returnAsURLObject); //SHOULD BE "GET"
+        if (localStorage.getItem("avatar") !== null) returnAsFile(200, localStorage.getItem("avatar"));
+        else fetch("GET","useravatars",{token:Session.getAccessToken()}, returnAsFile);
     }
 }

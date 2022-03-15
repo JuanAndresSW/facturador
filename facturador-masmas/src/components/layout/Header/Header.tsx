@@ -10,7 +10,7 @@ import "./Header.css";
 
 //El header cuando se no se ha detectado una sesión de usuario.
 const notLoggedHeader = (
-  <Headroom>
+  
     <header>
 
       <Link to="/" id="logo">
@@ -21,11 +21,13 @@ const notLoggedHeader = (
       <div id="header-links">
         <a href="about:blank" target="_blank">Aplicación móvil</a>
         <Link to={"/login"}>Ingresar</Link>
+        <Headroom>
         <button type="button"><Link to={"/signup"}>Crea una cuenta</Link></button>
+        </Headroom>
       </div>
 
     </header>
-  </Headroom>
+  
 );
 
 //El header cuando se ha detectado una sesión de usuario.

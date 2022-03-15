@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+
 import { BiChevronDown, BiChevronUp, BiUserCircle } from 'react-icons/bi';
+import OutsideClickHandler from 'react-outside-click-handler';
+
 import Session from "services/Session";
 import UserAvatar from 'services/UserAvatar';
-import OutsideClickHandler from 'react-outside-click-handler';
+
+import defaultImg from 'assets/img/punto.jpg';
 import './ProfileMenu.css';
+
 
 
 export default function ProfileMenu(): JSX.Element {
     //Imágen de avatar de usuario.
-    const [img, setImg] = useState(undefined);
+    const [img, setImg] = useState(defaultImg);
 
     //Pedir la imágen en el primer renderizado.
     useEffect(() => {
-        UserAvatar.getAvatar((HTTPState: number, URLObject: string) => {
-            if (HTTPState === 200) setImg(URLObject);
+        UserAvatar.retrieve((HTTPState: number, blob: File) => {
+            if (HTTPState === 200) setImg(URL.createObjectURL(blob));
         });
     }, []);
 
@@ -30,17 +36,20 @@ export default function ProfileMenu(): JSX.Element {
         <OutsideClickHandler onOutsideClick={() => setActive(false)}>
             <div id="profile-menu" onMouseDown={() => setActive(!active)}>
 
-                { (img === undefined)? <BiUserCircle /> :
-                    <img src={img}></img>
-                }
+                <img src={img}></img>
 
                 {active ? <BiChevronUp /> : <BiChevronDown />}
             </div>
 
-            <div id="profile-menu-list" className={active ? 'active' : ''}>
+            <div id="profile-menu-list" className={active ? 'extended' : ''}>
+
+            <p>{sessionStorage.getItem("username")?
+                sessionStorage.getItem("username") + ': '
+                : "???"}
+            </p>
+            
                 <ul>
-                    <li>{"Session.getUsername()" + ': '}</li>
-                    <li>Configuración</li>
+                    <li><NavLink to="/cuenta">Configuración</NavLink></li>
                     <li onMouseDown={() => logOut()}>Cerrar sesión</li>
                 </ul>
             </div>

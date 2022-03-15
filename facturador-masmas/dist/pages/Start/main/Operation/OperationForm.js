@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //Componentes del formulario.
-import { DateTime, ErrorMessage, Field, Form, Radio, Select, Submit, Switch, Table, Textarea } from "components/formComponents";
+import { DateTime, ErrorMessage, Field, Form, Radio, Select, Button, Switch, Table, Textarea } from "components/formComponents";
 import { Section, Cond, FlexDiv } from 'components/layout';
 import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
 //Utilidades.
@@ -20,15 +20,15 @@ export default function OperationForm(_a) {
     var flux = _a.flux, type = _a.type;
     //Solicitar los datos a mostrar en el primer renderizado.
     useEffect(function () {
-        PointOfSale.getArray(function (state, data) {
+        PointOfSale.retrieve(function (state, data) {
             if (state === 200)
                 setDisplayPointsOfSale(JSON.parse(data));
         });
-        Partner.getArray(function (state, data) {
+        Partner.retrieve(function (state, data) {
             if (state === 200)
                 setDisplayPartners(JSON.parse(data));
         });
-        Group.getArray(function (state, data) {
+        Group.retrieve(function (state, data) {
             if (state === 200)
                 setDisplayGroups(JSON.parse(data));
         });
@@ -115,7 +115,7 @@ export default function OperationForm(_a) {
                 React.createElement(DateTime, { label: "", type: "time", value: paymentTime, onChange: setPaymentTime })),
             React.createElement(Cond, { bool: ("receipt-x" + "receipt" + "promissory-note").includes(type) },
                 React.createElement(Field, { label: "Domicilio de pago", bind: [payerAddress, setPayerAdress] }))),
-        React.createElement(Submit, { text: "Generar" })));
+        React.createElement(Button, { type: "submit", text: "Generar" })));
 }
 //# Los siguientes elementos son muy simples, por eso se decidió no moverlos a archivos separados. #//
 /**Un signo + con Link a la dirección especificada.*/

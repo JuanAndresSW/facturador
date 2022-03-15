@@ -8,4 +8,4 @@ export { default as Select } from './input/Select/Select';
 export { default as Table } from './input/Table/Table';
 export { default as DateTime } from './input/DateTime/DateTime';
 export { default as ErrorMessage } from './ErrorMessage/ErrorMessage';
-export { default as Submit } from './Submit/Submit';
+export { default as Button } from './Button/Button';

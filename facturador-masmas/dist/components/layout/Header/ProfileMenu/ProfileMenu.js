@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { BiChevronDown, BiChevronUp, BiUserCircle } from 'react-icons/bi';
+import { Link } from "react-router-dom";
+import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import OutsideClickHandler from 'react-outside-click-handler';
 import Session from "services/Session";
 import UserAvatar from 'services/UserAvatar';
-import OutsideClickHandler from 'react-outside-click-handler';
+import defaultImg from 'assets/img/punto.jpg';
 import './ProfileMenu.css';
 export default function ProfileMenu() {
     //Imágen de avatar de usuario.
-    var _a = useState(undefined), img = _a[0], setImg = _a[1];
+    var _a = useState(defaultImg), img = _a[0], setImg = _a[1];
+    //Pedir la imágen en el primer renderizado.
     useEffect(function () {
-        UserAvatar.getAvatar(handleResponse);
+        UserAvatar.retrieve(function (HTTPState, blob) {
+            if (HTTPState === 200)
+                setImg(URL.createObjectURL(blob));
+        });
     }, []);
-    function handleResponse(state, data) {
-        if (state === 200)
-            setImg(URL.createObjectURL(new Blob([data])));
-    }
     //Navegación al cerrar sesión.
     function logOut() {
         Session.close();
@@ -23,12 +25,12 @@ export default function ProfileMenu() {
     var _b = useState(false), active = _b[0], setActive = _b[1];
     return (React.createElement(OutsideClickHandler, { onOutsideClick: function () { return setActive(false); } },
         React.createElement("div", { id: "profile-menu", onMouseDown: function () { return setActive(!active); } },
-            (img === undefined) ? React.createElement(BiUserCircle, null) :
-                React.createElement("img", { src: img }),
+            React.createElement("img", { src: img }),
             active ? React.createElement(BiChevronUp, null) : React.createElement(BiChevronDown, null)),
-        React.createElement("div", { id: "profile-menu-list", className: active ? 'active' : '' },
+        React.createElement("div", { id: "profile-menu-list", className: active ? 'extended' : '' },
+            React.createElement("p", null, "Session.getUsername()" + ': '),
             React.createElement("ul", null,
-                React.createElement("li", null, "Session.getUsername()" + ': '),
-                React.createElement("li", null, "Configuraci\u00F3n"),
+                React.createElement("li", null,
+                    React.createElement(Link, { to: "/cuenta" }, "Configuraci\u00F3n")),
                 React.createElement("li", { onMouseDown: function () { return logOut(); } }, "Cerrar sesi\u00F3n")))));
 }

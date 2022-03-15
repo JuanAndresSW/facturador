@@ -18,7 +18,15 @@
 }
 
 .footer div {
+  font-family: monospace;
   margin: 0 1rem;
+}
+
+.footer div img {
+  display: block;
+  margin: 2rem auto 0;
+  height: 3rem;
+  width: 3rem;
 }
 
 .footer div a {

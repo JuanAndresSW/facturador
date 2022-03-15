@@ -10,7 +10,7 @@ export default class Partner {
      * Un id puede ser proporcionado en el URL para filtrar la respuesta.
      * @param callback La función que procesará la respuesta. 
      */
-    public static getArray(callback: Function): void {
+    public static retrieve(callback: Function): void {
         callback(200, JSON.stringify(
             [
                 {

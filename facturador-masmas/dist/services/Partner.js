@@ -6,7 +6,7 @@ var Partner = /** @class */ (function () {
      * Un id puede ser proporcionado en el URL para filtrar la respuesta.
      * @param callback La función que procesará la respuesta.
      */
-    Partner.getArray = function (callback) {
+    Partner.retrieve = function (callback) {
         callback(200, JSON.stringify([
             {
                 id: 1,

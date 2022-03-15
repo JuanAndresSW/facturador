@@ -6,7 +6,7 @@ var PointOfSale = /** @class */ (function () {
      * Un id puede ser proporcionado en el URL para filtra
      * @param callback La función que procesará la respuesta.
      */
-    PointOfSale.getArray = function (callback) {
+    PointOfSale.retrieve = function (callback) {
         callback(200, JSON.stringify([
             {
                 id: 2,

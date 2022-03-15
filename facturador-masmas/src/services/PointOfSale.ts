@@ -18,7 +18,7 @@ export default class PointOfSale {
      * Un id puede ser proporcionado en el URL para filtra
      * @param callback La función que procesará la respuesta. 
      */
-    public static getArray(callback: Function): void {
+    public static retrieve(callback: Function): void {
         callback(200, JSON.stringify(
             [
                 {

@@ -36,7 +36,7 @@ export default class Document {
      * @param {document} document  - Datos del documento comercial, en forma de objeto.
      * @param {Function} callback  - La función que manejará la respuesta.
      */
-    public static async newDocument(document: document, callback: Function): Promise<void> {
+    public static async create(document: document, callback: Function): Promise<void> {
         
     }
 }

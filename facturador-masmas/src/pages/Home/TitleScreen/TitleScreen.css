@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "nunito";
+  src: url(../../../assets/fonts/Nunito-VariableFont_wght.ttf);
+}
+
 .title-wrapper {
   display: block;
   width: 100%;
@@ -5,14 +10,50 @@
   min-height: 70vh;
   margin: 2rem auto;
   text-align: center;
+  font-family: 'nunito';
 }
 
 .title-wrapper h1 {
-  font-size: 5rem;
+  font-size: 15vw;
+  color: #111;
 }
 
 .title-wrapper h2 {
+  color: #222;
   margin-top: -2rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
+}
+
+.title-wrapper input {
+  display: block;
+  margin: 2rem auto 1rem;
+  padding: .2rem 1rem;
+  outline: none;
+  text-align: center;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+}
+
+.title-wrapper input:focus {
+  border: 1px solid darkslategray;
+}
+
+.title-wrapper button {
+  cursor: pointer;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  background-color: #00ac00;
+  padding: .4rem 1rem;
+}
+
+.title-wrapper button:hover {
+  background-color: #007c06;
+}
+
+@media (min-width: 768px) {
+  .title-wrapper h1 {
+    font-size: 6rem;
+  }
 }
 /*# sourceMappingURL=TitleScreen.css.map */

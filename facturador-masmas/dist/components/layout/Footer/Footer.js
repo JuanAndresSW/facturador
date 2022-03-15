@@ -13,5 +13,5 @@ export default function Footer() {
         React.createElement("div", null,
             React.createElement("a", { href: "https://github.com/conjunto-solucion/facturador", className: "github" },
                 React.createElement(DiGithubBadge, null)),
-            React.createElement("p", null, "facturador++ versi\u00F3n 0"))));
+            React.createElement("p", null, "facturador++ versi\u00F3n 0.1.0"))));
 }

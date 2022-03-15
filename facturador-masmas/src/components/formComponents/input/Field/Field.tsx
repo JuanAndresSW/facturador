@@ -28,7 +28,7 @@ export default function Field({ label = "", icon, note, type = "text", bind, val
             <input
                 className="field"
                 type={type}
-                value={bind[0]}
+                value={bind[0]?bind[0]:""}
                 onChange={(e) => bind[1](e.target.value)}
             ></input>
         </div>

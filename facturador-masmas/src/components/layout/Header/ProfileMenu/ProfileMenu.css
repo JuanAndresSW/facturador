@@ -34,13 +34,22 @@
 }
 
 #profile-menu-list {
+  z-index: 10;
   height: 0;
   overflow: hidden;
-  background-color: white;
+  background-color: #0f3e67ee;
   position: absolute;
   top: 4rem;
   right: .5rem;
-  border-radius: 5px;
+  border-radius: 2px;
+  font-family: monospace;
+}
+
+#profile-menu-list p {
+  cursor: default;
+  font-size: 1rem;
+  margin: .4rem;
+  color: #fff;
 }
 
 #profile-menu-list ul {
@@ -50,14 +59,25 @@
 }
 
 #profile-menu-list ul li {
+  font-size: 1rem;
+  color: #fff;
   padding: 0.4rem;
   text-align: center;
   cursor: pointer;
 }
 
-#profile-menu-list.active {
-  -webkit-animation: retract .1s ease-in forwards;
-          animation: retract .1s ease-in forwards;
+#profile-menu-list ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+#profile-menu-list ul li .active {
+  color: #ccf;
+}
+
+#profile-menu-list.extended {
+  -webkit-animation: retract .01s ease-in forwards;
+          animation: retract .01s ease-in forwards;
 }
 
 @-webkit-keyframes retract {

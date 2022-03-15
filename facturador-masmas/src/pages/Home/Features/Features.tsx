@@ -6,7 +6,7 @@ import documento from "assets/svg/feat-doc.svg";
 import punto from "assets/svg/feat-punto.svg";
 import libro from "assets/svg/feat-libro.svg";
 import grafico from "assets/svg/feat-grafico.svg";
-import github from "assets/svg/feat-github.svg";
+import open from "assets/svg/feat-github.svg";
 
 const feats = [
   <>
@@ -48,8 +48,8 @@ const feats = [
     </p>
   </>,
   <>
-    <img src={github} />
-    <h3>Gratis y de código abierto</h3>
+    <img src={open} />
+    <h3>Gratis y de acceso libre</h3>
     <p>
       Amet consectetur adipisicing elit. Odio, reiciendis fuga dolore non veniam
       optio dolorem, beatae sunt libero{" "}
@@ -70,7 +70,7 @@ export default function Features() {
           key={index.toString()}
           data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
           data-aos-anchor-placement="center-bottom"
-          data-aos-offset="200"
+          data-aos-offset="150"
         >
           {feat}
         </div>

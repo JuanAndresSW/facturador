@@ -1,8 +1,6 @@
 @charset "utf-8";
 #root {
-  background: rgba(57, 153, 250, 0.8);
-  
-  background-size: 400% 400%;
+  background: rgba(66, 166, 255, 0.92);
   animation: gradient 60s ease-in infinite;
   width: 100%;
   min-height: 100vh;
@@ -21,6 +19,6 @@
 }
 body {
   margin: 0;
-  background: top / cover url(assets/img/main2.jpg) no-repeat fixed;
+  background: top / cover url(assets/img/main3.jpg) no-repeat fixed;
   min-height: 100vh;
 }

@@ -6,7 +6,7 @@ var Group = /** @class */ (function () {
      * Un id puede ser proporcionado en el URL para filtrar la respuesta.
      * @param callback La función que procesará la respuesta.
      */
-    Group.getArray = function (callback) {
+    Group.retrieve = function (callback) {
         callback(200, JSON.stringify([
             {
                 id: 1,

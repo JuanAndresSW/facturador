@@ -22,25 +22,42 @@
     }
 }
 #profile-menu-list {
+    z-index: 10;
     height: 0;
     overflow: hidden;
-    background-color: white;
+    background-color: #0f3e67ee;
     position: absolute;
     top: 4rem;
     right: .5rem;
-    border-radius: 5px;
+    border-radius: 2px;
+    font-family: monospace;
+    p {
+        cursor:default;
+        font-size: 1rem;
+        margin: .4rem;
+        color: #fff;
+    }
     ul {
         list-style: none;
         margin: 0; padding: .5rem;
         li {
+            font-size: 1rem;
+            color: #fff;
             padding: 0.4rem;
             text-align: center;
             cursor:pointer;
+            a {
+                text-decoration: none;
+                color: rgb(255, 255, 255);
+            }
+            .active {
+                color: #ccf;
+            }
         }
     }
 }
-#profile-menu-list.active {
-    animation: retract .1s ease-in forwards;
+#profile-menu-list.extended {
+    animation: retract .01s ease-in forwards;
 }
 @keyframes retract {
 	0% {

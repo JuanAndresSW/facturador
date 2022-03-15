@@ -23,9 +23,8 @@ export default function App() {
     useEffect(function () { return Session.getByToken(handleResponse); }, []);
     //Comprobar la respuesta final del servidor.
     function handleResponse(status) {
-        if (status === 200) {
+        if (status === 200)
             setAuth(true);
-        }
         else
             setAuth(false);
     }
@@ -35,27 +34,9 @@ export default function App() {
                 React.createElement(Routes, null,
                     React.createElement(Route, { path: "/", element: !auth ? React.createElement(Home, null) : React.createElement(Navigate, { to: "/inicio" }) }),
                     React.createElement(Route, { path: "/login", element: !auth ? React.createElement(Login, null) : React.createElement(Navigate, { to: "/inicio" }) }),
-                    React.createElement(Route, { path: "/inicio/*", element: auth ? React.createElement(Start, null) : React.createElement(Navigate, { to: "/login" }) }),
-                    React.createElement(Route, { path: "/cuenta", element: auth ? React.createElement(Account, null) : React.createElement(Navigate, { to: "/login" }) }),
+                    React.createElement(Route, { path: "/inicio/*", element: !auth ? React.createElement(Start, null) : React.createElement(Navigate, { to: "/login" }) }),
+                    React.createElement(Route, { path: "/cuenta", element: !auth ? React.createElement(Account, null) : React.createElement(Navigate, { to: "/login" }) }),
                     React.createElement(Route, { path: "/signup", element: React.createElement(SignUp, null) }),
                     React.createElement(Route, { path: "/acerca-de/*", element: React.createElement(About, null) }),
                     React.createElement(Route, { path: "*", element: React.createElement(Error404, null) })))));
 }
-/**
- * ESTA ES EL HEADER DE LA REQUEST:
- *
- * POST /api/auth/init undefined
- * Host: localhost:8080
- * User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0
- * Accept: +/* (ESE + ES UN ASTERISCO XD)
- * Accept-Language: en-US,en;q=0.5
- * Accept-Encoding: gzip, deflate
- * Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4cCI6MTY0NjI4NTU4OCwiaWF0IjoxNjQ2MjU2Nzg4LCJyb2wiOiJNQUlOIn0.xauytCdRgtoKK2BvD9nFHNRkQPn5CTo6P4H4JW-xN-U
- * Origin: http://localhost:3000
- * DNT: 1
- * Connection: keep-alive
- * Referer: http://localhost:3000/
- * Sec-Fetch-Dest: empty
- * Sec-Fetch-Mode: cors
- * Sec-Fetch-Site: same-site
- */ 

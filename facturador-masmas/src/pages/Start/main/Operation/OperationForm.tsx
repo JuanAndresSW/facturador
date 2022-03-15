@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //Componentes del formulario.
-import { DateTime, ErrorMessage, Field, Form, Radio, Select, Submit, Switch, Table, Textarea } from "components/formComponents";
+import { DateTime, ErrorMessage, Field, Form, Radio, Select, Button, Switch, Table, Textarea } from "components/formComponents";
 import { Section, Cond, FlexDiv } from 'components/layout'
 import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
 //Elementos de documento generado.
@@ -30,13 +30,13 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
   //Solicitar los datos a mostrar en el primer renderizado.
   useEffect(() => {
 
-    PointOfSale.getArray((state:number,data:string)=>{
+    PointOfSale.retrieve((state:number,data:string)=>{
       if (state===200) setDisplayPointsOfSale(JSON.parse(data));
     });
-    Partner.getArray((state:number,data:string)=>{
+    Partner.retrieve((state:number,data:string)=>{
       if (state===200) setDisplayPartners(JSON.parse(data));
     });
-    Group.getArray((state:number,data:string)=>{
+    Group.retrieve((state:number,data:string)=>{
       if (state===200) setDisplayGroups(JSON.parse(data));
     });
 
@@ -188,7 +188,7 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 
       </Section>
 
-      <Submit text="Generar" />
+      <Button type="submit" text="Generar" />
     </Form>
   );
 }

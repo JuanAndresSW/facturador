@@ -1,3 +1,4 @@
+import { Loading } from "components/layout";
 import React from "react";
 import './Select.css';
 /**
@@ -10,7 +11,7 @@ import './Select.css';
 export default function Select(_a) {
     var _b = _a.label, label = _b === void 0 ? "" : _b, _c = _a.fallback, fallback = _c === void 0 ? "" : _c, options = _a.options, bind = _a.bind;
     if (options === undefined) {
-        return React.createElement(React.Fragment, null, "Loading...");
+        return React.createElement(Loading, null);
     }
     if (options.length === 0) {
         return React.createElement("span", null, fallback);

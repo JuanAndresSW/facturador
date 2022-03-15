@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 //Componentes de formulario.
-import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/formComponents';
+import { Form, Field, Image, ErrorMessage, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
+import { Loading } from "components/layout";
 
 //Relacionado a la cuenta.
 import Valid from "utils/Valid";
@@ -30,7 +31,7 @@ export default function SignUp() {
   const [username, setUsername]           = useState("");
   const [email, setEmail]                 = useState("");
   const [password, setPassword]           = useState("");
-  const [avatar, setAvatar]               = useState(null);
+  const [avatar, setAvatar]               = useState();
   const [passwordMatch, setPasswordMatch] = useState("");
   const [userError, setUserError]         = useState("");
 
@@ -89,8 +90,8 @@ export default function SignUp() {
         grossIncome: grossIncome,
       }
     }
-    MainAccount.register(account, handleResponse);
     setSending(true);
+    MainAccount.create(account, handleResponse);
   }
 
   /**Maneja la respuesta recibida del servidor. */
@@ -120,11 +121,12 @@ export default function SignUp() {
       bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
       <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
       type="password" validator={password===passwordMatch} />
-      <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} />
+      
+      <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} img={avatar} />
             
       <ErrorMessage message={userError} />
 
-      <Submit text="Siguiente" />
+      <Button type="submit" text="Siguiente" />
 
     </Form>
     :
@@ -148,7 +150,7 @@ export default function SignUp() {
 
       <ErrorMessage message={traderError} />
 
-      {sending? "Cargando..." : <Submit text="Enviar" />}
+      {sending? <Loading /> : <Button type="submit" text="Enviar" />}
     </Form>
     : null
   );

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 //Componentes de formulario.
-import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/formComponents';
+import { Form, Field, Image, ErrorMessage, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
+import { Loading } from "components/layout";
 //Relacionado a la cuenta.
 import Valid from "utils/Valid";
 import MainAccount from "services/MainAccount";
@@ -20,7 +21,7 @@ export default function SignUp() {
     var _c = useState(""), username = _c[0], setUsername = _c[1];
     var _d = useState(""), email = _d[0], setEmail = _d[1];
     var _e = useState(""), password = _e[0], setPassword = _e[1];
-    var _f = useState(null), avatar = _f[0], setAvatar = _f[1];
+    var _f = useState(), avatar = _f[0], setAvatar = _f[1];
     var _g = useState(""), passwordMatch = _g[0], setPasswordMatch = _g[1];
     var _h = useState(""), userError = _h[0], setUserError = _h[1];
     //Datos del comerciante.
@@ -96,7 +97,7 @@ export default function SignUp() {
                 grossIncome: grossIncome,
             }
         };
-        MainAccount.register(account, handleResponse);
+        MainAccount.create(account, handleResponse);
         setSending(true);
     }
     /**Maneja la respuesta recibida del servidor. */
@@ -106,6 +107,7 @@ export default function SignUp() {
             Session.setSession(JSON.parse(data));
             setTraderError("");
             navigate("/inicio");
+            window.location.reload();
         }
         else
             setTraderError(data);
@@ -119,9 +121,9 @@ export default function SignUp() {
             React.createElement(Field, { icon: React.createElement(BiAt, null), label: "Tu direcci\u00F3n de correo electr\u00F3nico", bind: [email, setEmail], validator: Valid.email(email) }),
             React.createElement(Field, { icon: React.createElement(BiKey, null), label: "Elige una contrase\u00F1a", bind: [password, setPassword], type: "password", validator: Valid.password(password) }),
             React.createElement(Field, { label: "Vuelve a escribir la contrase\u00F1a", bind: [passwordMatch, setPasswordMatch], type: "password", validator: password === passwordMatch }),
-            React.createElement(Image, { label: "Foto de perfil", note: "(opcional)", setter: setAvatar }),
+            React.createElement(Image, { label: "Foto de perfil", note: "(opcional)", setter: setAvatar, img: avatar }),
             React.createElement(ErrorMessage, { message: userError }),
-            React.createElement(Submit, { text: "Siguiente" }))
+            React.createElement(Button, { type: "submit", text: "Siguiente" }))
         :
             active === "trader" ?
                 React.createElement(Form, { title: "Datos del comercio", onSubmit: validateTrader },
@@ -131,6 +133,6 @@ export default function SignUp() {
                     React.createElement(Field, { label: "C.U.I." + (vatCategory === "Monotributista" ? "L." : "T."), note: "(si no eliges uno, se generar\u00E1 uno falso)", bind: [code, setCode], validator: Valid.code(code), icon: React.createElement(BiHash, null) }),
                     React.createElement(Field, { label: "N\u00FAmero de ingresos brutos", note: "(si no eliges uno, se generar\u00E1 uno falso)", bind: [grossIncome, setGrossIncome], icon: React.createElement(BiWallet, null), validator: Valid.code(grossIncome) }),
                     React.createElement(ErrorMessage, { message: traderError }),
-                    sending ? "Cargando..." : React.createElement(Submit, { text: "Enviar" }))
+                    sending ? React.createElement(Loading, null) : React.createElement(Button, { type: "submit", text: "Enviar" }))
                 : null);
 }

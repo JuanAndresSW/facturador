@@ -3,6 +3,7 @@
 /**Devuelve un string base 64 a partir de un archivo tipo File. */
 export const fileToBase64 = (file: File) => new Promise((resolve, reject): void => {
     const reader = new FileReader();
+    if (!file) {resolve(undefined);return};
     reader.onerror = reject;
     reader.onload = () => resolve(reader.result);
     reader.readAsDataURL(file);
@@ -13,4 +14,3 @@ export const base64ToBlob = async (base64String:string) => {
     const base64Response = await fetch(`data:image/jpeg;base64,${base64String}`);
     return await base64Response.blob();
 }
-  

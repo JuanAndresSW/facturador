@@ -1,14 +1,15 @@
 .fallback {
     background-color: rgb(248, 248, 248);
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     top: 0;
     left: 0;
     height: 100vh;
     width: 100%;
 }
-.fallback div {
-    margin: 40vh auto 0 auto;
-    height: 10rem;
-    width: 10rem;
-    background-color: rgb(18, 147, 252);
+.fallback img {
+    display: block;
+    height: 20rem;
+    width: 20rem;
 }

@@ -25,7 +25,7 @@ export default class Session {
     };
     const handleAccessTokenResponse = (status:number) => { 
       if (status === 200) callback(200);
-      else fetch("POST","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
+      else fetch("HEAD","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
     };
 
     if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
@@ -64,6 +64,7 @@ export default class Session {
     for (let cookie of document.cookie.split(";")) {
       document.cookie = cookie + "=; Secure; path=/; expires=" + new Date(0).toUTCString();
     }
+    localStorage.removeItem("avatar");
     window.location.reload(); //SHOULD STORE OLD TOKENS FOR SECURITY
   }
 

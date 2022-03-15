@@ -1,3 +1,4 @@
+import { Loading } from "components/layout";
 import React from "react";
 import './Select.css';
 
@@ -17,7 +18,7 @@ type props = {
  */
 export default function Select({ label = "", fallback="", options, bind }: props): JSX.Element {
 
-    if (options === undefined) {return <>Loading...</>}
+    if (options === undefined) {return <Loading />}
     if (options.length === 0) {return <span>{fallback}</span>}
     if (options.length === 1) {
         bind[1](options[0].id)
