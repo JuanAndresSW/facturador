@@ -32,7 +32,10 @@ export default function App() {
     //Comprobar la respuesta final del servidor.
     function handleResponse(status: number, data:string) {
         console.log("APP: "+data);
-        if (status === 200) setAuth(true);
+        if (status === 200) {
+            setAuth(true);
+            //Session.setSession(JSON.parse(data)); //%% should receive json
+        }
         else setAuth(false);
     }
 

@@ -3,7 +3,10 @@ import fetch from 'api/fetch';
 export type session = {
   accessToken: string;
   refreshToken: string;
-  //username: string;
+  username: string;
+  rol: string;
+  activos: string;
+  pasivos: string;
 };
 
 /**
@@ -21,17 +24,17 @@ export default class Session {
     const refreshToken = this.getRefreshToken();
 
     const handleRefreshTokenResponse = (status:number, data:string) => {  
-      if (status === 200) {this.setSession(JSON.parse(data)); callback(200);}
-      callback(status);
+      if (status === 200) {this.setSession(JSON.parse(data)); callback(200, data);}
+      callback(status, data);
     };
-    const handleAccessTokenResponse = (status:number) => { 
-      if (status === 200) callback(200);
+    const handleAccessTokenResponse = (status:number, data:string) => { 
+      if (status === 200) callback(200, data);
       else fetch("HEAD","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
     };
 
     if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
       fetch("HEAD","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
-    } else callback(400);
+    } else callback(400, "NO existe un token con formato válido almacenado.");
   }
 
   /**
@@ -58,6 +61,11 @@ export default class Session {
     if (session.accessToken === undefined || session.refreshToken === undefined) return;
     document.cookie = `accessToken=${session.accessToken}; max-age=1209600; path=/; Secure`;
     document.cookie = `refreshToken=${session.refreshToken}; max-age=1209600; path=/; Secure`;
+    sessionStorage.setItem("username", session.username);
+    sessionStorage.setItem("rol", session.rol);
+    sessionStorage.setItem("activos", session.activos);
+    sessionStorage.setItem("pasivos", session.pasivos);
+    
   }
 
   /** Forza la expiración de los tokens de sesión. Recarga la ubicación actual al finalizar.*/

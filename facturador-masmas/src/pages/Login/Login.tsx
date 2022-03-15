@@ -57,3 +57,23 @@ export default function Login() {
     </Form>
   );
 }
+
+
+/**
+ * {
+ * "username":"test1",
+ * 
+ * "rol":"MAIN",
+ * 
+ * "activos":0,
+ * 
+ * "pasivos":0,
+ * 
+ * "accessToken":
+ * "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4cCI6M
+ * TY0NzM2OTI1OSwiaWF0IjoxNjQ3MzU0ODU5LCJyb2wiOiJNQUlOIn0.Dzg-RSnIRpBpZVhImEqqxesaTRJIOP3ddLL3sGVtYKo",
+ * 
+ * refreshToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4c
+ * CI6MTY0NzYyODQ1OSwiaWF0IjoxNjQ3MzU0ODU5fQ.51FtqSh-8CwiQxvmGNfBUThjo2_Xe3QuJIjauWyT2H8"
+ * }
+ */

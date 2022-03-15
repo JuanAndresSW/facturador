@@ -16,7 +16,7 @@ import { BiChevronLeft } from "react-icons/bi";
 
 
 //## Funciones de implementación condicional. ##//
-const hasRootAccess = sessionStorage.getItem("role") !== "Main"; //%% ===
+const hasRootAccess = sessionStorage.getItem("rol") === "MAIN";
 
 const retrieveAccount = hasRootAccess?
 (handler:Function)=> MainAccount.retrieve(handler):

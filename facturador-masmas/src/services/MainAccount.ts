@@ -33,13 +33,14 @@ export default class MainAccount {
         fetch("GET", `mainaccounts/${sessionStorage.getItem("username")}`, { token: Session.getAccessToken() }, callback);
     }
 
-    public static update(account:any, callback:Function) {
+    public static async update(account:mainAccount, callback:Function) {
+        const formattedAccount = await formatAccount(account);
         fetch("PUT", "mainaccounts", 
-        { body: JSON.stringify(account), token:Session.getAccessToken() }, callback);
+        { body: formattedAccount, token:Session.getAccessToken() }, callback);
     }
 
     public static delete(code:string, callback:Function) {
-        fetch("DELETE", "mainaccounts", { body: code, token:Session.getAccessToken() }, callback);
+        fetch("DELETE", `mainaccounts/${sessionStorage.getItem("username")}`, { body: code, token:Session.getAccessToken() }, callback);
     }
 
     /**Solicita que un código de eliminación de cuenta sea enviado por email al propietario de la cuenta.*/
@@ -58,12 +59,12 @@ export default class MainAccount {
 async function formatAccount(account: mainAccount): Promise<string> {
 
     const c = account.trader.code.replace(/ |\.|-/g, "");
-    const g = account.trader.grossIncome.replace(/ |\.|-/g, "");
+    const g = account.trader.grossIncome?.replace(/ |\.|-/g, "");
 
     const data = JSON.stringify({
         user: {
             username: account.user.username.trim(),
-            email: account.user.email.trim(),
+            email: account.user.email?.trim(),
             password: account.user.password.trim(),
             avatar: await fileToBase64(account.user.avatar)
         },
@@ -73,9 +74,9 @@ async function formatAccount(account: mainAccount): Promise<string> {
             code: (c.length !== 0) ? c.slice(0, 2) + '-' +
                 c.slice(2, 4) + '.' + c.slice(4, 7) + '.' + c.slice(7, 10) +
                 '-' + c.charAt(10) : '',
-            grossIncome: (g.length !== 0) ? g.slice(0, 2) + '-' +
+            grossIncome: (g?.length === 0 || !g ) ? undefined : g.slice(0, 2) + '-' +
                 g.slice(2, 4) + '.' + g.slice(4, 7) + '.' + g.slice(7, 10) +
-                '-' + g.charAt(10) : '',
+                '-' + g.charAt(10),
         }
     });
     return data;
