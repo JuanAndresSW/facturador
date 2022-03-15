@@ -1,7 +1,7 @@
 package dev.facturador.mainaccount.infrastructure.resources;
 
 import dev.facturador.mainaccount.domain.vo.agregate.UpdateRequest;
-import dev.facturador.mainaccount.infrastructure.IMainAccountUpdateService;
+import dev.facturador.mainaccount.infrastructure.service.IMainAccountUpdateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

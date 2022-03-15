@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.auth.application.AuthUtil;
 import dev.facturador.auth.application.JWTOfAuth;
 import dev.facturador.auth.domain.bo.LoginRequest;
+import dev.facturador.auth.domain.dto.InitResponse;
 import dev.facturador.auth.domain.dto.LoginResponse;
 import dev.facturador.shared.infrastructure.JWT;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -46,14 +49,24 @@ public class AuthController {
     }
 
     /**
-     * Este metodo es simplemente pasa por el filtro para comprobar que el {@code Access-Token} sea valido
+     * Este metodo verifica si la sesion activa es valida caso correcto
+     * Se enviarian los datos necesarios para la sesion
      *
      * @return
      */
-    @RequestMapping(path = INIT_APP, method = RequestMethod.HEAD)
-    public void initApp(HttpServletResponse response) {
-        response.setHeader("Authenticated", "Success");
+    @GetMapping(INIT_APP)
+    public void initApp(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String authHeader = request.getHeader(AUTHORIZATION);
+        JWT jwt = new JWTOfAuth();
+        var user = util.creteUserWithToken(authHeader, jwt, response);
+
+        response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_OK);
+        new ObjectMapper().writeValue(response.getOutputStream(), new InitResponse(
+                                user.getUsername(),
+                                user.getAuthorities().stream().toList().get(0).getAuthority(),
+                                user.getActive(),
+                                user.getPassive()));
     }
 
     /**

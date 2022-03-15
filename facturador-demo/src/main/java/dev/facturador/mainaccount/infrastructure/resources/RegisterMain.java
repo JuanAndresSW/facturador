@@ -3,7 +3,7 @@ package dev.facturador.mainaccount.infrastructure.resources;
 import dev.facturador.auth.domain.dto.LoginResponse;
 import dev.facturador.mainaccount.domain.dto.RegisterResponse;
 import dev.facturador.mainaccount.domain.vo.agregate.RegisterRequest;
-import dev.facturador.mainaccount.infrastructure.IMainAccountRegisterService;
+import dev.facturador.mainaccount.infrastructure.service.IMainAccountRegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

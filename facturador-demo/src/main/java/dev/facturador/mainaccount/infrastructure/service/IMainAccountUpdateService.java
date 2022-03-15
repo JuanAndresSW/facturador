@@ -1,4 +1,4 @@
-package dev.facturador.mainaccount.infrastructure;
+package dev.facturador.mainaccount.infrastructure.service;
 
 import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.vo.agregate.UpdateRequest;

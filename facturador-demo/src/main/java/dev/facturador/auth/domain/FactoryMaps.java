@@ -45,7 +45,7 @@ public class FactoryMaps {
             data.put("refresh", Objects.requireNonNull(headers.get("Refresh-token")).get(0));
         }
         if (!headers.get("user-data").isEmpty()) {
-            data.put("newUsername", Objects.requireNonNull(headers.get("user-data")).get(0));
+            data.put("username", Objects.requireNonNull(headers.get("user-data")).get(0));
         }
         if (!headers.get("user-data").isEmpty()) {
             data.put("rol", Objects.requireNonNull(headers.get("user-data")).get(1));

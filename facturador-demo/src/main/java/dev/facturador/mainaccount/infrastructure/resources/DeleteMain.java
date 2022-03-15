@@ -1,7 +1,6 @@
 package dev.facturador.mainaccount.infrastructure.resources;
 
-import dev.facturador.mainaccount.infrastructure.IMainAccountDeleteService;
-import dev.facturador.mainaccount.infrastructure.IMainAccountRegisterService;
+import dev.facturador.mainaccount.infrastructure.service.IMainAccountDeleteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
