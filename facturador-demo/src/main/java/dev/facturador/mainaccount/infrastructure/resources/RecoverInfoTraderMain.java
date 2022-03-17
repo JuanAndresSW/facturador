@@ -1,7 +1,6 @@
 package dev.facturador.mainaccount.infrastructure.resources;
 
 import dev.facturador.mainaccount.domain.dto.GetResponse;
-import dev.facturador.mainaccount.infrastructure.service.IMainAccountDeleteService;
 import dev.facturador.mainaccount.infrastructure.service.IMainAccountRecoverInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class RecoverInfoTraderMain {
     public HttpEntity<?> delete(@PathVariable @NotEmpty String username){
         var user = service.getMainAccountByUsername(username);
         if(user.isEmpty()){
-            return ResponseEntity.badRequest().body("Usuario con este username no existe");
+            return ResponseEntity.badRequest().body("No se ha encontrado un usuario relacionado a este Username");
         }
         GetResponse response = new GetResponse(
                 user.get().getAccountOwner().getName(),

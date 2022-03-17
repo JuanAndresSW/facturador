@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,15 +23,14 @@ public class UpdateMain {
     @PreAuthorize("hasAuthority('MAIN')")
     @PutMapping("/mainaccounts")
     public HttpEntity<?> updateAccount(@Valid @RequestBody UpdateRequest tryUpdate) {
-        var user = service.verifyIfCotainsNewPassword(tryUpdate);
-        if(user == null){
-            return ResponseEntity.badRequest().body("La contraseña antigua no es correcta");
+        var user = service.getMainAccountByUsername(tryUpdate.getUser().username());
+        String message = service.verifyData(tryUpdate, user);
+        if(StringUtils.hasText(message)){
+            return ResponseEntity.badRequest().body(message);
         }
-        var errorMessages = service.verifyUsernameAndCodeNotExists(tryUpdate);
-        if(errorMessages.size() >= 1){
-            return ResponseEntity.badRequest().body(errorMessages);
-        }
+
         service.update(tryUpdate, user);
+
         return ResponseEntity.ok().body("Success Update");
     }
 }
