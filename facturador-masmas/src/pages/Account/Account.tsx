@@ -13,6 +13,8 @@ import { Loading, Retractable, Section } from "components/layout";
 import Header from "components/layout/Header/Header";
 import Footer from "components/layout/Footer/Footer";
 import { BiChevronLeft } from "react-icons/bi";
+//Conversiones.
+import { fileToBase64 } from "utils/conversions";
 
 
 //## Funciones de implementación condicional. ##//
@@ -107,13 +109,16 @@ export default function Account() {
             trader: {
                 businessName: businessName,
                 vatCategory: vatCategory,
-                code: code,
+                newCode: code,
             }
         } 
         updateAccount(account, (state:number, data:string)=>{
             setLoading(false);
-            if (state===200) window.location.reload();
-            setError(data);
+            if (state===200) {
+                fileToBase64(avatar).then(newAvatar=>localStorage.setItem("avatar", ""+newAvatar));
+                window.location.reload();
+            }
+            else setError(data);
         });
     }
 

@@ -29,11 +29,11 @@ export default class Session {
     };
     const handleAccessTokenResponse = (status:number, data:string) => { 
       if (status === 200) callback(200, data);
-      else fetch("HEAD","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
+      else fetch("GET","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
     };
 
     if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
-      fetch("HEAD","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
+      fetch("GET","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
     } else callback(400, "NO existe un token con formato válido almacenado.");
   }
 

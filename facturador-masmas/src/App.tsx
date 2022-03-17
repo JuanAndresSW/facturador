@@ -34,7 +34,7 @@ export default function App() {
         console.log("APP: "+data);
         if (status === 200) {
             setAuth(true);
-            //Session.setSession(JSON.parse(data)); //%% should receive json
+            Session.setSession(JSON.parse(data));
         }
         else setAuth(false);
     }
