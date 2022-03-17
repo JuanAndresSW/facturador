@@ -8,13 +8,15 @@ import java.util.Optional;
 
 public interface IMainAccountUpdateService {
     void update(UpdateRequest tryUpdate, MainAccount account);
-
-    Optional<String> existsByUsernameOfUser(String username);
-    Optional<String> existsByUniqueKeyOfTrader(String uniqueKey);
-
-    Collection<String> verifyUsernameAndCodeNotExists(UpdateRequest tryUpdate);
-
     MainAccount getMainAccountByUsername(String username);
 
-    MainAccount verifyIfCotainsNewPassword(UpdateRequest tryUpdate);
+    Boolean existsByUsernameOfUser(String username);
+    Boolean existsByUniqueKeyOfTrader(String uniqueKey);
+
+    String verifyUsernameNotExists(UpdateRequest tryUpdate);
+    String verifyCuitNotExists(UpdateRequest tryUpdate);
+    String verifyUsernameAndCodeNotExists(UpdateRequest tryUpdate);
+    String verifyIfCotainsNewPassword(UpdateRequest tryUpdate, MainAccount user);
+    String verifyNameAndCategoryAreDifferent(UpdateRequest data, MainAccount user);
+    String verifyData(UpdateRequest data, MainAccount user);
 }
