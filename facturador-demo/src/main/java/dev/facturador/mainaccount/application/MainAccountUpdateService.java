@@ -79,8 +79,7 @@ public class MainAccountUpdateService implements IMainAccountUpdateService {
 
     @Override
     public String verifyIfCotainsNewPassword(UpdateRequest tryUpdate, MainAccount user){
-        String newPassword = tryUpdate.getUser().newPassword();
-        if(StringUtils.hasText(newPassword)){
+        if(StringUtils.hasText(tryUpdate.getUser().newPassword())){
             var argon = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
             String passwordEncoded = user.getUserMainAccount().getPassword();
             String password = tryUpdate.getUser().password();
@@ -112,15 +111,15 @@ public class MainAccountUpdateService implements IMainAccountUpdateService {
 
     @Override
     public String verifyNameAndCategoryAreDifferent(UpdateRequest data, MainAccount user) {
-        if (StringUtils.hasText(data.getTrader().businessName())) {
-            String actualName = user.getAccountOwner().getName();
-            if(actualName.equals(data.getTrader().businessName())) {
+        if (StringUtils.hasText(data.getTrader().newBusinessName())) {
+            String businessName = user.getAccountOwner().getName();
+            if(businessName.equals(data.getTrader().newBusinessName())) {
                 return "La informacion debe de ser distinta a la actual para actualizarla";
             }
         }
-        if (StringUtils.hasText(data.getTrader().vatCategory())) {
+        if (StringUtils.hasText(data.getTrader().newVatCategory())) {
             String actualVat = user.getAccountOwner().getVat().name();
-            String newVat = data.getTrader().vatCategory();
+            String newVat = data.getTrader().newVatCategory();
             if (actualVat.toLowerCase().equals(newVat.toLowerCase())) {
                 return "La informacion debe de ser distinta a la actual para actualizarla";
             }

@@ -29,6 +29,6 @@ public final class UserAvatarController {
         if (userAvatar != null) {
             return ResponseEntity.ok().body(userAvatar.getAvatar());
         }
-        return ResponseEntity.badRequest().body("Este usuario no tiene avatar");
+        return ResponseEntity.badRequest().body("Este usuario no tiene newAvatar");
     }
 }

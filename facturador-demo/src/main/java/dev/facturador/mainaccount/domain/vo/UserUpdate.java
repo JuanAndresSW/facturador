@@ -9,5 +9,5 @@ public record UserUpdate(
         @Length(min = 3, max = 20) String newUsername,
         @Length(min = 8, max = 40) String password,
         @Length(min = 8, max = 40) String newPassword,
-        String avatar
+        String newAvatar
 ) {}

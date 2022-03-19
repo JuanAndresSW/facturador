@@ -11,7 +11,6 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -60,17 +59,17 @@ public class FactoryMainAccount implements IFactoryMainAccount {
             String passwordHash = hashPassword(request.getUser().newPassword());
             account.getUserMainAccount().setPassword(passwordHash);
         }
-        if(StringUtils.hasText(request.getUser().avatar())){
-            account.getUserMainAccount().getAvatarUser().setAvatar(request.getUser().avatar());
+        if(StringUtils.hasText(request.getUser().newAvatar())){
+            account.getUserMainAccount().getAvatarUser().setAvatar(request.getUser().newAvatar());
         }
-        if(StringUtils.hasText(request.getTrader().businessName())){
-            account.getAccountOwner().setName(request.getTrader().businessName());
+        if(StringUtils.hasText(request.getTrader().newBusinessName())){
+            account.getAccountOwner().setName(request.getTrader().newBusinessName());
         }
         if(StringUtils.hasText(request.getTrader().newCode())){
             account.getAccountOwner().setUniqueKey(request.getTrader().newCode());
         }
-        if(StringUtils.hasText(request.getTrader().vatCategory())){
-            String vatName = request.getTrader().vatCategory();
+        if(StringUtils.hasText(request.getTrader().newVatCategory())){
+            String vatName = request.getTrader().newVatCategory();
             if (vatName.contains("Responsable")) {
                 account.getAccountOwner().setVat(Vat.RESPONSABLE_INSCRIPTO);
             }
