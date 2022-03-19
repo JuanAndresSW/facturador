@@ -30,25 +30,25 @@ public class FactoryMaps {
 
     public HashMap<String, String> createTokenResponse(String accesToken, String refreshToken) {
         var tokens = new HashMap<String, String>();
-        tokens.put("Access-Token", accesToken);
-        tokens.put("Refresh-Token", refreshToken);
+        tokens.put("accessToken", accesToken);
+        tokens.put("refreshToken", refreshToken);
 
         return tokens;
     }
 
     public Map<String, String> createDataFromHeaders(HttpHeaders headers) {
         var data = new HashMap<String, String>();
-        if (!headers.get("Access-token").isEmpty()) {
-            data.put("access", Objects.requireNonNull(headers.get("Access-token")).get(0));
+        if (!headers.get("accessToken").isEmpty()) {
+            data.put("accessToken", Objects.requireNonNull(headers.get("Access-token")).get(0));
         }
-        if (!headers.get("Refresh-token").isEmpty()) {
-            data.put("refresh", Objects.requireNonNull(headers.get("Refresh-token")).get(0));
+        if (!headers.get("refreshToken").isEmpty()) {
+            data.put("refreshToken", Objects.requireNonNull(headers.get("Refresh-token")).get(0));
         }
         if (!headers.get("user-data").isEmpty()) {
             data.put("username", Objects.requireNonNull(headers.get("user-data")).get(0));
         }
         if (!headers.get("user-data").isEmpty()) {
-            data.put("rol", Objects.requireNonNull(headers.get("user-data")).get(1));
+            data.put("role", Objects.requireNonNull(headers.get("user-data")).get(1));
         }
         return data;
     }

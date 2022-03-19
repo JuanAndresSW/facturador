@@ -38,7 +38,7 @@ public final class NonRegisteredPartner implements Serializable {
     @Column(name = "postal_code", length = 10, nullable = false)
     private String cp;
 
-    @Column(name = "vat", nullable = false,
+    @Column(name = "vatCategory", nullable = false,
             columnDefinition = "enum('RESPONSABLE_INSCRIPTO','MONOTRIBUTISTA','SUJETO_EXENTO')")
     @Enumerated(value = EnumType.STRING)
     private Vat vat;

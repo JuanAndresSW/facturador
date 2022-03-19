@@ -27,7 +27,7 @@ public interface JWT<T> {
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined))
                 .withIssuer(url)
-                .withClaim("rol", rol.stream().toList().get(0).getAuthority())
+                .withClaim("role", rol.stream().toList().get(0).getAuthority())
                 .sign(signKey());
     }
 
@@ -49,6 +49,6 @@ public interface JWT<T> {
     }
 
     default String getClaimRol(DecodedJWT decodedJWT) {
-        return decodedJWT.getClaim("rol").asString();
+        return decodedJWT.getClaim("role").asString();
     }
 }

@@ -46,20 +46,20 @@ public class AuthUtil {
      */
     public LoginResponse createLoginResponseWithHeaders(HttpHeaders headers) {
         var data = generator.createDataFromHeaders(headers);
-        if (data.get("rol").equals("MAIN")) {
+        if (data.get("role").equals("MAIN")) {
             String active = headers.get("user-data").get(2);
             String passive = headers.get("user-data").get(3);
             if (StringUtils.hasText(active) && StringUtils.hasText(passive)) {
                 return new LoginResponse(
                         data.get("username"),
-                        data.get("rol"),
+                        data.get("role"),
                         parseInt(active),
                         parseInt(passive),
-                        data.get("access"),
-                        data.get("refresh"));
+                        data.get("accessToken"),
+                        data.get("refreshToken"));
             }
         }
-        return new LoginResponse(data.get("newUsername"), data.get("rol"), data.get("access"), data.get("refresh"));
+        return new LoginResponse(data.get("username"), data.get("role"), data.get("accessToken"), data.get("refreshToken"));
     }
 
     /**
