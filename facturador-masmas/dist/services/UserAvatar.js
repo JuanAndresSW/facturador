@@ -41,35 +41,40 @@ var UserAvatar = /** @class */ (function () {
     function UserAvatar() {
     }
     /**
-     * Recupera un URLObject correspondiente al avatar de usuario del propietario del token de acceso almacenado.
+     * Recupera un File correspondiente al avatar de usuario del propietario del token de acceso almacenado.
      * @param callback La función que procesará la respuesta.
      */
     UserAvatar.retrieve = function (callback) {
-        var _this = this;
-        var returnAsFile = function (state, base64) { return __awaiter(_this, void 0, void 0, function () {
-            var blob;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (state !== 200) {
-                            callback(state);
-                            return [2 /*return*/];
-                        }
-                        return [4 /*yield*/, base64ToBlob(base64.slice(22))];
-                    case 1:
-                        blob = _a.sent();
-                        callback(200, blob);
-                        //Almacenar en localstorage si no está almacenado.
-                        if (localStorage.getItem("avatar") === null)
-                            localStorage.setItem("avatar", base64);
-                        return [2 /*return*/];
-                }
-            });
-        }); };
-        if (localStorage.getItem("avatar") !== null)
+        if (localStorage.getItem("avatar"))
             returnAsFile(200, localStorage.getItem("avatar"));
         else
             fetch("GET", "useravatars", { token: Session.getAccessToken() }, returnAsFile);
+        function returnAsFile(state, base64) {
+            return __awaiter(this, void 0, void 0, function () {
+                var blob;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (state !== 200) {
+                                callback(state);
+                                return [2 /*return*/];
+                            }
+                            if (base64 === 'undefined') {
+                                callback(400);
+                                return [2 /*return*/];
+                            }
+                            return [4 /*yield*/, base64ToBlob(base64.slice(22))];
+                        case 1:
+                            blob = _a.sent();
+                            callback(200, blob);
+                            //Almacenar en localstorage si no está almacenado.
+                            if (!localStorage.getItem("avatar"))
+                                localStorage.setItem("avatar", base64);
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        }
     };
     return UserAvatar;
 }());

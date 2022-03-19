@@ -21,12 +21,9 @@ export default function App() {
     var _a = useState(undefined), auth = _a[0], setAuth = _a[1];
     //Comprobar la sesión con el servidor en el primer renderizado.
     useEffect(function () { return Session.getByToken(handleResponse); }, []);
-    //Comprobar la respuesta final del servidor.
+    //Almacenar la respuesta final del servidor.
     function handleResponse(status) {
-        if (status === 200)
-            setAuth(true);
-        else
-            setAuth(false);
+        setAuth(status === 200);
     }
     return ((auth === undefined) ? React.createElement(SplashScreen, null) :
         React.createElement(BrowserRouter, null,
@@ -34,8 +31,8 @@ export default function App() {
                 React.createElement(Routes, null,
                     React.createElement(Route, { path: "/", element: !auth ? React.createElement(Home, null) : React.createElement(Navigate, { to: "/inicio" }) }),
                     React.createElement(Route, { path: "/login", element: !auth ? React.createElement(Login, null) : React.createElement(Navigate, { to: "/inicio" }) }),
-                    React.createElement(Route, { path: "/inicio/*", element: !auth ? React.createElement(Start, null) : React.createElement(Navigate, { to: "/login" }) }),
-                    React.createElement(Route, { path: "/cuenta", element: !auth ? React.createElement(Account, null) : React.createElement(Navigate, { to: "/login" }) }),
+                    React.createElement(Route, { path: "/inicio/*", element: auth ? React.createElement(Start, null) : React.createElement(Navigate, { to: "/login" }) }),
+                    React.createElement(Route, { path: "/cuenta", element: auth ? React.createElement(Account, null) : React.createElement(Navigate, { to: "/login" }) }),
                     React.createElement(Route, { path: "/signup", element: React.createElement(SignUp, null) }),
                     React.createElement(Route, { path: "/acerca-de/*", element: React.createElement(About, null) }),
                     React.createElement(Route, { path: "*", element: React.createElement(Error404, null) })))));

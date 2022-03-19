@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { DiGithubBadge } from "react-icons/di";
+import emblem from 'assets/img/emblem.png';
 import "./Footer.css";
 /**
  * Una lista de enlaces e información de la aplicación.
@@ -8,6 +9,7 @@ import "./Footer.css";
 export default function Footer() {
     return (React.createElement("div", { className: "footer" },
         React.createElement("div", null,
+            React.createElement("img", { src: emblem, alt: "" }),
             React.createElement("p", null, "\u00A9 Conjunto Soluci\u00F3n 2022 (GNU V.3)"),
             React.createElement(Link, { to: "/about" }, "Acerca de")),
         React.createElement("div", null,

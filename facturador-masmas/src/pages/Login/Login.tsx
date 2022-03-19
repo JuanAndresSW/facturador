@@ -13,7 +13,7 @@ import { Loading } from "components/layout";
 
 
 /**Devuelve un formulario para iniciar sesión.*/
-export default function Login() {
+export default function Login(): JSX.Element {
 
   const [usernameOrEmail, setUser] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +30,6 @@ export default function Login() {
 
   function handleResponse(state:number, data:string):void {
     setLoading(false);
-    console.log("LOGIN: "+data);
     if (state === 404) {
       setError("Usuario o contraseña incorrecta");
       return;
@@ -52,7 +51,11 @@ export default function Login() {
 
       {loading?<Loading />:<Button type="submit" text="Ingresar" />}
 
-      <a href="about:blank" target="_blank" className="link">Olvidé mi contraseña</a>
+      <a href="about:blank" target="_blank" className="link" style={{textDecoration:'none'}}>Olvidé mi contraseña</a>
+      <p style={{textAlign:'center', cursor:'default'}}>
+        {'¿No tienes una cuenta? '}
+        <a href="/registrarse" style={{textDecoration:'none'}}>Crea una nueva</a>
+      </p>
 
     </Form>
   );

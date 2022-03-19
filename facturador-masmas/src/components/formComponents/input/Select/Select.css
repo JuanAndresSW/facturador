@@ -1,7 +1,7 @@
 .select {
     width: 80%;
     flex-grow: 1 1 auto;
-    margin: 0 auto;
+    margin: 1rem auto;
 }
 
 .select select{

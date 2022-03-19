@@ -4,9 +4,10 @@ import defaultAvatar from 'assets/img/punto.jpg';
 import { BsFillXCircleFill } from "react-icons/bs";
 /**
  * Un input de archivos de tipo imágen. Acepta png, jpg y svg.
- * @param label - El título del input.
- * @param note - Nota adicional acerca del input.
- * @param setter - Función controladora del estado de la constante que almacena la imágen.
+ * @param props.label - El título del input.
+ * @param props.note - Nota adicional acerca del input.
+ * @param props.setter - Función controladora del estado de la constante que almacena la imágen.
+ * @param props.img - Valor File de la imágen a mostrar.
  */
 export default function Image(_a) {
     var label = _a.label, note = _a.note, setter = _a.setter, img = _a.img;

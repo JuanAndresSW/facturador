@@ -11,10 +11,10 @@ type props = {
 
 /**
  * Un dropdown de selección de opciones.
- * @param label - El título del input.
- * @param fallback - Texto a mostrar cuando hay 0 opciones.
- * @param options - Array de opciones, con un valor clave, un nombre y un tooltip opcional.
- * @param bind - Array desestructurado asociado al valor del input.
+ * @param props.label    - El título del input.
+ * @param props.fallback - Texto a mostrar cuando hay 0 opciones.
+ * @param props.options  - Array de opciones, con un valor clave, un nombre y un tooltip opcional.
+ * @param props.bind     - Array desestructurado asociado al valor del input.
  */
 export default function Select({ label = "", fallback="", options, bind }: props): JSX.Element {
 

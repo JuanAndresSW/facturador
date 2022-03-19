@@ -1,4 +1,4 @@
-//Métodos de conversión.
+//Métodos de conversión y formateo.
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,9 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 /**Devuelve un string base 64 a partir de un archivo tipo File. */
 export var fileToBase64 = function (file) { return new Promise(function (resolve, reject) {
-    if (!!file)
-        return undefined;
     var reader = new FileReader();
+    if (!file) {
+        resolve(undefined);
+        return;
+    }
+    ;
     reader.onerror = reject;
     reader.onload = function () { return resolve(reader.result); };
     reader.readAsDataURL(file);
@@ -49,7 +52,7 @@ export var base64ToBlob = function (base64String) { return __awaiter(void 0, voi
     var base64Response;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch("data:image/jpeg;base64,".concat(base64String))];
+            case 0: return [4 /*yield*/, window.fetch("data:image/jpeg;base64,".concat(base64String))];
             case 1:
                 base64Response = _a.sent();
                 return [4 /*yield*/, base64Response.blob()];
@@ -57,3 +60,10 @@ export var base64ToBlob = function (base64String) { return __awaiter(void 0, voi
         }
     });
 }); };
+/**Convierte un string de CUIT/CUIL al formato AA-BB.BBB.BBB-A. */
+export var toFormattedCode = function (code) {
+    var c = code.replace(/ |\.|-/g, "");
+    return c ? c.slice(0, 2) + '-' +
+        c.slice(2, 4) + '.' + c.slice(4, 7) + '.' + c.slice(7, 10) +
+        '-' + c.charAt(10) : '';
+};

@@ -22,7 +22,7 @@ export default class Valid {
 
   public static code(code: string): boolean {
     code = code?.replace(/ |\.|-/g, "");
-    if (code === "") return true;
+    //if (code === "") return true; TODO: generate automatic code
     if (code?.length !== 11) return false;
     return /[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(code);
   }
@@ -30,9 +30,9 @@ export default class Valid {
   public static vatCategory(vatCategory: string): boolean {
     return (
       vatCategory !== "" &&
-      (vatCategory === "Monotributista" ||
-        vatCategory === "Responsable Inscripto" ||
-        vatCategory === "Sujeto Exento")
+      (  vatCategory === "Monotributista" 
+      || vatCategory === "Responsable Inscripto"
+      || vatCategory === "Sujeto Exento")
     );
   }
 

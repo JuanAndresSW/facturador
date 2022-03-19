@@ -21,17 +21,19 @@ var Session = /** @class */ (function () {
             }
             callback(status);
         };
-        var handleAccessTokenResponse = function (status) {
-            if (status === 200)
+        var handleAccessTokenResponse = function (status, data) {
+            if (status === 200) {
+                _this.setSession(JSON.parse(data));
                 callback(200);
+            }
             else
-                fetch("HEAD", "auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
+                fetch("POST", "auth/refresh", { token: refreshToken }, handleRefreshTokenResponse);
         };
         if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
-            fetch("HEAD", "auth/init", { token: accessToken }, handleAccessTokenResponse); //should be "HEAD"
+            fetch("GET", "auth/init", { token: accessToken }, handleAccessTokenResponse);
         }
         else
-            callback(400);
+            callback(400, "No existe un token con formato válido almacenado.");
     };
     /**
     * Trata de iniciar sesión con los credenciales proporcionados.
@@ -57,6 +59,10 @@ var Session = /** @class */ (function () {
             return;
         document.cookie = "accessToken=".concat(session.accessToken, "; max-age=1209600; path=/; Secure");
         document.cookie = "refreshToken=".concat(session.refreshToken, "; max-age=1209600; path=/; Secure");
+        sessionStorage.setItem("username", session.username);
+        sessionStorage.setItem("role", session.rol);
+        sessionStorage.setItem("actives", session.active);
+        sessionStorage.setItem("passives", session.pasive);
     };
     /** Forza la expiración de los tokens de sesión. Recarga la ubicación actual al finalizar.*/
     Session.close = function () {
@@ -88,3 +94,13 @@ export default Session;
  * accessToken
  * refreshToken
  */
+//TODO: Access-Token => accessToken; POST => GET.
+//      activos => actives; pasivos => passives;
+//      rol => role; 
+/**{"Access-Token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYW1ldyIsImlzcyI6Ii9hcGkvYXV0a
+ * C9yZWZyZXNoIiwiZXhwIjoxNjQ3NTQ3OTk3LCJpYXQiOjE2NDc1MzM1OTcsInJvbCI6Ik1BSU4ifQ.fxacPfsQKmfemidJR
+ * Gh9TpfvdtsG1_BSkFlqYygW9y4",
+ *
+ * "Refresh-Token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYW1ldyIsImlzcyI6Ii9hcGkvYXV0a
+ * C9yZWZyZXNoIiwiZXhwIjoxNjQ3ODA3MTk3LCJpYXQiOjE2NDc1MzM1OTd9.L6KwVZgQSiIPzW3e0aUQtwPeIaSmzJC9Fvh
+ * j4HixcHI"} */ 

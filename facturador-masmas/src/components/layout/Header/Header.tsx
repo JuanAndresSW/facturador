@@ -20,9 +20,9 @@ const notLoggedHeader = (
       
       <div id="header-links">
         <a href="about:blank" target="_blank">Aplicación móvil</a>
-        <Link to={"/login"}>Ingresar</Link>
+        <Link to={"/ingresar"}>Ingresar</Link>
         <Headroom>
-        <button type="button"><Link to={"/signup"}>Crea una cuenta</Link></button>
+        <button type="button"><Link to={"/registrarse"}>Crea una cuenta</Link></button>
         </Headroom>
       </div>
 

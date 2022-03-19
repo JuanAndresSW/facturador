@@ -1,6 +1,6 @@
 .field {
   display: block;
-  border: 1px solid thistle;
+  border: 1px solid transparent;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.2);
   color: rgb(255, 255, 255);
@@ -10,6 +10,7 @@
   height: 1.2rem;
 }
 .field:focus {
+  background-color: transparent;
   outline: none;
   border-color: rgb(63, 178, 245);
 }
@@ -26,4 +27,3 @@
   height: 2.4rem;
 }
 .invalid svg {color: rgba(255, 255, 255, 0.5);}
-.invalid input:focus {border-color: rgba(255, 0, 0, 0.3);}

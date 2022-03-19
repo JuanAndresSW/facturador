@@ -23,10 +23,12 @@ export default function Phone(): JSX.Element {
   };
   return (
     <div className="phone">
+
       <a href="about:blank" id="phone-title">
         <DiAndroid />
         <h2>Encuéntralo en Play Store..</h2>
       </a>
+
       <div className="slider-wrapper">
         <hr />
         <Slider {...settings}>
@@ -37,6 +39,7 @@ export default function Phone(): JSX.Element {
           ))}
         </Slider>
       </div>
+      
     </div>
   );
 }

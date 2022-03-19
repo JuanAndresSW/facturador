@@ -4,11 +4,12 @@ export default function Subheader() {
     return (React.createElement("div", { className: "subheader" },
         React.createElement("p", null,
             "activos: ",
-            "Session.getActive()"),
+            sessionStorage.getItem("actives")),
         React.createElement("p", null,
             "pasivos: ",
-            "Session.getPassive()"),
+            sessionStorage.getItem("passives")),
         React.createElement("p", null,
             "patrimonio neto: ",
-            "Session.getNetWorth()")));
+            parseFloat(sessionStorage.getItem("actives")) +
+                parseFloat(sessionStorage.getItem("passives")))));
 }

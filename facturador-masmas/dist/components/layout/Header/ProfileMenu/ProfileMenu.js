@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import OutsideClickHandler from 'react-outside-click-handler';
 import Session from "services/Session";
@@ -28,9 +28,11 @@ export default function ProfileMenu() {
             React.createElement("img", { src: img }),
             active ? React.createElement(BiChevronUp, null) : React.createElement(BiChevronDown, null)),
         React.createElement("div", { id: "profile-menu-list", className: active ? 'extended' : '' },
-            React.createElement("p", null, "Session.getUsername()" + ': '),
+            React.createElement("p", null, sessionStorage.getItem("username") ?
+                sessionStorage.getItem("username") + ': '
+                : "???"),
             React.createElement("ul", null,
                 React.createElement("li", null,
-                    React.createElement(Link, { to: "/cuenta" }, "Configuraci\u00F3n")),
+                    React.createElement(NavLink, { to: "/cuenta" }, "Configuraci\u00F3n")),
                 React.createElement("li", { onMouseDown: function () { return logOut(); } }, "Cerrar sesi\u00F3n")))));
 }

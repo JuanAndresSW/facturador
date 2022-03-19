@@ -14,11 +14,11 @@ import Header from "components/layout/Header/Header";
 import Footer from "components/layout/Footer/Footer";
 import { BiChevronLeft } from "react-icons/bi";
 //Conversiones.
-import { fileToBase64 } from "utils/conversions";
+import { fileToBase64, toFormattedCode } from "utils/conversions";
 
 
 //## Funciones de implementación condicional. ##//
-const hasRootAccess = sessionStorage.getItem("rol") === "MAIN";
+const hasRootAccess = sessionStorage.getItem("role") === "MAIN";
 
 const retrieveAccount = hasRootAccess?
 (handler:Function)=> MainAccount.retrieve(handler):
@@ -39,28 +39,33 @@ const requestAccountDeletion= hasRootAccess?
 
 
 /**Un formulario que permite cambiar datos de la cuenta / eliminar la cuenta de usuario y el comerciante. */
-export default function Account() {
+export default function Account(): JSX.Element {
+
+    /*DATOS***************************************************************/
 
     const navigate =                useNavigate(); 
     const [loading, setLoading] =   useState(false);
 
     //Errores.
-    const [error, setError] =                                     useState("");
-    const [deleteError, setDeleteError] =                         useState("");
+    const [error, setError] =                       useState("");
+    const [deleteError, setDeleteError] =           useState("");
     //Datos de eliminación.
     const [deletePermissionGranted, setDeletePermissionGranted] = useState(false);
     const [deletionCode, setDeletionCode] =                       useState("");
     //Datos del usuario.
     const [avatar, setAvatar] =                     useState(undefined);
     const [email, setEmail] =                       useState('...');
-    const [username, setUsername] =                 useState(sessionStorage.getItem("username"));
+    const [newUsername, setNewUsername] =                 useState('');
     const [password, setPassword] =                 useState("");
     const [newPassword, setNewPassword] =           useState("");
     const [confirmPassword, setConfirmPassword] =   useState("");
     //Datos del comerciante.
     const [businessName, setBusinessName] =         useState("");
+    const [newBusinessName, setNewBusinessName] =   useState("");
     const [vatCategory, setVatCategory] =           useState("");
+    const [newVatCategory, setNewVatCategory] =     useState("");
     const [code, setCode] =                         useState("");
+    const [newCode, setNewCode] =                   useState("");
 
     //Pedir los datos actuales en el primer renderizado.
     useEffect(() => {
@@ -69,54 +74,59 @@ export default function Account() {
         });
 
         retrieveAccount((state:number, data:string):void => {
-            if (state !== 200) {setError(data);return;}
-    
+            if (state !== 200) { setError(data); return; }
+            
             const obj = JSON.parse(data);
-            setEmail(obj.email);
-            if (businessName !== "") setBusinessName(obj.businessName);
-            if (vatCategory !== "")  setVatCategory(obj.category);
-            if (code !== "")         setCode(obj.code);
+            //setEmail      (obj.email);
+            setBusinessName (obj.bussinesName); //TODO: bussines => business;
+            setVatCategory  (obj.vat);
+            setCode         (obj.uniqueKey);
         });
 
     }, []);
 
-    //Comprobar la validez de los datos a enviar.
+    /*VALIDACIÓN***************************************************************/
+
     function filter():void {
-        if (!Valid.names(username)) {                    setError("El nombre debe ser de entre 3 y 20 caracteres");                            return; }
-        if (Valid.password(password)) {
-            if (!Valid.password(newPassword)) {          setError("La contraseña debe ser de entre 8 y 40 caracteres");                        return; }
-            if (newPassword!==confirmPassword) {         setError("Las contraseñas no coinciden");                                             return; }
+        if (avatar && !Valid.image(avatar))           { setError("La imágen no debe superar los 2MB");                  return; }
+        if (newUsername && !Valid.names(newUsername)) { setError("El nombre debe ser de entre 3 y 20 caracteres");      return; }
+        if (password && Valid.password(password))     {
+            if (!Valid.password(newPassword))         { setError("La contraseña debe ser de entre 8 y 40 caracteres");  return; }
+            if (newPassword!==confirmPassword)        { setError("Las contraseñas no coinciden");                       return; }
         }
-        if (hasRootAccess) {
-            if (!Valid.names(businessName)) {            setError("La razón social debe ser de entre 3 y 20 caracteres");                      return; }
-            if (!Valid.vatCategory(vatCategory)) {       setError("Seleccione una categoría");                                                 return; }
-            if (code?.length < 1 || !Valid.code(code)) { setError(`C.U.I.${vatCategory === "Monotributista"? "L. inválido": "T. inválida"}`);  return; }
+        if (hasRootAccess)                                            {
+            if (newBusinessName && !Valid.names(newBusinessName))     { setError("La razón social debe ser de entre 3 y 20 caracteres");                        return; }
+            if (newVatCategory && !Valid.vatCategory(newVatCategory)) { setError("Seleccione una categoría");                                                   return; }
+            if (newCode && !Valid.code(code))                         { setError(`C.U.I.${newVatCategory === "Monotributista"? "L. inválido": "T. inválida"}`); return; }
         }
         submit();
     }
 
+    /*COMUNICACIÓN***************************************************************/
+
     //Envía los datos al servidor.
-    function submit() {
+    async function submit() {
         setLoading(true);
         const account = {
             user: {
-                username: sessionStorage.getItem("username"),
-                newUsername: username,
-                password: password,
-                newPassword: newPassword,
-                avatar: avatar,
+                username:     sessionStorage.getItem("username"),
+                newUsername:  newUsername?     newUsername.trim()       : null,
+                password:     password?        password.trim()          : null,
+                newPassword:  newPassword?     newPassword.trim()       : null,
+                newAvatar:       avatar?   await  fileToBase64(avatar)     : 'undefined',
             },
             trader: {
-                businessName: businessName,
-                vatCategory: vatCategory,
-                newCode: code,
+                newBusinessName: newBusinessName? newBusinessName.trim()   : null,
+                newVatCategory:  newVatCategory?  newVatCategory.trim()    : null,
+                newCode:         newCode?         toFormattedCode(newCode) : null,
             }
         } 
         updateAccount(account, (state:number, data:string)=>{
             setLoading(false);
             if (state===200) {
-                fileToBase64(avatar).then(newAvatar=>localStorage.setItem("avatar", ""+newAvatar));
-                window.location.reload();
+                localStorage.removeItem('avatar');
+                //fileToBase64(avatar).then(newAvatar=>localStorage.setItem("avatar", ""+newAvatar));
+                navigate('/inicio');
             }
             else setError(data);
         });
@@ -134,14 +144,17 @@ export default function Account() {
 
     //Envía el código de eliminación ingresado. Si es correcto, la cuenta de usuario es eliminada.
     function deleteAccount() {
-        if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;}
+        //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
         requestAccountDeletion(deletionCode, (state:number, data:string)=> {
-            if (state!==200) {setDeleteError(data); return;}
+            setDeleteError(data)
+            if (state!==200) return;
             Session.close();
             window.location.reload();
         });
     }
 
+
+    /*FORMULARIO***************************************************************/
 
     return (
         <>
@@ -150,30 +163,31 @@ export default function Account() {
         <Form title="Opciones de la cuenta" onSubmit={filter}>
             <BiChevronLeft onClick={() => navigate("/inicio")} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
                 
-            <Image label="" setter={setAvatar} img={avatar} />
+            <Image label='' setter={setAvatar} img={avatar} />
             <h5 style={{width: "min-content",margin:"0 auto",display:"block",fontSize: "1.2rem",color:"rgb(212, 212, 212)", cursor:"default"}}>
                 {email}
             </h5>
 
-            <Field bind={[username, setUsername]} label="Cambiar el nombre de usuario" validator={Valid.names(username)} />
+            <Field bind={[newUsername, setNewUsername]} label="Nombre"
+            placeholder={sessionStorage.getItem('username')} />
 
-            <Field bind={[password, setPassword]} label="Para cambiar tu contraseña, introduce la contraseña actual:" type="password" validator={Valid.password(password)} />
+            <Field bind={[password, setPassword]} label="Para cambiar tu contraseña, introduce la contraseña actual:" type="password" />
             {!Valid.password(password) ? null:
             <>
-            <Field bind={[newPassword, setNewPassword]} label="Nueva contraseña" type="password" validator={Valid.password(password)} />
-            <Field bind={[confirmPassword, setConfirmPassword]} label="Confirmar nueva contraseña" type="password" validator={Valid.password(password)} />
+            <Field bind={[newPassword, setNewPassword]} label="Nueva contraseña" type="password" />
+            <Field bind={[confirmPassword, setConfirmPassword]} label="Confirmar nueva contraseña" type="password" />
             </>}
 
             {!hasRootAccess?null:
                 <Section label="Datos del comercio">
-                    <Field bind={[businessName, setBusinessName]} label="Razón social" validator={Valid.names(businessName)} />
+                    <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
+                    placeholder={businessName} />
                         
-                    <Radio legend="Categoría:" bind={[vatCategory, setVatCategory]}
+                    <Radio legend={"Actualmente: "+vatCategory+". Nueva categoría:"} bind={[newVatCategory, setNewVatCategory]}
                     options={["Responsable Inscripto", "Monotributista", "Sujeto Exento"]} />
 
-                    <Field label={"C.U.I." + (vatCategory === "Monotributista" ? "L." : "T.")}
-                    bind={[code, setCode]}
-                    validator={Valid.code(code)} />
+                    <Field label={"C.U.I." + (newVatCategory === "Monotributista" ? "L. " : "T. ")}
+                    bind={[newCode, setNewCode]} placeholder={code} />
                 </Section>
             }
 
@@ -195,8 +209,8 @@ export default function Account() {
 
                 {loading? <Loading /> :
                 <Button type="delete"
-                text=   {deletePermissionGranted?"Borrar la cuenta" : "Solicitar código para eliminar cuenta"}
-                onClick={deletePermissionGranted?deleteAccount      :  RequestDeletePermission} />}
+                text=   {!deletePermissionGranted?"Borrar la cuenta" : "Solicitar código para eliminar cuenta"}
+                onClick={!deletePermissionGranted?deleteAccount      :  RequestDeletePermission} />}  {/*TODO: remove !: delete only after permission */}
 
             </Retractable>
         </Form>

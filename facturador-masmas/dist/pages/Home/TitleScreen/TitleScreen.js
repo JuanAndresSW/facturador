@@ -25,6 +25,7 @@ export default function TitleScreen() {
             send();
             return;
         }
+        reset();
         setError("Nombre o contraseña incorrecta");
     }
     //Envía los datos de usuario al servidor.

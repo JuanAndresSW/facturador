@@ -1,12 +1,12 @@
 import fetch from 'api/fetch';
 
 export type session = {
-  accessToken: string;
-  refreshToken: string;
-  username: string;
-  rol: string;
-  activos: string;
-  pasivos: string;
+  accessToken: string;    //El JWT usado para autenticar peticiones.
+  refreshToken: string;   //El JWT usado para autenticar una solicitud de renovación de token de acceso.
+  username: string;       //El nombre del usuario.
+  rol: ("MAIN"|"BRANCH"); //El rol del usuario.
+  active: string;         //La cantidad numérica de patrimonio activo del comerciante.
+  pasive: string;         //La cantidad numérica de patrimonio pasivo del comerciante.
 };
 
 /**
@@ -23,26 +23,22 @@ export default class Session {
     const accessToken = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
 
-    const handleRefreshTokenResponse = (status:number, data:string) => {  
-      if (status === 200) {this.setSession(JSON.parse(data)); callback(200, data);}
+    if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
+      fetch("GET","auth/init", { token: accessToken }, handleAccessTokenResponse);
+    } else callback(400);
+
+    function handleAccessTokenResponse(status:number, data:string) { 
+      if (status === 200) callback(200, data);
+      else fetch("POST","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse);
+    };
+
+    function handleRefreshTokenResponse(status:number, data:string) {  
       callback(status, data);
     };
-    const handleAccessTokenResponse = (status:number, data:string) => { 
-      if (status === 200) callback(200, data);
-      else fetch("GET","auth/refresh", { token: refreshToken }, handleRefreshTokenResponse); //Volver a intentar con el otro token.
-    };
 
-    if (/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(accessToken)) {
-      fetch("GET","auth/init", { token: accessToken }, handleAccessTokenResponse);//should be "HEAD"
-    } else callback(400, "NO existe un token con formato válido almacenado.");
   }
 
-  /**
-  * Trata de iniciar sesión con los credenciales proporcionados.
-  * @param {string}   [usernameOrEmail] - Nombre o email.
-  * @param {string}   [password]        - Contraseña.
-  * @param {Function} [callback]        - Función de manejo de respuesta.
-  */
+  /** Trata de iniciar sesión con los credenciales proporcionados.*/
   public static getByCredentials(usernameOrEmail: string, password: string, callback: Function): void {
     fetch("POST", "auth/login", {
       body: JSON.stringify({
@@ -52,20 +48,14 @@ export default class Session {
     }, callback);
   }
 
-  /**
-   * Establece los valores obtenidos de una solicitud de login exitosa.
-   * @param {string} [session.accessToken] - El JWT usado para autenticar peticiones.
-   * @param {string} [session.refreshToken] - El JWT usado para autenticar una solicitud de renovación de token de acceso.
-   */
+  /**Establece los valores obtenidos de una solicitud de inicio de sesión exitosa.*/
   public static setSession(session: session): void {
-    if (session.accessToken === undefined || session.refreshToken === undefined) return;
-    document.cookie = `accessToken=${session.accessToken}; max-age=1209600; path=/; Secure`;
-    document.cookie = `refreshToken=${session.refreshToken}; max-age=1209600; path=/; Secure`;
-    sessionStorage.setItem("username", session.username);
-    sessionStorage.setItem("rol", session.rol);
-    sessionStorage.setItem("activos", session.activos);
-    sessionStorage.setItem("pasivos", session.pasivos);
-    
+    if (session.accessToken)  document.cookie = `accessToken=${session.accessToken}; max-age=1209600; path=/; Secure`;
+    if (session.refreshToken) document.cookie = `refreshToken=${session.refreshToken}; max-age=1209600; path=/; Secure`;
+    if (session.username)     sessionStorage.setItem("username", session.username);
+    if (session.rol)          sessionStorage.setItem("role", session.rol);
+    if (session.active !== undefined)   sessionStorage.setItem("actives", session.active);
+    if (session.pasive !== undefined)   sessionStorage.setItem("passives", session.pasive);
   }
 
   /** Forza la expiración de los tokens de sesión. Recarga la ubicación actual al finalizar.*/
@@ -77,15 +67,13 @@ export default class Session {
     window.location.reload(); //SHOULD STORE OLD TOKENS FOR SECURITY
   }
 
-  //GETTERS
+  //## GETTERS ##//
 
-  /** Recupera el token de acceso del array de cookies. */
   public static getAccessToken(): string {
     const cookieArray = decodeURIComponent(document.cookie).split("; ");
     return cookieArray[0].substring("accessToken=".length);
   }
 
-  /** Recupera el token de refrescamiento del array de cookies. */
   private static getRefreshToken(): string {
     const cookieArray = decodeURIComponent(document.cookie).split("; ");
     return cookieArray[0].substring("refreshToken=".length);
@@ -94,10 +82,15 @@ export default class Session {
 
 
 
-/**
- * username	"test1"
- * activos	0
- * pasivos	0
- * accessToken	
- * refreshToken	
- */
+//TODO: Access-Token => accessToken; POST => GET.
+//      activos => actives; pasivos => passives;
+//      rol => role; 
+
+
+/**{"Access-Token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYW1ldyIsImlzcyI6Ii9hcGkvYXV0a
+ * C9yZWZyZXNoIiwiZXhwIjoxNjQ3NTQ3OTk3LCJpYXQiOjE2NDc1MzM1OTcsInJvbCI6Ik1BSU4ifQ.fxacPfsQKmfemidJR
+ * Gh9TpfvdtsG1_BSkFlqYygW9y4",
+ * 
+ * "Refresh-Token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYW1ldyIsImlzcyI6Ii9hcGkvYXV0a
+ * C9yZWZyZXNoIiwiZXhwIjoxNjQ3ODA3MTk3LCJpYXQiOjE2NDc1MzM1OTd9.L6KwVZgQSiIPzW3e0aUQtwPeIaSmzJC9Fvh
+ * j4HixcHI"} */

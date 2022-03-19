@@ -1,5 +1,4 @@
 import React from "react";
-import { BiErrorCircle } from "react-icons/bi";
 import './ErrorMessage.css';
 /**
  * @returns Un mensaje de error sincronizado con 'message', siendo una pieza de estado.
@@ -7,7 +6,7 @@ import './ErrorMessage.css';
 export default function ErrorMessage(_a) {
     var message = _a.message;
     return (React.createElement("p", { className: "error" },
-        message.length > 1 ? React.createElement(BiErrorCircle, null) : null,
+        (message === null || message === void 0 ? void 0 : message.length) > 1 ? "🚫 " : null,
         message));
 }
 ;

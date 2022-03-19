@@ -29,14 +29,11 @@ export default function App() {
     //Comprobar la sesión con el servidor en el primer renderizado.
     useEffect(() => Session.getByToken(handleResponse), []);
 
-    //Comprobar la respuesta final del servidor.
+    //Almacenar la respuesta final del servidor.
     function handleResponse(status: number, data:string) {
-        console.log("APP: "+data);
-        if (status === 200) {
-            setAuth(true);
-            Session.setSession(JSON.parse(data));
-        }
-        else setAuth(false);
+        try   { Session.setSession(JSON.parse(data)); }
+        catch { console.error(data)                   }
+        setAuth(status === 200);
     }
 
     return (
@@ -46,12 +43,12 @@ export default function App() {
                     <Routes>
 
                         <Route path="/" element={!auth? <Home /> : <Navigate to={"/inicio"} />} />   
-                        <Route path="/login" element={!auth? <Login /> : <Navigate to={"/inicio"} />} />
+                        <Route path="/ingresar" element={!auth? <Login /> : <Navigate to={"/inicio"} />} />
 
-                        <Route path="/inicio/*" element={auth? <Start /> : <Navigate to={"/login"} />} />
-                        <Route path="/cuenta" element={auth? <Account /> : <Navigate to={"/login"} />} />
+                        <Route path="/inicio/*" element={!auth? <Start /> : <Navigate to={"/ingresar"} />} />
+                        <Route path="/cuenta" element={!auth? <Account /> : <Navigate to={"/ingresar"} />} />
 
-                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/registrarse" element={<SignUp />} />
                         <Route path="/acerca-de/*" element={<About />} />
                         <Route path="*" element={<Error404 />} />      
 

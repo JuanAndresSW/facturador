@@ -8,13 +8,6 @@
 }
 
 .features div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  -ms-flex-line-pack: center;
-      align-content: center;
   min-height: 15rem;
   margin: 3rem;
   padding: .5rem 1rem;
@@ -23,6 +16,7 @@
 }
 
 .features div img {
+  display: block;
   width: 15rem;
   height: 15rem;
 }

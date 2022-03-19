@@ -15,14 +15,13 @@ var Valid = /** @class */ (function () {
         return (password === null || password === void 0 ? void 0 : password.length) <= 40 && password.length >= 8;
     };
     Valid.image = function (image) {
-        if (image === null)
+        if (!image)
             return true;
         return (image === null || image === void 0 ? void 0 : image.size) < 2097152; //2MB
     };
     Valid.code = function (code) {
         code = code === null || code === void 0 ? void 0 : code.replace(/ |\.|-/g, "");
-        if (code === "")
-            return true;
+        //if (code === "") return true; TODO: generate automatic code
         if ((code === null || code === void 0 ? void 0 : code.length) !== 11)
             return false;
         return /[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(code);

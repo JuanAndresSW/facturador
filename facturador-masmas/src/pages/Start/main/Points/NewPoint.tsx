@@ -1,11 +1,28 @@
-/* import React, { useState } from "react";
-import Valid from "utils/Valid";
-import Retractable from "../../../../components/FormElements/Retractable/Retractable";
-import { BiCaretDown, BiCaretUp } from "react-icons/bi";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+//Servicios y utilidades.
+import Valid from 'utils/Valid';
+
+//GUI.
+import { Field, Form, Select } from "components/formComponents";
+import { BiCaretDown, BiCaretUp, BiChevronLeft } from "react-icons/bi";
+import { Retractable } from 'components/layout';
+
+
+
+/**Formulario para crear un nuevo punto de venta. */
 export default function NewPoint(): JSX.Element {
-  //controlador del panel retráctil de datos extra del punto de venta
-  const [extraActive, setExtraActive] = useState(true);
-  //datos del punto de venta
+
+  const navigate = useNavigate();
+
+  //Datos del punto de venta.
+  const [name, setName] = useState();
+  const [province, setProvince] = useState();
+  const [department, setDepartment] = useState();
+  const [locality, setLocality] = useState();
+  const [postalCOde, setPostalCode] = useState();
+
   const [pointOfSale, setPointOfSale] = useState({
     name: "",
     address: "",
@@ -62,12 +79,18 @@ export default function NewPoint(): JSX.Element {
       return;
     }
     //enviar objeto al servidor
-    Gateway.submitPoint(pointOfSale, window.location.href);
+    //Gateway.submitPoint(pointOfSale, window.location.href);
   };
 
   return (
-    <>
-      <h1 className="title">Crea un punto de venta</h1>
+    <Form title="Crea un punto de venta">
+    <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
+
+      <Field label="Nombre del comercio" bind={[name, setName]} placeholder={"Entre 3 y 20 caracteres"} />
+      <Select label="Provincia" bind={[province, setProvince]} options={provinces} />
+      <Field label="Departamento" bind={[department, setDepartment]} placeholder={`Departamento de ${province}`} />
+      <Field label="Localidad" bind={[locality, setLocality]} />
+
       <label>
         {"Nombre del comercio"}
         <input
@@ -120,15 +143,6 @@ export default function NewPoint(): JSX.Element {
         ></input>
       </label>
 
-      <Retractable
-        active={extraActive}
-        tabHeader={
-          <div onClick={() => setExtraActive(!extraActive)}>
-            <h2>Datos opcionales</h2>
-            {extraActive ? <BiCaretUp /> : <BiCaretDown />}
-          </div>
-        }
-      >
         <label>
           {"Logo"}
           <input
@@ -190,12 +204,30 @@ export default function NewPoint(): JSX.Element {
             }
           ></input>
         </label>
-      </Retractable>
 
       <p className="error">{pointError}</p>
 
       <button onClick={(e) => validatePointOfSale(e)}>Comprobar</button>
-    </>
+    </Form>
   );
 }
- */
+
+const provinces = [
+  {id:"Buenos Aires", value:"Buenos Aires"},
+  {id:"Catamarca", value:"Catamarca"},
+  {id:"Córdoba", value:"Córdoba"},
+  {id:"Corrientes", value:"Corrientes"},
+  {id:"Entre Rios", value:"Entre Rios"},
+  {id:"Formosa", value:"Formosa"},
+  {id:"La Rioja", value:"La Rioja"},
+  {id:"Misiones", value:"Misiones"},
+  {id:"Neuquén", value:"Neuquén"},
+  {id:"La Pampa", value:"La Pampa"},
+  {id:"San Juan", value:"San Juan"},
+  {id:"San Luis", value:"San Luis"},
+  {id:"Santa Cruz", value:"Santa Cruz"},
+  {id:"Santa Fe", value:"Santa Fe"},
+  {id:"Santiago del Estero", value:"Santiago del Estero"},
+  {id:"Tierra del Fuego", value:"Tierra del Fuego"},
+  {id:"Tucumán", value:"Tucumán"}
+]

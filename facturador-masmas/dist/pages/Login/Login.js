@@ -24,6 +24,7 @@ export default function Login() {
     ;
     function handleResponse(state, data) {
         setLoading(false);
+        console.log("LOGIN: " + data);
         if (state === 404) {
             setError("Usuario o contraseña incorrecta");
             return;
@@ -41,5 +42,26 @@ export default function Login() {
         React.createElement(Field, { icon: React.createElement(BiKey, null), label: "Contrase\u00F1a", type: "password", bind: [password, setPassword] }),
         React.createElement(ErrorMessage, { message: error }),
         loading ? React.createElement(Loading, null) : React.createElement(Button, { type: "submit", text: "Ingresar" }),
-        React.createElement("a", { href: "about:blank", target: "_blank", className: "link" }, "Olvid\u00E9 mi contrase\u00F1a")));
+        React.createElement("a", { href: "about:blank", target: "_blank", className: "link", style: { textDecoration: 'none' } }, "Olvid\u00E9 mi contrase\u00F1a"),
+        React.createElement("p", { style: { textAlign: 'center', cursor: 'default' } },
+            '¿No tienes una cuenta? ',
+            React.createElement("a", { href: "/signup", style: { textDecoration: 'none' } }, "Crea una nueva"))));
 }
+/**
+ * {
+ * "username":"test1",
+ *
+ * "rol":"MAIN",
+ *
+ * "activos":0,
+ *
+ * "pasivos":0,
+ *
+ * "accessToken":
+ * "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4cCI6M
+ * TY0NzM2OTI1OSwiaWF0IjoxNjQ3MzU0ODU5LCJyb2wiOiJNQUlOIn0.Dzg-RSnIRpBpZVhImEqqxesaTRJIOP3ddLL3sGVtYKo",
+ *
+ * refreshToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4c
+ * CI6MTY0NzYyODQ1OSwiaWF0IjoxNjQ3MzU0ODU5fQ.51FtqSh-8CwiQxvmGNfBUThjo2_Xe3QuJIjauWyT2H8"
+ * }
+ */ 

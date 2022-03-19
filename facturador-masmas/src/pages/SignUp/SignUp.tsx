@@ -11,11 +11,14 @@ import Valid from "utils/Valid";
 import MainAccount, {mainAccount} from "services/MainAccount";
 import Session from "services/Session";
 
+//Conversiones.
+import { fileToBase64, toFormattedCode } from "utils/conversions";
+
 
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
-export default function SignUp() {
+export default function SignUp(): JSX.Element {
 
   const navigate = useNavigate();
   
@@ -75,19 +78,20 @@ export default function SignUp() {
   /*ENVIAR Y RECIBIR*************************************************/
 
   /**Envía al servidor los datos recolectados. */
-  function submit(): void {
+  async function submit(): Promise<void> {
+
     const account: mainAccount = {
       user: {
-        username: username,
-        email: email,
-        password: password,
-        avatar: avatar,
+        username: username.trim(),
+        email: email.trim(),
+        password: password.trim(),
+        avatar: "" + await fileToBase64(avatar),
       },
       trader: {
-        businessName: businessName,
-        vatCategory: vatCategory,
-        code: code,
-        grossIncome: grossIncome,
+        businessName: businessName.trim(),
+        vatCategory: vatCategory.trim(),
+        code: toFormattedCode(code),
+        grossIncome: toFormattedCode(grossIncome),
       }
     }
     setSending(true);
@@ -99,7 +103,13 @@ export default function SignUp() {
     setSending(false);
     console.log("SIGNUP: "+data);
     if (state === 201) {
-      Session.setSession(JSON.parse(data))
+      Session.setSession({
+        ...JSON.parse(data),
+        username: username,
+        rol: 'MAIN',
+        actives: '0',
+        pasives: '0'
+      })
       setTraderError("");
       navigate("/inicio");
       window.location.reload();
@@ -128,6 +138,11 @@ export default function SignUp() {
       <ErrorMessage message={userError} />
 
       <Button type="submit" text="Siguiente" />
+
+      <p style={{textAlign:'center', cursor:'default'}}>
+        {'¿Ya tienes una cuenta? '}
+        <a href="/ingresar" style={{textDecoration:'none'}}>Ingresar</a>
+      </p>
 
     </Form>
     :
