@@ -65,12 +65,12 @@ public class RegisterMain {
 
     private RegisterResponse createRegisterResponse(HttpHeaders headers) {
         var accesToken = "";
-        if (!Objects.requireNonNull(headers.get("Access-token")).isEmpty()) {
-            accesToken = Objects.requireNonNull(headers.get("Access-token")).get(0);
+        if (!Objects.requireNonNull(headers.get("accessToken")).isEmpty()) {
+            accesToken = Objects.requireNonNull(headers.get("accessToken")).get(0);
         }
         var refreshToken = "";
-        if (!Objects.requireNonNull(headers.get("Refresh-token")).isEmpty()) {
-            refreshToken = Objects.requireNonNull(headers.get("Access-token")).get(0);
+        if (!Objects.requireNonNull(headers.get("refreshToken")).isEmpty()) {
+            refreshToken = Objects.requireNonNull(headers.get("refreshToken")).get(0);
         }
         return new RegisterResponse(accesToken, refreshToken);
     }

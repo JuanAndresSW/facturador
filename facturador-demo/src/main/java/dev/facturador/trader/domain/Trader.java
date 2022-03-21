@@ -28,7 +28,7 @@ public final class Trader implements Serializable {
     private String uniqueKey;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "vatCategory", nullable = false,
+    @Column(name = "vat", nullable = false,
             columnDefinition = "enum('RESPONSABLE_INSCRIPTO','MONOTRIBUTISTA','SUJETO_EXENTO')")
     private Vat vat;
 

@@ -39,15 +39,13 @@ public class FactoryMaps {
     public Map<String, String> createDataFromHeaders(HttpHeaders headers) {
         var data = new HashMap<String, String>();
         if (!headers.get("accessToken").isEmpty()) {
-            data.put("accessToken", Objects.requireNonNull(headers.get("Access-token")).get(0));
+            data.put("accessToken", Objects.requireNonNull(headers.get("accessToken")).get(0));
         }
         if (!headers.get("refreshToken").isEmpty()) {
-            data.put("refreshToken", Objects.requireNonNull(headers.get("Refresh-token")).get(0));
+            data.put("refreshToken", Objects.requireNonNull(headers.get("refreshToken")).get(0));
         }
         if (!headers.get("user-data").isEmpty()) {
             data.put("username", Objects.requireNonNull(headers.get("user-data")).get(0));
-        }
-        if (!headers.get("user-data").isEmpty()) {
             data.put("role", Objects.requireNonNull(headers.get("user-data")).get(1));
         }
         return data;
