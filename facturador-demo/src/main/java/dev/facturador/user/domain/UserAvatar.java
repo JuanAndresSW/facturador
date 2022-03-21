@@ -19,7 +19,7 @@ public final class UserAvatar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userAvatarId;
 
-    @Column(name = "newAvatar", nullable = false)
+    @Column(name = "avatar", nullable = false)
     private String avatar;
 
     @OneToOne(cascade = CascadeType.ALL)
