@@ -1,0 +1,13 @@
+.color p {
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+.color input {
+    display: block;
+    margin: .8rem auto;
+    padding: 0;
+    height: 2.5rem;
+    width: 20%;
+    border: 2px solid white;
+    border-radius: 4px;
+    cursor: pointer;
+}

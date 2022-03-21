@@ -78,7 +78,7 @@ export default function Account(): JSX.Element {
             
             const obj = JSON.parse(data);
             //setEmail      (obj.email);
-            setBusinessName (obj.bussinesName); //TODO: bussines => business;
+            setBusinessName (obj.businessName);
             setVatCategory  (obj.vat);
             setCode         (obj.uniqueKey);
         });
@@ -113,7 +113,7 @@ export default function Account(): JSX.Element {
                 newUsername:  newUsername?     newUsername.trim()       : null,
                 password:     password?        password.trim()          : null,
                 newPassword:  newPassword?     newPassword.trim()       : null,
-                newAvatar:       avatar?   await  fileToBase64(avatar)     : 'undefined',
+                newAvatar:    avatar?   await  fileToBase64(avatar)     : 'undefined',
             },
             trader: {
                 newBusinessName: newBusinessName? newBusinessName.trim()   : null,

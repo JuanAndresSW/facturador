@@ -21,7 +21,7 @@ const About =    lazy(() => import("pages/About/About"));
 const Error404 = lazy(() => import("pages/Error/Error404"));
 
 /**El componente global de la aplicación. */
-export default function App() {
+export default function App(): JSX.Element {
 
     //Determina si se le debe dar permisos de sesión al usuario.
     const [auth, setAuth] = useState(undefined);
@@ -42,15 +42,15 @@ export default function App() {
                 <Suspense fallback={<SplashScreen />}>
                     <Routes>
 
-                        <Route path="/" element={!auth? <Home /> : <Navigate to={"/inicio"} />} />   
-                        <Route path="/ingresar" element={!auth? <Login /> : <Navigate to={"/inicio"} />} />
+                        <Route path="/"            element={!auth? <Home />   : <Navigate to={"/inicio"} />}   />   
+                        <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to={"/inicio"} />}   />
 
-                        <Route path="/inicio/*" element={!auth? <Start /> : <Navigate to={"/ingresar"} />} />
-                        <Route path="/cuenta" element={!auth? <Account /> : <Navigate to={"/ingresar"} />} />
+                        <Route path="/inicio/*"    element={!auth? <Start />   : <Navigate to={"/ingresar"} />} />
+                        <Route path="/cuenta"      element={auth? <Account /> : <Navigate to={"/ingresar"} />} />
 
-                        <Route path="/registrarse" element={<SignUp />} />
-                        <Route path="/acerca-de/*" element={<About />} />
-                        <Route path="*" element={<Error404 />} />      
+                        <Route path="/registrarse" element={ <SignUp />  } />
+                        <Route path="/acerca-de/*" element={ <About />   } />
+                        <Route path="*"            element={ <Error404 />} />      
 
                     </Routes>
                 </Suspense>

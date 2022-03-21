@@ -1,18 +1,45 @@
 import fetch from 'api/fetch';
 
+/**
+ * const [name,       setName] =       useState();
+  //Dirección.
+  const [province,   setProvince] =   useState("Buenos Aires");
+  const [department, setDepartment] = useState();
+  const [locality,   setLocality] =   useState();
+  const [postalCode, setPostalCode] = useState();
+  const [street,     setStreet] =     useState();
+  const [number,     setNumber] =     useState();
+  //Contacto.
+  const [email,      setEmail] =      useState();
+  const [phone,      setPhone] =      useState();
+  const [website,    setWebsite] =    useState();
+  //Personalización.
+  const [logo,       setLogo] =       useState();
+  const [color,      setColor] =      useState("#ffffff");
+ */
+
 export type pointOfSale = {
     name: string;
-    address: string;
+    province: string;
+    department: string;
     locality: string;
     postalCode: string;
+    street: string;
+    number: number;
+    height: number;
     email: string;
     phone: string;
     website: string;
+    logo: string;
     color: string;
-    logo: File;
 };
 
 export default class PointOfSale {
+
+    public static create(pointOfSale:pointOfSale, callback:Function):void {
+
+    }
+
     /**
      * Recupera un array de puntos de venta a nombre de la cuenta solicitante.
      * Un id puede ser proporcionado en el URL para filtra

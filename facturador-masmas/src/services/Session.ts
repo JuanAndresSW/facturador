@@ -4,9 +4,9 @@ export type session = {
   accessToken: string;    //El JWT usado para autenticar peticiones.
   refreshToken: string;   //El JWT usado para autenticar una solicitud de renovación de token de acceso.
   username: string;       //El nombre del usuario.
-  rol: ("MAIN"|"BRANCH"); //El rol del usuario.
-  active: string;         //La cantidad numérica de patrimonio activo del comerciante.
-  pasive: string;         //La cantidad numérica de patrimonio pasivo del comerciante.
+  role: ("MAIN"|"BRANCH"); //El rol del usuario.
+  actives: string;         //La cantidad numérica de patrimonio activo del comerciante.
+  passives: string;         //La cantidad numérica de patrimonio pasivo del comerciante.
 };
 
 /**
@@ -53,9 +53,9 @@ export default class Session {
     if (session.accessToken)  document.cookie = `accessToken=${session.accessToken}; max-age=1209600; path=/; Secure`;
     if (session.refreshToken) document.cookie = `refreshToken=${session.refreshToken}; max-age=1209600; path=/; Secure`;
     if (session.username)     sessionStorage.setItem("username", session.username);
-    if (session.rol)          sessionStorage.setItem("role", session.rol);
-    if (session.active !== undefined)   sessionStorage.setItem("actives", session.active);
-    if (session.pasive !== undefined)   sessionStorage.setItem("passives", session.pasive);
+    if (session.role)          sessionStorage.setItem("role", session.role);
+    if (session.actives !== undefined)   sessionStorage.setItem("actives", session.actives);
+    if (session.passives !== undefined)   sessionStorage.setItem("passives", session.passives);
   }
 
   /** Forza la expiración de los tokens de sesión. Recarga la ubicación actual al finalizar.*/
@@ -79,18 +79,3 @@ export default class Session {
     return cookieArray[0].substring("refreshToken=".length);
   }
 }
-
-
-
-//TODO: Access-Token => accessToken; POST => GET.
-//      activos => actives; pasivos => passives;
-//      rol => role; 
-
-
-/**{"Access-Token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYW1ldyIsImlzcyI6Ii9hcGkvYXV0a
- * C9yZWZyZXNoIiwiZXhwIjoxNjQ3NTQ3OTk3LCJpYXQiOjE2NDc1MzM1OTcsInJvbCI6Ik1BSU4ifQ.fxacPfsQKmfemidJR
- * Gh9TpfvdtsG1_BSkFlqYygW9y4",
- * 
- * "Refresh-Token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYW1ldyIsImlzcyI6Ii9hcGkvYXV0a
- * C9yZWZyZXNoIiwiZXhwIjoxNjQ3ODA3MTk3LCJpYXQiOjE2NDc1MzM1OTd9.L6KwVZgQSiIPzW3e0aUQtwPeIaSmzJC9Fvh
- * j4HixcHI"} */

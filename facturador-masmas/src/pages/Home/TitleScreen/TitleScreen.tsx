@@ -3,6 +3,7 @@ import Session from "services/Session";
 import Valid from "utils/Valid";
 import "./TitleScreen.css";
 import { ErrorMessage } from "components/formComponents";
+import { Loading } from "components/layout";
 
 export default function TitleScreen(): JSX.Element {
 
@@ -75,11 +76,12 @@ export default function TitleScreen(): JSX.Element {
         e => { if (e.key === "Enter") validate() }}
       />
 
-      <button disabled={loading} 
+      {loading? <Loading/>:
+      <button
       onClick={loginInputType === "text" ?
       ()=> {setError(""); setLoginInputType("password")} : validate }>
       Iniciar sesión
-      </button>
+      </button>}
 
       <ErrorMessage message={error}/>
     </div>

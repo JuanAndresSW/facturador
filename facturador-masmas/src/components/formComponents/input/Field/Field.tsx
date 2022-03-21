@@ -5,7 +5,7 @@ type props = {
     label?: string;
     note?: string;
     placeholder?:string;
-    type?: "text" | "number" | "password";
+    type?: "text" | "number" | "password" | "email" | "tel" | "url";
     icon?: JSX.Element;
     bind: [any, Function];
     validator?: boolean;

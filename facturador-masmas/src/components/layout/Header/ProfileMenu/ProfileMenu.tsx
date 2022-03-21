@@ -7,7 +7,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import Session from "services/Session";
 import UserAvatar from 'services/UserAvatar';
 
-import defaultImg from 'assets/img/punto.jpg';
+import defaultImg from 'assets/svg/user.svg';
 import './ProfileMenu.css';
 
 

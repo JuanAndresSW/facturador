@@ -1,11 +1,12 @@
 import React from "react";  
 import './Image.css';
-import defaultAvatar from 'assets/img/libro.jpg';
+import defaultAvatar from 'assets/svg/user.svg';
 import { BsFillXCircleFill } from "react-icons/bs";
 
 type props = {
     label: string;
     note?: string;
+    fallback?: string;
     setter: React.Dispatch<React.SetStateAction<File>>;
     img: File;
 }
@@ -14,10 +15,11 @@ type props = {
  * Un input de archivos de tipo imágen. Acepta png, jpg y svg.
  * @param props.label - El título del input.
  * @param props.note - Nota adicional acerca del input.
+ * @param props.fallback - URL de imágen a mostrar cuando no hay ninguna otra imágen. Por defecto es un icono de usuario.
  * @param props.setter - Función controladora del estado de la constante que almacena la imágen.
  * @param props.img - Valor File de la imágen a mostrar.
  */
-export default function Image({label, note, setter, img}:props) {
+export default function Image({label, note, fallback=defaultAvatar, setter, img}:props) {
   return (
     <label className="image">
         {label}<span> {note}</span>
@@ -32,7 +34,7 @@ export default function Image({label, note, setter, img}:props) {
           }}
         />
         <div>
-        <img src={img? URL.createObjectURL(img):defaultAvatar} />
+        <img src={img? URL.createObjectURL(img):fallback} />
         </div>
 
     </label>

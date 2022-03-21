@@ -4,6 +4,10 @@
 -- ------------------------------------------------------
 -- Server version	8.0.27
 
+drop schema `facturador_db`;
+create schema `facturador_db`;
+use `facturador_db`;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -559,7 +563,7 @@ DROP TABLE IF EXISTS `trader`;
 CREATE TABLE `trader` (
   `id_trader` int unsigned NOT NULL AUTO_INCREMENT,
   `unique_key` varchar(15) NOT NULL,
-  `vat` enum('RESPONSABLE_INSCRIPTO','MONOTRIBUTISTA','SUJETO_EXENTO') NOT NULL,
+  `vat_category` enum('RESPONSABLE_INSCRIPTO','MONOTRIBUTISTA','SUJETO_EXENTO') NOT NULL,
   `name` varchar(20) NOT NULL,
   `gross_income` varchar(15) NOT NULL,
   `active` int unsigned NOT NULL,
