@@ -58,8 +58,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     (HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         var user = (CustomUserDetails) authResult.getPrincipal();
         var URL = request.getRequestURI().toString();
-        String accesToken = jwt.createAccesToken(user.getUsername(), user.getAuthorities(), URL);
-        String refreshToken = jwt.createRefreshToken(user.getUsername(), URL);
+        String accesToken = jwt.createAccesToken(user.getEmail(), user.getAuthorities(), URL);
+        String refreshToken = jwt.createRefreshToken(user.getEmail(), URL);
+
         response.setHeader("accessToken", accesToken);
         response.setHeader("refreshToken", refreshToken);
         response.addHeader("user-data", user.getUsername());

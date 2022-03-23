@@ -3,8 +3,8 @@ package dev.facturador.auth.application;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.auth.domain.CustomUserDetails;
 import dev.facturador.auth.domain.FactoryMaps;
-import dev.facturador.auth.domain.bo.LoginRequest;
-import dev.facturador.auth.domain.dto.LoginResponse;
+import dev.facturador.auth.domain.request.LoginRequest;
+import dev.facturador.auth.domain.response.LoginResponse;
 import dev.facturador.auth.infrastructure.CustomAuthenticationFilter;
 import dev.facturador.shared.infrastructure.JWT;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -78,8 +77,7 @@ public class AuthUtil {
     }
 
     /**
-     * Crea un usuaro autenticado con {@link JWT} {@code createUserByToken} <br/>
-     * Recupero el {@link CustomUserDetails} de este usuario
+     * Recupero el {@link CustomUserDetails} con la informacion del Token JWT y la interfaz {@link JWT}
      *
      * @param authHeader Bearer Token recuperado del header
      * @param jwt        {@link JWT} para las utilidades
@@ -90,9 +88,9 @@ public class AuthUtil {
         try {
             if (jwt.verifyToken(authHeader)) {
                 var token = authHeader.substring("Bearer ".length());
-                var username = jwt.createDecoder(token).getSubject();
+                var email = jwt.createDecoder(token).getSubject();
 
-                return (CustomUserDetails) serviceCustomUerDetails.loadUserByUsername(username);
+                return (CustomUserDetails) serviceCustomUerDetails.loadUserByUsername(email);
             } else {
                 throw new RuntimeException("Refresh token is mising");
             }

@@ -29,47 +29,48 @@ public class MainAccountRegisterService implements IMainAccountRegisterService {
     }
 
     @Override
-    public Optional<String> existsByUsernameOfUser(String username) {
-        if (Boolean.TRUE.equals(repository.existsByUserMainAccountUsername(username))) {
-            return Optional.of("Nombre de usuario ya se encuentra en uso");
-        }
-        return Optional.empty();
+    public Boolean existsByUsernameOfUser(String username) {
+        return Boolean.TRUE.equals(repository.existsByUserMainAccountUsername(username));
     }
 
     @Override
-    public Optional<String> existsByEmailOfUsuarios(String email) {
-        if (Boolean.TRUE.equals(repository.existsByUserMainAccountEmail(email))) {
-            return Optional.of("Email ya se encuentra en uso");
-        }
-        return Optional.empty();
+    public Boolean existsByEmailOfUsuarios(String email) {
+        return Boolean.TRUE.equals(repository.existsByUserMainAccountEmail(email));
     }
 
     @Override
-    public Optional<String> existsByUniqueKeyOfTrader(String uniqueKey) {
-        if (Boolean.TRUE.equals(repository.existsByAccountOwnerUniqueKey(uniqueKey))) {
-            return Optional.of("Cuit/Cuil ya se encuentra en uso");
-        }
-        return Optional.empty();
+    public Boolean existsByUniqueKeyOfTrader(String uniqueKey) {
+        return Boolean.TRUE.equals(repository.existsByAccountOwnerUniqueKey(uniqueKey));
     }
 
-    public Collection<String> whenIndicesAreRepeatedReturnErrror(RegisterRequest account) {
-        Collection<String> errorMessage = new HashSet<>();
+    @Override
+    public String whenIndicesAreRepeatedReturnErrror(RegisterRequest tryRegister) {
+        if(existsByUsernameOfUser(tryRegister.getUserRegister().username())){
+            if(existsByEmailOfUsuarios(tryRegister.getUserRegister().email())){
+                if(existsByUniqueKeyOfTrader(tryRegister.getTraderRegister().code())){
+                    return "Nombre de Usuario, Email y Cuit ya se encuentran en uso";
+                }
 
-        Optional<String> messageWhenRepeated = existsByEmailOfUsuarios(account.getUserRegister().email());
-        if (messageWhenRepeated.isPresent()) {
-            errorMessage.add(messageWhenRepeated.get());
-            messageWhenRepeated = Optional.empty();
+                return "Nombre de Usuario y Email ya se encuentran en uso";
+            }
+            if(existsByUniqueKeyOfTrader(tryRegister.getTraderRegister().code())){
+                return "Nombre de Usuario y Cuit ya se encuentran en uso";
+            }
+
+            return "Nombre de usuario ya se encuentra en uno";
         }
-        messageWhenRepeated = existsByUsernameOfUser(account.getUserRegister().username());
-        if (messageWhenRepeated.isPresent()) {
-            errorMessage.add(messageWhenRepeated.get());
-            messageWhenRepeated = Optional.empty();
+
+        if(existsByEmailOfUsuarios(tryRegister.getUserRegister().email())){
+            if(existsByUniqueKeyOfTrader(tryRegister.getTraderRegister().code())){
+                return "Email y Cuit ya se encuentran en uso";
+            }
+            return "Email ya se encuentran en uso";
         }
-        messageWhenRepeated = existsByUniqueKeyOfTrader(account.getTraderRegister().code());
-        if (messageWhenRepeated.isPresent()) {
-            errorMessage.add(messageWhenRepeated.get());
-            messageWhenRepeated = Optional.empty();
+
+        if(existsByUniqueKeyOfTrader(tryRegister.getTraderRegister().code())){
+            return "Cuit ya se encuentra en uso";
         }
-        return errorMessage;
+
+        return null;
     }
 }

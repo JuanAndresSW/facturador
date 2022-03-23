@@ -54,7 +54,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         //Si llega aqui este usuario no existe
-        throw new UsernameNotFoundException("Username do not exist");
+        throw new UsernameNotFoundException("Username or Email do not exist");
     }
 
 

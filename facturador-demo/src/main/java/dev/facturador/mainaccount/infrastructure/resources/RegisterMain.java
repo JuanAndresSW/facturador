@@ -1,6 +1,6 @@
 package dev.facturador.mainaccount.infrastructure.resources;
 
-import dev.facturador.auth.domain.dto.LoginResponse;
+import dev.facturador.auth.domain.response.LoginResponse;
 import dev.facturador.mainaccount.domain.dto.RegisterResponse;
 import dev.facturador.mainaccount.domain.vo.agregate.RegisterRequest;
 import dev.facturador.mainaccount.infrastructure.service.IMainAccountRegisterService;
@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,16 +36,16 @@ public class RegisterMain {
     /**
      * Registra la cuenta principal en la base de datos
      * <br/>
-     * Redirige al login y recupera de la respuesta el {@code Access Token} y {@code Refresh Token}
+     * Envia los datos necesarios para Iniciar sesion
      *
      * @param tryRegister {@link RegisterRequest} Bussines Object para recibir el JSON
      * @return {@link HttpEntity} con el body de {@link LoginResponse}
      */
     @PostMapping("/mainaccounts")
     public HttpEntity<?> singup(@Valid @RequestBody RegisterRequest tryRegister) throws URISyntaxException {
-        Collection<String> messages = mainAccountService.whenIndicesAreRepeatedReturnErrror(tryRegister);
-        if (messages.size() >= 1) {
-            return ResponseEntity.badRequest().body(messages);
+        var message = mainAccountService.whenIndicesAreRepeatedReturnErrror(tryRegister);
+        if (StringUtils.hasText(message)) {
+            return ResponseEntity.badRequest().body(message);
         }
         mainAccountService.register(tryRegister);
 

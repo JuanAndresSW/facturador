@@ -1,4 +1,4 @@
-package dev.facturador.auth.domain.dto;
+package dev.facturador.auth.domain.response;
 
 
 public record LoginResponse(String username, String role, Integer active, Integer pasive, String accessToken,

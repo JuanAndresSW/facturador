@@ -1,4 +1,4 @@
-package dev.facturador.auth.domain.bo;
+package dev.facturador.auth.domain.request;
 
 import org.hibernate.validator.constraints.Length;
 

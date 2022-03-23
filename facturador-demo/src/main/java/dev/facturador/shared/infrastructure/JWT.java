@@ -21,9 +21,9 @@ public interface JWT<T> {
         return Boolean.TRUE.equals(StringUtils.hasText(auth) && auth.startsWith("Bearer "));
     }
 
-    default String createAccesToken(String username, Collection<? extends GrantedAuthority> rol, String url) {
+    default String createAccesToken(String email, Collection<? extends GrantedAuthority> rol, String url) {
         return com.auth0.jwt.JWT.create()
-                .withSubject(username)
+                .withSubject(email)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined))
                 .withIssuer(url)
@@ -31,9 +31,9 @@ public interface JWT<T> {
                 .sign(signKey());
     }
 
-    default String createRefreshToken(String username, String url) {
+    default String createRefreshToken(String email, String url) {
         return com.auth0.jwt.JWT.create()
-                .withSubject(username)
+                .withSubject(email)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expDateDefined + 259200000))
                 .withIssuer(url)
