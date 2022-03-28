@@ -34,37 +34,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import fetch from 'api/fetch';
-import Session from './Session';
-var MainAccount = /** @class */ (function () {
-    function MainAccount() {
-    }
-    MainAccount.create = function (account, callback) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                fetch("POST", "mainaccounts", { body: JSON.stringify(account) }, callback);
-                return [2 /*return*/];
-            });
+export default function create(account, callback) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/];
         });
-    };
-    MainAccount.retrieve = function (callback) {
-        fetch("GET", "mainaccounts/".concat(sessionStorage.getItem("username")), { token: Session.getAccessToken() }, callback);
-    };
-    MainAccount.update = function (account, callback) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                fetch("PUT", "mainaccounts", { body: JSON.stringify(account), token: Session.getAccessToken() }, callback);
-                return [2 /*return*/];
-            });
-        });
-    };
-    MainAccount.delete = function (code, callback) {
-        fetch("DELETE", "mainaccounts/".concat(sessionStorage.getItem("username")), { token: Session.getAccessToken() }, callback);
-    }; //TODO: add body: code
-    /**Solicita que un código de eliminación de cuenta sea enviado por email al propietario de la cuenta.*/
-    MainAccount.requestDeletePermission = function (callback) {
-        fetch("HEAD", "mainaccounts", { token: Session.getAccessToken() }, callback);
-    };
-    return MainAccount;
-}());
-export default MainAccount;
+    });
+}

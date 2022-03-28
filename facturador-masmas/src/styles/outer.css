@@ -1,24 +1,8 @@
 @charset "utf-8";
-#root {
-  background: rgba(66, 166, 255, 0.92);
-  animation: gradient 60s ease-in infinite;
+
+body {
   width: 100%;
   min-height: 100vh;
-  overflow: hidden;
-}
-@keyframes gradient {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 800% 400%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-body {
-  margin: 0;
-  background: top / cover url(assets/img/main3.jpg) no-repeat fixed;
-  min-height: 100vh;
+  overflow-x: hidden;
+  background: top / cover url(assets/img/main2.jpg) no-repeat fixed;
 }

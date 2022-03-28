@@ -1,14 +1,3 @@
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -50,13 +39,10 @@ import { Link, useNavigate } from "react-router-dom";
 //Componentes de formulario.
 import { Form, Field, Image, ErrorMessage, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
-import { Loading } from "components/layout";
+import { Loading } from "styledComponents";
 //Relacionado a la cuenta.
-import Valid from "utils/Valid";
-import MainAccount from "services/MainAccount";
-import Session from "services/Session";
-//Conversiones.
-import { fileToBase64, toFormattedCode } from "utils/conversions";
+import Valid from "utilities/Valid";
+import signup from "./services/signup";
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
@@ -133,45 +119,34 @@ export default function SignUp() {
     /**Envía al servidor los datos recolectados. */
     function submit() {
         return __awaiter(this, void 0, void 0, function () {
-            var account, _a;
-            var _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0:
-                        _b = {};
-                        _c = {
-                            username: username.trim(),
-                            email: email.trim(),
-                            password: password.trim()
-                        };
-                        _a = "";
-                        return [4 /*yield*/, fileToBase64(avatar)];
-                    case 1:
-                        account = (_b.user = (_c.avatar = _a + (_d.sent()),
-                            _c),
-                            _b.trader = {
-                                businessName: businessName.trim(),
-                                vatCategory: vatCategory.trim(),
-                                code: toFormattedCode(code),
-                                grossIncome: toFormattedCode(grossIncome),
-                            },
-                            _b);
-                        setSending(true);
-                        MainAccount.create(account, handleResponse);
-                        return [2 /*return*/];
-                }
+            var account;
+            return __generator(this, function (_a) {
+                account = {
+                    user: {
+                        username: username,
+                        email: email,
+                        password: password,
+                        avatar: avatar,
+                    },
+                    trader: {
+                        businessName: businessName,
+                        vatCategory: vatCategory,
+                        code: code,
+                        grossIncome: grossIncome,
+                    }
+                };
+                setSending(true);
+                signup(account, handleResponse);
+                return [2 /*return*/];
             });
         });
     }
     /**Maneja la respuesta recibida del servidor. */
-    function handleResponse(state, data) {
+    function handleResponse(ok, data) {
         setSending(false);
-        console.log("SIGNUP: " + data);
-        if (state === 201) {
-            Session.setSession(__assign(__assign({}, JSON.parse(data)), { username: username, rol: 'MAIN', actives: '0', pasives: '0' }));
+        if (ok) {
             setTraderError("");
             navigate("/inicio");
-            window.location.reload();
         }
         else
             setTraderError(data);
@@ -187,7 +162,10 @@ export default function SignUp() {
             React.createElement(Field, { label: "Vuelve a escribir la contrase\u00F1a", bind: [passwordMatch, setPasswordMatch], type: "password", validator: password === passwordMatch }),
             React.createElement(Image, { label: "Foto de perfil", note: "(opcional)", setter: setAvatar, img: avatar }),
             React.createElement(ErrorMessage, { message: userError }),
-            React.createElement(Button, { type: "submit", text: "Siguiente" }))
+            React.createElement(Button, { type: "submit", text: "Siguiente" }),
+            React.createElement("p", { style: { textAlign: 'center', cursor: 'default' } },
+                '¿Ya tienes una cuenta? ',
+                React.createElement(Link, { to: "/ingresar", style: { textDecoration: 'none' } }, "Ingresar")))
         :
             active === "trader" ?
                 React.createElement(Form, { title: "Datos del comercio", onSubmit: validateTrader },

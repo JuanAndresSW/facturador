@@ -1,4 +1,4 @@
-import { Loading } from "components/layout";
+import Loading from "styledComponents/Loading/Loading";
 import React from "react";
 import './Select.css';
 

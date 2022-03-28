@@ -1,6 +1,6 @@
 .button {
-  color: white;
-  border: none;
+  color: #ffffff;
+  border: 1px solid #ffffff;
   border-radius: 9999px;
   padding: 0.5rem 4rem;
   display: block;
@@ -9,12 +9,22 @@
 }
 
 .button[type="submit"] {
-  background-color: rgb(0, 224, 11);
+  background-color: #00ad0e;
 }
 .button[type="button"] {
-  background-color: rgb(0, 111, 204);
+  background-color: #006fcc;
 }
 .button.delete {
-  background-color: rgb(255, 68, 68);
+  background-color: #ff4444;
 }
-  
+ 
+
+.button[type="submit"]:hover {
+  background-color: #007a0a;
+}
+.button[type="button"]:hover {
+  background-color: #015aa3;
+}
+.button.delete:hover {
+  background-color: #f52323;
+}

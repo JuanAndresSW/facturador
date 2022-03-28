@@ -1,0 +1,75 @@
+.features {
+  background-color: white;
+  width: 100%;
+  min-height: 2rem;
+  padding: 4rem 0;
+  -webkit-box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+}
+
+.features div {
+  min-height: 15rem;
+  margin: 3rem;
+  padding: .5rem 1rem;
+  width: 85%;
+  background-color: white;
+}
+
+.features div img {
+  display: block;
+  width: 15rem;
+  height: 15rem;
+}
+
+.features div h3 {
+  margin: 0;
+  padding-top: 1rem;
+  font-size: 2.8vw;
+}
+
+.features div:nth-child(odd) {
+  -webkit-box-shadow: 20px 14px 0px 5px rgba(64, 231, 236, 0.5), -20px -14px 0px 0px rgba(11, 117, 255, 0.5);
+          box-shadow: 20px 14px 0px 5px rgba(64, 231, 236, 0.5), -20px -14px 0px 0px rgba(11, 117, 255, 0.5);
+  margin-right: 5rem;
+  text-align: left;
+  border-radius: 222px 15px;
+}
+
+.features div:nth-child(odd) img {
+  float: left;
+}
+
+.features div:nth-child(even) {
+  -webkit-box-shadow: -20px 14px 0px 0px rgba(11, 117, 255, 0.5), 20px -14px 0px 0px rgba(64, 231, 236, 0.5);
+          box-shadow: -20px 14px 0px 0px rgba(11, 117, 255, 0.5), 20px -14px 0px 0px rgba(64, 231, 236, 0.5);
+  margin-left: 5rem;
+  text-align: right;
+  border-radius: 15px 222px;
+}
+
+.features div:nth-child(even) img {
+  float: right;
+}
+
+@media (max-width: 768px) {
+  .features div:nth-child(odd) {
+    border-radius: 100px;
+  }
+  .features div:nth-child(even) {
+    border-radius: 100px;
+  }
+  .features div h3 {
+    font-size: 2rem;
+  }
+  .features div img {
+    display: none;
+    width: 15vw;
+  }
+  .features div:nth-child(odd) {
+    margin: 4rem auto;
+  }
+  .features div:nth-child(even) {
+    margin: 0;
+  }
+}
+/*# sourceMappingURL=FeaturesPreview.css.map */

@@ -15,7 +15,7 @@ export default function Image({label, note, value, onChange}:props) {
   return (
     <label className="color">
         {label}<span> {note}</span>
-        <p style={{color:value}}>{value}</p>
+        <p style={{textDecoration: 'underline 2px dotted'+value, textUnderlineOffset:'3px', fontSize:'small'}}>{value}</p>
         <input
           value={value}
           type="color"

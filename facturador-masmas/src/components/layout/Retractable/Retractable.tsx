@@ -26,7 +26,7 @@ export default function Retractable({ children, label, initial=true, sync, onCli
 
     function change() {
         setLocalState(!extended);
-        onClick(!extended);
+        if(onClick) onClick(!extended);
     }
 
     return (

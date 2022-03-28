@@ -4,15 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 //Componentes de formulario.
 import { Form, Field, Image, ErrorMessage, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
-import { Loading } from "components/layout";
+import { Loading } from "styledComponents";
 
 //Relacionado a la cuenta.
-import Valid from "utils/Valid";
-import MainAccount, {mainAccount} from "services/MainAccount";
-import Session from "services/Session";
-
-//Conversiones.
-import { fileToBase64, toFormattedCode } from "utils/conversions";
+import Valid from "utilities/Valid";
+import signup from "./services/signup";
+import mainAccount from './models/mainAccount';
 
 
 /**
@@ -82,37 +79,28 @@ export default function SignUp(): JSX.Element {
 
     const account: mainAccount = {
       user: {
-        username: username.trim(),
-        email: email.trim(),
-        password: password.trim(),
-        avatar: "" + await fileToBase64(avatar),
+        username: username,
+        email: email,
+        password: password,
+        avatar: avatar,
       },
       trader: {
-        businessName: businessName.trim(),
-        vatCategory: vatCategory.trim(),
-        code: toFormattedCode(code),
-        grossIncome: toFormattedCode(grossIncome),
+        businessName: businessName,
+        vatCategory: vatCategory,
+        code: code,
+        grossIncome: grossIncome,
       }
     }
     setSending(true);
-    MainAccount.create(account, handleResponse);
+    signup(account, handleResponse);
   }
 
   /**Maneja la respuesta recibida del servidor. */
-  function handleResponse(state: number, data: string) {
+  function handleResponse(ok: boolean, data: string) {
     setSending(false);
-    console.log("SIGNUP: "+data);
-    if (state === 201) {
-      Session.setSession({
-        ...JSON.parse(data),
-        username: username,
-        rol: 'MAIN',
-        actives: '0',
-        pasives: '0'
-      })
+    if (ok) {
       setTraderError("");
       navigate("/inicio");
-      window.location.reload();
     } else setTraderError(data);
   }
 
@@ -141,7 +129,7 @@ export default function SignUp(): JSX.Element {
 
       <p style={{textAlign:'center', cursor:'default'}}>
         {'¿Ya tienes una cuenta? '}
-        <a href="/ingresar" style={{textDecoration:'none'}}>Ingresar</a>
+        <Link to="/ingresar" style={{textDecoration:'none'}}>Ingresar</Link>
       </p>
 
     </Form>

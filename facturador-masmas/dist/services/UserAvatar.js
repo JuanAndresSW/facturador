@@ -34,9 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import fetch from 'api/fetch';
-import Session from './Session';
-import { base64ToBlob } from 'utils/conversions';
+import ajax from 'interceptors/ajax';
+import getToken from './getToken';
+import { base64ToBlob } from 'utilities/conversions';
 var UserAvatar = /** @class */ (function () {
     function UserAvatar() {
     }
@@ -48,7 +48,7 @@ var UserAvatar = /** @class */ (function () {
         if (localStorage.getItem("avatar"))
             returnAsFile(200, localStorage.getItem("avatar"));
         else
-            fetch("GET", "useravatars", { token: Session.getAccessToken() }, returnAsFile);
+            ajax("GET", "useravatars", { token: getToken('access') }, returnAsFile);
         function returnAsFile(state, base64) {
             return __awaiter(this, void 0, void 0, function () {
                 var blob;

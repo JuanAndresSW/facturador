@@ -1,41 +1,29 @@
 //React.
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-//Servicios y utilidades.
-import UserAvatar from "services/UserAvatar";
-import MainAccount from "services/MainAccount";
-import BranchAccount from "services/BranchAccount";
-import Session from "services/Session";
-import Valid from "utils/Valid";
+//Servicios.
+import getLocalUserAvatar from './services/getLocalUserAvatar';
+import getTraderData from './services/getTraderData';
+import { updateMainAccount, updateBranchAccount } from './services/updateAccounts';
+import requestDeletionCode from './services/requestDeletionCode';
+import requestAccountDeletion from './services/requestAccountDeletion';
+//Validación.
+import Valid from "utilities/Valid";
 //GUI.
 import { Button, ErrorMessage, Field, Form, Image, Radio } from "components/formComponents";
-import { Loading, Retractable, Section } from "components/layout";
-import Header from "components/layout/Header/Header";
-import Footer from "components/layout/Footer/Footer";
+import { Retractable } from "components/layout";
+import { Loading, Section } from "styledComponents";
 import { BiChevronLeft } from "react-icons/bi";
-//Conversiones.
-import { fileToBase64, toFormattedCode } from "utils/conversions";
+//Modelos.
+import editedAccount from "./models/editedAccount";
 
 
 //## Funciones de implementación condicional. ##//
 const hasRootAccess = sessionStorage.getItem("role") === "MAIN";
 
-const retrieveAccount = hasRootAccess?
-(handler:Function)=> MainAccount.retrieve(handler):
-(handler:Function)=> BranchAccount.retrieve(handler);
-
 const updateAccount = hasRootAccess?
-(data:any, handler:Function)=> MainAccount.update(data, handler):
-(data:any, handler:Function)=> BranchAccount.update(data, handler);
-
-const requestDeletionCode = hasRootAccess?
-(handler:Function)=> MainAccount.requestDeletePermission(handler):
-(handler:Function)=> BranchAccount.requestDeletePermission(handler);
-
-const requestAccountDeletion= hasRootAccess?
-(code:string, handler:Function)=> MainAccount.delete(code, handler):
-(code:string, handler:Function)=> BranchAccount.delete(code, handler);
-
+(data:any, handler:Function)=> updateMainAccount(data, handler):
+(data:any, handler:Function)=> updateBranchAccount(data, handler);
 
 
 /**Un formulario que permite cambiar datos de la cuenta / eliminar la cuenta de usuario y el comerciante. */
@@ -54,7 +42,6 @@ export default function Account(): JSX.Element {
     const [deletionCode, setDeletionCode] =                       useState("");
     //Datos del usuario.
     const [avatar, setAvatar] =                     useState(undefined);
-    const [email, setEmail] =                       useState('...');
     const [newUsername, setNewUsername] =                 useState('');
     const [password, setPassword] =                 useState("");
     const [newPassword, setNewPassword] =           useState("");
@@ -69,20 +56,18 @@ export default function Account(): JSX.Element {
 
     //Pedir los datos actuales en el primer renderizado.
     useEffect(() => {
-        UserAvatar.retrieve((HTTPState: number, URLObject: string) => {
-            if (HTTPState === 200 && !avatar) setAvatar(URLObject);
+        getLocalUserAvatar((ok:boolean, file: Blob) => {
+            if (ok && !avatar) setAvatar(file);
         });
 
-        retrieveAccount((state:number, data:string):void => {
-            if (state !== 200) { setError(data); return; }
-            
-            const obj = JSON.parse(data);
-            //setEmail      (obj.email);
-            setBusinessName (obj.businessName);
-            setVatCategory  (obj.vat);
-            setCode         (obj.uniqueKey);
-        });
-
+        if (hasRootAccess) {
+            getTraderData((ok:boolean, data:any):void => {
+                if (!ok) { setError(data); return; }
+                setBusinessName (data.businessName);
+                setVatCategory  (data.vatCategory);
+                setCode         (data.uniqueKey);
+            });
+        }
     }, []);
 
     /*VALIDACIÓN***************************************************************/
@@ -107,37 +92,32 @@ export default function Account(): JSX.Element {
     //Envía los datos al servidor.
     async function submit() {
         setLoading(true);
-        const account = {
+        const account: editedAccount = {
             user: {
                 username:     sessionStorage.getItem("username"),
-                newUsername:  newUsername?     newUsername.trim()       : null,
-                password:     password?        password.trim()          : null,
-                newPassword:  newPassword?     newPassword.trim()       : null,
-                newAvatar:    avatar?   await  fileToBase64(avatar)     : 'undefined',
+                newUsername:  newUsername,
+                password:     password,
+                newPassword:  newPassword,
+                newAvatar:    avatar,
             },
             trader: {
-                newBusinessName: newBusinessName? newBusinessName.trim()   : null,
-                newVatCategory:  newVatCategory?  newVatCategory.trim()    : null,
-                newCode:         newCode?         toFormattedCode(newCode) : null,
+                newBusinessName: newBusinessName,
+                newVatCategory:  newVatCategory,
+                newCode:         newCode,
             }
         } 
-        updateAccount(account, (state:number, data:string)=>{
+        updateAccount(account, (ok:boolean, data:string)=>{
             setLoading(false);
-            if (state===200) {
-                localStorage.removeItem('avatar');
-                //fileToBase64(avatar).then(newAvatar=>localStorage.setItem("avatar", ""+newAvatar));
-                navigate('/inicio');
-            }
-            else setError(data);
+            if (!ok) setError(data);
         });
     }
 
     //Solicita un código de eliminación a ser enviado al email del usuario.
     function RequestDeletePermission() {
         setLoading(true);
-        requestDeletionCode((state:number, data:string)=> {
+        requestDeletionCode((ok:boolean, data:string)=> {
             setLoading(false);
-            if (state===200) setDeletePermissionGranted(true);
+            if (ok) setDeletePermissionGranted(true);
             else setDeleteError(data);
         });
     }
@@ -145,11 +125,8 @@ export default function Account(): JSX.Element {
     //Envía el código de eliminación ingresado. Si es correcto, la cuenta de usuario es eliminada.
     function deleteAccount() {
         //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
-        requestAccountDeletion(deletionCode, (state:number, data:string)=> {
-            setDeleteError(data)
-            if (state!==200) return;
-            Session.close();
-            window.location.reload();
+        requestAccountDeletion(deletionCode, (ok:boolean, data:string)=> {
+            if (!ok) setDeleteError(data);
         });
     }
 
@@ -158,15 +135,11 @@ export default function Account(): JSX.Element {
 
     return (
         <>
-        <Header isAuthenticated={true} />
    
         <Form title="Opciones de la cuenta" onSubmit={filter}>
             <BiChevronLeft onClick={() => navigate("/inicio")} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
                 
             <Image label='' setter={setAvatar} img={avatar} />
-            <h5 style={{width: "min-content",margin:"0 auto",display:"block",fontSize: "1.2rem",color:"rgb(212, 212, 212)", cursor:"default"}}>
-                {email}
-            </h5>
 
             <Field bind={[newUsername, setNewUsername]} label="Nombre"
             placeholder={sessionStorage.getItem('username')} />
@@ -202,7 +175,7 @@ export default function Account(): JSX.Element {
                 
                 {!deletePermissionGranted? null :
                     <Field bind={[deletionCode, setDeletionCode]} 
-                    label={`Se ha enviado a ${email} el código de eliminación. Escríbelo a continuación para confirmar:`} />
+                    label={'Se ha enviado por correo electrónico el código de eliminación. Escríbelo a continuación para confirmar:'} />
                 }   
 
                 <ErrorMessage message={deleteError} />
@@ -214,7 +187,6 @@ export default function Account(): JSX.Element {
 
             </Retractable>
         </Form>
-        <Footer />
         </>
     )
 }

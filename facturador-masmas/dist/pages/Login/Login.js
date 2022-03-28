@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-//Servicio.
-import Session from "services/Session";
+//Servicios.
+import tryLogin from "./services/tryLogin";
 //Utilidades.
-import Valid from "utils/Valid";
+import Valid from "utilities/Valid";
 //Componentes de formulario.
 import { Form, Field, ErrorMessage, Button } from 'components/formComponents';
 import { BiKey, BiUser } from "react-icons/bi";
-import { Loading } from "components/layout";
+import { Loading } from "styledComponents";
+import { Link } from "react-router-dom";
 /**Devuelve un formulario para iniciar sesión.*/
 export default function Login() {
     var _a = useState(""), usernameOrEmail = _a[0], setUser = _a[1];
@@ -16,26 +17,19 @@ export default function Login() {
     function submit() {
         if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password)) {
             setLoading(true);
-            Session.getByCredentials(usernameOrEmail, password, handleResponse);
+            tryLogin(usernameOrEmail, password, sideEffects);
         }
         else
             setError("Usuario o contraseña incorrecta");
     }
     ;
-    function handleResponse(state, data) {
+    function sideEffects(ok, error) {
         setLoading(false);
-        console.log("LOGIN: " + data);
-        if (state === 404) {
-            setError("Usuario o contraseña incorrecta");
+        if (!ok) {
+            setError(error);
             return;
         }
-        if (state === 200) {
-            Session.setSession(JSON.parse(data));
-            setError("");
-            window.location.reload();
-        }
-        else
-            setError(data);
+        setError("");
     }
     return (React.createElement(Form, { onSubmit: submit, title: "Iniciar sesi\u00F3n" },
         React.createElement(Field, { icon: React.createElement(BiUser, null), label: "Nombre o correo electr\u00F3nico", bind: [usernameOrEmail, setUser] }),
@@ -45,23 +39,5 @@ export default function Login() {
         React.createElement("a", { href: "about:blank", target: "_blank", className: "link", style: { textDecoration: 'none' } }, "Olvid\u00E9 mi contrase\u00F1a"),
         React.createElement("p", { style: { textAlign: 'center', cursor: 'default' } },
             '¿No tienes una cuenta? ',
-            React.createElement("a", { href: "/signup", style: { textDecoration: 'none' } }, "Crea una nueva"))));
+            React.createElement(Link, { to: "registrarse", style: { textDecoration: 'none' } }, "Crea una nueva"))));
 }
-/**
- * {
- * "username":"test1",
- *
- * "rol":"MAIN",
- *
- * "activos":0,
- *
- * "pasivos":0,
- *
- * "accessToken":
- * "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4cCI6M
- * TY0NzM2OTI1OSwiaWF0IjoxNjQ3MzU0ODU5LCJyb2wiOiJNQUlOIn0.Dzg-RSnIRpBpZVhImEqqxesaTRJIOP3ddLL3sGVtYKo",
- *
- * refreshToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4c
- * CI6MTY0NzYyODQ1OSwiaWF0IjoxNjQ3MzU0ODU5fQ.51FtqSh-8CwiQxvmGNfBUThjo2_Xe3QuJIjauWyT2H8"
- * }
- */ 

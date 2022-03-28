@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 
-//Servicio.
-import Session from "services/Session";
+//Servicios.
+import tryLogin from "./services/tryLogin";
 
 //Utilidades.
-import Valid from "utils/Valid";
+import Valid from "utilities/Valid";
 
 //Componentes de formulario.
 import {Form, Field, ErrorMessage, Button} from 'components/formComponents';
 import { BiKey, BiUser } from "react-icons/bi";
-import { Loading } from "components/layout";
+import { Loading } from "styledComponents";
+import { Link } from "react-router-dom";
 
 
 /**Devuelve un formulario para iniciar sesión.*/
@@ -23,22 +24,18 @@ export default function Login(): JSX.Element {
   function submit(): void {
     if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password)) {
       setLoading(true);
-      Session.getByCredentials(usernameOrEmail, password, handleResponse);
+      tryLogin(usernameOrEmail, password, sideEffects);
     }
     else setError("Usuario o contraseña incorrecta");
   };
 
-  function handleResponse(state:number, data:string):void {
+  function sideEffects(ok:boolean, error:string):void {
     setLoading(false);
-    if (state === 404) {
-      setError("Usuario o contraseña incorrecta");
+    if (!ok) {
+      setError(error);
       return;
     }
-    if (state === 200) {
-      Session.setSession(JSON.parse(data));
-      setError("");
-      window.location.reload();
-    } else setError(data);
+    setError("");
   }
 
   return (
@@ -54,29 +51,9 @@ export default function Login(): JSX.Element {
       <a href="about:blank" target="_blank" className="link" style={{textDecoration:'none'}}>Olvidé mi contraseña</a>
       <p style={{textAlign:'center', cursor:'default'}}>
         {'¿No tienes una cuenta? '}
-        <a href="/registrarse" style={{textDecoration:'none'}}>Crea una nueva</a>
+        <Link to="registrarse" style={{textDecoration:'none'}}>Crea una nueva</Link>
       </p>
 
     </Form>
   );
 }
-
-
-/**
- * {
- * "username":"test1",
- * 
- * "rol":"MAIN",
- * 
- * "activos":0,
- * 
- * "pasivos":0,
- * 
- * "accessToken":
- * "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4cCI6M
- * TY0NzM2OTI1OSwiaWF0IjoxNjQ3MzU0ODU5LCJyb2wiOiJNQUlOIn0.Dzg-RSnIRpBpZVhImEqqxesaTRJIOP3ddLL3sGVtYKo",
- * 
- * refreshToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlzcyI6Ii9sb2dpbiIsImV4c
- * CI6MTY0NzYyODQ1OSwiaWF0IjoxNjQ3MzU0ODU5fQ.51FtqSh-8CwiQxvmGNfBUThjo2_Xe3QuJIjauWyT2H8"
- * }
- */
