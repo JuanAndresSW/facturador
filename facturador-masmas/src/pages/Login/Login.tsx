@@ -1,41 +1,41 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-//Servicio.
-import Session from "services/Session";
+//Servicios.
+import tryLogin from "./services/tryLogin";
 
 //Utilidades.
-import Valid from "utils/Valid";
+import Valid from "utilities/Valid";
 
 //Componentes de formulario.
-import {Form, Field, ErrorMessage, Submit} from 'components/formComponents';
+import {Form, Field, ErrorMessage, Button} from 'components/formComponents';
 import { BiKey, BiUser } from "react-icons/bi";
+import { Loading } from "styledComponents";
+import { Link } from "react-router-dom";
 
 
 /**Devuelve un formulario para iniciar sesión.*/
-export default function Login() {
-  const navigate = useNavigate();
+export default function Login(): JSX.Element {
 
   const [usernameOrEmail, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function submit(): void {
-    if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password))
-      Session.getByCredentials(usernameOrEmail, password, handleResponse)
+    if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password)) {
+      setLoading(true);
+      tryLogin(usernameOrEmail, password, sideEffects);
+    }
     else setError("Usuario o contraseña incorrecta");
   };
 
-  function handleResponse(state:number, data:string):void {
-    if (state === 404) {
-      setError("Usuario o contraseña incorrecta");
+  function sideEffects(ok:boolean, error:string):void {
+    setLoading(false);
+    if (!ok) {
+      setError(error);
       return;
     }
-    if (state === 200) {
-      Session.setSession(JSON.parse(data));
-      setError("");
-      window.location.reload();
-    } else setError(data);
+    setError("");
   }
 
   return (
@@ -46,9 +46,13 @@ export default function Login() {
 
       <ErrorMessage message={error} />
 
-      <Submit text="Ingresar" />
+      {loading?<Loading />:<Button type="submit" text="Ingresar" />}
 
-      <a href="about:blank" target="_blank" className="link">Olvidé mi contraseña</a>
+      <a href="about:blank" target="_blank" className="link" style={{textDecoration:'none'}}>Olvidé mi contraseña</a>
+      <p style={{textAlign:'center', cursor:'default'}}>
+        {'¿No tienes una cuenta? '}
+        <Link to="registrarse" style={{textDecoration:'none'}}>Crea una nueva</Link>
+      </p>
 
     </Form>
   );

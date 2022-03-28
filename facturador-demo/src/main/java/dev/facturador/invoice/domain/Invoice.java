@@ -40,7 +40,7 @@ public final class Invoice {
     @Column(name = "tax", nullable = false, length = 2)
     private String tax;
 
-    @Column(name = "vat", nullable = false, length = 1)
+    @Column(name = "vatCategory", nullable = false, length = 1)
     private String vatDetail;
 
     @Column(name = "paymen_form", length = 255, nullable = false)

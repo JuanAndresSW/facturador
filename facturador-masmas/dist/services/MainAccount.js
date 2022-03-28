@@ -34,74 +34,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import fetch from 'api/fetch';
-var MainAccount = /** @class */ (function () {
-    function MainAccount() {
-    }
-    /**
-     * Envía los datos de usuario y la foto de perfil para ser registrados.
-     * @param {mainAccount} account    - Datos de la cuenta del usuario, en forma de objeto.
-     * @param {Function} callback  - La función que manejará la respuesta.
-     */
-    MainAccount.register = function (account, callback) {
-        return __awaiter(this, void 0, void 0, function () {
-            var formattedPromise;
-            return __generator(this, function (_a) {
-                formattedPromise = this.formatAccount(account);
-                formattedPromise.then(function (formattedAccount) {
-                    fetch("POST", "auth/mainaccounts", { body: formattedAccount }, callback);
-                });
-                return [2 /*return*/];
-            });
+export default function create(account, callback) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/];
         });
-    };
-    /**
-     * Otorga a la cuenta el formato  esperado por el servidor.
-     * @param account Objeto de cuenta a formatear.
-     * @returns Un string JSON con el formato correcto.
-     */
-    MainAccount.formatAccount = function (account) {
-        return __awaiter(this, void 0, void 0, function () {
-            var c, g, data, _a, _b, _c;
-            var _d, _e;
-            return __generator(this, function (_f) {
-                switch (_f.label) {
-                    case 0:
-                        c = account.trader.code.replace(/ |\.|-/g, "");
-                        g = account.trader.grossIncome.replace(/ |\.|-/g, "");
-                        _b = (_a = JSON).stringify;
-                        _d = {};
-                        _e = {
-                            username: account.user.username.trim(),
-                            email: account.user.email.trim(),
-                            password: account.user.password.trim()
-                        };
-                        if (!(account.user.avatar === null)) return [3 /*break*/, 1];
-                        _c = "";
-                        return [3 /*break*/, 3];
-                    case 1: return [4 /*yield*/, account.user.avatar.text()];
-                    case 2:
-                        _c = _f.sent();
-                        _f.label = 3;
-                    case 3:
-                        data = _b.apply(_a, [(_d.user = (_e.avatar = _c,
-                                _e),
-                                _d.trader = {
-                                    businessName: account.trader.businessName.trim(),
-                                    vatCategory: account.trader.vatCategory,
-                                    code: (c.length !== 0) ? c.slice(0, 2) + '-' +
-                                        c.slice(2, 4) + '.' + c.slice(4, 7) + '.' + c.slice(7, 10) +
-                                        '-' + c.charAt(10) : '',
-                                    grossIncome: (g.length !== 0) ? g.slice(0, 2) + '-' +
-                                        g.slice(2, 4) + '.' + g.slice(4, 7) + '.' + g.slice(7, 10) +
-                                        '-' + g.charAt(10) : '',
-                                },
-                                _d)]);
-                        return [2 /*return*/, data];
-                }
-            });
-        });
-    };
-    return MainAccount;
-}());
-export default MainAccount;
+    });
+}

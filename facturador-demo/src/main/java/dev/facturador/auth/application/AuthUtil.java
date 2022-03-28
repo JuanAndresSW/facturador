@@ -3,8 +3,8 @@ package dev.facturador.auth.application;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.auth.domain.CustomUserDetails;
 import dev.facturador.auth.domain.FactoryMaps;
-import dev.facturador.auth.domain.bo.LoginRequest;
-import dev.facturador.auth.domain.dto.LoginResponse;
+import dev.facturador.auth.domain.request.LoginRequest;
+import dev.facturador.auth.domain.response.LoginResponse;
 import dev.facturador.auth.infrastructure.CustomAuthenticationFilter;
 import dev.facturador.shared.infrastructure.JWT;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +14,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -33,8 +33,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class AuthUtil {
     @Autowired
-    private CustomUserDetailsService serviceCustomUerDetails;
-
+    private UserDetailsService serviceCustomUerDetails;
     @Autowired
     private FactoryMaps generator;
 
@@ -46,14 +45,18 @@ public class AuthUtil {
      */
     public LoginResponse createLoginResponseWithHeaders(HttpHeaders headers) {
         var data = generator.createDataFromHeaders(headers);
-        if (data.get("rol").equals("MAIN")) {
+        if (data.get("role").equals("MAIN")) {
             String active = headers.get("user-data").get(2);
             String passive = headers.get("user-data").get(3);
-            if (StringUtils.hasText(active) && StringUtils.hasText(passive)) {
-                return new LoginResponse(data.get("username"), parseInt(active), parseInt(passive), data.get("access"), data.get("refresh"));
-            }
+            return new LoginResponse(
+                        data.get("username"),
+                        data.get("role"),
+                        parseInt(active),
+                        parseInt(passive),
+                        data.get("accessToken"),
+                        data.get("refreshToken"));
         }
-        return new LoginResponse(data.get("username"), data.get("access"), data.get("refresh"));
+        return new LoginResponse(data.get("username"), data.get("role"), data.get("accessToken"), data.get("refreshToken"));
     }
 
     /**
@@ -74,8 +77,7 @@ public class AuthUtil {
     }
 
     /**
-     * Crea un usuaro autenticado con {@link JWT} {@code createUserByToken} <br/>
-     * Recupero el {@link CustomUserDetails} de este usuario
+     * Recupero el {@link CustomUserDetails} con la informacion del Token JWT y la interfaz {@link JWT}
      *
      * @param authHeader Bearer Token recuperado del header
      * @param jwt        {@link JWT} para las utilidades
@@ -86,9 +88,9 @@ public class AuthUtil {
         try {
             if (jwt.verifyToken(authHeader)) {
                 var token = authHeader.substring("Bearer ".length());
-                var username = jwt.createDecoder(token).getSubject();
+                var email = jwt.createDecoder(token).getSubject();
 
-                return (CustomUserDetails) serviceCustomUerDetails.loadUserByUsername(username);
+                return (CustomUserDetails) serviceCustomUerDetails.loadUserByUsername(email);
             } else {
                 throw new RuntimeException("Refresh token is mising");
             }

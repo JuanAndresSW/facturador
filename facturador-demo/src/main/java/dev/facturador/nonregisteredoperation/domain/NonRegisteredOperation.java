@@ -1,7 +1,7 @@
 package dev.facturador.nonregisteredoperation.domain;
 
-import dev.facturador.operation.domain.Operation;
 import dev.facturador.nonregisteredpartner.domain.NonRegisteredPartner;
+import dev.facturador.operation.domain.Operation;
 import lombok.*;
 
 import javax.persistence.*;

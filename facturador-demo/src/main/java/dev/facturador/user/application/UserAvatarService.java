@@ -15,8 +15,8 @@ public final class UserAvatarService implements IUserAvatarService {
     private IUserAvatarRepository repository;
 
     @Override
-    public UserAvatar getAvatarUsuarioByUsername(String username) {
-        var userAvatar = repository.findByUserUsername(username);
+    public UserAvatar getAvatarUserByEmail(String email) {
+        var userAvatar = repository.findByUserEmail(email);
         if (userAvatar.isEmpty()) {
             return null;
         }

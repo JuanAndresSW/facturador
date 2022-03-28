@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 //Componentes de formulario.
-import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/formComponents';
+import { Form, Field, Image, ErrorMessage, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
+import { Loading } from "styledComponents";
 
 //Relacionado a la cuenta.
-import Valid from "utils/Valid";
-import MainAccount, {mainAccount} from "services/MainAccount";
-import Session from "services/Session";
+import Valid from "utilities/Valid";
+import signup from "./services/signup";
+import mainAccount from './models/mainAccount';
 
 
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
-export default function SignUp() {
+export default function SignUp(): JSX.Element {
 
   const navigate = useNavigate();
   
@@ -30,7 +31,7 @@ export default function SignUp() {
   const [username, setUsername]           = useState("");
   const [email, setEmail]                 = useState("");
   const [password, setPassword]           = useState("");
-  const [avatar, setAvatar]               = useState(null);
+  const [avatar, setAvatar]               = useState();
   const [passwordMatch, setPasswordMatch] = useState("");
   const [userError, setUserError]         = useState("");
 
@@ -74,7 +75,8 @@ export default function SignUp() {
   /*ENVIAR Y RECIBIR*************************************************/
 
   /**Envía al servidor los datos recolectados. */
-  function submit(): void {
+  async function submit(): Promise<void> {
+
     const account: mainAccount = {
       user: {
         username: username,
@@ -89,18 +91,16 @@ export default function SignUp() {
         grossIncome: grossIncome,
       }
     }
-    MainAccount.register(account, handleResponse);
     setSending(true);
+    signup(account, handleResponse);
   }
 
   /**Maneja la respuesta recibida del servidor. */
-  function handleResponse(state: number, data: string) {
+  function handleResponse(ok: boolean, data: string) {
     setSending(false);
-    if (state === 201) {
-      Session.setSession(JSON.parse(data))
+    if (ok) {
       setTraderError("");
       navigate("/inicio");
-      window.location.reload();
     } else setTraderError(data);
   }
 
@@ -120,11 +120,17 @@ export default function SignUp() {
       bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
       <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
       type="password" validator={password===passwordMatch} />
-      <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} />
+      
+      <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} img={avatar} />
             
       <ErrorMessage message={userError} />
 
-      <Submit text="Siguiente" />
+      <Button type="submit" text="Siguiente" />
+
+      <p style={{textAlign:'center', cursor:'default'}}>
+        {'¿Ya tienes una cuenta? '}
+        <Link to="/ingresar" style={{textDecoration:'none'}}>Ingresar</Link>
+      </p>
 
     </Form>
     :
@@ -148,7 +154,7 @@ export default function SignUp() {
 
       <ErrorMessage message={traderError} />
 
-      {sending? "Cargando..." : <Submit text="Enviar" />}
+      {sending? <Loading /> : <Button type="submit" text="Enviar" />}
     </Form>
     : null
   );

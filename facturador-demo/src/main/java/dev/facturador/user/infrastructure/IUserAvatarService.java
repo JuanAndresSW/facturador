@@ -4,5 +4,5 @@ import dev.facturador.user.domain.UserAvatar;
 
 public interface IUserAvatarService {
 
-    UserAvatar getAvatarUsuarioByUsername(String username);
+    UserAvatar getAvatarUserByEmail(String email);
 }

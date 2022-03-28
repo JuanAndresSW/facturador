@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,cAAc,CAAC;EACb,OAAO,EAAE,KAAK;EACd,KAAK,EAAE,IAAI;EACX,SAAS,EAAE,KAAK;EAChB,UAAU,EAAE,IAAI;EAChB,MAAM,EAAE,SAAS;EACjB,UAAU,EAAE,MAAM;CAQnB;;AAdD,AAOE,cAPY,CAOZ,EAAE,CAAC;EACD,SAAS,EAAE,IAAI;CAChB;;AATH,AAUE,cAVY,CAUZ,EAAE,CAAC;EACD,UAAU,EAAE,KAAK;EACjB,SAAS,EAAE,IAAI;CAChB",
-    "sources": [
-        "TitleScreen.scss"
-    ],
-    "names": [],
-    "file": "TitleScreen.css"
-}

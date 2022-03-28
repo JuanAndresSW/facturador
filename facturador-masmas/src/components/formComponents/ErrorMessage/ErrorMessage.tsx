@@ -1,5 +1,4 @@
 import React from "react";
-import { BiErrorCircle } from "react-icons/bi";
 import './ErrorMessage.css';
 
 type props = {
@@ -12,7 +11,7 @@ type props = {
 export default function ErrorMessage({message}:props): JSX.Element {
     return (
         <p className="error">
-            {message.length > 1? <BiErrorCircle /> : null}
+            {message?.length > 1? "🚫 " : null}
             {message}
         </p>
     );

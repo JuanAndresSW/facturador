@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * User Details Personalizado
@@ -27,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
     private String email;
     private int active;
     private int passive;
-    private CustomUserRole role;
+    private Collection<? extends GrantedAuthority> authorities;
     private Boolean enabled;
 
     public CustomUserDetails(long id,
@@ -36,7 +37,7 @@ public class CustomUserDetails implements UserDetails {
                              String email,
                              int active,
                              int passive,
-                             CustomUserRole role,
+                             Collection<? extends GrantedAuthority> authorities,
                              Boolean enable) {
         this.id = id;
         this.username = username;
@@ -44,7 +45,7 @@ public class CustomUserDetails implements UserDetails {
         this.email = email;
         this.active = active;
         this.passive = passive;
-        this.role = role;
+        this.authorities = authorities;
         this.enabled = enable;
     }
 
@@ -60,8 +61,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        var authority = new SimpleGrantedAuthority(this.role.name());
-        return Collections.singletonList(authority);
+        return authorities == null ? null : authorities.stream().toList();
     }
 
     @Override

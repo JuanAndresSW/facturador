@@ -1,42 +1,43 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-//Servicio.
-import Session from "services/Session";
+//Servicios.
+import tryLogin from "./services/tryLogin";
 //Utilidades.
-import Valid from "utils/Valid";
+import Valid from "utilities/Valid";
 //Componentes de formulario.
-import { Form, Field, ErrorMessage, Submit } from 'components/formComponents';
+import { Form, Field, ErrorMessage, Button } from 'components/formComponents';
 import { BiKey, BiUser } from "react-icons/bi";
+import { Loading } from "styledComponents";
+import { Link } from "react-router-dom";
 /**Devuelve un formulario para iniciar sesión.*/
 export default function Login() {
-    var navigate = useNavigate();
     var _a = useState(""), usernameOrEmail = _a[0], setUser = _a[1];
     var _b = useState(""), password = _b[0], setPassword = _b[1];
     var _c = useState(""), error = _c[0], setError = _c[1];
+    var _d = useState(false), loading = _d[0], setLoading = _d[1];
     function submit() {
-        if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password))
-            Session.getByCredentials(usernameOrEmail, password, handleResponse);
+        if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password)) {
+            setLoading(true);
+            tryLogin(usernameOrEmail, password, sideEffects);
+        }
         else
             setError("Usuario o contraseña incorrecta");
     }
     ;
-    function handleResponse(state, data) {
-        if (state === 404) {
-            setError("Usuario o contraseña incorrecta");
+    function sideEffects(ok, error) {
+        setLoading(false);
+        if (!ok) {
+            setError(error);
             return;
         }
-        if (state === 200) {
-            Session.setSession(JSON.parse(data));
-            setError("");
-            window.location.reload();
-        }
-        else
-            setError(data);
+        setError("");
     }
     return (React.createElement(Form, { onSubmit: submit, title: "Iniciar sesi\u00F3n" },
         React.createElement(Field, { icon: React.createElement(BiUser, null), label: "Nombre o correo electr\u00F3nico", bind: [usernameOrEmail, setUser] }),
         React.createElement(Field, { icon: React.createElement(BiKey, null), label: "Contrase\u00F1a", type: "password", bind: [password, setPassword] }),
         React.createElement(ErrorMessage, { message: error }),
-        React.createElement(Submit, { text: "Ingresar" }),
-        React.createElement("a", { href: "about:blank", target: "_blank", className: "link" }, "Olvid\u00E9 mi contrase\u00F1a")));
+        loading ? React.createElement(Loading, null) : React.createElement(Button, { type: "submit", text: "Ingresar" }),
+        React.createElement("a", { href: "about:blank", target: "_blank", className: "link", style: { textDecoration: 'none' } }, "Olvid\u00E9 mi contrase\u00F1a"),
+        React.createElement("p", { style: { textAlign: 'center', cursor: 'default' } },
+            '¿No tienes una cuenta? ',
+            React.createElement(Link, { to: "registrarse", style: { textDecoration: 'none' } }, "Crea una nueva"))));
 }

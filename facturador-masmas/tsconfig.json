@@ -1,8 +1,5 @@
 {
-  "include": [
-    "src/*",
-    "declaration.d.ts"
-],
+  "include": ["src/*"],
   "exclude": [
     "node_modules",
     "build"
@@ -20,13 +17,15 @@
       "allowSyntheticDefaultImports": true,
       "baseUrl": "./src/",
       "paths": {
-        "api/*":["./api/*"],
+        "adapters/*":["./adapters/*"],
         "assets/*":["./assets/*"],
         "components/*":["./components/*"],
+        "interceptors/*":["./interceptors/*"],
+        "models/*":["./models/*"],
         "pages/*":["./pages/*"],
         "services/*":["./services/*"],
-        "styles/*":["./styles/*"],
-        "utils/*":["./utils/*"]
+        "styledComponents/*":["./styledComponents/*"],
+        "utilities/*":["./utilities/*"]
       }
     }
 }

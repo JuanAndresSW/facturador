@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -14,10 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -27,19 +27,21 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     private JWT<UsernamePasswordAuthenticationToken> jwt;
 
-    public CustomAuthorizationFilter(){
+    public CustomAuthorizationFilter() {
         this.jwt = new JWT<UsernamePasswordAuthenticationToken>() {
             @Override
             public UsernamePasswordAuthenticationToken createUserByToken(String authHeader) {
-                var token = authHeader.substring("Bearer ".length());
-                var decodedJWT = createDecoder(token);
-                var username = decodedJWT.getSubject();
-                var rol = getClaimRol(decodedJWT);
-                return new UsernamePasswordAuthenticationToken(username, null,
-                        new HashSet<GrantedAuthority>(Collections.singleton(new SimpleGrantedAuthority(rol))));
+                final var token = authHeader.substring("Bearer ".length());
+                final var decodedJWT = createDecoder(token);
+                final var email = decodedJWT.getSubject();
+                final var role = getClaimRol(decodedJWT);
+                final Collection<SimpleGrantedAuthority> authority =
+                        Stream.of(role).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                return new UsernamePasswordAuthenticationToken(email, null, authority);
             }
         };
     }
+
     /**
      * Filtro para indicar si se debe autorizar o no al recibir una request
      *
@@ -55,14 +57,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         }
         if (isRequiredAuthorization(request)) {
             String authHeader = request.getHeader(AUTHORIZATION);
-            if (!jwt.verifyToken(authHeader)) {
-                filterChain.doFilter(request, response);
-            }
             if (jwt.verifyToken(authHeader)) {
                 try {
-                    var authUser = jwt.createUserByToken(authHeader);
-                    SecurityContextHolder.getContext().setAuthentication(authUser);
-                    filterChain.doFilter(request, response);
+                    var authToken = jwt.createUserByToken(authHeader);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 } catch (Exception ex) {
                     log.error("Error logging in: {}", ex.getMessage());
@@ -75,6 +74,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
             }
+            filterChain.doFilter(request, response);
         }
     }
 

@@ -79,7 +79,7 @@ public final class Trader implements Serializable {
         return "Trader{" +
                 "idTrader=" + idTrader +
                 ", uniqueKey='" + uniqueKey + '\'' +
-                ", vat=" + vat.getNameVat() +
+                ", vatCategory=" + vat.getNameVat() +
                 ", grossIncome='" + grossIncome + '\'' +
                 ", name='" + name + '\'' +
                 '}';

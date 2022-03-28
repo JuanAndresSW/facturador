@@ -1,0 +1,67 @@
+.features {
+    background-color: white;
+    width: 100%;
+    min-height: 2rem;
+    padding: 4rem 0;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+    div {
+
+        min-height: 15rem;
+        margin: 3rem;
+        padding: .5rem 1rem;
+        width: 85%;
+        background-color: rgba(255, 255, 255, 1);
+        //border: 1px solid #ccc;
+        //box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2), 7px 10px 21px -4px rgba(0,0,0,0.4);
+        img {
+            display: block;
+            width: 15rem;
+            height: 15rem;
+            //transform: translate(0, -2rem);
+        }
+        h3 {
+            margin: 0;
+            padding-top: 1rem;
+            font-size: 2.8vw;
+        }
+    }
+    div:nth-child(odd) {
+        box-shadow: 20px 14px 0px 5px rgba(64, 231, 236, .5), -20px -14px 0px 0px rgba(11, 117, 255, 0.5);
+        margin-right: 5rem;
+        text-align: left;
+        border-radius: 222px 15px;
+        img {
+            float: left;
+        }
+    }
+    //box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.2)
+    div:nth-child(even){
+        box-shadow: -20px 14px 0px 0px rgba(11, 117, 255, 0.5), 20px -14px 0px 0px rgba(64, 231, 236, .5);
+        margin-left: 5rem;
+        text-align: right;
+        border-radius: 15px 222px;
+        img {
+            float: right;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .features {
+        div:nth-child(odd) {border-radius: 100px;}
+        div:nth-child(even) {border-radius: 100px;}
+        div {
+            h3 {
+                font-size: 2rem;
+            }
+            img {
+                display: none;
+                //transform: translate(0, 15px) !important;
+                width: 15vw;
+            }
+        }
+        div:nth-child(odd) {margin: 4rem auto;}
+        div:nth-child(even){margin: 0;}
+        
+    }
+}
