@@ -22,14 +22,9 @@ public final class JWTOfAuth implements JWT<UsernamePasswordAuthenticationToken>
     public UsernamePasswordAuthenticationToken createUserByToken(String authHeader) {
         var token = authHeader.substring("Bearer ".length());
         var decodedJWT = createDecoder(token);
-        var username = decodedJWT.getSubject();
-        var rol = getClaimRol(decodedJWT);
-        return new UsernamePasswordAuthenticationToken(username, null,
-                new HashSet<GrantedAuthority>(Collections.singleton(new SimpleGrantedAuthority(rol))));
-    }
-
-    @Override
-    public Boolean verifyToken(String auth) {
-        return Boolean.TRUE.equals(StringUtils.hasText(auth) && auth.startsWith("Bearer "));
+        var email = decodedJWT.getSubject();
+        var role = getClaimRol(decodedJWT);
+        return new UsernamePasswordAuthenticationToken(email, null,
+                new HashSet<GrantedAuthority>(Collections.singleton(new SimpleGrantedAuthority(role))));
     }
 }

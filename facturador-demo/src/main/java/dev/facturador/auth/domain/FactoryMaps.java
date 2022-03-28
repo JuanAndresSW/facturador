@@ -1,6 +1,6 @@
 package dev.facturador.auth.domain;
 
-import dev.facturador.auth.domain.bo.LoginRequest;
+import dev.facturador.auth.domain.request.LoginRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;

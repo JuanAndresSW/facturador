@@ -33,11 +33,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             public UsernamePasswordAuthenticationToken createUserByToken(String authHeader) {
                 final var token = authHeader.substring("Bearer ".length());
                 final var decodedJWT = createDecoder(token);
-                final var username = decodedJWT.getSubject();
-                final var rol = getClaimRol(decodedJWT);
+                final var email = decodedJWT.getSubject();
+                final var role = getClaimRol(decodedJWT);
                 final Collection<SimpleGrantedAuthority> authority =
-                        Stream.of(rol).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                return new UsernamePasswordAuthenticationToken(username, null, authority);
+                        Stream.of(role).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                return new UsernamePasswordAuthenticationToken(email, null, authority);
             }
         };
     }
@@ -60,7 +60,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if (jwt.verifyToken(authHeader)) {
                 try {
                     var authToken = jwt.createUserByToken(authHeader);
-                    log.info("---AUTHTOKEN IS: {} ---", authToken);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
 

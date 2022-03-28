@@ -8,9 +8,9 @@ import java.util.Optional;
 public interface IMainAccountRegisterService {
     void register(RegisterRequest tryRegister);
 
-    Optional<String> existsByUsernameOfUser(String username);
-    Optional<String> existsByEmailOfUsuarios(String email);
-    Optional<String> existsByUniqueKeyOfTrader(String uniqueKey);
+    Boolean existsByUsernameOfUser(String username);
+    Boolean existsByEmailOfUsuarios(String email);
+    Boolean existsByUniqueKeyOfTrader(String uniqueKey);
 
-    Collection<String> whenIndicesAreRepeatedReturnErrror(RegisterRequest account);
+    String whenIndicesAreRepeatedReturnErrror(RegisterRequest account);
 }
