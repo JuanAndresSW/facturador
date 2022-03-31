@@ -1,7 +1,7 @@
 package dev.facturador.operation.domain;
 
 import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.domain.Flux;
+import dev.facturador.shared.domain.shared.Flux;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,7 +1,7 @@
 package dev.facturador.trader.domain;
 
 import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.domain.Vat;
+import dev.facturador.shared.domain.shared.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

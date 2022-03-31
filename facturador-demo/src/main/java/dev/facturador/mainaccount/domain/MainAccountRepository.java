@@ -8,10 +8,14 @@ import java.util.Optional;
 public interface MainAccountRepository extends JpaRepository<MainAccount, Long> {
 
     Optional<MainAccount> findByUserMainAccountUsernameOrUserMainAccountEmail(String username, String email);
-    Optional<MainAccount> findByUserMainAccountUsername(String username);
+
+    MainAccount findByUserMainAccountUsername(String username);
+
     void deleteByUserMainAccountUsername(String username);
 
     Boolean existsByUserMainAccountUsername(String username);
+
     Boolean existsByUserMainAccountEmail(String email);
+
     Boolean existsByAccountOwnerUniqueKey(String uniqueKey);
 }

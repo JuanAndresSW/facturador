@@ -1,6 +1,7 @@
 package dev.facturador.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import dev.facturador.user.domain.subdomain.UserAvatar;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import dev.facturador.user.domain.User;
-import dev.facturador.user.domain.repository.IUserRepository;
+import dev.facturador.user.domain.UserRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 public class UserRepositoryTest {
 
     @Autowired
-    private IUserRepository repository;
+    private UserRepository repository;
 
     @Before
     private User saveForTest(){

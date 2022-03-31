@@ -1,7 +1,7 @@
 package dev.facturador.partner.domain;
 
 import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.domain.EstadoSolicitud;
+import dev.facturador.shared.domain.shared.EstadoSolicitud;
 import dev.facturador.trader.domain.Trader;
 import lombok.*;
 
