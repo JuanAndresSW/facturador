@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 //Componentes de formulario.
-import { Form, Field, Image, ErrorMessage, Button, Radio } from 'components/formComponents';
+import { Form, Field, Image, Message, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
 import { Loading } from "styledComponents";
 
@@ -24,6 +24,7 @@ export default function SignUp(): JSX.Element {
   const [active, setActive]: 
   [("user"|"trader"), React.Dispatch<React.SetStateAction<("user"|"trader")>>] = useState("user");
   const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   /*DATOS DEL FORMULARIO*****************************************************/
 
@@ -49,11 +50,11 @@ export default function SignUp(): JSX.Element {
   function validateUser(): void {
     setUserError("");
 
-    if (!Valid.names(username))      { setUserError("El nombre debe ser de entre 3 y 20 caracteres");     return; }
-    if (!Valid.email(email))         { setUserError("Ingrese una dirección válida de email");             return; }
-    if (!Valid.password(password))   { setUserError("La contraseña debe ser de entre 8 y 40 caracteres"); return; }
-    if (password !== passwordMatch)  { setUserError("Las contraseñas no coinciden");                      return; }
-    if (!Valid.image(avatar))        { setUserError("La imágen no debe superar los 2MB");                 return; }
+    if (!Valid.names(username, setUserError))     return;
+    if (!Valid.email(email, setUserError))        return; 
+    if (!Valid.password(password, setUserError))  return;
+    if (password !== passwordMatch) return setUserError("Las contraseñas no coinciden");
+    if (!Valid.image(avatar, setUserError))       return;
 
     setActive("trader");
   };
@@ -62,11 +63,11 @@ export default function SignUp(): JSX.Element {
   function validateTrader(): void {
     setTraderError("");
 
-    if (!Valid.names(businessName))       { setTraderError("La razón social debe ser de entre 3 y 20 caracteres");  return; }
-    if (!Valid.vatCategory(vatCategory))  { setTraderError("Seleccione una categoría");                             return; }
-    if (!Valid.code(code))                { setTraderError
-      (`Ingrese un${vatCategory === "Monotributista"? " C.U.I.L. válido": "a C.U.I.T. válida"}`);                   return; }
-    if (!Valid.code(grossIncome))         { setTraderError("Ingrese un número de ingresos brutos válido");          return; }
+    if (!Valid.names(businessName)) return setTraderError("La razón social debe ser de entre 3 y 20 caracteres");
+    if (!Valid.vatCategory(vatCategory, setTraderError))                                                            return;
+    if (!Valid.code(code)) return setTraderError
+      (`Ingrese un${vatCategory === "Monotributista"? " C.U.I.L. válido": "a C.U.I.T. válida"}`);
+    if (!Valid.code(grossIncome, setTraderError))                                                                   return;
 
     //Si todo fue validado, se envían los datos.
     submit();
@@ -99,6 +100,7 @@ export default function SignUp(): JSX.Element {
   function handleResponse(ok: boolean, data: string) {
     setSending(false);
     if (ok) {
+      setSuccess(true);
       setTraderError("");
       navigate("/inicio");
     } else setTraderError(data);
@@ -123,7 +125,7 @@ export default function SignUp(): JSX.Element {
       
       <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} img={avatar} />
             
-      <ErrorMessage message={userError} />
+      <Message type="error" message={userError} />
 
       <Button type="submit" text="Siguiente" />
 
@@ -152,9 +154,10 @@ export default function SignUp(): JSX.Element {
       <Field label="Número de ingresos brutos" note="(si no eliges uno, se generará uno falso)"
       bind={[grossIncome, setGrossIncome]} icon={<BiWallet />} validator={Valid.code(grossIncome)} />
 
-      <ErrorMessage message={traderError} />
+      <Message type="error" message={traderError} />
 
-      {sending? <Loading /> : <Button type="submit" text="Enviar" />}
+      {success? <Message type="success" message={`Se ha creado la cuenta "${email}"`}/>:
+      sending? <Loading /> : <Button type="submit" text="Enviar" />}
     </Form>
     : null
   );

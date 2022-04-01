@@ -8,9 +8,9 @@ export default function requestAccountDeletion(code:string, callback:Function): 
     //TODO: add {body: code}
     function respond(state:number, data:string) {
         if (state === 200) {
-            closeSession();
+            localStorage.clear();
+            sessionStorage.clear();
             callback(true);
-            window.location.reload();
         }
         else callback(false, data);
     }

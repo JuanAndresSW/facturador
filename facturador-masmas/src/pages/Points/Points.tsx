@@ -3,7 +3,7 @@ import NewPoint from './NewPoint';
 import PointOptions from './PointOptions';
 
 //GUI.
-import { Button, ErrorMessage, Field, Form, Image, Radio } from "components/formComponents";
+import { Button, Message, Field, Form, Image, Radio } from "components/formComponents";
 import { Retractable } from "components/layout";
 import { Loading, Section, Option } from "styledComponents";
 import { BiChevronLeft, BiPlusCircle } from "react-icons/bi";

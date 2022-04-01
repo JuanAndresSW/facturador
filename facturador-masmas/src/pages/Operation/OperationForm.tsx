@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //Componentes del formulario.
-import { DateTime, ErrorMessage, Field, Form, Radio, Select, Button, Switch, Table, Textarea } from "components/formComponents";
+import { DateTime, Message, Field, Form, Radio, Select, Button, Switch, Table, Textarea } from "components/formComponents";
 import { Cond } from 'components/layout';
 import { Section, FlexDiv } from 'styledComponents';
 import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
@@ -94,7 +94,7 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
   return (
     <Form title={getDocumentTitle(type, flux)}>
 
-      <ErrorMessage message={error} />
+      <Message type="error" message={error} />
 
       <Section label="Partícipes">
 

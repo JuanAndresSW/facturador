@@ -9,7 +9,7 @@ import NavBar from './components/NavBar/NavBar';
 //Stateless.
 import { Footer } from 'styledComponents';
 import {AiFillDollarCircle} from 'react-icons/ai';
-import {MdClass, MdPoll, MdPinDrop} from 'react-icons/md';
+import {MdClass, MdPoll, MdPointOfSale} from 'react-icons/md';
 
 //Páginas.
 import Operation from 'pages/Operation/Operation';
@@ -28,7 +28,7 @@ const tabs = [
     {path:paths.operation, icon: <AiFillDollarCircle />, label:'Operación'},
     {path:paths.books, icon: <MdClass />, label:'Libros'},
     {path:paths.stats, icon: <MdPoll />, label:'Estadística'},
-    {path:paths.points, icon: <MdPinDrop />, label:'Puntos de venta'}
+    {path:paths.points, icon: <MdPointOfSale />, label:'Puntos de venta'}
 ]
 
 //devuelve la página principal dependiente de una sesión iniciada

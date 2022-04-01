@@ -1,0 +1,22 @@
+.error {
+    margin: 2rem .4rem;
+    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: monospace;
+    font-size: 1rem;
+}
+.success p {
+    cursor: default;
+    text-align: center;
+    color: #eee;
+    width: 100%;
+}
+.success button {
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    padding: .2rem 1rem;
+}

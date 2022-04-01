@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-//Servicios y utilidades.
-import Valid from 'utilities/Valid';
+//Modelos.
+import pointOfSale from "./models/pointOfSale";
+
+//Servicios.
+import createPointOfSale from './services/createPointOfSale';
 
 //GUI.
-import defaultLogo from 'assets/svg/logo.svg';
-import { Field, Form, Select, Image, ErrorMessage, Button, Color } from "components/formComponents";
+import defaultLogo from 'assets/svg/default-logo.svg';
+import { Field, Form, Select, Image, Message, Button, Color } from "components/formComponents";
 import { BiChevronLeft } from "react-icons/bi";
 import { Retractable } from 'components/layout';
+import { Loading } from "styledComponents";
+import Valid from "utilities/Valid";
+
 
 
 
@@ -16,7 +22,9 @@ import { Retractable } from 'components/layout';
 export default function NewPoint(): JSX.Element {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
 
   //  Datos del punto de venta.  //
@@ -28,6 +36,7 @@ export default function NewPoint(): JSX.Element {
   const [postalCode, setPostalCode] = useState();
   const [street,     setStreet] =     useState();
   const [number,     setNumber] =     useState();
+  const [height,     setHeight] =     useState('1');
   //Contacto.
   const [email,      setEmail] =      useState();
   const [phone,      setPhone] =      useState();
@@ -42,15 +51,49 @@ export default function NewPoint(): JSX.Element {
   const [boolContact,     setBoolContact] =     useState(false);
   const [boolPreferences, setBoolPreferences] = useState(false);
 
-  
-  //validación
-  function validatePointOfSale(): void {
-    //enviar objeto al servidor
-    //Gateway.submitPoint(pointOfSale, window.location.href);
-  };
+  function validate(): void {
+    setError(undefined);
+    if (!Valid.names(name, setError)) return;
+    if (!Valid.address(department)) return setError("El departamento debe ser de entre 4 y 40 caracteres");
+    if (!Valid.address(locality)) return setError("La localidad debe ser de entre 4 y 40 caracteres");
+    if (!Valid.postalCode(postalCode, setError)) return;
+    if (!Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
+    if (!Valid.addressNumber(number, setError)) return;
+    if (!Valid.addressHeight(height)) return;
+    if (email && !Valid.email(email, setError)) return;
+    if (phone && !Valid.phone(phone, setError)) return;
+    if (website && !Valid.website(website, setError)) return;
+    if (!Valid.image(logo)) return setError("El logo no puede superar los 2MB");
+    if (!Valid.hexColor(color, setError)) return;
+    submit();
+  }
+
+  function submit(): void {
+    setLoading(true);
+    const pointOfSale: pointOfSale = {
+      name: name,
+      province: province,
+      department: department,
+      locality: locality,
+      postalCode: postalCode,
+      street: street,
+      number: number,
+      height: parseInt(height),
+      email: email,
+      phone: phone,
+      website: website,
+      logo: logo,
+      color: color
+    }
+    createPointOfSale(pointOfSale, (ok: boolean, error: string): void => {
+      setLoading(false);
+      if (!ok) setError(error);
+      else setSuccess(true);
+    })
+  }
 
   return (
-    <Form title="Crea un punto de venta">
+    <Form title="Crea un punto de venta" onSubmit={validate} >
 
     <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
 
@@ -65,6 +108,7 @@ export default function NewPoint(): JSX.Element {
         <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number"       />
         <Field  label="Calle"               bind={[street, setStreet]}                             />
         <Field  label="Número de dirección" bind={[number, setNumber]}         type="number"       />
+        <Field  label="Altura"              bind={[height, setHeight]}         type="number"       />
 
       </Retractable>
 
@@ -86,9 +130,10 @@ export default function NewPoint(): JSX.Element {
       </Retractable>
 
 
-      <ErrorMessage message={error} />
+      <Message type="error" message={error} />
 
-      <Button text="Crear" type="submit" />
+      {success?<Message type="success" message={`Se ha creado el punto de venta "${name}"`} />:
+      loading?<Loading />:<Button text="Crear" type="submit" />}
     </Form>
   );
 }

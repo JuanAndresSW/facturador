@@ -5,11 +5,7 @@ import {SplashScreen, Error404} from 'styledComponents';
 import getSessionByToken from 'services/getSessionByToken';
 
 //Routing.
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-
-//Estilos globales.
-import "styles/normalize.css";
-import "styles/outer.css";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 //Importar diferidamente los componentes.
 const Start =    lazy(() => import('pages/Login/Start/Start'));
@@ -32,22 +28,20 @@ export default function App(): JSX.Element {
 
     return (
         (auth === undefined) ? <SplashScreen /> :
-            <BrowserRouter>
-                <Suspense fallback={<SplashScreen />}>
-                    <Routes>
+        
+        <Suspense fallback={<SplashScreen />}>
+            <Routes>
 
-                        <Route path="/"            element={!auth? <Start />  : <Navigate to={"/inicio"} />}   />   
-                        <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to={"/inicio"} />}   />
+                <Route index               element={!auth? <Start />  : <Home />}   />   
+                <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to={"/"} />}   />
 
-                        <Route path="/inicio/*"    element={!auth? <Home />    : <Navigate to={"/ingresar"} />} />
-                        <Route path="/cuenta"      element={!auth? <Account /> : <Navigate to={"/ingresar"} />} />
+                <Route path="/cuenta"      element={auth? <Account /> : <Navigate to={"/ingresar"} />} />
 
-                        <Route path="/registrarse" element={ <SignUp />  } />
-                        <Route path="/acerca-de/*" element={ <About />   } />
-                        <Route path="*"            element={ <Error404 />} />      
+                <Route path="/registrarse" element={ <SignUp />  } />
+                <Route path="/acerca-de/*" element={ <About />   } />
+                <Route path="*"            element={ <Error404 />} />      
 
-                    </Routes>
-                </Suspense>
-            </BrowserRouter>
+            </Routes>
+        </Suspense>
     );
 }

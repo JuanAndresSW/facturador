@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import tryLogin from "../../../services/tryLogin";
 import Valid from "utilities/Valid";
 import "./TitleScreen.css";
-import { ErrorMessage } from "components/formComponents";
+import { Message } from "components/formComponents";
 import { Loading } from "styledComponents";
 
 export default function TitleScreen(): JSX.Element {
@@ -43,10 +43,7 @@ export default function TitleScreen(): JSX.Element {
   //Maneja la respuesta del servidor.
   function sideEffects(ok:boolean, error:string):void {
     setLoading(false);
-    if (!ok) {
-      setError(error);
-      return;
-    }
+    if (!ok) return setError(error);
     reset();
   }
 
@@ -76,7 +73,7 @@ export default function TitleScreen(): JSX.Element {
       Iniciar sesión
       </button>}
 
-      <ErrorMessage message={error}/>
+      <Message type="error" message={error}/>
     </div>
   );
 }

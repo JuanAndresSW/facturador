@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 //Servicios.
 import tryLogin from "./services/tryLogin";
@@ -7,11 +8,9 @@ import tryLogin from "./services/tryLogin";
 import Valid from "utilities/Valid";
 
 //Componentes de formulario.
-import {Form, Field, ErrorMessage, Button} from 'components/formComponents';
+import {Form, Field, Message, Button} from 'components/formComponents';
 import { BiKey, BiUser } from "react-icons/bi";
 import { Loading } from "styledComponents";
-import { Link } from "react-router-dom";
-
 
 /**Devuelve un formulario para iniciar sesión.*/
 export default function Login(): JSX.Element {
@@ -30,11 +29,7 @@ export default function Login(): JSX.Element {
   };
 
   function sideEffects(ok:boolean, error:string):void {
-    setLoading(false);
-    if (!ok) {
-      setError(error);
-      return;
-    }
+    if (!ok) return setError(error);
     setError("");
   }
 
@@ -44,7 +39,7 @@ export default function Login(): JSX.Element {
       <Field icon={<BiUser />} label="Nombre o correo electrónico" bind={[usernameOrEmail, setUser]} />
       <Field icon={<BiKey />} label="Contraseña" type="password" bind={[password, setPassword]} />
 
-      <ErrorMessage message={error} />
+      <Message type="error" message={error} />
 
       {loading?<Loading />:<Button type="submit" text="Ingresar" />}
 

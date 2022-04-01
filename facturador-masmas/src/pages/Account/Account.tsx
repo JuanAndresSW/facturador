@@ -10,7 +10,7 @@ import requestAccountDeletion from './services/requestAccountDeletion';
 //Validación.
 import Valid from "utilities/Valid";
 //GUI.
-import { Button, ErrorMessage, Field, Form, Image, Radio } from "components/formComponents";
+import { Button, Message, Field, Form, Image, Radio } from "components/formComponents";
 import { Retractable } from "components/layout";
 import { Loading, Section } from "styledComponents";
 import { BiChevronLeft } from "react-icons/bi";
@@ -33,6 +33,9 @@ export default function Account(): JSX.Element {
 
     const navigate =                useNavigate(); 
     const [loading, setLoading] =   useState(false);
+    const [success, setSuccess] =   useState(false);
+    const [deleteSuccess, setDeleteSuccess] =   useState(false); 
+    
 
     //Errores.
     const [error, setError] =                       useState("");
@@ -73,16 +76,16 @@ export default function Account(): JSX.Element {
     /*VALIDACIÓN***************************************************************/
 
     function filter():void {
-        if (avatar && !Valid.image(avatar))           { setError("La imágen no debe superar los 2MB");                  return; }
-        if (newUsername && !Valid.names(newUsername)) { setError("El nombre debe ser de entre 3 y 20 caracteres");      return; }
-        if (password && Valid.password(password))     {
-            if (!Valid.password(newPassword))         { setError("La contraseña debe ser de entre 8 y 40 caracteres");  return; }
-            if (newPassword!==confirmPassword)        { setError("Las contraseñas no coinciden");                       return; }
+        if (!Valid.image(avatar, setError)) return;
+        if (newUsername && !Valid.names(newUsername, setError)) return;
+        if (Valid.password(password)) {
+            if (!Valid.password(newPassword, setError)) return;
+            if (newPassword!==confirmPassword) return setError("Las contraseñas no coinciden");
         }
         if (hasRootAccess)                                            {
-            if (newBusinessName && !Valid.names(newBusinessName))     { setError("La razón social debe ser de entre 3 y 20 caracteres");                        return; }
-            if (newVatCategory && !Valid.vatCategory(newVatCategory)) { setError("Seleccione una categoría");                                                   return; }
-            if (newCode && !Valid.code(code))                         { setError(`C.U.I.${newVatCategory === "Monotributista"? "L. inválido": "T. inválida"}`); return; }
+            if (newBusinessName && !Valid.names(newBusinessName)) return setError("La razón social debe ser de entre 3 y 20 caracteres");
+            if (newVatCategory && !Valid.vatCategory(newVatCategory)) return setError("Seleccione una categoría");
+            if (newCode && !Valid.code(code)) return setError(`C.U.I.${newVatCategory === "Monotributista"? "L. inválido": "T. inválida"}`);
         }
         submit();
     }
@@ -108,7 +111,11 @@ export default function Account(): JSX.Element {
         } 
         updateAccount(account, (ok:boolean, data:string)=>{
             setLoading(false);
-            if (!ok) setError(data);
+            if (ok) {
+                setSuccess(true);
+                if (newUsername) sessionStorage.setItem("username", newUsername);
+            }
+            else setError(data);
         });
     }
 
@@ -127,6 +134,7 @@ export default function Account(): JSX.Element {
         //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
         requestAccountDeletion(deletionCode, (ok:boolean, data:string)=> {
             if (!ok) setDeleteError(data);
+            else setDeleteSuccess(true);
         });
     }
 
@@ -164,9 +172,10 @@ export default function Account(): JSX.Element {
                 </Section>
             }
 
-            <ErrorMessage message={error} />
+            <Message type="error" message={error} />
 
-            {loading?<Loading />:
+            {success? <Message type="success" message="Se han guardado los cambios"/>:
+            loading?<Loading />:
             <Button text="Confirmar cambios" type="submit" />}
             
 
@@ -178,10 +187,11 @@ export default function Account(): JSX.Element {
                     label={'Se ha enviado por correo electrónico el código de eliminación. Escríbelo a continuación para confirmar:'} />
                 }   
 
-                <ErrorMessage message={deleteError} />
+                <Message type="error" message={deleteError} />
 
-                {loading? <Loading /> :
-                <Button type="delete"
+                {deleteSuccess? <Message type="success" message={`Se ha eliminado la cuenta`}/>:
+                    loading? <Loading /> :
+                    <Button type="delete"
                 text=   {!deletePermissionGranted?"Borrar la cuenta" : "Solicitar código para eliminar cuenta"}
                 onClick={!deletePermissionGranted?deleteAccount      :  RequestDeletePermission} />}  {/*TODO: remove !: delete only after permission */}
 

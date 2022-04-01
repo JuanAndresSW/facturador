@@ -8,7 +8,9 @@ type props = {
 }
 
 /**
- * @returns Un formulario.
+ * Un formulario.
+ * @param props.title - El título del formulario.
+ * @param props.onSubmit - La función a ejecutar en el evento de envío.
  */
 export default function Form({ title="", children, onSubmit }: props): JSX.Element {
     return (
