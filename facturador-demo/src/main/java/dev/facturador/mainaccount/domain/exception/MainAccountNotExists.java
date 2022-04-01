@@ -8,7 +8,9 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Getter
-@AllArgsConstructor
 public class MainAccountNotExists extends Exception {
-    private String error;
+
+    public MainAccountNotExists(String message){
+        super(message);
+    }
 }

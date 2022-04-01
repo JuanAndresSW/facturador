@@ -8,7 +8,9 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Getter
-@AllArgsConstructor
 public class ErrorInDataForUpdate extends Exception {
-    private String errorInUpdate;
+
+    public ErrorInDataForUpdate(String message){
+        super(message);
+    }
 }

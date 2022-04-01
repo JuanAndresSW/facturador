@@ -8,10 +8,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
-@RequiredArgsConstructor
 public class MainAccountUpdateCommandHandler implements CommandHandler<MainAccountUpdateCommand> {
 
     private UpdateMainAccountUseCase useCase;
+
+    public MainAccountUpdateCommandHandler(UpdateMainAccountUseCase useCase){
+        this.useCase = useCase;
+    }
 
     @Override
     public void handle(MainAccountUpdateCommand command) throws ErrorInDataForUpdate {

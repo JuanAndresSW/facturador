@@ -17,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/mainaccounts")
 public class DeleteMainAccountResource {
     private CommandBus commandBus;
 
@@ -26,7 +26,7 @@ public class DeleteMainAccountResource {
     }
 
     @PreAuthorize("hasAuthority('MAIN')")
-    @DeleteMapping("/mainaccounts/{username}")
+    @DeleteMapping("/{username}")
     public HttpEntity<String> delete(@PathVariable @NotEmpty String username) throws Exception {
         MainAccountDeleteCommand command = MainAccountDeleteCommand.Builder.getInstance()
                 .mainAccountIdUsername(MainAccountIdUsername.starter(username)).build();

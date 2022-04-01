@@ -14,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -27,7 +24,7 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/auth/mainaccounts")
 public class RegisterMainAccountResource {
     private CommandBus commandBus;
 
@@ -39,13 +36,11 @@ public class RegisterMainAccountResource {
      * <br/>
      * Envia los datos necesarios para Iniciar sesion
      */
-    @PostMapping("/mainaccounts")
-    public HttpEntity<?> singup
-    (@Valid @RequestParam("user") UserRegister user, @Valid @RequestParam("trader") TraderRegister trader) throws Exception {
-
+    @PostMapping
+    public HttpEntity<?> singup(@Valid @RequestBody MainAccountRegister accountForRegister) throws Exception {
+        log.info("MainAccountRegister is: {}", accountForRegister);
         MainAccountRegisterCommand command = MainAccountRegisterCommand.Builder.getInstance()
-                .mainAccountRegister(MainAccountRegister.starter(user, trader)).build();
-
+                .mainAccountRegister(accountForRegister).build();
         commandBus.handle(command);
 
         WebClient client = WebClient.builder().baseUrl("http://localhost:8080").build();

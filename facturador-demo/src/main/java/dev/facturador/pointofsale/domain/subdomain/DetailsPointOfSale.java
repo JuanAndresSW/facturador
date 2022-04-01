@@ -1,5 +1,6 @@
-package dev.facturador.pointofsale.domain;
+package dev.facturador.pointofsale.domain.subdomain;
 
+import dev.facturador.pointofsale.domain.PointOfSale;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

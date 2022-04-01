@@ -14,8 +14,6 @@ public interface MainAccountRepository extends JpaRepository<MainAccount, Long> 
     void deleteByUserMainAccountUsername(String username);
 
     Boolean existsByUserMainAccountUsername(String username);
-
     Boolean existsByUserMainAccountEmail(String email);
-
     Boolean existsByAccountOwnerUniqueKey(String uniqueKey);
 }

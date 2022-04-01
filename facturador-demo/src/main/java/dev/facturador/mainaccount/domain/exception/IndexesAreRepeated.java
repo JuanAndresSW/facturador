@@ -8,7 +8,9 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Getter
-@AllArgsConstructor
 public class IndexesAreRepeated extends Exception {
-    private String error;
+
+    public IndexesAreRepeated(String message){
+        super(message);
+    }
 }

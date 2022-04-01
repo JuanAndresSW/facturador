@@ -4,6 +4,7 @@ import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.MainAccountRepository;
 import dev.facturador.mainaccount.domain.MainAccountUpdate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,8 @@ import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class UpdateMainAccountUseCase {
+    @Autowired
     private MainAccountRepository repository;
 
     public void handle(MainAccountUpdate request, MainAccount account) {

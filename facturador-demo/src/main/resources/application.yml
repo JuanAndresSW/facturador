@@ -21,9 +21,6 @@ logging:
 
 #Cofiguracion Spring
 spring:
-  jackson:
-    serialization:
-      indent_output: true
   main:
     banner-mode: off
   #Configuracion para Data Base

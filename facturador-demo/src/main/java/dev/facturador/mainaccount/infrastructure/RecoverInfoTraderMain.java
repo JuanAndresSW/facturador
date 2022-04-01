@@ -19,7 +19,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/mainaccounts")
 public class RecoverInfoTraderMain {
     private QueryBus queryBus;
 
@@ -28,7 +28,7 @@ public class RecoverInfoTraderMain {
     }
 
     @PreAuthorize("hasAuthority('MAIN')")
-    @GetMapping("/mainaccounts/{username}")
+    @GetMapping("/{username}")
     public HttpEntity<?> delete(@PathVariable @NotEmpty String username) throws Exception {
         MainAccountGetQuery query = MainAccountGetQuery.Builder.getInstance()
                 .mainAccountIdUsername(MainAccountIdUsername.starter(username)).build();

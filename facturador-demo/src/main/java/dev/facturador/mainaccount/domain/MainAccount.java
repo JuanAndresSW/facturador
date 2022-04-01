@@ -52,6 +52,7 @@ public final class MainAccount {
                 0, 0));
 
         String vatName = request.traderRegister().vatCategory();
+        account.getAccountOwner().setVat(defineVat(vatName));
 
         String passwordHash = hashPassword(request.userRegister().password());
         account.setUserMainAccount(new User(

@@ -4,15 +4,18 @@ import dev.facturador.mainaccount.application.usecases.RegisterMainAccountUseCas
 import dev.facturador.mainaccount.domain.exception.IndexesAreRepeated;
 import dev.facturador.shared.application.comandbus.CommandHandler;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+@Slf4j
 @Component
-@RequiredArgsConstructor
 public class MainAccountRegisterCommandHandler implements CommandHandler<MainAccountRegisterCommand> {
-
     private RegisterMainAccountUseCase useCase;
 
+    public MainAccountRegisterCommandHandler(RegisterMainAccountUseCase useCase){
+        this.useCase = useCase;
+    }
     @Override
     public void handle(MainAccountRegisterCommand command) throws Exception {
         String message = useCase.whenIndicesAreRepeatedReturnErrror(command.getMainAccountRegister());
