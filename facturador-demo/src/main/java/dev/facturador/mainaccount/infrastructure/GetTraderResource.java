@@ -3,10 +3,8 @@ package dev.facturador.mainaccount.infrastructure;
 import dev.facturador.mainaccount.application.query.MainAccountGetQuery;
 import dev.facturador.mainaccount.domain.MainAccountIdUsername;
 import dev.facturador.mainaccount.domain.MainAccountTraderData;
-import dev.facturador.shared.application.comandbus.CommandBus;
 import dev.facturador.shared.application.querybus.QueryBus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,23 +18,21 @@ import javax.validation.constraints.NotEmpty;
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/mainaccounts")
-public class RecoverInfoTraderMain {
+public final class GetTraderResource {
     private QueryBus queryBus;
 
-    public RecoverInfoTraderMain(QueryBus queryBus){
+    public GetTraderResource(QueryBus queryBus){
         this.queryBus = queryBus;
     }
 
     @PreAuthorize("hasAuthority('MAIN')")
-    @GetMapping("/{username}")
-    public HttpEntity<?> delete(@PathVariable @NotEmpty String username) throws Exception {
+    @GetMapping("/trader/{username}")
+    public HttpEntity<?> getTrader(@PathVariable @NotEmpty String username) throws Exception {
         MainAccountGetQuery query = MainAccountGetQuery.Builder.getInstance()
                 .mainAccountIdUsername(MainAccountIdUsername.starter(username)).build();
 
         var user = queryBus.handle(query);
-        var response = MainAccountTraderData.starter(user);
 
-        return ResponseEntity.ok().body(response);
-
+        return ResponseEntity.ok().body(user.getAccountOwner());
     }
 }

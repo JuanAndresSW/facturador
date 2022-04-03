@@ -15,12 +15,12 @@ import javax.validation.constraints.NotEmpty;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/users")
 public class GetAvatarUserResource {
     @Autowired
     private QueryBus queryBus;
 
-    @GetMapping("/users/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<String> getUserAvatar(@PathVariable @NotEmpty String username) throws Exception {
         UserGetAvatarQuery query = UserGetAvatarQuery.Builder.getInstance()
                 .userIdUsername(UserIdUsername.starter(username)).build();

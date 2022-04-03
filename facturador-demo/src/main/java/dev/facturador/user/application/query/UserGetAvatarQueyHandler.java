@@ -16,9 +16,9 @@ public class UserGetAvatarQueyHandler implements QueryHandler<String, UserGetAva
     @Override
     public String handle(UserGetAvatarQuery query) throws Exception {
         var avatar = useCase.handle(query.getUserIdUsername());
-        if (avatar == null) {
-            throw new UserDontHaveAvatar();
+        if (avatar.getAvatar() == null) {
+            throw new UserDontHaveAvatar("Usuario no tiene avatar");
         }
-        return avatar;
+        return avatar.getAvatar();
     }
 }

@@ -36,22 +36,4 @@ public class UserRepositoryTest {
         assertThat(userByUsername.get().getUsername()).isEqualTo(username);
     }
 
-    @Test
-    public void findUserInDataBaseByUsernameOrEmail(){
-        var userByUsername = repository.findByUsernameOrEmail("marquitos@gmail.com", "marquitos@gmail.com");
-        assertTrue(userByUsername.isPresent());
-        assertNotNull(userByUsername.get());
-    }
-
-    @Test
-    public void verifyIfExistsUserByUsername(){
-        String username = "marquitos";
-        assertTrue(repository.existsByUsername(username));
-    }
-
-    @Test
-    public void verifyIfExistsUserByEmail(){
-        String email = "marquitos@gmail.com";
-        assertTrue(repository.existsByEmail(email));
-    }
 }

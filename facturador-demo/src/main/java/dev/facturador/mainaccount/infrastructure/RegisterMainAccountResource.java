@@ -43,8 +43,8 @@ public class RegisterMainAccountResource {
                 .mainAccountRegister(accountForRegister).build();
         commandBus.handle(command);
 
-        WebClient client = WebClient.builder().baseUrl("http://localhost:8080").build();
-        HttpHeaders headers = Objects.requireNonNull(client.post().uri("/login").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        var client = WebClient.builder().baseUrl("http://localhost:8080").build();
+        var headers = Objects.requireNonNull(client.post().uri("/login").contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.ALL).body(BodyInserters.fromFormData(createBodyValueForFillter(command)))
                 .retrieve().toEntity(String.class).block()).getHeaders();
 

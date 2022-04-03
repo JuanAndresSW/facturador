@@ -3,7 +3,6 @@ package dev.facturador.mainaccount.application.query;
 import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.MainAccountIdUsername;
 import dev.facturador.shared.application.querybus.Query;
-import org.springframework.stereotype.Component;
 
 public class MainAccountGetQuery extends Query<MainAccount> {
 

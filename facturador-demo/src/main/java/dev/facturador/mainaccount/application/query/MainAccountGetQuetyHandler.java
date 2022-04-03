@@ -1,16 +1,16 @@
 package dev.facturador.mainaccount.application.query;
 
-import dev.facturador.mainaccount.application.usecases.MainAccountGetUseCase;
+import dev.facturador.mainaccount.application.usecases.GetTraderRelatedMainAccountUseCase;
 import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.exception.MainAccountNotExists;
 import dev.facturador.shared.application.querybus.QueryHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MainAccountGetQueryHandler implements QueryHandler<MainAccount, MainAccountGetQuery> {
-    private MainAccountGetUseCase useCase;
+public class MainAccountGetQuetyHandler implements QueryHandler<MainAccount, MainAccountGetQuery> {
+    private GetTraderRelatedMainAccountUseCase useCase;
 
-    public MainAccountGetQueryHandler(MainAccountGetUseCase useCase){
+    public MainAccountGetQuetyHandler(GetTraderRelatedMainAccountUseCase useCase){
         this.useCase = useCase;
     }
     @Override
