@@ -13,7 +13,7 @@ export default function LoggedHeader(): JSX.Element {
 return (
   <header>
     <Link to="/" id="logo">
-      <img src={logo} alt="" />
+      <img src={logo} alt="" /><p>facturador++</p>
     </Link>
     
     <div id="logged-header"><ProfileMenu /></div>

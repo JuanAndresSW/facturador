@@ -1,6 +1,6 @@
-.footer {
+footer {
   min-height: 5rem;
-  border-top: 0px solid black;
+  border-top: 1px solid gainsboro;
   padding: 0 3rem 2rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -17,19 +17,19 @@
           justify-content: space-between;
 }
 
-.footer div {
+footer div {
   font-family: monospace;
   margin: 0 1rem;
 }
 
-.footer div img {
+footer div img {
   display: block;
   margin: 2rem auto 0;
   height: 3rem;
   width: 3rem;
 }
 
-.footer div a {
+footer div a {
   display: block;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -37,17 +37,20 @@
   margin: 0 auto;
 }
 
-.footer div .github * {
+footer div .github * {
   height: 4rem;
   width: 4rem;
   color: black;
 }
 
 @media (max-width: 800px) {
-  .footer {
+  footer {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+  }
+  footer div:nth-child(1) img {
+    display: none;
   }
 }
 /*# sourceMappingURL=Footer.css.map */

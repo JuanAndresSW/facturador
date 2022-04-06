@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {FlexDiv} from 'styledComponents';
+import Button from "../Button/Button";
 import './Message.css';
 
 type props = {
@@ -21,7 +21,7 @@ export default function Message({type, message}:props): JSX.Element {
         </p>:
         <div className="success">
             <p>💾 {message}</p>
-            <button onClick={()=>navigate(-1)}>Regresar</button>
+            <Button onClick={() => {navigate(-1); window.location.reload()}} text={"Regresar"}/>
         </div>
         
     );

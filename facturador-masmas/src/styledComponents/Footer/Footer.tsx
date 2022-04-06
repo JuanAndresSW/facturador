@@ -9,7 +9,7 @@ import "./Footer.css";
  */
 export default function Footer() {
   return (
-    <div className="footer">
+    <footer>
       <div>
         <img src={emblem} alt="" />
         <p>© Conjunto Solución 2022 (GNU V.3)</p>
@@ -22,8 +22,8 @@ export default function Footer() {
         >
           <DiGithubBadge />
         </a>
-        <p>facturador++ versión 0.1.0</p>
+        <p>facturador++ versión 0.2.0</p>
       </div>
-    </div>
+    </footer>
   );
 }

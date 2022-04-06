@@ -2,24 +2,24 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //Modelos.
-import pointOfSale from "./models/pointOfSale";
+import branch from "./models/branch";
 
 //Servicios.
-import createPointOfSale from './services/createPointOfSale';
+import createBranch from './services/createBranch';
 
 //GUI.
 import defaultLogo from 'assets/svg/default-logo.svg';
+import defaultPhoto from 'assets/svg/default-photo.svg';
 import { Field, Form, Select, Image, Message, Button, Color } from "components/formComponents";
 import { BiChevronLeft } from "react-icons/bi";
 import { Retractable } from 'components/layout';
-import { Loading } from "styledComponents";
+import { FlexDiv, Loading } from "styledComponents";
 import Valid from "utilities/Valid";
 
 
 
-
 /**Formulario para crear un nuevo punto de venta. */
-export default function NewPoint(): JSX.Element {
+export default function NewBranch(): JSX.Element {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -36,12 +36,11 @@ export default function NewPoint(): JSX.Element {
   const [postalCode, setPostalCode] = useState();
   const [street,     setStreet] =     useState();
   const [number,     setNumber] =     useState();
-  const [height,     setHeight] =     useState('1');
   //Contacto.
   const [email,      setEmail] =      useState();
   const [phone,      setPhone] =      useState();
-  const [website,    setWebsite] =    useState();
   //Personalización.
+  const [photo,      setPhoto] =      useState();
   const [logo,       setLogo] =       useState();
   const [color,      setColor] =      useState("#ffffff");
 
@@ -59,10 +58,9 @@ export default function NewPoint(): JSX.Element {
     if (!Valid.postalCode(postalCode, setError)) return;
     if (!Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
     if (!Valid.addressNumber(number, setError)) return;
-    if (!Valid.addressHeight(height)) return;
-    if (email && !Valid.email(email, setError)) return;
-    if (phone && !Valid.phone(phone, setError)) return;
-    if (website && !Valid.website(website, setError)) return;
+    if (!Valid.email(email, setError)) return;
+    if (!Valid.phone(phone, setError)) return;
+    if (!Valid.image(photo, setError)) return;
     if (!Valid.image(logo)) return setError("El logo no puede superar los 2MB");
     if (!Valid.hexColor(color, setError)) return;
     submit();
@@ -70,22 +68,22 @@ export default function NewPoint(): JSX.Element {
 
   function submit(): void {
     setLoading(true);
-    const pointOfSale: pointOfSale = {
+    const branch: branch = {
+      username: sessionStorage.getItem('username'),
       name: name,
       province: province,
       department: department,
       locality: locality,
       postalCode: postalCode,
       street: street,
-      number: number,
-      height: parseInt(height),
+      addressNumber: number,
       email: email,
       phone: phone,
-      website: website,
       logo: logo,
+      photo: photo,
       color: color
     }
-    createPointOfSale(pointOfSale, (ok: boolean, error: string): void => {
+    createBranch(branch, (ok: boolean, error: string): void => {
       setLoading(false);
       if (!ok) setError(error);
       else setSuccess(true);
@@ -102,30 +100,36 @@ export default function NewPoint(): JSX.Element {
       <Retractable label="Dirección" sync={boolAddress}
       onClick={(state:boolean)=>{setBoolAddress(state); setBoolContact(false); setBoolPreferences(false);}}>
 
+        <FlexDiv>
         <Select label="Provincia"           bind={[province, setProvince]}     options={provinces} />
         <Field  label="Departamento"        bind={[department, setDepartment]}                     />
         <Field  label="Localidad"           bind={[locality, setLocality]}                         />
         <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number"       />
         <Field  label="Calle"               bind={[street, setStreet]}                             />
         <Field  label="Número de dirección" bind={[number, setNumber]}         type="number"       />
-        <Field  label="Altura"              bind={[height, setHeight]}         type="number"       />
+        </FlexDiv>
 
       </Retractable>
 
       <Retractable label="Información de contacto" sync={boolContact} 
       onClick={(state:boolean)=>{setBoolContact(state); setBoolAddress(false); setBoolPreferences(false);}}>
 
-        <Field label="Correo electrónico" note="(opcional)" bind={[email, setEmail]}     type="email" />
-        <Field label="Número de teléfono" note="(opcional)" bind={[phone, setPhone]}     type="tel"   />
-        <Field label="Sitio web"          note="(opcional)" bind={[website, setWebsite]} type="url"   />
+        <FlexDiv>
+        <Field label="Correo electrónico" bind={[email, setEmail]}     type="email" />
+        <Field label="Número de teléfono" bind={[phone, setPhone]}     type="tel"   />
+        </FlexDiv>
 
       </Retractable>
 
-      <Retractable label="Personalización" sync={boolPreferences} 
+      <Retractable label="Personalización (opcional)" sync={boolPreferences} 
       onClick={(state:boolean)=>{setBoolPreferences(state); setBoolAddress(false); setBoolContact(false);}}>
 
-        <Image label="Logo" note="(opcional)" img={logo} setter={setLogo} fallback={defaultLogo} />
+        <FlexDiv>
+          <Image label="Foto del lugar" img={photo} setter={setPhoto} fallback={defaultPhoto} />
+          <Image label="Logo" img={logo} setter={setLogo} fallback={defaultLogo} />
+        </FlexDiv>
         <Color label="Color de los documentos comerciales" value={color} onChange={setColor} />
+        
 
       </Retractable>
 

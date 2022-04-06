@@ -1,7 +1,7 @@
 export {default as Footer} from './Footer/Footer';
 
 export {default as Option} from './Option/Option';
-export {default as Panel} from './Panel/Panel';
+export {default as Plus} from './Plus/Plus';
 export {default as Section} from './Section/Section';
 export {default as FlexDiv} from './FlexDiv';
 

@@ -20,7 +20,7 @@ export default function Operation() {
 const OperationSelectionScreen = (
   
   <>
-    <Section label="Nuevo documento">
+    <Section label="Nuevo documento comercial">
       <Option label="Enviar" icon={<BiLogOutCircle />} link="./enviar" />
       <Option label="Recibir" icon={<BiLogInCircle />} link="./recibir" />
     </Section>

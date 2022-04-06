@@ -1,34 +1,61 @@
-.tab-set {
-  display: flex;
-  list-style: none;
-  justify-content: space-around;
+nav {
   margin: 0;
-  padding: 0;
-  //background-color: rgba(255, 255, 255, 0.473);
+  padding: 1rem 0;
+  height: max-content;
+  overflow-y: auto;
+  width: 100%;
+  position: sticky;
+  top: 0;
+
   a {
-    flex-grow: 1;
-    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    margin: .3rem 0;
     font-size: 0.8rem;
     text-decoration: none;
-    color: rgba(0, 0, 0, 0.425);
-    padding: 0.5rem 0;
-    margin: 0 1.2rem;
-    border-bottom: 4px solid transparent;
+    color: #222;
     cursor: pointer;
     svg {
       display: block;
-      margin: 0 auto;
+      margin-right: .2rem;
       font-size: 1.2rem;
     }
+    &.active {
+      border-right: 3px solid #0e46ff;
+      color: #0e46ff;
+    }
+    &:hover {
+      background-color: gainsboro;
+    }
+    
   }
-  a.active {
-    border-bottom: 4px solid rgb(44, 44, 44);
-    color: rgb(44, 44, 44);
+  
+}
+
+@media (max-width: 828px) {
+  nav {
+    display: flex;
+    padding: 0;
   }
-  a:hover {
-    border-bottom: 4px solid rgba(44, 70, 70, 0.233);
+  nav>a {
+    flex: 1;
+    border-bottom: 2px solid gainsboro;
+    padding: 5px;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    &.active {
+      border: none;
+      border-bottom: 3px solid #0e46ff;
+    }
   }
-  a.active:hover {
-    border-bottom: 4px solid rgb(44, 70, 70);
+}
+@media (max-width: 550px) {
+  nav>a {
+    font-size: 0;
   }
 }

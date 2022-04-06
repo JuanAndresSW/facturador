@@ -70,7 +70,7 @@ export default function TitleScreen(): JSX.Element {
       <button
       onClick={loginInputType === "text" ?
       ()=> {setError(""); setLoginInputType("password")} : validate }>
-      Iniciar sesión
+      {loginInputType === "text" ? 'Siguiente':'Iniciar sesión'}
       </button>}
 
       <Message type="error" message={error}/>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //Componentes del formulario.
 import { DateTime, Message, Field, Form, Radio, Select, Button, Switch, Table, Textarea } from "components/formComponents";
-import { Cond } from 'components/layout';
+import { Cond, Retractable } from 'components/layout';
 import { Section, FlexDiv } from 'styledComponents';
 import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
 //Elementos de documento generado.
@@ -127,7 +127,7 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 
       </Section>
 
-      <Section label="Datos de la operación">
+      <Retractable label="Datos de la operación">
 
 
         <Cond bool={("purchase-order" + "remittance" + "invoice" + "debit-note" + "credit-note").includes(type)}>
@@ -161,9 +161,9 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
         </Cond>
         
 
-      </Section>
+      </Retractable>
 
-      <Section label="Datos opcionales">
+      <Retractable label="Datos opcionales">
 
 
         <Cond bool={("purchase-order" + "remittance" + "invoice" + "debit-note" + "credit-note").includes(type)}>
@@ -187,7 +187,7 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
         </Cond>
 
 
-      </Section>
+      </Retractable>
 
       <Button type="submit" text="Generar" />
     </Form>
@@ -200,7 +200,7 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 /**Un signo + con Link a la dirección especificada.*/
 const PlusIcon: React.FC<{ link: string }> = ({ link }) => {
   return (
-  <Link to={link} style={{ flex: .5, marginTop: ".3rem", fontSize: "2rem", display: "block", textAlign: "center", color: "#fff" }}>
+  <Link to={link} style={{ flex: .5, marginTop: ".3rem", fontSize: "2rem", display: "block", textAlign: "center", color: "#333" }}>
     <BiPlusCircle />
   </Link>)
 }

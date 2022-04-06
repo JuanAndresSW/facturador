@@ -5,11 +5,12 @@
     width: 6rem;
     height: 3rem;
     margin: 1rem auto;
-    background-color: rgba(255, 255, 255, 0.781);
+    background-color: #fff;
     border-radius: 999px;
+    border: 1px solid #ddd;
 }
 .switch svg {
-    color: rgb(48, 48, 48);
+    color: #ccc;
     display: block;
     font-size: 2rem;
     width: 2rem;
@@ -18,17 +19,17 @@
     cursor: pointer;
 }
 .switch.switch-true svg:nth-child(2) {
-    transform: scale(2);
+    transform: scale(1.8);
     transition: .2s;
-    box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.3); 
-    background-color: rgb(55, 0, 255);
-    color: aliceblue;
+    border: 1px solid gainsboro;
+    color: #3700ff;
+    background-color: #fff;
 }
 
 .switch.switch-false svg:nth-child(1) {
-    transform: scale(2);
+    border: 1px solid gainsboro;
+    transform: scale(1.8);
     transition: .2s;
-    box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.3);
-    color: rgb(55, 0, 255);
-    background-color: aliceblue;
+    color: #3700ff;
+    background-color: #fff;
 }

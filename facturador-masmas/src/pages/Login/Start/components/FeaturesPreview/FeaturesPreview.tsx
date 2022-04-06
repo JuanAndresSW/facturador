@@ -20,7 +20,7 @@ const feats = [
   </>,
   <>
     <img src={punto} />
-    <h3>Administra puntos de venta</h3>
+    <h3>Administra instalaciones</h3>
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi debitis
       in nemo amet temporibus incidunt eveniet quam error nostrum, omnis labore
@@ -49,7 +49,7 @@ const feats = [
   </>,
   <>
     <img src={open} />
-    <h3>Gratis y de acceso libre</h3>
+    <h3>Gratis y de código abierto</h3>
     <p>
       Amet consectetur adipisicing elit. Odio, reiciendis fuga dolore non veniam
       optio dolorem, beatae sunt libero{" "}

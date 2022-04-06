@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 //Componentes de formulario.
 import { Form, Field, Image, Message, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
-import { Loading } from "styledComponents";
+import { FlexDiv, Loading } from "styledComponents";
 
 //Relacionado a la cuenta.
 import Valid from "utilities/Valid";
@@ -114,25 +114,28 @@ export default function SignUp(): JSX.Element {
     <Form title="Datos de la cuenta" onSubmit={validateUser}>
       <Link to="/"><BiHome /></Link>
           
+      
       <Field icon={<BiText />} label="¿Cómo quieres que te identifiquemos?" 
       bind={[username, setUsername]} validator={Valid.names(username)} />
       <Field icon={<BiAt />} label="Tu dirección de correo electrónico"
       bind={[email, setEmail]} validator={Valid.email(email)} />
-      <Field icon={<BiKey/>} label="Elige una contraseña" 
-      bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
-      <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
-      type="password" validator={password===passwordMatch} />
+
+      <FlexDiv>
+        <Field icon={<BiKey/>} label="Elige una contraseña" 
+        bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
+        <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
+        type="password" validator={password===passwordMatch} />
+      </FlexDiv>
       
       <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} img={avatar} />
             
       <Message type="error" message={userError} />
 
-      <Button type="submit" text="Siguiente" />
+      <FlexDiv justify='space-between'>
+        <Link to="/ingresar">Acceder</Link>
 
-      <p style={{textAlign:'center', cursor:'default'}}>
-        {'¿Ya tienes una cuenta? '}
-        <Link to="/ingresar" style={{textDecoration:'none'}}>Ingresar</Link>
-      </p>
+        <Button type="submit" text="Siguiente" />
+      </FlexDiv>
 
     </Form>
     :

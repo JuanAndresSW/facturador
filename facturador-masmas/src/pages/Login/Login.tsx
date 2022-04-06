@@ -10,7 +10,7 @@ import Valid from "utilities/Valid";
 //Componentes de formulario.
 import {Form, Field, Message, Button} from 'components/formComponents';
 import { BiKey, BiUser } from "react-icons/bi";
-import { Loading } from "styledComponents";
+import { FlexDiv, Loading } from "styledComponents";
 
 /**Devuelve un formulario para iniciar sesión.*/
 export default function Login(): JSX.Element {
@@ -29,6 +29,7 @@ export default function Login(): JSX.Element {
   };
 
   function sideEffects(ok:boolean, error:string):void {
+    setLoading(false);
     if (!ok) return setError(error);
     setError("");
   }
@@ -43,11 +44,14 @@ export default function Login(): JSX.Element {
 
       {loading?<Loading />:<Button type="submit" text="Ingresar" />}
 
-      <a href="about:blank" target="_blank" className="link" style={{textDecoration:'none'}}>Olvidé mi contraseña</a>
-      <p style={{textAlign:'center', cursor:'default'}}>
-        {'¿No tienes una cuenta? '}
-        <Link to="registrarse" style={{textDecoration:'none'}}>Crea una nueva</Link>
-      </p>
+      <FlexDiv justify='space-between'>
+        <a href="about:blank" target="_blank" 
+        style={{margin:'1rem 0'}}>Olvidé mi contraseña</a>
+
+        <Link to="/registrarse" style={{ margin: '1rem 0'}}>
+          Crea una nueva cuenta</Link>
+        </FlexDiv>
+      
 
     </Form>
   );

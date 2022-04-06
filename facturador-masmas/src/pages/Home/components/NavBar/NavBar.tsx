@@ -9,7 +9,7 @@ type props = {
 export default function NavBar({ tabs }: props) {
 
   return (
-      <ul className="tab-set">
+      <nav>
 
         {tabs.map((tab, index) => (
 
@@ -20,7 +20,7 @@ export default function NavBar({ tabs }: props) {
 
         ))}
 
-      </ul>
+      </nav>
 
   );
 }

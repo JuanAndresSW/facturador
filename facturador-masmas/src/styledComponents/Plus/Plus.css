@@ -1,0 +1,26 @@
+.plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10rem;
+    height: 10rem;
+    margin: 1rem;
+    background: #fff;
+    border-radius: 10px;
+    outline: 2px dashed gainsboro;
+    transition: .1s;
+}
+.plus svg {
+    display: block;
+    height: 6rem;
+    width: 6rem;
+    color: #a3a3a3;
+}
+.plus:hover {
+    transform: scale(1.1);
+    outline: 2px solid #0070f0;
+}
+.plus:hover>svg {
+    color: #0070f0;
+    
+}

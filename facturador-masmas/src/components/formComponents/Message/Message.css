@@ -11,12 +11,6 @@
 .success p {
     cursor: default;
     text-align: center;
-    color: #eee;
+    color: rgb(0, 112, 240);
     width: 100%;
-}
-.success button {
-    cursor: pointer;
-    display: block;
-    margin: 0 auto;
-    padding: .2rem 1rem;
 }

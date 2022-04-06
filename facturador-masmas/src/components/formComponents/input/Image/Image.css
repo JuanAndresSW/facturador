@@ -32,8 +32,11 @@
     display: block;
     position: absolute;
     bottom: 8.2rem;
-    right: 0rem;
+    right: .1rem;
+}
+.image:hover {
+    background-color: #eee;
 }
 .image svg:hover {
-    color: aliceblue;
+    color: #f44;
 }

@@ -5,11 +5,11 @@ type pointOfSale = {
     locality: string;
     postalCode: string;
     street: string;
-    number: number;
-    height: number;
+    addressNumber: number;
+    floor: number;
+    unit: number;
     email: string;
     phone: string;
-    website: string;
     logo: string;
     color: string;
 };

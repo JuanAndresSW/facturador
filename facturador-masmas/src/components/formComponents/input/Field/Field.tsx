@@ -18,22 +18,17 @@ type props = {
  * @param props.type - Un tipo específico de input textual.
  * @param props.bind - Array desestructurado asociado al valor del input.
  */
-export default function Field({ label = "", icon, note, placeholder, type = "text", bind, validator=true }: props): JSX.Element {
+export default function Field({ label = "", note, placeholder, type = "text", bind, validator=true }: props): JSX.Element {
     return (
         <label> {label}
         <span> {note}</span>
-
-        <div className={validator?"field-wrap":"field-wrap invalid"}>
-            {icon!==undefined?icon:null}
-
             <input
-                className="field"
+                className={validator?"field":"field invalid"}
                 placeholder={placeholder}
                 type={type}
                 value={bind[0]?bind[0]:""}
                 onChange={(e) => bind[1](e.target.value)}
             ></input>
-        </div>
         </label>
     );
 };

@@ -12,7 +12,7 @@ import Valid from "utilities/Valid";
 //GUI.
 import { Button, Message, Field, Form, Image, Radio } from "components/formComponents";
 import { Retractable } from "components/layout";
-import { Loading, Section } from "styledComponents";
+import { FlexDiv, Loading, Section } from "styledComponents";
 import { BiChevronLeft } from "react-icons/bi";
 //Modelos.
 import editedAccount from "./models/editedAccount";
@@ -41,7 +41,6 @@ export default function Account(): JSX.Element {
     const [error, setError] =                       useState("");
     const [deleteError, setDeleteError] =           useState("");
     //Datos de eliminación.
-    const [deletePermissionGranted, setDeletePermissionGranted] = useState(false);
     const [deletionCode, setDeletionCode] =                       useState("");
     //Datos del usuario.
     const [avatar, setAvatar] =                     useState(undefined);
@@ -119,16 +118,6 @@ export default function Account(): JSX.Element {
         });
     }
 
-    //Solicita un código de eliminación a ser enviado al email del usuario.
-    function RequestDeletePermission() {
-        setLoading(true);
-        requestDeletionCode((ok:boolean, data:string)=> {
-            setLoading(false);
-            if (ok) setDeletePermissionGranted(true);
-            else setDeleteError(data);
-        });
-    }
-
     //Envía el código de eliminación ingresado. Si es correcto, la cuenta de usuario es eliminada.
     function deleteAccount() {
         //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
@@ -182,18 +171,24 @@ export default function Account(): JSX.Element {
             <p style={{textAlign:"center", color:"#fff", cursor:"default"}}>...</p>
             <Retractable label="Otras opciones" initial={false}>
                 
-                {!deletePermissionGranted? null :
-                    <Field bind={[deletionCode, setDeletionCode]} 
-                    label={'Se ha enviado por correo electrónico el código de eliminación. Escríbelo a continuación para confirmar:'} />
-                }   
+                
+                <Field bind={[deletionCode, setDeletionCode]} 
+                label={'Escríbe el código de eliminación:'} />
+                
 
                 <Message type="error" message={deleteError} />
 
                 {deleteSuccess? <Message type="success" message={`Se ha eliminado la cuenta`}/>:
-                    loading? <Loading /> :
+                loading? <Loading /> :
+                
+                <FlexDiv>
+                    <a href="about:blank" target='_blank'>Solicitar código</a>
+
                     <Button type="delete"
-                text=   {!deletePermissionGranted?"Borrar la cuenta" : "Solicitar código para eliminar cuenta"}
-                onClick={!deletePermissionGranted?deleteAccount      :  RequestDeletePermission} />}  {/*TODO: remove !: delete only after permission */}
+                    text="Borrar la cuenta"
+                    onClick={deleteAccount} />
+                </FlexDiv>}
+                
 
             </Retractable>
         </Form>
