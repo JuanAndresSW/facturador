@@ -5,7 +5,6 @@ import dev.facturador.shared.domain.CustomUserDetails;
 import dev.facturador.shared.infrastructure.CustomJWT;
 import dev.facturador.shared.infrastructure.auth.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,10 +26,11 @@ public class RefreshResource {
     private CustomJWT jwt;
     private CustomUserDetailsService service;
 
-    public RefreshResource(CustomUserDetailsService service, CustomJWT jwt){
+    public RefreshResource(CustomUserDetailsService service, CustomJWT jwt) {
         this.service = service;
         this.jwt = jwt;
     }
+
     /**
      * Actuliza el {@code Access-Token} con el {@code Refresh-Token}
      *

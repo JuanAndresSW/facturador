@@ -4,7 +4,6 @@ import dev.facturador.mainaccount.application.command.delete.MainAccountDeleteCo
 import dev.facturador.mainaccount.domain.MainAccountIdUsername;
 import dev.facturador.shared.application.comandbus.CommandBus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,13 +20,13 @@ import javax.validation.constraints.NotEmpty;
 public class DeleteMainAccountResource {
     private CommandBus commandBus;
 
-    public DeleteMainAccountResource(CommandBus commandBus){
+    public DeleteMainAccountResource(CommandBus commandBus) {
         this.commandBus = commandBus;
     }
 
     @PreAuthorize("hasAuthority('MAIN')")
     @DeleteMapping("/{username}")
-    public HttpEntity<String> delete(@PathVariable @NotEmpty String username) throws Exception {
+    public HttpEntity delete(@PathVariable @NotEmpty String username) throws Exception {
         MainAccountDeleteCommand command = MainAccountDeleteCommand.Builder.getInstance()
                 .mainAccountIdUsername(MainAccountIdUsername.starter(username)).build();
 

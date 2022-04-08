@@ -1,6 +1,6 @@
 package dev.facturador.operation.domain;
 
-import dev.facturador.pointofsale.domain.PointOfSale;
+import dev.facturador.branch.domain.Branch;
 import dev.facturador.shared.domain.shared.Flux;
 import lombok.*;
 
@@ -31,7 +31,7 @@ public final class Operation implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_point_of_sale_issuing", updatable = false, insertable = false,
             referencedColumnName = "id_point_of_sale")
-    private PointOfSale pointofSale;
+    private Branch pointofSale;
 }
 
 @Embeddable

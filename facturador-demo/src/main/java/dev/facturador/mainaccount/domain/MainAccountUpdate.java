@@ -17,7 +17,9 @@ public final class MainAccountUpdate {
     @JsonProperty("user")
     private UserUpdate userUpdate;
 
-    @Valid @NotNull @JsonProperty("trader")
+    @Valid
+    @NotNull
+    @JsonProperty("trader")
     private TraderUpdate traderUpdate;
 
     public static MainAccountUpdate starter(UserUpdate userUpdate, TraderUpdate traderUpdate) {

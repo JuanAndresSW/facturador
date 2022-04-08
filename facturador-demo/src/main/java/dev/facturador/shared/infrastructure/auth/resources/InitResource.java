@@ -5,9 +5,7 @@ import dev.facturador.shared.domain.CustomUserDetails;
 import dev.facturador.shared.domain.InitResponse;
 import dev.facturador.shared.infrastructure.CustomJWT;
 import dev.facturador.shared.infrastructure.auth.CustomUserDetailsService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +27,7 @@ public class InitResource {
     private CustomJWT jwt;
     private CustomUserDetailsService service;
 
-    public InitResource(CustomUserDetailsService service, CustomJWT jwt){
+    public InitResource(CustomUserDetailsService service, CustomJWT jwt) {
         this.service = service;
         this.jwt = jwt;
     }
@@ -43,6 +41,7 @@ public class InitResource {
         var initResponse = this.createResponseWithToken(authToken, response);
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_OK);
+
         new ObjectMapper().writeValue(response.getOutputStream(), initResponse);
     }
 
@@ -61,11 +60,12 @@ public class InitResource {
                 var email = jwt.createDecoder(token).getSubject();
                 var user = ((CustomUserDetails) service.loadUserByUsername(email));
                 var role = user.getAuthorities().stream().toList().get(0).getAuthority();
+
                 if (role.equals("MAIN")) {
-                    return new InitResponse(user.getUsername(), role, user.getActive(), user.getPassive());
+                    return new InitResponse(user.getUsername(), user.getIdTrader(), role, user.getActive(), user.getPassive());
                 }
                 if (role.equals("BRANCH")) {
-                    return new InitResponse(user.getUsername(), role, null, null);
+                    return new InitResponse(user.getUsername(), null, role, null, null);
                 }
             }
         } catch (Exception ex) {

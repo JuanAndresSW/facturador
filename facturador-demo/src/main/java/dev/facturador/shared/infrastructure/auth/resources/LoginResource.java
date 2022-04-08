@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 
 @Slf4j
 @RestController
@@ -57,34 +58,22 @@ public class LoginResource {
     }
 
     private LoginResponse formTheLoginResponseWithHeaders(HttpHeaders headers) {
-        var data = this.extractDataFromHeader(headers);
-        if (data.get("role").equals("MAIN")) {
-            String active = headers.get("user-data").get(2);
-            String passive = headers.get("user-data").get(3);
+        if (headers.get("role").get(0).equals("MAIN")) {
+            String active = headers.get("active").get(0);
+            String passive = headers.get("pasive").get(0);
+            String IDTrader = headers.get("IDTrader").get(0);
             return new LoginResponse(
-                    data.get("username"),
-                    data.get("role"),
+                    headers.get("username").get(0),
+                    parseLong(IDTrader),
+                    headers.get("role").get(0),
                     parseInt(active),
                     parseInt(passive),
-                    data.get("accessToken"),
-                    data.get("refreshToken"));
+                    headers.get("accessToken").get(0),
+                    headers.get("refreshToken").get(0));
         }
-        return new LoginResponse(data.get("username"), data.get("role"), data.get("accessToken"), data.get("refreshToken"));
+
+        return new LoginResponse(headers.get("username").get(0), headers.get("role").get(0), headers.get("accessToken").get(0), headers.get("refreshToken").get(0));
     }
 
-    private Map<String, String> extractDataFromHeader(HttpHeaders headers) {
-        var data = new HashMap<String, String>();
-        if (!headers.get("accessToken").isEmpty()) {
-            data.put("accessToken", Objects.requireNonNull(headers.get("accessToken")).get(0));
-        }
-        if (!headers.get("refreshToken").isEmpty()) {
-            data.put("refreshToken", Objects.requireNonNull(headers.get("refreshToken")).get(0));
-        }
-        if (!headers.get("user-data").isEmpty()) {
-            data.put("username", Objects.requireNonNull(headers.get("user-data")).get(0));
-            data.put("role", Objects.requireNonNull(headers.get("user-data")).get(1));
-        }
-        return data;
-    }
 
 }

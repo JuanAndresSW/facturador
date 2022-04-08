@@ -1,6 +1,6 @@
 package dev.facturador.partner.domain;
 
-import dev.facturador.pointofsale.domain.PointOfSale;
+import dev.facturador.branch.domain.Branch;
 import dev.facturador.shared.domain.shared.EstadoSolicitud;
 import dev.facturador.trader.domain.Trader;
 import lombok.*;
@@ -38,7 +38,7 @@ public final class Partner implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_point_of_sale_requester", referencedColumnName = "id_point_of_sale",
             updatable = false, insertable = false)
-    private PointOfSale pointOfSaleRequester;
+    private Branch branchRequester;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_trader_requested", referencedColumnName = "id_trader",
@@ -48,7 +48,7 @@ public final class Partner implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_point_of_sale_requested", referencedColumnName = "id_point_of_sale",
             updatable = false, insertable = false)
-    private PointOfSale pointOfSaleRequested;
+    private Branch branchRequested;
 }
 
 @Embeddable

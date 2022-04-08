@@ -3,10 +3,8 @@ package dev.facturador.mainaccount.application.usecases;
 import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.MainAccountRepository;
 import dev.facturador.mainaccount.domain.MainAccountUpdate;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -25,13 +23,9 @@ public class UpdateMainAccountUseCase {
     public MainAccount getMainAccountByUsername(String username) {
         return repository.findByUserMainAccountUsername(username);
     }
-
-
     public Boolean existsByUsernameOfUser(String username) {
         return Boolean.TRUE.equals(repository.existsByUserMainAccountUsername(username));
     }
-
-
     public Boolean existsByUniqueKeyOfTrader(String uniqueKey) {
         return Boolean.TRUE.equals(repository.existsByAccountOwnerUniqueKey(uniqueKey));
     }
@@ -109,7 +103,7 @@ public class UpdateMainAccountUseCase {
         if (StringUtils.hasText(data.getTraderUpdate().newVatCategory())) {
             String actualVat = user.getAccountOwner().getVat().name();
             String newVat = data.getTraderUpdate().newVatCategory();
-            if (actualVat.toLowerCase().equals(newVat.toLowerCase())) {
+            if (actualVat.equalsIgnoreCase(newVat)) {
                 return "La informacion debe de ser distinta a la actual para actualizarla";
             }
         }

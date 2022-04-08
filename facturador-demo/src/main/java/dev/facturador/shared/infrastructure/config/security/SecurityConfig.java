@@ -4,11 +4,11 @@ import dev.facturador.shared.infrastructure.CustomJWT;
 import dev.facturador.shared.infrastructure.auth.CustomAuthenticationFilter;
 import dev.facturador.shared.infrastructure.auth.CustomUserDetailsService;
 import dev.facturador.shared.infrastructure.config.CORSFilter;
+import dev.facturador.shared.infrastructure.config.JWTEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CORSFilter.JWTEntryPoint unauthorizedHandler;
+    private final JWTEntryPoint unauthorizedHandler;
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
@@ -66,8 +66,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     @Bean
-    public CustomJWT customJWT(){
+    public CustomJWT customJWT() {
         return new CustomJWT();
     }
 

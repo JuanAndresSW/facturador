@@ -1,6 +1,6 @@
 package dev.facturador.products.domain;
 
-import dev.facturador.pointofsale.domain.PointOfSale;
+import dev.facturador.branch.domain.Branch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,5 +32,5 @@ public final class Products {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_point_of_sale", nullable = false, referencedColumnName = "id_point_of_sale")
-    private PointOfSale pointOfSaleOwnerProduct;
+    private Branch branchOwnerProduct;
 }

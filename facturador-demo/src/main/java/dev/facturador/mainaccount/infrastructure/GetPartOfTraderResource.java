@@ -21,13 +21,13 @@ import javax.validation.constraints.NotEmpty;
 public class GetPartOfTraderResource {
     private QueryBus queryBus;
 
-    public GetPartOfTraderResource(QueryBus queryBus){
+    public GetPartOfTraderResource(QueryBus queryBus) {
         this.queryBus = queryBus;
     }
 
     @PreAuthorize("hasAuthority('MAIN')")
     @GetMapping("/{username}")
-    public HttpEntity<?> getPartOfTrader(@PathVariable @NotEmpty String username) throws Exception {
+    public HttpEntity<MainAccountTraderData> getPartOfTrader(@PathVariable @NotEmpty String username) throws Exception {
         MainAccountGetQuery query = MainAccountGetQuery.Builder.getInstance()
                 .mainAccountIdUsername(MainAccountIdUsername.starter(username)).build();
 

@@ -2,7 +2,6 @@ package dev.facturador.mainaccount.application.command.delete;
 
 import dev.facturador.mainaccount.domain.MainAccountIdUsername;
 import dev.facturador.shared.application.comandbus.Command;
-import org.springframework.stereotype.Component;
 
 public class MainAccountDeleteCommand extends Command {
     private MainAccountIdUsername mainAccountIdUsername;

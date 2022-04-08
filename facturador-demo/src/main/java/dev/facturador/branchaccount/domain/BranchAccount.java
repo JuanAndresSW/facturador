@@ -1,7 +1,7 @@
 package dev.facturador.branchaccount.domain;
 
 import dev.facturador.mainaccount.domain.MainAccount;
-import dev.facturador.pointofsale.domain.PointOfSale;
+import dev.facturador.branch.domain.Branch;
 import dev.facturador.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public final class BranchAccount {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_point_of_sale_asigned", nullable = false)
-    private PointOfSale pointOfSaleAsigned;
+    private Branch branchAsigned;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", nullable = false, unique = true)

@@ -12,7 +12,7 @@ public class MainAccountGetQuery extends Query<MainAccount> {
         this.mainAccountIdUsername = mainAccountIdUsername;
     }
 
-    public MainAccountIdUsername getMainAccountIdUsername(){
+    public MainAccountIdUsername getMainAccountIdUsername() {
         return this.mainAccountIdUsername;
     }
 
@@ -32,6 +32,5 @@ public class MainAccountGetQuery extends Query<MainAccount> {
             return new MainAccountGetQuery(mainAccountIdUsername);
         }
     }
-
 
 }

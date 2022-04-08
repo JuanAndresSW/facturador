@@ -5,7 +5,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
@@ -18,7 +17,7 @@ public class CustomJWT {
     private String secrectKey;
     private long expDateDefined;
 
-    public CustomJWT(){
+    public CustomJWT() {
         this.secrectKey = "$argon2id$v=19$m=2048,t=2,p=1$F7XsIVx3YSVL6tGdyeGyrA$dLXD9Clq4po8/dL6b0IudGmgGyr+4cHNTM4fjqG5LDw";
         this.expDateDefined = 14400000;
     }

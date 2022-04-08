@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private long id;
+    private long idTrader;
     private String username;
     private String password;
     private String email;
@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
     private Boolean enabled;
 
-    public CustomUserDetails(long id,
+    public CustomUserDetails(long idTrader,
                              String username,
                              String password,
                              String email,
@@ -36,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
                              int passive,
                              Collection<? extends GrantedAuthority> authorities,
                              Boolean enable) {
-        this.id = id;
+        this.idTrader = idTrader;
         this.username = username;
         this.password = password;
         this.email = email;

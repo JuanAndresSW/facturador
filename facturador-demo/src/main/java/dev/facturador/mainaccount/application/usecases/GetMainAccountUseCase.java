@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class GetTraderRelatedMainAccountUseCase {
+public class GetMainAccountUseCase {
     @Autowired
     private MainAccountRepository repository;
 

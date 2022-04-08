@@ -1,6 +1,5 @@
 package dev.facturador.mainaccount.domain.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,7 +9,7 @@ import lombok.ToString;
 @Getter
 public class ErrorInDataForUpdate extends Exception {
 
-    public ErrorInDataForUpdate(String message){
+    public ErrorInDataForUpdate(String message) {
         super(message);
     }
 }

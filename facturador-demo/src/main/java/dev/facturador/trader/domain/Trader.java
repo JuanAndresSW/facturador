@@ -1,6 +1,7 @@
 package dev.facturador.trader.domain;
 
-import dev.facturador.pointofsale.domain.PointOfSale;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dev.facturador.branch.domain.Branch;
 import dev.facturador.shared.domain.shared.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,8 +45,19 @@ public final class Trader implements Serializable {
     @Column(name = "active", nullable = false)
     private int active;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
-    private Collection<PointOfSale> pointOfSaleOutlets;
+    private Collection<Branch> branchOutlets;
+
+    public Trader(long idTrader) {
+        this.idTrader = idTrader;
+    }
+
+    public Trader(long idTrader, String uniqueKey, String name) {
+        this.idTrader = idTrader;
+        this.uniqueKey = uniqueKey;
+        this.name = name;
+    }
 
     public Trader(String uniqueKey, String grossIncome, String name, int active, int passive) {
         this.uniqueKey = uniqueKey;
@@ -82,6 +94,8 @@ public final class Trader implements Serializable {
                 ", vatCategory=" + vat.getNameVat() +
                 ", grossIncome='" + grossIncome + '\'' +
                 ", name='" + name + '\'' +
+                ", active='" + active + '\'' +
+                ", passive='" + passive + '\'' +
                 '}';
     }
 }

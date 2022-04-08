@@ -4,7 +4,6 @@ import dev.facturador.shared.domain.CustomUserDetails;
 import dev.facturador.shared.infrastructure.CustomJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private AuthenticationManager authenticationManager;
     private CustomJWT jwt;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, CustomJWT jwt){
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, CustomJWT jwt) {
         this.authenticationManager = authenticationManager;
         this.jwt = jwt;
     }
@@ -64,10 +63,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         response.setHeader("accessToken", accesToken);
         response.setHeader("refreshToken", refreshToken);
-        response.addHeader("user-data", user.getUsername());
-        response.addHeader("user-data", user.getAuthorities().stream().toList().get(0).getAuthority());
-        response.addHeader("user-data", String.valueOf(user.getActive()));
-        response.addHeader("user-data", String.valueOf(user.getPassive()));
+
+        response.setHeader("username", user.getUsername());
+        response.setHeader("role", user.getAuthorities().stream().toList().get(0).getAuthority());
+        response.setHeader("active", String.valueOf(user.getActive()));
+        response.setHeader("pasive", String.valueOf(user.getPassive()));
+        response.setHeader("IDTrader", String.valueOf(user.getIdTrader()));
     }
 
 }

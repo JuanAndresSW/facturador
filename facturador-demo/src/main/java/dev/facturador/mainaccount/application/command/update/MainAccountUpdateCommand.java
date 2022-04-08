@@ -3,7 +3,6 @@ package dev.facturador.mainaccount.application.command.update;
 import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.MainAccountUpdate;
 import dev.facturador.shared.application.comandbus.Command;
-import org.springframework.stereotype.Component;
 
 public class MainAccountUpdateCommand extends Command {
 

@@ -4,7 +4,6 @@ import dev.facturador.shared.application.querybus.Query;
 import dev.facturador.user.domain.UserIdUsername;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.stereotype.Component;
 
 @Getter
 @AllArgsConstructor
