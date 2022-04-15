@@ -29,11 +29,10 @@ export default class Valid {
     return false;
   }
 
-  public static code(code: string, setError?: Function): boolean {
-    code = code?.replace(/ |\.|-/g, "");
-    //if (code === "") return true; TODO: generate automatic code
-    if (/[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(code)) return true;
-    if (setError) setError("Ingrese un número de ingresos brutos válido");
+  public static CUIT(CUIT: string, setError?: Function): boolean {
+    CUIT = CUIT?.replace(/ |\.|-/g, "");
+    if (/[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(CUIT)) return true;
+    if (setError) setError("Ingrese un C.U.I.T. válido");
     return false;
 
   }
@@ -42,7 +41,6 @@ export default class Valid {
     if (
          vatCategory === "Monotributista" 
       || vatCategory === "Responsable Inscripto"
-      || vatCategory === "Sujeto Exento"
     ) return true;
     if (setError) setError("Seleccione una categoría");
     return false;
@@ -54,7 +52,7 @@ export default class Valid {
 
   public static postalCode(postalCode: string, setError?: Function): boolean {
     if  (/^\d{4}$/.test(postalCode)) return true;
-    if (setError) setError("Ingrese un código postal con el formato AAAA");
+    if (setError) setError("Ingrese un código postal de 4 dígitos");
     return false;
   }
 
@@ -74,8 +72,8 @@ export default class Valid {
     return false;
   }
 
-  public static addressNumber(addressNumber: string, setError?: Function): boolean {
-    if (/^[1-9]{1}\d{0,4}$/.test(addressNumber)) return true;
+  public static addressNumber(addressNumber: number, setError?: Function): boolean {
+    if (/^[1-9]{1}\d{0,4}$/.test(addressNumber?.toLocaleString())) return true;
     if (setError) setError("Ingrese un número de dirección");
     return false;
   }

@@ -1,5 +1,5 @@
 import mainAccount from '../models/mainAccount';
-import {fileToBase64, toFormattedCode} from 'utilities/conversions';
+import {fileToBase64, toFormattedCUIT} from 'utilities/conversions';
 
 export default async function adaptMainAccount(account: mainAccount): Promise<string> {
     return JSON.stringify({
@@ -11,9 +11,8 @@ export default async function adaptMainAccount(account: mainAccount): Promise<st
         },
         trader: {
           businessName: account.trader.businessName.trim(),
-          vatCategory: account.trader.vatCategory.trim(),
-          code: toFormattedCode(account.trader.code),
-          grossIncome: toFormattedCode(account.trader.grossIncome),
+          VATCategory: account.trader.VATCategory.trim(),
+          CUIT: toFormattedCUIT(account.trader.CUIT),
         }
     });
 }

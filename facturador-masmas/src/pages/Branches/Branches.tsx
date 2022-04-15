@@ -3,7 +3,7 @@ import NewPoint from './NewBranch';
 import BranchOptions from './BranchOptions';
 
 //GUI.
-import { OptionWithPhoto } from "components/layout";
+import { OptionWithPhoto } from "styledComponents";
 import { Section, Plus, FlexDiv } from "styledComponents";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { MdModeEdit } from "react-icons/md";

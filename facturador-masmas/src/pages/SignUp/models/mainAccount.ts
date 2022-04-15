@@ -7,9 +7,8 @@ type mainAccount = {
     };
     trader: {
         businessName: string;
-        vatCategory: string;
-        code: string;
-        grossIncome: string;
+        VATCategory: string;
+        CUIT: string;
     };
 }
 export default mainAccount;

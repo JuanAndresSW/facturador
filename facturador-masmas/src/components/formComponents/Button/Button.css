@@ -12,14 +12,23 @@
 
 .button[type="submit"], .button[type="button"] {
   background-color: #006fcc;
+  border-bottom: 2px solid #015aa3;
+}
+.button[type="button"]:hover, .button[type="submit"]:hover {
+  background-color: #015aa3;
+  border-bottom: 2px solid #014b88;
+}
+.button[type="button"]:active, .button[type="submit"]:active {
+  background-color: #1789e6;
 }
 .button.delete {
   background-color: #ff4444;
-}
- 
-.button[type="button"]:hover, .button[type="submit"]:hover {
-  background-color: #015aa3;
+  border-bottom: 2px solid #f52323;
 }
 .button.delete:hover {
   background-color: #f52323;
+  border-bottom: 2px solid #db1b1b;
+}
+.button.delete:active {
+  background-color: #ff0000;
 }

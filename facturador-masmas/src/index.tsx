@@ -5,9 +5,8 @@ import App from './App';
 import './index.css';
 
 const root = document.getElementById('root')!;
-const app = ReactDOMClient.createRoot(root);
 
-app.render(
+ReactDOMClient.createRoot(root).render(
   <React.StrictMode>
     <BrowserRouter>
       <App />

@@ -1,4 +1,4 @@
-import { fileToBase64, toFormattedCode } from 'utilities/conversions';
+import { fileToBase64, toFormattedCUIT } from 'utilities/conversions';
 import editedAccount from '../models/editedAccount';
 
 export default async function adaptAccount(acc: editedAccount) {
@@ -13,8 +13,8 @@ export default async function adaptAccount(acc: editedAccount) {
         },
         trader: {
             newBusinessName: acc.trader.newBusinessName? acc.trader.newBusinessName.trim()   : null,
-            newVatCategory:  acc.trader.newVatCategory?  acc.trader.newVatCategory.trim()    : null,
-            newCode:         acc.trader.newCode?         toFormattedCode(acc.trader.newCode) : null,
+            newVATCategory:  acc.trader.newVATCategory?  acc.trader.newVATCategory.trim()    : null,
+            newCUIT:         acc.trader.newCUIT?         toFormattedCUIT(acc.trader.newCUIT) : null,
         }
     });
 }

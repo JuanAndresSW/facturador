@@ -15,8 +15,8 @@ export const base64ToBlob = async (base64String:string) => {
     return await base64Response.blob();
 }
 
-/**Convierte un string de CUIT/CUIL al formato AA-BB.BBB.BBB-A. */
-export const toFormattedCode = (code:string) => {
+/**Convierte un string de CUIT al formato AA-BB.BBB.BBB-A. */
+export const toFormattedCUIT = (code:string) => {
     const c = code.replace(/ |\.|-/g, "");
 
     return c? c.slice(0, 2) + '-' +

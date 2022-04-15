@@ -8,8 +8,7 @@ type editedAccount = {
     },
     trader: {
         newBusinessName: string,
-        newVatCategory:  string,
-        newCode:         string,
+        newVATCategory:  string,
     }
 };
 export default editedAccount;

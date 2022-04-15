@@ -69,14 +69,16 @@ export default function NewBranch(): JSX.Element {
   function submit(): void {
     setLoading(true);
     const branch: branch = {
-      username: sessionStorage.getItem('username'),
+      IDTrader: sessionStorage.getItem('IDTrader'),
       name: name,
-      province: province,
-      department: department,
-      locality: locality,
-      postalCode: postalCode,
-      street: street,
-      addressNumber: number,
+      address: {
+        province: province,
+        department: department,
+        locality: locality,
+        postalCode: postalCode,
+        street: street,
+        addressNumber: number,
+      },
       email: email,
       phone: phone,
       logo: logo,
@@ -91,22 +93,22 @@ export default function NewBranch(): JSX.Element {
   }
 
   return (
-    <Form title="Crea un punto de venta" onSubmit={validate} >
+    <Form title="Crea una instalación" onSubmit={validate} >
 
     <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
 
-      <Field label="Nombre del comercio" bind={[name, setName]} placeholder={"Entre 3 y 20 caracteres"} />
+      <Field label="Nombre comercial" validator={Valid.names(name)} bind={[name, setName]} placeholder={"Entre 3 y 20 caracteres"} />
 
       <Retractable label="Dirección" sync={boolAddress}
       onClick={(state:boolean)=>{setBoolAddress(state); setBoolContact(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-        <Select label="Provincia"           bind={[province, setProvince]}     options={provinces} />
-        <Field  label="Departamento"        bind={[department, setDepartment]}                     />
-        <Field  label="Localidad"           bind={[locality, setLocality]}                         />
-        <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number"       />
-        <Field  label="Calle"               bind={[street, setStreet]}                             />
-        <Field  label="Número de dirección" bind={[number, setNumber]}         type="number"       />
+          <Select label="Provincia"           bind={[province, setProvince]}     options={provinces} />
+          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)} />
+          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}   />
+          <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)} />
+          <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}                          />
+          <Field  label="Número de dirección" bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)} />
         </FlexDiv>
 
       </Retractable>
@@ -115,8 +117,8 @@ export default function NewBranch(): JSX.Element {
       onClick={(state:boolean)=>{setBoolContact(state); setBoolAddress(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-        <Field label="Correo electrónico" bind={[email, setEmail]}     type="email" />
-        <Field label="Número de teléfono" bind={[phone, setPhone]}     type="tel"   />
+          <Field label="Correo electrónico" bind={[email, setEmail]} type="email" validator={Valid.email(email)} />
+          <Field label="Número de teléfono" bind={[phone, setPhone]} type="tel"   validator={Valid.phone(phone)}  />
         </FlexDiv>
 
       </Retractable>

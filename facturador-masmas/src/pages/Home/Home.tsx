@@ -9,30 +9,28 @@ import Main from './components/Main/Main';
 
 //Stateless.
 import { Footer } from 'styledComponents';
-import {AiFillDollarCircle} from 'react-icons/ai';
-import {MdClass, MdPoll, MdOutlineHomeWork} from 'react-icons/md';
+import {MdClass, MdPoll, MdOutlineHomeWork, MdOutlineEmojiPeople, MdMonetizationOn} from 'react-icons/md';
 
 //Páginas.
 import Operation from 'pages/Operation/Operation';
 import Books from 'pages/Books/Books';
 import Stats from 'pages/Stats/Stats';
 import Branches from 'pages/Branches/Branches';
-import { BiGroup } from 'react-icons/bi';
 
 const paths = {
     operation: "/operacion",
     books: "/libros",
     stats: "/estadisticas",
     branches: "/sucursales",
-    partners: "/socios"
+    clients: "/clientes"
 }
 
 const tabs = [
-    {path:paths.operation, icon: <AiFillDollarCircle />, label:'Operación'},
-    {path:paths.books, icon: <MdClass />, label:'Libros'},
-    {path:paths.stats, icon: <MdPoll />, label:'Estadística'},
-    {path:paths.branches, icon: <MdOutlineHomeWork />, label:'Sucursales'},
-    {path:paths.partners, icon: <BiGroup />, label:'Socios'}
+    {path:paths.operation, icon: <MdMonetizationOn />, label:'operación'},
+    {path:paths.books,     icon: <MdClass />,            label:'libros'},
+    {path:paths.stats,     icon: <MdPoll />,             label:'estadísticas'},
+    {path:paths.branches,  icon: <MdOutlineHomeWork />,  label:'sucursales'},
+    {path:paths.clients,   icon: <MdOutlineEmojiPeople />, label:'clientes'}
 ]
 
 //Devuelve la página principal dependiente de una sesión iniciada.
@@ -54,7 +52,7 @@ export default function Home():JSX.Element {
                 <Route path={paths.books    +"/*"}  element={<Books     />}        />
                 <Route path={paths.stats    +"/*"}  element={<Stats     />}        />
                 <Route path={paths.branches +"/*"}  element={<Branches  />}        />
-                <Route path={paths.partners +"/*"}  element={<></>}        />
+                <Route path={paths.clients  +"/*"}  element={<></>}        />
                 <Route path="*"                     element={<Navigate to={"/"} />}/>
             </Routes>
 

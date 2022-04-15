@@ -19,7 +19,7 @@ import editedAccount from "./models/editedAccount";
 
 
 //## Funciones de implementación condicional. ##//
-const hasRootAccess = sessionStorage.getItem("role") === "MAIN";
+const hasRootAccess = sessionStorage.getItem("role") !== "MAIN";
 
 const updateAccount = hasRootAccess?
 (data:any, handler:Function)=> updateMainAccount(data, handler):
@@ -41,7 +41,7 @@ export default function Account(): JSX.Element {
     const [error, setError] =                       useState("");
     const [deleteError, setDeleteError] =           useState("");
     //Datos de eliminación.
-    const [deletionCode, setDeletionCode] =                       useState("");
+    const [deletionCode, setDeletionCode] =         useState("");
     //Datos del usuario.
     const [avatar, setAvatar] =                     useState(undefined);
     const [newUsername, setNewUsername] =                 useState('');
@@ -51,10 +51,9 @@ export default function Account(): JSX.Element {
     //Datos del comerciante.
     const [businessName, setBusinessName] =         useState("");
     const [newBusinessName, setNewBusinessName] =   useState("");
-    const [vatCategory, setVatCategory] =           useState("");
-    const [newVatCategory, setNewVatCategory] =     useState("");
-    const [code, setCode] =                         useState("");
-    const [newCode, setNewCode] =                   useState("");
+    const [VATCategory, setVatCategory] =           useState("");
+    const [newVATCategory, setNewVATCategory] =     useState("");
+    const [CUIT, setCUIT] =                         useState("");
 
     //Pedir los datos actuales en el primer renderizado.
     useEffect(() => {
@@ -67,7 +66,7 @@ export default function Account(): JSX.Element {
                 if (!ok) { setError(data); return; }
                 setBusinessName (data.businessName);
                 setVatCategory  (data.vatCategory);
-                setCode         (data.uniqueKey);
+                setCUIT         (data.uniqueKey);
             });
         }
     }, []);
@@ -83,8 +82,7 @@ export default function Account(): JSX.Element {
         }
         if (hasRootAccess)                                            {
             if (newBusinessName && !Valid.names(newBusinessName)) return setError("La razón social debe ser de entre 3 y 20 caracteres");
-            if (newVatCategory && !Valid.vatCategory(newVatCategory)) return setError("Seleccione una categoría");
-            if (newCode && !Valid.code(code)) return setError(`C.U.I.${newVatCategory === "Monotributista"? "L. inválido": "T. inválida"}`);
+            if (newVATCategory && !Valid.vatCategory(newVATCategory, setError)) return;
         }
         submit();
     }
@@ -104,8 +102,7 @@ export default function Account(): JSX.Element {
             },
             trader: {
                 newBusinessName: newBusinessName,
-                newVatCategory:  newVatCategory,
-                newCode:         newCode,
+                newVATCategory:  newVATCategory,
             }
         } 
         updateAccount(account, (ok:boolean, data:string)=>{
@@ -139,25 +136,30 @@ export default function Account(): JSX.Element {
             <Image label='' setter={setAvatar} img={avatar} />
 
             <Field bind={[newUsername, setNewUsername]} label="Nombre"
-            placeholder={sessionStorage.getItem('username')} />
+            placeholder={sessionStorage.getItem('username')}
+            validator={Valid.names(newUsername)} />
 
-            <Field bind={[password, setPassword]} label="Para cambiar tu contraseña, introduce la contraseña actual:" type="password" />
+            <Field bind={[password, setPassword]} type="password"
+            label="Para cambiar tu contraseña, introduce la contraseña actual:"
+            validator={Valid.password(password)} />
             {!Valid.password(password) ? null:
             <>
-            <Field bind={[newPassword, setNewPassword]} label="Nueva contraseña" type="password" />
-            <Field bind={[confirmPassword, setConfirmPassword]} label="Confirmar nueva contraseña" type="password" />
+            <Field bind={[newPassword, setNewPassword]} label="Nueva contraseña" type="password"
+            validator={Valid.password(newPassword)} />
+            <Field bind={[confirmPassword, setConfirmPassword]} 
+            label="Confirmar nueva contraseña" type="password"
+            validator={confirmPassword === newPassword} />
             </>}
 
             {!hasRootAccess?null:
                 <Section label="Datos del comercio">
-                    <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
-                    placeholder={businessName} />
-                        
-                    <Radio legend={"Actualmente: "+vatCategory+". Nueva categoría:"} bind={[newVatCategory, setNewVatCategory]}
-                    options={["Responsable Inscripto", "Monotributista", "Sujeto Exento"]} />
+                    <p style={{textAlign:"center", color:"#fff", cursor:"default"}}>C.U.I.T.: {CUIT}</p>
 
-                    <Field label={"C.U.I." + (newVatCategory === "Monotributista" ? "L. " : "T. ")}
-                    bind={[newCode, setNewCode]} placeholder={code} />
+                    <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
+                    placeholder={businessName} validator={Valid.names(newBusinessName)} />
+                        
+                    <Radio legend={"Actualmente: "+VATCategory+". Nueva categoría:"} bind={[newVATCategory, setNewVATCategory]}
+                    options={["Responsable Inscripto", "Responsable Monotributista"]} />
                 </Section>
             }
 

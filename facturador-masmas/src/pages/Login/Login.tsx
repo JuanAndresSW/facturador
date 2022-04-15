@@ -37,8 +37,8 @@ export default function Login(): JSX.Element {
   return (
     <Form onSubmit={submit} title="Iniciar sesión">
 
-      <Field icon={<BiUser />} label="Nombre o correo electrónico" bind={[usernameOrEmail, setUser]} />
-      <Field icon={<BiKey />} label="Contraseña" type="password" bind={[password, setPassword]} />
+      <Field label="Nombre o correo electrónico" bind={[usernameOrEmail, setUser]} />
+      <Field label="Contraseña" type="password" bind={[password, setPassword]} />
 
       <Message type="error" message={error} />
 

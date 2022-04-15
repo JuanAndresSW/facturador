@@ -6,7 +6,6 @@ type props = {
     note?: string;
     placeholder?:string;
     type?: "text" | "number" | "password" | "email" | "tel" | "url";
-    icon?: JSX.Element;
     bind: [any, Function];
     validator?: boolean;
 }

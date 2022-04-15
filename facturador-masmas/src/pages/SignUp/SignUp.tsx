@@ -38,9 +38,8 @@ export default function SignUp(): JSX.Element {
 
   //Datos del comerciante.
   const [businessName, setBusinessName]   = useState("");
-  const [vatCategory, setVatCategory]     = useState("");
-  const [code, setCode]                   = useState("");
-  const [grossIncome, setGrossIncome]     = useState("");
+  const [VATCategory, setVATCategory]     = useState("");
+  const [CUIT, setCUIT]                   = useState("");
   const [traderError, setTraderError]     = useState("");
 
 
@@ -64,10 +63,8 @@ export default function SignUp(): JSX.Element {
     setTraderError("");
 
     if (!Valid.names(businessName)) return setTraderError("La razón social debe ser de entre 3 y 20 caracteres");
-    if (!Valid.vatCategory(vatCategory, setTraderError))                                                            return;
-    if (!Valid.code(code)) return setTraderError
-      (`Ingrese un${vatCategory === "Monotributista"? " C.U.I.L. válido": "a C.U.I.T. válida"}`);
-    if (!Valid.code(grossIncome, setTraderError))                                                                   return;
+    if (!Valid.vatCategory(VATCategory, setTraderError)) return;
+    if (!Valid.CUIT(CUIT, setTraderError)) return;
 
     //Si todo fue validado, se envían los datos.
     submit();
@@ -87,9 +84,8 @@ export default function SignUp(): JSX.Element {
       },
       trader: {
         businessName: businessName,
-        vatCategory: vatCategory,
-        code: code,
-        grossIncome: grossIncome,
+        VATCategory: VATCategory,
+        CUIT: CUIT
       }
     }
     setSending(true);
@@ -115,13 +111,13 @@ export default function SignUp(): JSX.Element {
       <Link to="/"><BiHome /></Link>
           
       
-      <Field icon={<BiText />} label="¿Cómo quieres que te identifiquemos?" 
+      <Field label="¿Cómo quieres que te identifiquemos?" 
       bind={[username, setUsername]} validator={Valid.names(username)} />
-      <Field icon={<BiAt />} label="Tu dirección de correo electrónico"
+      <Field label="Tu dirección de correo electrónico"
       bind={[email, setEmail]} validator={Valid.email(email)} />
 
       <FlexDiv>
-        <Field icon={<BiKey/>} label="Elige una contraseña" 
+        <Field label="Elige una contraseña" 
         bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
         <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
         type="password" validator={password===passwordMatch} />
@@ -144,18 +140,15 @@ export default function SignUp(): JSX.Element {
     <Form title="Datos del comercio" onSubmit={validateTrader}>
       {sending? null : <BiChevronLeft onClick={() => setActive("user")} /> }
 
-      <Field icon={<BiIdCard />}label="Escribe tu razón social" bind={[businessName, setBusinessName]}
+      <Field label="Escribe tu razón social" bind={[businessName, setBusinessName]}
       validator={Valid.names(businessName)} />
 
-      <Radio legend="Selecciona una categoría:" bind={[vatCategory, setVatCategory]}
-      options={["Responsable Inscripto", "Monotributista", "Sujeto Exento"]} />
+      <Radio legend="Selecciona una categoría:" bind={[VATCategory, setVATCategory]}
+      options={["Responsable Inscripto", "Responsable Monotributista"]} />
 
-      <Field label={"C.U.I." + (vatCategory === "Monotributista" ? "L." : "T.")}
-      note="(si no eliges uno, se generará uno falso)" bind={[code, setCode]}
-      validator={Valid.code(code)} icon={<BiHash />} />
-
-      <Field label="Número de ingresos brutos" note="(si no eliges uno, se generará uno falso)"
-      bind={[grossIncome, setGrossIncome]} icon={<BiWallet />} validator={Valid.code(grossIncome)} />
+      <Field label={"C.U.I.T."}
+      bind={[CUIT, setCUIT]}
+      validator={Valid.CUIT(CUIT)} />
 
       <Message type="error" message={traderError} />
 
