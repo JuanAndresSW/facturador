@@ -23,9 +23,11 @@ public class UpdateMainAccountUseCase {
     public MainAccount getMainAccountByUsername(String username) {
         return repository.findByUserMainAccountUsername(username);
     }
+
     public Boolean existsByUsernameOfUser(String username) {
         return Boolean.TRUE.equals(repository.existsByUserMainAccountUsername(username));
     }
+
     public Boolean existsByUniqueKeyOfTrader(String uniqueKey) {
         return Boolean.TRUE.equals(repository.existsByAccountOwnerUniqueKey(uniqueKey));
     }

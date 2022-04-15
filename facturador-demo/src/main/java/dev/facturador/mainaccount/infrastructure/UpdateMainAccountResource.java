@@ -31,7 +31,7 @@ public class UpdateMainAccountResource {
 
     @PreAuthorize("hasAuthority('MAIN')")
     @PutMapping
-    public HttpEntity update(@Valid @RequestBody MainAccountUpdate accountForUpdate)
+    public HttpEntity<Void> updateMainAccount(@Valid @RequestBody MainAccountUpdate accountForUpdate)
             throws Exception {
         String username = accountForUpdate.getUserUpdate().username();
         MainAccountGetQuery query = MainAccountGetQuery.Builder.getInstance()

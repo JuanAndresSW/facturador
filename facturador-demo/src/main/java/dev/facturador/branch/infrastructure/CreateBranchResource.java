@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.net.URI;
+
 
 @Slf4j
 @RestController
@@ -27,14 +29,13 @@ public class CreateBranchResource {
 
     @PreAuthorize("hasAuthority('MAIN')")
     @PostMapping
-    public HttpEntity create(@Valid @RequestBody BranchCreate values) throws Exception {
-
+    public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate values) throws Exception {
         var command = BranchCreateCommand.Builder.getInstance()
                 .pointOfSaleCreate(values).build();
 
         commandBus.handle(command);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(new URI("http:localhost:8080/api/branches")).build();
     }
 
 }

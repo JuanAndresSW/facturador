@@ -40,9 +40,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-
         var userMainAccount = repositoryMain.findByUserMainAccountUsernameOrUserMainAccountEmail
                 (usernameOrEmail, usernameOrEmail);
+
         if (userMainAccount.isPresent()) {
             return this.userBuilder(userMainAccount.get().getUserMainAccount(), userMainAccount.get().getAccountOwner(), CustomUserRole.MAIN);
         }
@@ -50,7 +50,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         var userBranchAccount = repositoryBranch.findByUserBranchAccountUsernameOrUserBranchAccountEmail
                 (usernameOrEmail, usernameOrEmail);
         if (userBranchAccount.isPresent()) {
-            return this.userBuilder(userBranchAccount.get().getUserBranchAccount(), userBranchAccount.get().getAccountBranchOwner().getAccountOwner(), CustomUserRole.BRANCH);
+            return this.userBuilder(userBranchAccount.get().getUserBranchAccount(), null, CustomUserRole.BRANCH);
         }
 
         //Si llega aqui este usuario no existe
@@ -60,13 +60,25 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserDetails userBuilder(User user, Trader trader, CustomUserRole rol) {
         Set<GrantedAuthority> authoritySet = Collections.singleton(new SimpleGrantedAuthority(rol.name()));
+        if(rol.equals(CustomUserRole.MAIN)){
+            return new CustomUserDetails(
+                    trader.getIdTrader(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getEmail(),
+                    trader.getActive(),
+                    trader.getPassive(),
+                    authoritySet,
+                    true);
+        }
+
         return new CustomUserDetails(
-                trader.getIdTrader(),
+                null,
                 user.getUsername(),
                 user.getPassword(),
                 user.getEmail(),
-                trader.getActive(),
-                trader.getPassive(),
+                null,
+                null,
                 authoritySet,
                 true);
     }

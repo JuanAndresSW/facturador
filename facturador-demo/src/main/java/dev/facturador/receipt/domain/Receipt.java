@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
 
 @SuppressWarnings("ALL")
 @Entity
-@Table(name = "recibo")
+@Table(name = "receipt")
 @NoArgsConstructor
 @Getter
 @Setter

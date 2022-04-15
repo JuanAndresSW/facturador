@@ -1,11 +1,8 @@
 package dev.facturador.branch.domain.subdomain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.branch.domain.Branch;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,9 +12,11 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 public final class BranchLogo implements Serializable {
-    private static final Long serialVersionUID = 1L;
+    public static final Long serialVersinUID = 1L;
 
+    @JsonIgnore
     @Id
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_branch", nullable = false)
@@ -27,7 +26,8 @@ public final class BranchLogo implements Serializable {
     @Lob
     private String logo;
 
-    public BranchLogo(String logo){
+    public BranchLogo(String logo, Branch branchIdForLogo) {
         this.logo = logo;
+        this.branchIdForLogo = branchIdForLogo;
     }
 }

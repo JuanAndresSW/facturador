@@ -1,8 +1,9 @@
 package dev.facturador.mainaccount.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.facturador.branchaccount.domain.BranchAccount;
-import dev.facturador.shared.domain.shared.Vat;
+import dev.facturador.shared.domain.sharedpayload.Vat;
 import dev.facturador.trader.domain.Trader;
 import dev.facturador.user.domain.User;
 import dev.facturador.user.domain.subdomain.UserAvatar;
@@ -16,7 +17,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-@SuppressWarnings("ALL")
+
 @Entity
 @Table(name = "main_account")
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public final class MainAccount {
     @Id
     @Column(name = "id_main_account")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idMainAccount;
+    private Long idMainAccount;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_trader", nullable = false, unique = true)
@@ -43,11 +44,19 @@ public final class MainAccount {
     @OneToMany(mappedBy = "accountBranchOwner", cascade = CascadeType.ALL)
     private Collection<BranchAccount> mainAccountChilds;
 
+    public static MainAccount create(String username) {
+        var account = new MainAccount();
+        account.setAccountOwner(null);
+        account.setMainAccountChilds(null);
+        account.setIdMainAccount(null);
+        account.setCreateAt(null);
+        account.setUserMainAccount(new User(username));
+        return account;
+    }
     public static MainAccount create(MainAccountRegister request) {
         var account = new MainAccount();
         account.setAccountOwner(new Trader(
                 request.traderRegister().code(),
-                request.traderRegister().grossIncome(),
                 request.traderRegister().businessName(),
                 0, 0));
 
@@ -97,13 +106,10 @@ public final class MainAccount {
     }
 
     public static Vat defineVat(String vatName) {
-        if (vatName.contains("Responsable")) {
-            return Vat.RESPONSABLE_INSCRIPTO;
+        if (vatName.contains("Inscripto")) {
+            return Vat.REGISTERED_RESPONSIBLE;
         }
-        if (vatName.contains("Mono")) {
-            return Vat.MONOTRIBUTISTA;
-        }
-        return Vat.SUJETO_EXENTO;
+        return Vat.MONOTAX_RESPONSIBLE;
     }
 
     @Override

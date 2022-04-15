@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -32,7 +31,7 @@ public final class DetailsReceipt {
     private double amountReceipt;
 
     @Column(name = "kind_of_value", nullable = false, length = 255)
-    private String typeValue;
+    private String kindOfValue;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_receipt_x", nullable = false)

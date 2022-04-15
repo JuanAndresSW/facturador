@@ -3,7 +3,6 @@ package dev.facturador.shared.infrastructure.config.security;
 import dev.facturador.shared.infrastructure.CustomJWT;
 import dev.facturador.shared.infrastructure.auth.CustomAuthenticationFilter;
 import dev.facturador.shared.infrastructure.auth.CustomUserDetailsService;
-import dev.facturador.shared.infrastructure.config.CORSFilter;
 import dev.facturador.shared.infrastructure.config.JWTEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

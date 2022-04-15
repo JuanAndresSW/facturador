@@ -9,13 +9,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public final class BranchCreate {
-    @NotEmpty
+    @NotNull
     private long IDTrader;
-    @Length(min = 3, max = 20)
+    @Length(min = 3, max = 30)
     @NotEmpty
     private String name;
     @NotEmpty
@@ -23,10 +24,13 @@ public final class BranchCreate {
     private String email;
     @NotEmpty
     private String phone;
+
     @NotNull
     private BranchAddress address;
+
     private String photo;
     private String logo;
+
     @Length(min = 7, max = 7)
-    private String preferenceColor;
+    private String color;
 }

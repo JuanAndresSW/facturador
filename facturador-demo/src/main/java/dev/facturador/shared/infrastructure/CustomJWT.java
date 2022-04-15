@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.StringUtils;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -55,7 +54,7 @@ public class CustomJWT {
     }
 
     public Algorithm signKey() {
-        return Algorithm.HMAC256(DatatypeConverter.parseBase64Binary(secrectKey));
+        return Algorithm.HMAC256(secrectKey.getBytes());
     }
 
     public DecodedJWT createDecoder(String token) {

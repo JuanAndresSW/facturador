@@ -10,9 +10,10 @@ import org.springframework.stereotype.Component;
 public class BranchCreateCommandHandler implements CommandHandler<BranchCreateCommand> {
     private CreateBranchUseCase useCase;
 
-    public BranchCreateCommandHandler(CreateBranchUseCase useCase){
+    public BranchCreateCommandHandler(CreateBranchUseCase useCase) {
         this.useCase = useCase;
     }
+
     @Override
     public void handle(BranchCreateCommand command) throws Exception {
 

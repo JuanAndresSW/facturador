@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -15,7 +15,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-public final class Invoice {
+public final class Invoice implements Serializable {
+    public static final Long serialVersinUID = 1L;
 
     @Id
     @Column(name = "id_invoice")
@@ -40,8 +41,8 @@ public final class Invoice {
     @Column(name = "tax", nullable = false, length = 2)
     private String tax;
 
-    @Column(name = "vatCategory", nullable = false, length = 1)
-    private String vatDetail;
+    @Column(name = "vat", nullable = false, length = 1)
+    private String vatCategory;
 
     @Column(name = "paymen_form", length = 255, nullable = false)
     private String paymenForm;

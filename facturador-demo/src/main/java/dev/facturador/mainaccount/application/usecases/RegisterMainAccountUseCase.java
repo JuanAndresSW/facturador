@@ -30,7 +30,7 @@ public class RegisterMainAccountUseCase {
         return Boolean.TRUE.equals(repository.existsByAccountOwnerUniqueKey(uniqueKey));
     }
 
-    public String whenIndicesAreRepeatedReturnErrror(MainAccountRegister userForRegister) {
+    public String returnAnErrorMessageWhenIndexesAreRepeated(MainAccountRegister userForRegister) {
         if (this.existsByUsernameOfUser(userForRegister.userRegister().username())) {
             if (this.existsByEmailOfUsuarios(userForRegister.userRegister().email())) {
                 if (this.existsByUniqueKeyOfTrader(userForRegister.traderRegister().code())) {

@@ -21,6 +21,6 @@ public class BranchAddress {
     @NotEmpty
     private String street;
     @NotEmpty
-    private int numberAdress;
+    private int numberAddress;
 
 }

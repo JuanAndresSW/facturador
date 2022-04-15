@@ -1,9 +1,10 @@
 package dev.facturador.pointofsale.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import dev.facturador.branch.domain.Branch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Entity
@@ -23,4 +24,9 @@ public class PointOfSale {
     private String floor;
     @Column(name = "unit", nullable = false, length = 5)
     private String unit;
+
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_branch", nullable = false)
+    private Branch branchOwner;
 }

@@ -5,6 +5,7 @@ import dev.facturador.shared.domain.CustomUserDetails;
 import dev.facturador.shared.infrastructure.CustomJWT;
 import dev.facturador.shared.infrastructure.auth.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,7 @@ public class RefreshResource {
      * @param request  Objeto {@link HttpServletRequest} recibe la request
      * @param response Objeto {@link HttpServletResponse} marca la respuesta de la {@code request}
      */
-    @PostMapping("/refresh")
+    @GetMapping("/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String authHeader = request.getHeader(AUTHORIZATION);
         var userDetails = this.creteUserWithToken(authHeader, response);

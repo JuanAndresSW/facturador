@@ -1,6 +1,6 @@
 package dev.facturador.branch.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.facturador.branch.domain.subdomain.BranchLogo;
 import dev.facturador.branch.domain.subdomain.BranchPhoto;
@@ -8,17 +8,15 @@ import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@SuppressWarnings("ALL")
 @Entity
 @Table(name = "branch")
-@NoArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor @Getter @Setter
 public final class Branch implements Serializable {
     public static final Long serialVersinUID = 1L;
 
@@ -44,7 +42,7 @@ public final class Branch implements Serializable {
     private String postalCode;
     @Column(name = "street", nullable = false, length = 50)
     private String street;
-    @Column(name = "number_adress", nullable = false, length = 5)
+    @Column(name = "number_address", nullable = false, length = 5)
     private String numberAddress;
 
     @Column(name = "preference_color", nullable = false, length = 7)
@@ -52,17 +50,17 @@ public final class Branch implements Serializable {
     @Column(name = "date_of_create", nullable = false, length = 7)
     private LocalDate dateOfCreate;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_trader", nullable = false)
     private Trader traderOwner;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "branchIdForLogo", cascade =  CascadeType.ALL)
+    @OneToOne(mappedBy = "branchIdForLogo", cascade = CascadeType.ALL)
     private BranchLogo logo;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "branchIdForPhoto", cascade =  CascadeType.ALL)
+    @OneToOne(mappedBy = "branchIdForPhoto", cascade = CascadeType.ALL)
     private BranchPhoto photo;
 
     public Branch(String name,
@@ -73,7 +71,7 @@ public final class Branch implements Serializable {
                   String locality,
                   String postalCode,
                   String street,
-                  String preferenceColor){
+                  String preferenceColor) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -95,19 +93,20 @@ public final class Branch implements Serializable {
                 values.getAddress().getLocality(),
                 values.getAddress().getPostalCode(),
                 values.getAddress().getStreet(),
-                values.getPreferenceColor());
+                values.getColor());
 
-        if(values.getAddress().getNumberAdress() == 0){
+        if(values.getAddress().getNumberAddress() != 0){
+            branch.setNumberAddress(String.valueOf(values.getAddress().getNumberAddress()));
+        }
+        if (values.getAddress().getNumberAddress() == 0) {
             branch.setNumberAddress("S/N");
-        } else{
-            branch.setNumberAddress(String.valueOf(values.getAddress().getNumberAdress()));
         }
 
-        if(values.getPhoto() != null){
-            branch.setPhoto(new BranchPhoto(values.getPhoto()));
+        if (StringUtils.hasText(values.getPhoto())) {
+            branch.setPhoto(new BranchPhoto(values.getPhoto(), branch));
         }
-        if(values.getLogo() != null){
-            branch.setLogo(new BranchLogo(values.getLogo()));
+        if (StringUtils.hasText(values.getLogo())) {
+            branch.setLogo(new BranchLogo(values.getLogo(), branch));
         }
 
         branch.setDateOfCreate(LocalDate.now());

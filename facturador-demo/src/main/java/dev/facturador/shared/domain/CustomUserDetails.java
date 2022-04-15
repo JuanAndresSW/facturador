@@ -19,21 +19,21 @@ public class CustomUserDetails implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private long idTrader;
+    private Long idTrader;
     private String username;
     private String password;
     private String email;
-    private int active;
-    private int passive;
+    private Integer active;
+    private Integer passive;
     private Collection<? extends GrantedAuthority> authorities;
     private Boolean enabled;
 
-    public CustomUserDetails(long idTrader,
+    public CustomUserDetails(Long idTrader,
                              String username,
                              String password,
                              String email,
-                             int active,
-                             int passive,
+                             Integer active,
+                             Integer passive,
                              Collection<? extends GrantedAuthority> authorities,
                              Boolean enable) {
         this.idTrader = idTrader;

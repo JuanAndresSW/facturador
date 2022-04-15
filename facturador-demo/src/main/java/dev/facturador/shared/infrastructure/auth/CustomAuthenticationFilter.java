@@ -63,12 +63,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         response.setHeader("accessToken", accesToken);
         response.setHeader("refreshToken", refreshToken);
+        var role=user.getAuthorities().stream().toList().get(0).getAuthority();
+        if(role.equals("MAIN")){
+            response.setHeader("username", user.getUsername());
+            response.setHeader("role", role);
+            response.setHeader("active", String.valueOf(user.getActive()));
+            response.setHeader("pasive", String.valueOf(user.getPassive()));
+            response.setHeader("IDTrader", String.valueOf(user.getIdTrader()));
+        }
+        if(!role.equals("MAIN")){
+            response.setHeader("username", user.getUsername());
+            response.setHeader("role", role);
+            response.setHeader("active", null);
+            response.setHeader("pasive", null);
+            response.setHeader("IDTrader", null);
+        }
 
-        response.setHeader("username", user.getUsername());
-        response.setHeader("role", user.getAuthorities().stream().toList().get(0).getAuthority());
-        response.setHeader("active", String.valueOf(user.getActive()));
-        response.setHeader("pasive", String.valueOf(user.getPassive()));
-        response.setHeader("IDTrader", String.valueOf(user.getIdTrader()));
     }
 
 }

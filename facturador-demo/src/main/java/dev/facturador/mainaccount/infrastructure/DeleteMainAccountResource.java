@@ -26,7 +26,7 @@ public class DeleteMainAccountResource {
 
     @PreAuthorize("hasAuthority('MAIN')")
     @DeleteMapping("/{username}")
-    public HttpEntity delete(@PathVariable @NotEmpty String username) throws Exception {
+    public HttpEntity<Void> deleteMainAccount(@PathVariable @NotEmpty String username) throws Exception {
         MainAccountDeleteCommand command = MainAccountDeleteCommand.Builder.getInstance()
                 .mainAccountIdUsername(MainAccountIdUsername.starter(username)).build();
 

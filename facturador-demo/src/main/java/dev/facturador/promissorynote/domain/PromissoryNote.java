@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -21,10 +20,10 @@ public final class PromissoryNote {
     @Id
     @Column(name = "id_promissory_note")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idPagare;
+    private long idPromissoryNote;
 
     @Column(name = "num_promissory_note", nullable = false)
-    private int pagareNum;
+    private int promissoryNoteNum;
 
     @JoinColumns(value = {
             @JoinColumn(name = "id_point_of_sale_issuing", referencedColumnName = "id_point_of_sale_issuing", nullable = false),
@@ -49,5 +48,5 @@ public final class PromissoryNote {
     private boolean protest;
 
     @Column(name = "stamp", nullable = false)
-    private boolean sellado;
+    private boolean stamp;
 }

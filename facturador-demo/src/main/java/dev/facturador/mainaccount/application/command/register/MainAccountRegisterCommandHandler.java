@@ -18,7 +18,7 @@ public class MainAccountRegisterCommandHandler implements CommandHandler<MainAcc
 
     @Override
     public void handle(MainAccountRegisterCommand command) throws Exception {
-        String message = useCase.whenIndicesAreRepeatedReturnErrror(command.getMainAccountRegister());
+        String message = useCase.returnAnErrorMessageWhenIndexesAreRepeated(command.getMainAccountRegister());
         if (StringUtils.hasText(message)) {
             throw new IndexesAreRepeated(message);
         }

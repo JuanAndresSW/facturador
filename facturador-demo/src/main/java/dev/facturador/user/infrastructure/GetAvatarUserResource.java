@@ -21,7 +21,7 @@ public class GetAvatarUserResource {
     private QueryBus queryBus;
 
     @GetMapping("/{username}")
-    public ResponseEntity<String> getUserAvatar(@PathVariable @NotEmpty String username) throws Exception {
+    public ResponseEntity<String> getUserAvatar(@PathVariable String username) throws Exception {
         UserGetAvatarQuery query = UserGetAvatarQuery.Builder.getInstance()
                 .userIdUsername(UserIdUsername.starter(username)).build();
         var avatar = queryBus.handle(query);

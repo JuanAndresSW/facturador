@@ -39,9 +39,10 @@ public class RegisterMainAccountResource {
      */
     @PostMapping
     public HttpEntity<MainAccountRegisteredResponse> singup(@Valid @RequestBody MainAccountRegister accountForRegister) throws Exception {
-        log.info("MainAccountRegister is: {}", accountForRegister);
+
         MainAccountRegisterCommand command = MainAccountRegisterCommand.Builder.getInstance()
                 .mainAccountRegister(accountForRegister).build();
+
         commandBus.handle(command);
 
         var client = WebClient.builder().baseUrl("http://localhost:8080").build();

@@ -27,7 +27,7 @@ public class GetPartOfTraderResource {
 
     @PreAuthorize("hasAuthority('MAIN')")
     @GetMapping("/{username}")
-    public HttpEntity<MainAccountTraderData> getPartOfTrader(@PathVariable @NotEmpty String username) throws Exception {
+    public HttpEntity<MainAccountTraderData> getTraderData(@PathVariable @NotEmpty String username) throws Exception {
         MainAccountGetQuery query = MainAccountGetQuery.Builder.getInstance()
                 .mainAccountIdUsername(MainAccountIdUsername.starter(username)).build();
 

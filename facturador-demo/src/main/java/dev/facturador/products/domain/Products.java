@@ -1,11 +1,8 @@
 package dev.facturador.products.domain;
 
 import dev.facturador.branch.domain.Branch;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import dev.facturador.pointofsale.domain.PointOfSale;
+import lombok.*;
 import javax.persistence.*;
 
 @Entity
@@ -27,10 +24,10 @@ public final class Products {
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "price", nullable = false, scale = 2)
+    @Column(name = "price", nullable = false)
     private double price;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_point_of_sale", nullable = false, referencedColumnName = "id_point_of_sale")
-    private Branch branchOwnerProduct;
+    @JoinColumn(name = "id_branch", nullable = false, referencedColumnName = "id_branch")
+    private Branch branch;
 }

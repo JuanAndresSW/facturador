@@ -1,9 +1,8 @@
-package dev.facturador.shared.domain.shared;
+package dev.facturador.shared.domain.sharedpayload;
 
 public enum Vat {
-    RESPONSABLE_INSCRIPTO("Responsable Inscripto"),
-    MONOTRIBUTISTA("Monotributista"),
-    SUJETO_EXENTO("Sujeto Exento");
+    REGISTERED_RESPONSIBLE("Responsable Inscripto"),
+    MONOTAX_RESPONSIBLE("Responsable Monotributista");
 
     private String nameVat;
 

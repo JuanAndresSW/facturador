@@ -12,6 +12,8 @@ public class DeleteMainAccountUseCase {
     private MainAccountRepository repository;
 
     public void deleteByUsername(String username) {
+        //repository.delete(MainAccount.create(username));
+
         repository.deleteByUserMainAccountUsername(username);
     }
 

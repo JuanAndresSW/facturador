@@ -1,23 +1,21 @@
 package dev.facturador.branch.infrastructure;
 
+import dev.facturador.branch.domain.Branch;
+import dev.facturador.shared.domain.sharedpayload.Page;
 import dev.facturador.shared.application.querybus.QueryBus;
-import dev.facturador.trader.application.query.TraderGetBranchesQuery;
-import dev.facturador.trader.domain.TraderID;
+import dev.facturador.branch.application.query.BranchListQuery;
+import dev.facturador.branch.domain.BranchTraderId;
+import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.constraints.NotEmpty;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/branches")
-public final class GetBranchesResource {
+public class GetBranchesResource {
     private QueryBus queryBus;
 
     public GetBranchesResource(QueryBus queryBus) {
@@ -25,18 +23,21 @@ public final class GetBranchesResource {
     }
 
     @PreAuthorize("hasAuthority('MAIN')")
-    @GetMapping("/{IDTrader}")
-    public HttpEntity create(@PathVariable @NotEmpty Long IDTrader) throws Exception {
+    @GetMapping("/trader/{IDTrader}")
+    public HttpEntity<PagedResponse<Branch>> getListBranch(
+            @RequestParam(value = "index") int index,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sort") String sort,
+            @RequestParam(value = "order") String order,
+            @PathVariable(name = "IDTrader") long IDTrader) throws Exception {
 
-        var query = TraderGetBranchesQuery.Builder.getInstance()
-                .traderID(TraderID.valueOf(IDTrader)).build();
+        var query = BranchListQuery.Builder.getInstance()
+                .traderID(BranchTraderId.valueOf(IDTrader))
+                .page(Page.starter(index, size, sort, order))
+                .build();
 
-        var traderBranch= queryBus.handle(query);
-        if(true){
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.ok().build();
-        }
+        var response = queryBus.handle(query);
 
+        return ResponseEntity.ok().body(response);
     }
 }
