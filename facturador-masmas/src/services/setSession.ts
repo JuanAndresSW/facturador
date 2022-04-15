@@ -11,4 +11,5 @@ export default function setSession(json:string): void {
     if (session.role)         sessionStorage.setItem("role", session.role);
     if (session.actives !== undefined)   sessionStorage.setItem("actives", session.actives);
     if (session.passives !== undefined)  sessionStorage.setItem("passives", session.passives);
+    if (session.IDTrader) sessionStorage.setItem("IDTrader", session.IDTrader);
 }

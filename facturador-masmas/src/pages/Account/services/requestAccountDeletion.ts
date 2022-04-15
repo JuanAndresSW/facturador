@@ -6,8 +6,8 @@ import closeSession from 'services/closeSession';
 export default function requestAccountDeletion(code:string, callback:Function): void {
     ajax("DELETE", `mainaccounts/${sessionStorage.getItem("username")}`, { token: getToken('access') }, respond);
     //TODO: add {body: code}
-    function respond(state:number, data:string) {
-        if (state === 200) {
+    function respond(status:number, data:string) {
+        if (status === 200) {
             localStorage.clear();
             sessionStorage.clear();
             callback(true);

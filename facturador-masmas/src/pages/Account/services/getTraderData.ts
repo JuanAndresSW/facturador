@@ -4,8 +4,8 @@ import adaptTraderData from '../adapters/adaptTraderData';
 
 export default function getTraderData(callback: Function): void {
     ajax("GET", `mainaccounts/${sessionStorage.getItem("username")}`, { token: getToken("access") }, respond);
-    function respond(state: number, data: string) {
-        if (state===200) callback(true, adaptTraderData(data));
+    function respond(status: number, data: string) {
+        if (status===200) callback(true, adaptTraderData(data));
         else callback(false, data);
     }
 }

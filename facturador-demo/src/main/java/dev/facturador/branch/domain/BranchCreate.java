@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public final class BranchCreate {
     @NotNull
-    private long IDTrader;
+    private String IDTrader;
     @Length(min = 3, max = 30)
     @NotEmpty
     private String name;

@@ -11,8 +11,8 @@ export default async function adaptMainAccount(account: mainAccount): Promise<st
         },
         trader: {
           businessName: account.trader.businessName.trim(),
-          VATCategory: account.trader.VATCategory.trim(),
-          CUIT: toFormattedCUIT(account.trader.CUIT),
+          vatCategory: account.trader.VATCategory.trim(),
+          code: toFormattedCUIT(account.trader.CUIT),
         }
     });
 }

@@ -10,17 +10,16 @@ export default function tryLogin(usernameOrEmail: string, password: string, call
       })
     }, handleResponse);
 
-    function handleResponse(httpState: number, content: string): void {
-        if (httpState === 200) {
-            localStorage.clear();
-            setSession(content);
-            callback(true);
-            window.location.reload();
-            return;
+    function handleResponse(httpStatus: number, content: string): void {
+        if (httpStatus === 200) {
+          localStorage.clear();
+          setSession(content);
+          callback(true);
+          window.location.reload();
+          return;
         }
-        if (httpState === 404) {
-            callback(false, "Usuario o contraseña incorrecta");
-            return;
+        if (httpStatus >= 400) {
+          return callback(false, "Usuario o contraseña incorrecta");
         }
         callback(false, content);
     }

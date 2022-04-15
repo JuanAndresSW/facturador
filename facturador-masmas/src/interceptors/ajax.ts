@@ -34,9 +34,12 @@ content: {body?:string, token?: string}, callback: Function): void {
   //Manejar la respuesta.
   function handleResponse(): void {
     if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 0)   {callback(0, "No se ha podido establecer la comunicación con el servidor"); return; }
-      if (xhr.status === 404) {callback(404, "No se ha encontrado el recurso solicitado"); return; }
+      if (xhr.status === 0)   return callback(0, "No se ha podido establecer la comunicación con el servidor");
+      if (xhr.status === 404) return callback(404, "No se ha encontrado el recurso solicitado");
+      if (xhr.status === 401) return callback(401, "No tienes permiso para esta operación");
+
       callback(xhr.status, xhr.responseText);
+      //TODO: remove mensaje. include only the message
     }
   }
 }

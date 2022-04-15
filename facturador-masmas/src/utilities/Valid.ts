@@ -39,7 +39,7 @@ export default class Valid {
 
   public static vatCategory(vatCategory: string, setError?: Function): boolean {
     if (
-         vatCategory === "Monotributista" 
+         vatCategory === "Responsable Monotributista" 
       || vatCategory === "Responsable Inscripto"
     ) return true;
     if (setError) setError("Seleccione una categoría");

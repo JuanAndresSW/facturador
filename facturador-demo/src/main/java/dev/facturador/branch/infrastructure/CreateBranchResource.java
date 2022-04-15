@@ -30,6 +30,8 @@ public class CreateBranchResource {
     @PreAuthorize("hasAuthority('MAIN')")
     @PostMapping
     public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate values) throws Exception {
+
+        log.info("add exec");
         var command = BranchCreateCommand.Builder.getInstance()
                 .pointOfSaleCreate(values).build();
 
