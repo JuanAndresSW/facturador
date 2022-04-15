@@ -1,10 +1,10 @@
 package dev.facturador.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import dev.facturador.user.domain.subdomain.UserAvatar;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Entity
@@ -36,6 +36,9 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+    public User(String username) {
+        this.username = username;
     }
 
     @Override

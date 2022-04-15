@@ -1,10 +1,9 @@
 package dev.facturador.partner.domain;
 
-import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.domain.EstadoSolicitud;
+import dev.facturador.branch.domain.Branch;
+import dev.facturador.shared.domain.sharedpayload.RequestState;
 import dev.facturador.trader.domain.Trader;
 import lombok.*;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,18 +16,18 @@ import java.time.LocalDateTime;
 public final class Partner implements Serializable {
     public static final Long serialVersinUID = 1L;
     @EmbeddedId
-    private PartnerPK keyFromPartner;
-
-    @Column(name = "request_date", nullable = false)
-    private LocalDateTime issueAt;
+    private PartnerPK partnerPK;
 
     @Column(name = "use_count", nullable = false)
     private int useCount;
 
+    @Column(name = "request_date", nullable = false)
+    private LocalDateTime issueAt;
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "request_state", nullable = false,
             columnDefinition = "enum('W','A','L')")
-    private EstadoSolicitud requestState;
+    private RequestState requestState;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_trader_requester", referencedColumnName = "id_trader",
@@ -36,9 +35,9 @@ public final class Partner implements Serializable {
     private Trader traderRequester;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_point_of_sale_requester", referencedColumnName = "id_point_of_sale",
+    @JoinColumn(name = "id_branch_requester", referencedColumnName = "id_branch",
             updatable = false, insertable = false)
-    private PointOfSale pointOfSaleRequester;
+    private Branch branchRequester;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_trader_requested", referencedColumnName = "id_trader",
@@ -46,9 +45,9 @@ public final class Partner implements Serializable {
     private Trader traderRequested;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_point_of_sale_requested", referencedColumnName = "id_point_of_sale",
+    @JoinColumn(name = "id_branch_requested", referencedColumnName = "id_branch",
             updatable = false, insertable = false)
-    private PointOfSale pointOfSaleRequested;
+    private Branch branchRequested;
 }
 
 @Embeddable
@@ -62,10 +61,10 @@ class PartnerPK implements Serializable {
 
     @Column(name = "id_trader_requester", nullable = false)
     private long idTraderRequester;
-    @Column(name = "id_point_of_sale_requester", nullable = false)
-    private long idPointOfSaleRequester;
+    @Column(name = "id_branch_requester", nullable = false)
+    private long idBranchRequester;
     @Column(name = "id_trader_requested", nullable = false)
-    private long idTraderAdreser;
-    @Column(name = "id_point_of_sale_requested", nullable = false)
-    private long idPointOfSaleAdresser;
+    private long idTraderRequested;
+    @Column(name = "id_branch_requested", nullable = false)
+    private long idBranchRequested;
 }

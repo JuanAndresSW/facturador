@@ -1,7 +1,9 @@
 package dev.facturador.trader.domain;
 
-import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.domain.Vat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.branch.domain.Branch;
+import dev.facturador.branchaccount.domain.BranchAccount;
+import dev.facturador.shared.domain.sharedpayload.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,12 +30,9 @@ public final class Trader implements Serializable {
     private String uniqueKey;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "vat", nullable = false,
-            columnDefinition = "enum('RESPONSABLE_INSCRIPTO','MONOTRIBUTISTA','SUJETO_EXENTO')")
+    @Column(name = "vat_category", nullable = false,
+            columnDefinition = "enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE')")
     private Vat vat;
-
-    @Column(name = "gross_income", nullable = false, length = 15)
-    private String grossIncome;
 
     @Column(name = "name", nullable = false, length = 20)
     private String name;
@@ -44,34 +43,37 @@ public final class Trader implements Serializable {
     @Column(name = "active", nullable = false)
     private int active;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
-    private Collection<PointOfSale> pointOfSaleOutlets;
+    private Collection<Branch> branches;
 
-    public Trader(String uniqueKey, String grossIncome, String name, int active, int passive) {
+    public Trader(long idTrader) {
+        this.idTrader = idTrader;
+    }
+
+    public Trader(long idTrader, String uniqueKey, String name) {
+        this.idTrader = idTrader;
         this.uniqueKey = uniqueKey;
-        this.grossIncome = grossIncome;
+        this.name = name;
+    }
+
+    public Trader(String uniqueKey, String name, int active, int passive) {
+        this.uniqueKey = uniqueKey;
         this.name = name;
         this.active = active;
         this.passive = passive;
     }
 
-    public Trader(String uniqueKey, String grossIncome, String name) {
+    public Trader(String uniqueKey, String name) {
         this.uniqueKey = uniqueKey;
-        this.grossIncome = grossIncome;
         this.name = name;
     }
 
     public static Vat defineVat(String vat) {
-        if (vat.contains("Responsable")) {
-            return Vat.RESPONSABLE_INSCRIPTO;
+        if (vat.contains("Inscripto")) {
+            return Vat.REGISTERED_RESPONSIBLE;
         }
-        if (vat.contains("Monotributista")) {
-            return Vat.MONOTRIBUTISTA;
-        }
-        if (vat.contains("Sujeto")) {
-            return Vat.SUJETO_EXENTO;
-        }
-        return null;
+        return Vat.MONOTAX_RESPONSIBLE;
     }
 
     @Override
@@ -80,8 +82,9 @@ public final class Trader implements Serializable {
                 "idTrader=" + idTrader +
                 ", uniqueKey='" + uniqueKey + '\'' +
                 ", vatCategory=" + vat.getNameVat() +
-                ", grossIncome='" + grossIncome + '\'' +
                 ", name='" + name + '\'' +
+                ", active='" + active + '\'' +
+                ", passive='" + passive + '\'' +
                 '}';
     }
 }

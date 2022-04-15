@@ -1,40 +1,32 @@
 package dev.facturador.pointofsale.domain;
 
-import dev.facturador.trader.domain.Trader;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import dev.facturador.branch.domain.Branch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
-import java.io.Serializable;
 
-@SuppressWarnings("ALL")
 @Entity
 @Table(name = "point_of_sale")
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-public final class PointOfSale implements Serializable {
-    public static final Long serialVersinUID = 1L;
-
+public class PointOfSale {
     @Id
     @Column(name = "id_point_of_sale")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idPointOfSale;
+    private long pointOfSaleId;
 
-    @Column(name = "address", nullable = false, length = 50)
-    private String address;
+    @Column(name = "point_of_sale_number", nullable = false)
+    private int pointOfSaleNumber;
+    @Column(name = "floor", nullable = false, length = 5)
+    private String floor;
+    @Column(name = "unit", nullable = false, length = 5)
+    private String unit;
 
-    @Column(name = "email", nullable = false, length = 128)
-    private String email;
-
-    @Column(name = "name", nullable = false, length = 20)
-    private String name;
-
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_trader", nullable = false)
-    private Trader traderOwner;
-
+    @JoinColumn(name = "id_branch", nullable = false)
+    private Branch branchOwner;
 }

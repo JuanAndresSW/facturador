@@ -5,17 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
-@SuppressWarnings("ALL")
 @Entity
 @Table(name = "check")
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public final class Check {
+public final class Check implements Serializable {
+    public static final Long serialVersinUID = 1L;
 
     @Id
     @Column(name = "id_check")
@@ -32,9 +32,6 @@ public final class Check {
     @OneToOne(cascade = CascadeType.ALL)
     private Operation dataOperation;
 
-    @Column(name = "series", nullable = false, length = 1)
-    private String serie;
-
     @Column(name = "amount", nullable = false, scale = 2)
     private double amount;
 
@@ -43,6 +40,9 @@ public final class Check {
 
     @Column(name = "crossed", nullable = false)
     private boolean crossed;
+
+    @Column(name = "series", nullable = false, length = 1)
+    private String serie;
 
 
 }

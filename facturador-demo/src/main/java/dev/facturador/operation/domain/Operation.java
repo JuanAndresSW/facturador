@@ -1,9 +1,8 @@
 package dev.facturador.operation.domain;
 
 import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.domain.Flux;
+import dev.facturador.shared.domain.sharedpayload.Flux;
 import lombok.*;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public final class Operation implements Serializable {
     public static final Long serialVersinUID = 1L;
 
@@ -22,7 +22,7 @@ public final class Operation implements Serializable {
 
     @Column(name = "flux", nullable = false,
             columnDefinition = "enum('I','O')")
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated
     private Flux flux;
 
     @Column(name = "description", length = 60)

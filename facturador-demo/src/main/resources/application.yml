@@ -23,10 +23,9 @@ logging:
 spring:
   main:
     banner-mode: off
-  #Configuracion para Data Base
   datasource:
     password: root
-    url: jdbc:mysql://localhost:3306/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
@@ -36,7 +35,7 @@ spring:
       min-idle: 15
   jpa:
     database: MYSQL
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
     show-sql: true
     open-in-view: false
     properties:
