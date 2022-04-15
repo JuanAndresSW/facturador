@@ -8,6 +8,7 @@ export default function adaptSession(json: string): session {
         username: session.username,
         role: session.role,
         actives: session.active,
-        passives: session.pasive
+        passives: session.pasive,
+        IDTrader: session.IDTrader
     }
 }

@@ -5,8 +5,8 @@ import getToken from '../../../services/getToken';
 export default function requestDeletionCode(callback:Function): void {
     ajax("HEAD", "mainaccounts", { token: getToken("access") }, respond);
 
-    function respond(state:number, data:string) {
-        if (state === 200) callback(true)
+    function respond(status:number, data:string) {
+        if (status === 200) callback(true)
         else callback(false, data);
     }
 }

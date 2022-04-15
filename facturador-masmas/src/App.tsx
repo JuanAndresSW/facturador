@@ -35,8 +35,8 @@ export default function App(): JSX.Element {
                 <Route index               element={!auth? <Start />  : <Navigate to={"/inicio"} />}   />   
                 <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to={"/"} />}   />
 
-                <Route path="/inicio/*"    element={!auth? <Home /> : <Navigate to={"/ingresar"} />} />
-                <Route path="/cuenta"      element={!auth? <Account /> : <Navigate to={"/ingresar"} />} />
+                <Route path="/inicio/*"    element={auth? <Home /> : <Navigate to={"/ingresar"} />} />
+                <Route path="/cuenta"      element={auth? <Account /> : <Navigate to={"/ingresar"} />} />
 
                 <Route path="/registrarse" element={ <SignUp />  } />
                 <Route path="/acerca-de/*" element={ <About />   } />

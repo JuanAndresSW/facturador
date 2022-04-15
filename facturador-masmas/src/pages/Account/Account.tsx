@@ -16,10 +16,11 @@ import { FlexDiv, Loading, Section } from "styledComponents";
 import { BiChevronLeft } from "react-icons/bi";
 //Modelos.
 import editedAccount from "./models/editedAccount";
+import traderData from "./models/traderData";
 
 
 //## Funciones de implementación condicional. ##//
-const hasRootAccess = sessionStorage.getItem("role") !== "MAIN";
+const hasRootAccess = sessionStorage.getItem("role") === "MAIN";
 
 const updateAccount = hasRootAccess?
 (data:any, handler:Function)=> updateMainAccount(data, handler):
@@ -62,11 +63,11 @@ export default function Account(): JSX.Element {
         });
 
         if (hasRootAccess) {
-            getTraderData((ok:boolean, data:any):void => {
-                if (!ok) { setError(data); return; }
+            getTraderData((ok:boolean, data:traderData):void => {
+                if (!ok) { setError(`${data}`); return; }
                 setBusinessName (data.businessName);
-                setVatCategory  (data.vatCategory);
-                setCUIT         (data.uniqueKey);
+                setVatCategory  (data.VATCategory);
+                setCUIT         (data.CUIT);
             });
         }
     }, []);
@@ -153,7 +154,7 @@ export default function Account(): JSX.Element {
 
             {!hasRootAccess?null:
                 <Section label="Datos del comercio">
-                    <p style={{textAlign:"center", color:"#fff", cursor:"default"}}>C.U.I.T.: {CUIT}</p>
+                    <p style={{textAlign:"center", cursor:"default"}}>C.U.I.T.: {CUIT}</p>
 
                     <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
                     placeholder={businessName} validator={Valid.names(newBusinessName)} />

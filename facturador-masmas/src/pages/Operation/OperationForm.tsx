@@ -31,14 +31,14 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
   //Solicitar los datos a mostrar en el primer renderizado.
   useEffect(() => {
 
-    retrievePointsOfSale((state:number,data:string)=>{
-      if (state===200) setDisplayPointsOfSale(JSON.parse(data));
+    retrievePointsOfSale((status:number,data:string)=>{
+      if (status===200) setDisplayPointsOfSale(JSON.parse(data));
     });
-    retrievePartners((state:number,data:string)=>{
-      if (state===200) setDisplayPartners(JSON.parse(data));
+    retrievePartners((status:number,data:string)=>{
+      if (status===200) setDisplayPartners(JSON.parse(data));
     });
-    retrieveGroups((state:number,data:string)=>{
-      if (state===200) setDisplayGroups(JSON.parse(data));
+    retrieveGroups((status:number,data:string)=>{
+      if (status===200) setDisplayGroups(JSON.parse(data));
     });
 
   }, []);
