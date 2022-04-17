@@ -3,20 +3,21 @@ package dev.facturador.branch.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public final class BranchCreate {
-    @NotNull
     private String IDTrader;
-    @Length(min = 3, max = 30)
+
+    @Size(min = 3, max = 30)
     @NotEmpty
     private String name;
     @NotEmpty
@@ -25,12 +26,13 @@ public final class BranchCreate {
     @NotEmpty
     private String phone;
 
+    @Valid
     @NotNull
     private BranchAddress address;
 
     private String photo;
     private String logo;
 
-    @Length(min = 7, max = 7)
+    @Size(min = 7, max = 7)
     private String color;
 }

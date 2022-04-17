@@ -2,8 +2,9 @@ import { fileToBase64 } from 'utilities/conversions';
 import branch from '../models/branch';
 
 export default async function adaptBranchToSend(branch: branch): Promise<string> {
+    console.log("ID is: "+sessionStorage.getItem('IDTrader'));
     return JSON.stringify({
-        idTrader: sessionStorage.getItem('IDTrader'),
+        IDTrader: sessionStorage.getItem('IDTrader'),
         name: branch.name,
         email: branch.email,
         phone: branch.phone,

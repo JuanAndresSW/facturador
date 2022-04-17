@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.net.URI;
 
-
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/branches")
@@ -30,8 +29,7 @@ public class CreateBranchResource {
     @PreAuthorize("hasAuthority('MAIN')")
     @PostMapping
     public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate values) throws Exception {
-
-        log.info("add exec");
+        log.info("Branch is: {}", values);
         var command = BranchCreateCommand.Builder.getInstance()
                 .pointOfSaleCreate(values).build();
 
