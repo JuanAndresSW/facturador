@@ -8,8 +8,7 @@ export default async function createPointOfSale(branch: branch, callback: Functi
 
     ajax('POST', 'branches', {body: await adaptBranchToSend(branch), token: getToken('access')}, handle);
 
-    function handle(status: number, content: string) {
-        console.log("Branch is: "+branch);
+    function handle(status: number, content: string) { 
         if (status === 200) callback(true, 'Se ha creado la instalación');
         else callback(false, content);
     }

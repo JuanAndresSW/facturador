@@ -1,5 +1,6 @@
 package dev.facturador.branch.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,11 +16,15 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class BranchCreate {
-    private String IDTrader;
+
+    @JsonProperty(value = "IDTrader")
+    @NotNull
+    private long IDTrader;
 
     @Size(min = 3, max = 30)
     @NotEmpty
     private String name;
+
     @NotEmpty
     @Email
     private String email;
