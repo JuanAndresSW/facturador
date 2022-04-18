@@ -2,26 +2,29 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 //Componentes de formulario.
-import { Form, Field, Image, ErrorMessage, Submit, Radio } from 'components/formComponents';
+import { Form, Field, Image, Message, Button, Radio } from 'components/formComponents';
 import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
+import { FlexDiv, Loading } from "styledComponents";
 
 //Relacionado a la cuenta.
-import Valid from "utils/Valid";
-import MainAccount, {mainAccount} from "services/MainAccount";
-import Session from "services/Session";
+import Valid from "utilities/Valid";
+import signup from "./services/signup";
+import mainAccount from './models/mainAccount';
 
 
 /**
  * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
  */
-export default function SignUp() {
+export default function SignUp(): JSX.Element {
 
   const navigate = useNavigate();
+  
 
   //Controladores del estado del formulario.
   const [active, setActive]: 
   [("user"|"trader"), React.Dispatch<React.SetStateAction<("user"|"trader")>>] = useState("user");
   const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   /*DATOS DEL FORMULARIO*****************************************************/
 
@@ -29,15 +32,14 @@ export default function SignUp() {
   const [username, setUsername]           = useState("");
   const [email, setEmail]                 = useState("");
   const [password, setPassword]           = useState("");
-  const [avatar, setAvatar]               = useState(null);
+  const [avatar, setAvatar]               = useState();
   const [passwordMatch, setPasswordMatch] = useState("");
   const [userError, setUserError]         = useState("");
 
   //Datos del comerciante.
   const [businessName, setBusinessName]   = useState("");
-  const [vatCategory, setVatCategory]     = useState("");
-  const [code, setCode]                   = useState("");
-  const [grossIncome, setGrossIncome]     = useState("");
+  const [VATCategory, setVATCategory]     = useState("");
+  const [CUIT, setCUIT]                   = useState("");
   const [traderError, setTraderError]     = useState("");
 
 
@@ -47,11 +49,11 @@ export default function SignUp() {
   function validateUser(): void {
     setUserError("");
 
-    if (!Valid.names(username))      { setUserError("El nombre debe ser de entre 3 y 20 caracteres");     return; }
-    if (!Valid.email(email))         { setUserError("Ingrese una dirección válida de email");             return; }
-    if (!Valid.password(password))   { setUserError("La contraseña debe ser de entre 8 y 40 caracteres"); return; }
-    if (password !== passwordMatch)  { setUserError("Las contraseñas no coinciden");                      return; }
-    if (!Valid.image(avatar))        { setUserError("La imágen no debe superar los 2MB");                 return; }
+    if (!Valid.names(username, setUserError))     return;
+    if (!Valid.email(email, setUserError))        return; 
+    if (!Valid.password(password, setUserError))  return;
+    if (password !== passwordMatch) return setUserError("Las contraseñas no coinciden");
+    if (!Valid.image(avatar, setUserError))       return;
 
     setActive("trader");
   };
@@ -60,11 +62,9 @@ export default function SignUp() {
   function validateTrader(): void {
     setTraderError("");
 
-    if (!Valid.names(businessName))       { setTraderError("La razón social debe ser de entre 3 y 20 caracteres");  return; }
-    if (!Valid.vatCategory(vatCategory))  { setTraderError("Seleccione una categoría");                             return; }
-    if (!Valid.code(code))                { setTraderError
-      (`Ingrese un${vatCategory === "Monotributista"? " C.U.I.L. válido": "a C.U.I.T. válida"}`);                   return; }
-    if (!Valid.code(grossIncome))         { setTraderError("Ingrese un número de ingresos brutos válido");          return; }
+    if (!Valid.names(businessName)) return setTraderError("La razón social debe ser de entre 3 y 20 caracteres");
+    if (!Valid.vatCategory(VATCategory, setTraderError)) return;
+    if (!Valid.CUIT(CUIT, setTraderError)) return;
 
     //Si todo fue validado, se envían los datos.
     submit();
@@ -73,7 +73,8 @@ export default function SignUp() {
   /*ENVIAR Y RECIBIR*************************************************/
 
   /**Envía al servidor los datos recolectados. */
-  function submit(): void {
+  async function submit(): Promise<void> {
+
     const account: mainAccount = {
       user: {
         username: username,
@@ -83,20 +84,19 @@ export default function SignUp() {
       },
       trader: {
         businessName: businessName,
-        vatCategory: vatCategory,
-        code: code,
-        grossIncome: grossIncome,
+        VATCategory: VATCategory,
+        CUIT: CUIT
       }
     }
-    MainAccount.register(account, handleResponse);
     setSending(true);
+    signup(account, handleResponse);
   }
 
   /**Maneja la respuesta recibida del servidor. */
-  function handleResponse(state: number, data: string) {
+  function handleResponse(ok: boolean, data: string) {
     setSending(false);
-    if (state === 201) {
-      Session.setSession(JSON.parse(data))
+    if (ok) {
+      setSuccess(true);
       setTraderError("");
       navigate("/inicio");
     } else setTraderError(data);
@@ -110,19 +110,28 @@ export default function SignUp() {
     <Form title="Datos de la cuenta" onSubmit={validateUser}>
       <Link to="/"><BiHome /></Link>
           
-      <Field icon={<BiText />} label="¿Cómo quieres que te identifiquemos?" 
+      
+      <Field label="¿Cómo quieres que te identifiquemos?" 
       bind={[username, setUsername]} validator={Valid.names(username)} />
-      <Field icon={<BiAt />} label="Tu dirección de correo electrónico"
+      <Field label="Tu dirección de correo electrónico"
       bind={[email, setEmail]} validator={Valid.email(email)} />
-      <Field icon={<BiKey/>} label="Elige una contraseña" 
-      bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
-      <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
-      type="password" validator={password===passwordMatch} />
-      <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} />
-            
-      <ErrorMessage message={userError} />
 
-      <Submit text="Siguiente" />
+      <FlexDiv>
+        <Field label="Elige una contraseña" 
+        bind={[password, setPassword]} type="password" validator={Valid.password(password)} />
+        <Field label="Vuelve a escribir la contraseña" bind={[passwordMatch, setPasswordMatch]}
+        type="password" validator={password===passwordMatch} />
+      </FlexDiv>
+      
+      <Image label="Foto de perfil" note="(opcional)" setter={setAvatar} img={avatar} />
+            
+      <Message type="error" message={userError} />
+
+      <FlexDiv justify='space-between'>
+        <Link to="/ingresar">Acceder</Link>
+
+        <Button type="submit" text="Siguiente" />
+      </FlexDiv>
 
     </Form>
     :
@@ -131,22 +140,20 @@ export default function SignUp() {
     <Form title="Datos del comercio" onSubmit={validateTrader}>
       {sending? null : <BiChevronLeft onClick={() => setActive("user")} /> }
 
-      <Field icon={<BiIdCard />}label="Escribe tu razón social" bind={[businessName, setBusinessName]}
+      <Field label="Escribe tu razón social" bind={[businessName, setBusinessName]}
       validator={Valid.names(businessName)} />
 
-      <Radio legend="Selecciona una categoría:" bind={[vatCategory, setVatCategory]}
-      options={["Responsable Inscripto", "Monotributista", "Sujeto Exento"]} />
+      <Radio legend="Selecciona una categoría:" bind={[VATCategory, setVATCategory]}
+      options={["Responsable Inscripto", "Responsable Monotributista"]} />
 
-      <Field label={"C.U.I." + (vatCategory === "Monotributista" ? "L." : "T.")}
-      note="(si no eliges uno, se generará uno falso)" bind={[code, setCode]}
-      validator={Valid.code(code)} icon={<BiHash />} />
+      <Field label={"C.U.I.T."}
+      bind={[CUIT, setCUIT]}
+      validator={Valid.CUIT(CUIT)} />
 
-      <Field label="Número de ingresos brutos" note="(si no eliges uno, se generará uno falso)"
-      bind={[grossIncome, setGrossIncome]} icon={<BiWallet />} validator={Valid.code(grossIncome)} />
+      <Message type="error" message={traderError} />
 
-      <ErrorMessage message={traderError} />
-
-      {sending? "Cargando..." : <Submit text="Enviar" />}
+      {success? <Message type="success" message={`Se ha creado la cuenta "${email}"`}/>:
+      sending? <Loading /> : <Button type="submit" text="Enviar" />}
     </Form>
     : null
   );

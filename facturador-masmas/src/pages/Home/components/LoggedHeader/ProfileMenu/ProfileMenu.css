@@ -1,0 +1,95 @@
+#profile-menu {
+  cursor: context-menu;
+  height: 2rem;
+  max-height: 2rem;
+  margin: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#profile-menu img {
+  border-radius: 50%;
+  -o-object-position: center;
+     object-position: center;
+  -o-object-fit: fill;
+     object-fit: fill;
+  margin: 0;
+  padding: 3px;
+  width: 2rem;
+  height: 2rem;
+}
+
+#profile-menu img:hover {
+  background-color: gainsboro;
+}
+
+#profile-menu-list {
+  z-index: 1000;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  position: absolute;
+  top: 4.5rem;
+  right: .5rem;
+  display: none;
+  background-color: #fff;
+  border: 1px solid #777;
+  border-radius: 10px;
+  font-family: monospace;
+}
+
+#profile-menu-list p {
+  cursor: default;
+  font-size: 1.3rem;
+  margin: .4rem;
+  text-align: center;
+  color: #272727;
+}
+
+#profile-menu-list ul {
+  list-style: none;
+  padding: .5rem;
+}
+
+#profile-menu-list ul li {
+  display: block;
+  font-size: 1rem;
+  text-align: center;
+  color: #272727;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin: .3rem auto;
+  cursor: pointer;
+}
+
+#profile-menu-list ul li a {
+  padding: .4rem .6rem;
+  border: 1px solid gainsboro;
+  border-radius: 99px;
+  text-decoration: none;
+  color: black;
+}
+
+#profile-menu-list ul li a:hover {
+  background-color: #eee;
+}
+
+#profile-menu-list.extended {
+  display: block;
+}
+
+#profile-menu-list::before {
+  content: "";
+  position: absolute;
+  right: 10%;
+  top: -10%;
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+/*# sourceMappingURL=ProfileMenu.css.map */

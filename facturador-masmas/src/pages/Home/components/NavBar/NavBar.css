@@ -1,0 +1,82 @@
+nav {
+  margin: 0;
+  padding: 1rem 0;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  overflow-y: auto;
+  width: 100%;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+nav a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 1rem;
+  margin: .3rem 0;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: #222;
+  cursor: pointer;
+}
+
+nav a svg {
+  display: block;
+  margin-right: .2rem;
+  font-size: 1.2rem;
+}
+
+nav a.active {
+  border-right: 3px solid #0e46ff;
+  color: #0e46ff;
+}
+
+nav a:hover {
+  background-color: gainsboro;
+}
+
+@media (max-width: 828px) {
+  nav {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0;
+  }
+  nav > a {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    border-bottom: 2px solid gainsboro;
+    padding: 5px;
+    margin: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    text-align: center;
+  }
+  nav > a.active {
+    border: none;
+    border-bottom: 3px solid #0e46ff;
+  }
+}
+
+@media (max-width: 550px) {
+  nav > a {
+    font-size: 0;
+  }
+}
+/*# sourceMappingURL=NavBar.css.map */

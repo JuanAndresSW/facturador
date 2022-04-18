@@ -1,0 +1,14 @@
+main {
+    display: grid;
+    position: relative;
+    grid-template-columns: 15vw 85vw;
+}
+
+@media (max-width: 828px) {
+    main {display: block;}
+    main>aside {
+        width: 100vw;
+        height: min-content;
+        z-index: 100;
+    }
+}

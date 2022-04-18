@@ -1,33 +1,22 @@
-.section-header div {
+.retractable div:nth-child(1){
     display: flex;
     align-items: center;
     flex-flow: nowrap;
     justify-content: space-between;
-    margin: 3rem 0;
-    padding: 0 1rem;
-    color: gray;
-    cursor: default;
-    border-bottom: 1px solid gainsboro;
-    
+    margin: 3rem 0 0;
+    padding: 0 1rem .2rem;
+    color: #333;
+    font-size: 1rem;
+    font-family: monospace;
+    cursor:pointer;
 }
-.section-header h2 {
-   font-size: .7rem;
-}
-.section-header svg {
+.retractable div svg {
     display: block;
+    font-size: 2rem;
 }
-.active {
-    animation: retract .1s linear forwards;
-    overflow: hidden;
+.retractable>div:nth-child(2) {
+    padding-bottom: 2rem;
 }
-@keyframes retract {
-	0% {
-	height: 0;
-	}
-    50% {
-        height: 5rem;
-    }
-	100% {
-		height: max-content;
-	}
+.retractable.folded div:nth-child(2) {
+    display: none;   
 }

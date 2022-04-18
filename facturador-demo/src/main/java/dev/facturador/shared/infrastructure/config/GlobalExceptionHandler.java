@@ -23,12 +23,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Maneja una excepcion generica <br/>
-     * Es decir cualquier excepcion que no tenga un metodo propio se dirigira a este metodo
+     * Es decir cualquier excepcion que no tenga una clase propio se dirigira a este metodo
      *
      */
     @ExceptionHandler(Exception.class)
     public HttpEntity<ErrorResponse> hanfleGenericException(Exception exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(true));
+        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public HttpEntity<ErrorResponse> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(true));
+        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(false));
 
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }

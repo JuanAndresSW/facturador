@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.net.URI;
 
-
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/branches")

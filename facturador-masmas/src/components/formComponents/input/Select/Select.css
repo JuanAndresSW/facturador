@@ -1,18 +1,14 @@
 .select {
     width: 80%;
     flex-grow: 1 1 auto;
-    margin: 0 auto;
+    margin: 1rem auto;
 }
 
 .select select{
     width: 100%;
     padding: .5rem 1rem;
-    background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.671) 0%,
-      rgba(2, 61, 109, 0.9) 100%
-    );
-    color: white;
+    background-color: #efefef;
+    color: #222;
     border: 1px solid gainsboro;
     border-radius: 4px;
     cursor: context-menu;

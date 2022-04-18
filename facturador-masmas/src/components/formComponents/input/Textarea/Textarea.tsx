@@ -9,10 +9,10 @@ type props = {
 
 export default function Textarea({label, maxLength=50, bind}:props):JSX.Element {
     return (
-        <>
-        <label>{label}</label>
-        <textarea maxLength={maxLength} value={bind[0]} onChange={e=>bind[1](e.target.value)} />
-        </>
+        <label>{label}
+        <textarea maxLength={maxLength} value={bind[0]} spellCheck={false}
+        onChange={e=>bind[1](e.target.value)} />
+        </label>
         
     )
 }

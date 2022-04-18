@@ -1,54 +1,57 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-//Servicio.
-import Session from "services/Session";
+//Servicios.
+import tryLogin from "./services/tryLogin";
 
 //Utilidades.
-import Valid from "utils/Valid";
+import Valid from "utilities/Valid";
 
 //Componentes de formulario.
-import {Form, Field, ErrorMessage, Submit} from 'components/formComponents';
+import {Form, Field, Message, Button} from 'components/formComponents';
 import { BiKey, BiUser } from "react-icons/bi";
-
+import { FlexDiv, Loading } from "styledComponents";
 
 /**Devuelve un formulario para iniciar sesión.*/
-export default function Login() {
-  const navigate = useNavigate();
+export default function Login(): JSX.Element {
 
   const [usernameOrEmail, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function submit(): void {
-    if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password))
-      Session.getByCredentials(usernameOrEmail, password, handleResponse)
+    if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password)) {
+      setLoading(true);
+      tryLogin(usernameOrEmail, password, sideEffects);
+    }
     else setError("Usuario o contraseña incorrecta");
   };
 
-  function handleResponse(state:number, data:string):void {
-    if (state === 404) {
-      setError("Usuario o contraseña incorrecta");
-      return;
-    }
-    if (state === 200) {
-      Session.setSession(JSON.parse(data));
-      setError("");
-      window.location.reload();
-    } else setError(data);
+  function sideEffects(ok:boolean, error:string):void {
+    setLoading(false);
+    if (!ok) return setError(error);
+    setError("");
   }
 
   return (
     <Form onSubmit={submit} title="Iniciar sesión">
 
-      <Field icon={<BiUser />} label="Nombre o correo electrónico" bind={[usernameOrEmail, setUser]} />
-      <Field icon={<BiKey />} label="Contraseña" type="password" bind={[password, setPassword]} />
+      <Field label="Nombre o correo electrónico" bind={[usernameOrEmail, setUser]} />
+      <Field label="Contraseña" type="password" bind={[password, setPassword]} />
 
-      <ErrorMessage message={error} />
+      <Message type="error" message={error} />
 
-      <Submit text="Ingresar" />
+      {loading?<Loading />:<Button type="submit" text="Ingresar" />}
 
-      <a href="about:blank" target="_blank" className="link">Olvidé mi contraseña</a>
+      <FlexDiv justify='space-between'>
+        <a href="about:blank" target="_blank" 
+        style={{margin:'1rem 0'}}>Olvidé mi contraseña</a>
+
+        <Link to="/registrarse" style={{ margin: '1rem 0'}}>
+          Crea una nueva cuenta</Link>
+        </FlexDiv>
+      
 
     </Form>
   );
