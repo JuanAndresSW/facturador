@@ -63,6 +63,10 @@ public final class Branch implements Serializable {
     @OneToOne(mappedBy = "branchIdForPhoto", cascade = CascadeType.ALL)
     private BranchPhoto photo;
 
+    public Branch(long branchId) {
+        super();
+        this.branchId = branchId;
+    }
     public Branch(String name,
                   String email,
                   String phone,
@@ -81,6 +85,12 @@ public final class Branch implements Serializable {
         this.postalCode = postalCode;
         this.street = street;
         this.preferenceColor = preferenceColor;
+    }
+    public static Branch create(BranchID value) {
+        var branch = new Branch(value.getBranchID());
+        branch.setLogo(new BranchLogo(branch));
+        branch.setPhoto(new BranchPhoto(branch));
+        return branch;
     }
 
     public static Branch create(BranchCreate values) {

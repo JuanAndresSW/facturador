@@ -1,5 +1,6 @@
 package dev.facturador.shared.infrastructure.config;
 
+import dev.facturador.branch.domain.exception.BranchNotFound;
 import dev.facturador.shared.domain.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public HttpEntity<ErrorResponse> hanfleGenericException(Exception exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        var errorDetalles = new ErrorResponse(exception.getMessage(), webRequest.getRemoteUser());
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 
@@ -37,9 +38,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public HttpEntity<ErrorResponse> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        var errorDetalles = new ErrorResponse(exception.getMessage(), webRequest.getDescription(false));
 
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Maneja una BranchNotFound Exception <br/>
+     *
+     */
+    @ExceptionHandler(BranchNotFound.class)
+    public HttpEntity<ErrorResponse> hanfleGenericException(BranchNotFound exception) {
+        var errorDetalles = new ErrorResponse(exception.getMessage(), exception.getSuccess().toString() );
+        return new ResponseEntity<>(errorDetalles, exception.getStatus());
     }
 
 

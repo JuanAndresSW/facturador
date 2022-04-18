@@ -1,4 +1,4 @@
-package dev.facturador.branch.application.command;
+package dev.facturador.branch.application.command.create;
 
 import dev.facturador.branch.domain.BranchCreate;
 import dev.facturador.shared.application.comandbus.Command;
@@ -21,7 +21,7 @@ public class BranchCreateCommand extends Command {
             return new BranchCreateCommand.Builder();
         }
 
-        public BranchCreateCommand.Builder pointOfSaleCreate(BranchCreate branchCreate) {
+        public BranchCreateCommand.Builder branchCreate(BranchCreate branchCreate) {
             this.branchCreate = branchCreate;
             return this;
         }

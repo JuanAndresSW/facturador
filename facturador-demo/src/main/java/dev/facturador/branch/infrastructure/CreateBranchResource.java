@@ -1,6 +1,6 @@
 package dev.facturador.branch.infrastructure;
 
-import dev.facturador.branch.application.command.BranchCreateCommand;
+import dev.facturador.branch.application.command.create.BranchCreateCommand;
 import dev.facturador.branch.domain.BranchCreate;
 import dev.facturador.shared.application.comandbus.CommandBus;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class CreateBranchResource {
     @PostMapping
     public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate values) throws Exception {
         var command = BranchCreateCommand.Builder.getInstance()
-                .pointOfSaleCreate(values).build();
+                .branchCreate(values).build();
 
         commandBus.handle(command);
 

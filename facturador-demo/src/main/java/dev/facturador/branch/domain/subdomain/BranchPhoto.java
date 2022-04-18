@@ -27,6 +27,10 @@ public final class BranchPhoto implements Serializable {
     @Lob
     private String photo;
 
+    public BranchPhoto(Branch branchIdForPhoto){
+        this.branchIdForPhoto = branchIdForPhoto;
+    }
+
     public BranchPhoto(String photo, Branch branchIdForPhoto) {
         this.photo = photo;
         this.branchIdForPhoto = branchIdForPhoto;

@@ -26,6 +26,10 @@ public final class BranchLogo implements Serializable {
     @Lob
     private String logo;
 
+    public BranchLogo(Branch branchIdForLogo){
+        this.branchIdForLogo = branchIdForLogo;
+    }
+
     public BranchLogo(String logo, Branch branchIdForLogo) {
         this.logo = logo;
         this.branchIdForLogo = branchIdForLogo;
