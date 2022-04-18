@@ -71,6 +71,8 @@ export default function NewBranch(): JSX.Element {
     const branch: branch = {
       IDTrader: sessionStorage.getItem('IDTrader'),
       name: name,
+      email: email,
+      phone: phone,
       address: {
         province: province,
         department: department,
@@ -79,8 +81,6 @@ export default function NewBranch(): JSX.Element {
         street: street,
         addressNumber: number,
       },
-      email: email,
-      phone: phone,
       logo: logo,
       photo: photo,
       color: color

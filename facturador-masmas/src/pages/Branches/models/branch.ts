@@ -1,6 +1,8 @@
 type branch = {
     IDTrader: string,
     name: string,
+    email: string,
+    phone: string,
     address: {
         province: string,
         department: string,
@@ -9,8 +11,6 @@ type branch = {
         street: string,
         addressNumber: number,
     },
-    email: string,
-    phone: string,
     logo: File,
     photo: File,
     color: string,
