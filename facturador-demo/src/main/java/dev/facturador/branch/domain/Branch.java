@@ -1,9 +1,6 @@
 package dev.facturador.branch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import dev.facturador.branch.domain.subdomain.BranchLogo;
-import dev.facturador.branch.domain.subdomain.BranchPhoto;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "branch")
 @NoArgsConstructor @Getter @Setter
 public final class Branch implements Serializable {
-    public static final Long serialVersinUID = 1L;
+    public static final Long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id_branch")
@@ -51,17 +48,15 @@ public final class Branch implements Serializable {
     private LocalDate dateOfCreate;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_trader", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_trader", nullable = false, updatable = false)
     private Trader traderOwner;
 
-    @JsonManagedReference
-    @OneToOne(mappedBy = "branchIdForLogo", cascade = CascadeType.ALL)
-    private BranchLogo logo;
+    @Column(name = "logo", nullable = false)
+    private String logo;
 
-    @JsonManagedReference
-    @OneToOne(mappedBy = "branchIdForPhoto", cascade = CascadeType.ALL)
-    private BranchPhoto photo;
+    @Column(name = "photo", nullable = false)
+    private String photo;
 
     public Branch(long branchId) {
         super();
@@ -88,8 +83,53 @@ public final class Branch implements Serializable {
     }
     public static Branch create(BranchID value) {
         var branch = new Branch(value.getBranchID());
-        branch.setLogo(new BranchLogo(branch));
-        branch.setPhoto(new BranchPhoto(branch));
+        return branch;
+    }
+
+    public static Branch create(BranchUpdate updatedValues, Branch branch) {
+        if(StringUtils.hasText(updatedValues.getUpdatedName())){
+            branch.setName(updatedValues.getUpdatedName());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedEmail())){
+            branch.setEmail(updatedValues.getUpdatedEmail());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedPhone())){
+            branch.setPhone(updatedValues.getUpdatedPhone());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedDepartment())){
+            branch.setDepartment(updatedValues.getUpdatedDepartment());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedProvince())){
+            branch.setProvince(updatedValues.getUpdatedProvince());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedLocality())){
+            branch.setLocality(updatedValues.getUpdatedLocality());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedPostalCode())){
+            branch.setPostalCode(updatedValues.getUpdatedPostalCode());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedStreet())){
+            branch.setStreet(updatedValues.getUpdatedStreet());
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedNumberAddress())){
+            branch.setNumberAddress(updatedValues.getUpdatedNumberAddress());
+        }
+
+        if(StringUtils.hasText(updatedValues.getUpdatedPhoto())){
+            branch.setPhoto(updatedValues.getUpdatedPhoto());
+        } else{
+            branch.setPhoto("undefined");
+        }
+        if(StringUtils.hasText(updatedValues.getUpdatedLogo())){
+            branch.setLogo(updatedValues.getUpdatedLogo());
+        } else{
+            branch.setLogo("undefined");
+        }
+
+        if(StringUtils.hasText(updatedValues.getUpdatedColor())){
+            branch.setPreferenceColor(updatedValues.getUpdatedColor());
+        }
+
         return branch;
     }
 
@@ -113,15 +153,39 @@ public final class Branch implements Serializable {
         }
 
         if (StringUtils.hasText(values.getPhoto())) {
-            branch.setPhoto(new BranchPhoto(values.getPhoto(), branch));
+            branch.setPhoto(values.getPhoto());
+        } else {
+            branch.setPhoto("undefined");
         }
         if (StringUtils.hasText(values.getLogo())) {
-            branch.setLogo(new BranchLogo(values.getLogo(), branch));
+            branch.setLogo(values.getLogo());
+        } else {
+            branch.setLogo("undefined");
         }
 
         branch.setDateOfCreate(LocalDate.now());
         branch.setTraderOwner(new Trader(values.getIDTrader()));
 
         return branch;
+    }
+
+    @Override
+    public String toString() {
+        return "Branch{" +
+                "branchId=" + branchId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", province='" + province + '\'' +
+                ", department='" + department + '\'' +
+                ", locality='" + locality + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", street='" + street + '\'' +
+                ", numberAddress='" + numberAddress + '\'' +
+                ", preferenceColor='" + preferenceColor + '\'' +
+                ", dateOfCreate=" + dateOfCreate +
+                ", logo=" + logo +
+                ", photo=" + photo +
+                '}';
     }
 }

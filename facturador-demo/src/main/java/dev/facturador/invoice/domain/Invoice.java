@@ -44,7 +44,7 @@ public final class Invoice implements Serializable {
     @Column(name = "vat", nullable = false, length = 1)
     private String vatCategory;
 
-    @Column(name = "paymen_form", length = 255, nullable = false)
+    @Column(name = "payment_form", length = 255, nullable = false)
     private String paymenForm;
 
 }

@@ -5,7 +5,6 @@ import dev.facturador.shared.application.comandbus.CommandHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class BranchCreateCommandHandler implements CommandHandler<BranchCreateCommand> {
     private CreateBranchUseCase useCase;

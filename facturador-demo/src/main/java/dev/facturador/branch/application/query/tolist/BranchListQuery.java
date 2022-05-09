@@ -1,4 +1,4 @@
-package dev.facturador.branch.application.query;
+package dev.facturador.branch.application.query.tolist;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.shared.domain.sharedpayload.Page;
