@@ -1,8 +1,5 @@
 package dev.facturador.trader.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.facturador.branch.domain.Branch;
-import dev.facturador.branchaccount.domain.BranchAccount;
 import dev.facturador.shared.domain.sharedpayload.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -19,7 +15,7 @@ import java.util.Collection;
 @Getter
 @Setter
 public final class Trader implements Serializable {
-    public static final Long serialVersinUID = 1L;
+    public static final Long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id_trader")
@@ -42,10 +38,6 @@ public final class Trader implements Serializable {
 
     @Column(name = "active", nullable = false)
     private int active;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
-    private Collection<Branch> branches;
 
     public Trader(long idTrader) {
         this.idTrader = idTrader;

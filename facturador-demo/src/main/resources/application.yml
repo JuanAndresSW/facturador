@@ -29,13 +29,13 @@ spring:
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
-      max-wait: 20000
+      max-wait: 280000
       max-active: 50
       max-idle: 20
       min-idle: 15
   jpa:
     database: MYSQL
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
     show-sql: true
     open-in-view: false
     properties:

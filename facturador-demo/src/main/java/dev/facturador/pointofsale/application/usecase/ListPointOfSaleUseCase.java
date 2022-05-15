@@ -1,27 +1,29 @@
-package dev.facturador.branch.application.usecase;
+package dev.facturador.pointofsale.application.usecase;
 
-import dev.facturador.branch.domain.*;
+import dev.facturador.branch.domain.Branch;
+import dev.facturador.branch.domain.BranchTraderId;
+import dev.facturador.pointofsale.domain.PointOfSale;
+import dev.facturador.pointofsale.domain.PointOfSaleBranchID;
+import dev.facturador.pointofsale.domain.PointOfSaleRepository;
 import dev.facturador.shared.domain.sharedpayload.Page;
 import dev.facturador.shared.domain.sharedpayload.PagedResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 
-
+@Slf4j
 @Service
-@Transactional
-public class GetListBranchUseCase {
-
+public final class ListPointOfSaleUseCase {
     @Autowired
-    private BranchRepository repository;
+    private PointOfSaleRepository repository;
 
-    public PagedResponse<Branch> handle(BranchTraderId branchTraderId, Page page) {
+    public PagedResponse<PointOfSale> handle(PointOfSaleBranchID pointOfSaleBranchID, Page page) {
         Pageable pageable= null;
         if(page.getOrder().equals("asc")){
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.ASC, page.getSort());
@@ -30,10 +32,12 @@ public class GetListBranchUseCase {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.DESC, page.getSort());
         }
 
-        var pages = repository.findByTraderOwnerIdTrader(branchTraderId.IDTrader(), pageable);
-        List<Branch> content = pages.getNumberOfElements() == 0 ? Collections.emptyList() : pages.getContent();
+        var pages = repository.findByBranchOwnerBranchId(pointOfSaleBranchID.getBranchID(), pageable);
 
-        return new PagedResponse<Branch>(content, pages.getNumber(), pages.getSize(),
+        List<PointOfSale> content = pages.getNumberOfElements() == 0 ? Collections.emptyList() : pages.getContent();
+
+        return new PagedResponse<PointOfSale>(content, pages.getNumber(), pages.getSize(),
                 pages.getTotalElements(), pages.getTotalPages(), pages.isLast());
     }
+
 }

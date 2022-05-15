@@ -1,25 +1,26 @@
-package dev.facturador.branch.application.query;
+package dev.facturador.pointofsale.application.query;
 
-import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.exception.BranchBadSorting;
+import dev.facturador.pointofsale.application.usecase.ListPointOfSaleUseCase;
+import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.shared.application.querybus.QueryHandler;
-import dev.facturador.branch.application.usecase.GetListBranchUseCase;
 import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BranchListQueryHandler implements QueryHandler<PagedResponse<Branch>, BranchListQuery> {
-    private GetListBranchUseCase useCase;
+public class PointOfSaleListQueryHandler implements QueryHandler<PagedResponse<PointOfSale>, PointOfSaleListQuery> {
+    private ListPointOfSaleUseCase useCase;
 
-    public BranchListQueryHandler(GetListBranchUseCase useCase) {
+    public PointOfSaleListQueryHandler(ListPointOfSaleUseCase useCase) {
         this.useCase = useCase;
     }
 
     @Override
-    public PagedResponse handle(BranchListQuery query) throws Exception {
-        validatePageNumberAndSize(query.getPage().getIndex(), query.getPage().getSize(), query.getPage().getOrder());
+    public PagedResponse handle(PointOfSaleListQuery query) throws Exception {
+        validatePageNumberAndSize
+                (query.getPage().getIndex(), query.getPage().getSize(), query.getPage().getOrder());
 
-        var response = useCase.handle(query.getBranchTraderId(), query.getPage());
+        var response = useCase.handle(query.getBranchID(), query.getPage());
 
         return response;
     }
@@ -40,5 +41,4 @@ public class BranchListQueryHandler implements QueryHandler<PagedResponse<Branch
             throw new BranchBadSorting("Order not found");
         }
     }
-
 }

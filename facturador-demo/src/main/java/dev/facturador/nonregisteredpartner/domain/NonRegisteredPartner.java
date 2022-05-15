@@ -18,7 +18,7 @@ import java.io.Serializable;
 public final class NonRegisteredPartner implements Serializable {
     public static final Long serialVersinUID = 1L;
     @Id
-    @Column(name = "id_non_registred_partner", nullable = false)
+    @Column(name = "id_non_registered_partner", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long partnerUnTrueId;
 

@@ -17,7 +17,6 @@ public class BranchAddress {
     @NotEmpty
     @Size(min = 4, max = 40)
     private String department;
-
     @NotEmpty
     @Size(min = 4, max = 40)
     private String locality;

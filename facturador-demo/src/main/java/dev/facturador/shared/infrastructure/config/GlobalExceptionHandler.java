@@ -1,6 +1,8 @@
 package dev.facturador.shared.infrastructure.config;
 
+import dev.facturador.branch.domain.exception.BranchNotFound;
 import dev.facturador.shared.domain.exception.ErrorResponse;
+import dev.facturador.shared.domain.exception.ResourceNotFound;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +28,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *
      */
     @ExceptionHandler(Exception.class)
-    public HttpEntity<ErrorResponse> hanfleGenericException(Exception exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(false));
+    public HttpEntity<ErrorResponse> handleResourceNotFoundException(Exception exception, WebRequest webRequest) {
+        var errorDetalles = new ErrorResponse(exception.getMessage(), webRequest.getRemoteUser());
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 
@@ -37,9 +38,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public HttpEntity<ErrorResponse> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        var errorDetalles = new ErrorResponse(exception.getMessage(), webRequest.getDescription(false));
 
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Maneja una BranchNotFound Exception <br/>
+     *
+     */
+    @ExceptionHandler(BranchNotFound.class)
+    public HttpEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFound exception) {
+        var errorDetalles = new ErrorResponse(exception.getMessage());
+        return new ResponseEntity<>(errorDetalles, HttpStatus.NOT_FOUND);
     }
 
 
