@@ -1,0 +1,24 @@
+{
+    "content":[{
+        "branchId":21,
+        "name":"test",
+        "email":"test@gmail.com",
+        "phone":"5555555555",
+        "province":"Buenos Aires",
+        "department":"Iguazú",
+        "locality":"Puerto Iguazú",
+        "postalCode":"3370",
+        "street":"Victoria Aguirre",
+        "numberAddress":"77",
+        "preferenceColor":"#f57900",
+        "dateOfCreate":"2022-04-18",
+        "logo":{"logo":"data:image/png;base64,qAve1zvzLi6dtG3Y"},
+        "photo": {"photo": "----"}
+    }],
+    
+    "page":0,
+    "size":10,
+    "totalElements":2,
+    "totalPages":1,
+    "last":true
+}

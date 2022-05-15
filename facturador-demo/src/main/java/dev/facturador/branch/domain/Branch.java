@@ -110,7 +110,7 @@ public final class Branch implements Serializable {
         }
 
         branch.setDateOfCreate(LocalDate.now());
-        branch.setTraderOwner(new Trader(Long.parseLong(values.getIDTrader())));
+        branch.setTraderOwner(new Trader(values.getIDTrader()));
 
         return branch;
     }

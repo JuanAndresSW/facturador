@@ -1,0 +1,26 @@
+const provinces = [
+    {id:"Buenos Aires",        value:"Buenos Aires"},
+    {id:"Catamarca",           value:"Catamarca"},
+    {id:"Chaco",               value:"Chaco"},
+    {id:"Chubut",              value:"Chubut"},
+    {id:"Córdoba",             value:"Córdoba"},
+    {id:"Corrientes",          value:"Corrientes"},
+    {id:"Entre Ríos",          value:"Entre Ríos"},
+    {id:"Formosa",             value:"Formosa"},
+    {id:"Jujuy",               value:"Jujuy"},
+    {id:"Mendoza",             value:"Mendoza"},
+    {id:"Misiones",            value:"Misiones"},
+    {id:"Neuquén",             value:"Neuquén"},
+    {id:"La Pampa",            value:"La Pampa"},
+    {id:"La Rioja",            value:"La Rioja"},
+    {id:"Río Negro",           value:"Río Negro"},
+    {id:"Salta",               value:"Salta"},
+    {id:"San Juan",            value:"San Juan"},
+    {id:"San Luis",            value:"San Luis"},
+    {id:"Santa Cruz",          value:"Santa Cruz"},
+    {id:"Santa Fe",            value:"Santa Fe"},
+    {id:"Santiago del Estero", value:"Santiago del Estero"},
+    {id:"Tierra del Fuego",    value:"Tierra del Fuego, Antártida e Islas del Atlántico Sur"},
+    {id:"Tucumán",             value:"Tucumán"}
+];
+export default provinces;

@@ -1,4 +1,4 @@
-import React from "react";  
+import React, { useState } from "react";  
 import './Image.css';
 import defaultAvatar from 'assets/svg/user.svg';
 import { BsFillXCircleFill } from "react-icons/bs";
@@ -20,6 +20,7 @@ type props = {
  * @param props.img - Valor File de la imágen a mostrar.
  */
 export default function Image({label, note, fallback=defaultAvatar, setter, img}:props) {
+
   return (
     <label className="image">
         {label}<span> {note}</span>

@@ -1,14 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-//Modelos.
-import branch from "./models/branch";
-
-//Servicios.
-import createBranch from './services/createBranch';
-
-//Utilidades.
-import provinces from './utils/provinces';
 
 //GUI.
 import defaultLogo from 'assets/svg/default-logo.svg';
@@ -17,18 +8,33 @@ import { Field, Form, Select, Image, Message, Button, Color } from "components/f
 import { BiChevronLeft } from "react-icons/bi";
 import { Retractable } from 'components/layout';
 import { FlexDiv, Loading } from "styledComponents";
+
+
+//Utilities.
 import Valid from "utilities/Valid";
+import provinces from "./utils/provinces";
+
+import { branchesContent } from "./models/branches";
+import { base64ToBlob } from "utilities/conversions";
 
 
+type props = {
+  branch: branchesContent;
+}
 
-/**Formulario para crear un nuevo punto de venta. */
-export default function NewBranch(): JSX.Element {
+/**Formulario para visualizar y cambiar datos de un punto de venta.
+ * Precisa del parámetro ID para recuperar los datos del punto específico.*/
+export default function PointOptions({branch}:props): JSX.Element {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  //  Controladores de elementos <Retractable/>  //
+  const [boolAddress,     setBoolAddress] =     useState(true);
+  const [boolContact,     setBoolContact] =     useState(false);
+  const [boolPreferences, setBoolPreferences] = useState(false);
 
   //  Datos del punto de venta.  //
   const [name,       setName] =       useState();
@@ -43,17 +49,21 @@ export default function NewBranch(): JSX.Element {
   const [email,      setEmail] =      useState();
   const [phone,      setPhone] =      useState();
   //Personalización.
-  const [photo,      setPhoto] =      useState();
-  const [logo,       setLogo] =       useState();
+  const [photo,      setPhoto] =      useState(null);
+  const [logo,       setLogo] =       useState(null);
   const [color,      setColor] =      useState("#ffffff");
 
+  function getLogo(callback: Function) {return ""}
 
-  //  Controladores de elementos <Retractable/>  //
-  const [boolAddress,     setBoolAddress] =     useState(true);
-  const [boolContact,     setBoolContact] =     useState(false);
-  const [boolPreferences, setBoolPreferences] = useState(false);
 
-  function validate(): void {
+  useEffect(()=>{
+    base64ToBlob(branch.logo.logo).then(convertedPhoto=>setPhoto(convertedPhoto));
+    getLogo((ok:boolean, content:string) => {
+      if (ok) base64ToBlob(content).then(convertedLogo=>setLogo(convertedLogo));
+    })
+  },[]);
+
+  function validate():void {
     setError(undefined);
     if (!Valid.names(name, setError)) return;
     if (!Valid.address(department)) return setError("El departamento debe ser de entre 4 y 40 caracteres");
@@ -69,48 +79,33 @@ export default function NewBranch(): JSX.Element {
     submit();
   }
 
-  function submit(): void {
-    setLoading(true);
-    const branch: branch = {
-      name: name,
-      email: email,
-      phone: phone,
-      address: {
-        province: province,
-        department: department,
-        locality: locality,
-        postalCode: postalCode,
-        street: street,
-        addressNumber: number,
-      },
-      logo: logo,
-      photo: photo,
-      color: color
-    }
-    createBranch(branch, (ok: boolean, error: string): void => {
-      setLoading(false);
-      if (!ok) setError(error);
-      else setSuccess(true);
-    })
+  function submit():void {
+    updateBranch();
   }
 
   return (
-    <Form title="Crea una instalación" onSubmit={validate} >
+    <Form title={"Editando sucursal "+branch.name} onSubmit={validate} >
 
     <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
 
-      <Field label="Nombre comercial" validator={Valid.names(name)} bind={[name, setName]} placeholder={"Entre 3 y 20 caracteres"} />
+      <Field label="Nombre de fantasía" validator={Valid.names(name)} 
+      bind={[name, setName]} placeholder={branch.name} />
 
       <Retractable label="Dirección" sync={boolAddress}
       onClick={(state:boolean)=>{setBoolAddress(state); setBoolContact(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-          <Select label="Provincia"           bind={[province, setProvince]}     options={provinces} />
-          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)} />
-          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}   />
-          <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)} />
-          <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}                          />
-          <Field  label="Número de dirección" bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)} />
+          <Select label="Provincia"           bind={[province?province:branch.province, setProvince]}     options={provinces} />
+          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)}
+          placeholder={branch.department} />
+          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}
+          placeholder={branch.locality}   />
+          <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)}
+          placeholder={branch.postalCode} />
+          <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}
+          placeholder={branch.street}                          />
+          <Field  label="Altura" bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)}
+           placeholder={branch.numberAddress}/>
         </FlexDiv>
 
       </Retractable>
@@ -119,8 +114,10 @@ export default function NewBranch(): JSX.Element {
       onClick={(state:boolean)=>{setBoolContact(state); setBoolAddress(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-          <Field label="Correo electrónico" bind={[email, setEmail]} type="email" validator={Valid.email(email)} />
-          <Field label="Número de teléfono" bind={[phone, setPhone]} type="tel"   validator={Valid.phone(phone)}  />
+          <Field label="Correo electrónico" bind={[email, setEmail]} type="email" validator={Valid.email(email)}
+          placeholder={branch.email} />
+          <Field label="Número de teléfono" bind={[phone, setPhone]} type="tel"   validator={Valid.phone(phone)}
+          placeholder={branch.phone}  />
         </FlexDiv>
 
       </Retractable>
@@ -140,8 +137,8 @@ export default function NewBranch(): JSX.Element {
 
       <Message type="error" message={error} />
 
-      {success?<Message type="success" message={`Se ha creado el punto de venta "${name}"`} />:
-      loading?<Loading />:<Button text="Crear" type="submit" />}
+      {success?<Message type="success" message={`Se han guardado los datos de "${name}"`} />:
+      loading?<Loading />:<Button text="Guardar" type="submit" />}
     </Form>
   );
 }

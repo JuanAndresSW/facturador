@@ -18,7 +18,7 @@ export default function getUserAvatar(callback: Function): void {
         if (status !== 200) {callback(false); return;}
         if (base64 === 'undefined') {callback(false); return;}
     
-        const blob = await base64ToBlob(base64.slice(22)); //"data:image/png;base64,".length === 22
+        const blob = await base64ToBlob(base64);
         callback(true, blob);
             
         //Almacenar en localstorage si no está almacenado.

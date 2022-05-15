@@ -13,10 +13,10 @@ type props = {
 
 /**
  * Una tabla cuyas celdas son campos de texto o numéricos. Permite agregar y eliminar filas.
- * @param label - El título de la tabla.
- * @param headers - Array de encabezados de columnas. Expresa td: el título, y number: si es un campo numérico.
- * @param maxRows - Número máximo de filas permitidas.
- * @param bind - Array desestructurado asociado al valor del input. El estado (0) es un array bidimensional, 
+ * @param props.label - El título de la tabla.
+ * @param props.headers - Array de encabezados de columnas. Expresa td: el título, y number: si es un campo numérico.
+ * @param props.maxRows - Número máximo de filas permitidas.
+ * @param props.bind - Array desestructurado asociado al valor del input. El estado (0) es un array bidimensional, 
  * con cada sub-array siendo una fila con la misma longitud que la expresada en headers.
  * @example 
  * headers = [{label:"foo"}, {label:"bar", number:true}];

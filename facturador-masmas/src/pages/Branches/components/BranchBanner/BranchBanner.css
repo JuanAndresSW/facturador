@@ -1,0 +1,29 @@
+[data-component="branch-banner"] {
+    background-color: #fefefe;
+    min-height: 14rem;
+    padding: 2rem 0 0;
+    border-bottom: 2px dashed #999;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #111;
+}
+[data-component="branch-banner"]>img {
+    background-color: #ccc;
+    border-radius: 15px;
+    float: left;
+    height: 12rem;
+    margin: 0 2rem;
+}
+
+[data-component="branch-banner"]>h2 {
+    font-size: 2rem;
+}
+
+[data-component="branch-banner"]>div {
+    margin: 0;
+    display: inline !important;
+}
+
+[data-component="branch-banner"]>div>* {
+    margin-right: 1rem;
+    display: inline;
+}

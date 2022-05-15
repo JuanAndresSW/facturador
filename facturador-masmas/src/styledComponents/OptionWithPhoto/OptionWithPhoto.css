@@ -5,6 +5,7 @@
     height: 13rem;
     margin: 1rem;
     position: relative;
+    cursor: pointer;
 }
 [data-component='OptionWithPhoto']>div {
     border-radius: 10px;
@@ -31,12 +32,11 @@
 }
 [data-component='OptionWithPhoto'] p, [data-component='OptionWithPhoto'] a span {
     color: #222;
-    margin: 0 .2rem;
+    margin: 0;
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    cursor: default;
 }
 [data-component='OptionWithPhoto'] a span {color: #444;}
 abbr {text-decoration: none !important;}
@@ -51,12 +51,12 @@ abbr {text-decoration: none !important;}
     text-align: center;
     padding: .2rem;
     border-radius: 50%;
-    color: #444;
+    color: #fff;
     cursor: context-menu;
     transition: .1s;
 }
 [data-component='OptionWithPhoto']>menu svg:hover {
-    background-color: #ccc;
+    background-color: #77f;
 }
 [data-component='OptionWithPhoto']>menu svg:active {
     background-color: #bbb;

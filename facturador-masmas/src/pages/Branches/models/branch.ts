@@ -1,5 +1,4 @@
 type branch = {
-    IDTrader: string,
     name: string,
     email: string,
     phone: string,
