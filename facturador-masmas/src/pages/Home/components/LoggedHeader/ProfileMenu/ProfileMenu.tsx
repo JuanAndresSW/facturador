@@ -21,7 +21,7 @@ export default function ProfileMenu(): JSX.Element {
     //Pedir la imágen en el primer renderizado.
     useEffect(() => {
         getUserAvatar((ok:boolean, blob: File) => {
-            if (ok) setImg(URL.createObjectURL(blob));
+            if (ok && blob.size>1) setImg(URL.createObjectURL(blob));
         });
     }, []);
 

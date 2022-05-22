@@ -12,8 +12,7 @@ type branches = {
         numberAddress: string,
         preferenceColor: string,
         dateOfCreate: string,
-        logo: {logo: string},
-        photo: {photo: string}
+        photo: string
     }],
     
     page: number,
@@ -37,6 +36,5 @@ export type branchesContent = {
     numberAddress: string,
     preferenceColor: string,
     dateOfCreate: string,
-    logo: {logo: string},
-    photo: {photo: string}
+    photo: string
 }

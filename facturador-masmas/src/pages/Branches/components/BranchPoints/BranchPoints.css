@@ -11,7 +11,7 @@
     background-color: #eee;
     max-width: 155rem;
     width: 50%;
-    padding: .8rem .4rem;
+    padding: .6rem .4rem;
     position: relative;
 }
 
@@ -20,7 +20,7 @@
 }
 
 [data-component="BranchPoints"] .point-list h3 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: 0 .4rem;
     padding-right: 1rem;
     border-right: 1px solid #bbb;
@@ -52,13 +52,13 @@
 }
 
 .point-plus {
-    margin: 2rem auto;
+    margin: 1rem auto;
     border: 2px dashed #ccc;
     border-radius: 10px;
     background-color: #fefefe;
     max-width: 155rem;
     width: 50%;
-    padding: 1rem .4rem;
+    padding: .6rem .4rem;
     text-align: center;
     cursor: pointer;
     transition: .1s;

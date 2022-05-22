@@ -39,7 +39,6 @@ content: {body?:string, token?: string}, callback: Function): void {
       if (xhr.status === 401) return callback(401, "No tienes permiso para esta operación");
 
       callback(xhr.status, xhr.responseText);
-      //TODO: remove mensaje. include only the message
     }
   }
 }

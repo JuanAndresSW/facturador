@@ -9,7 +9,7 @@ export default async function adaptAccount(acc: editedAccount): Promise<string> 
             newUsername:  acc.user.newUsername?     acc.user.newUsername.trim()       : null,
             password:     acc.user.password?        acc.user.password.trim()          : null,
             newPassword:  acc.user.newPassword?     acc.user.newPassword.trim()       : null,
-            newAvatar:    await  fileToBase64(acc.user.newAvatar)
+            newAvatar:    acc.user.newAvatar? await  fileToBase64(acc.user.newAvatar)             : null
         },
         trader: {
             newBusinessName: acc.trader.newBusinessName? acc.trader.newBusinessName.trim()   : null,

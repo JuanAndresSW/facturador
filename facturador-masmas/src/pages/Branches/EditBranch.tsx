@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import branch from './models/branch';
 
 //GUI.
 import defaultLogo from 'assets/svg/default-logo.svg';
@@ -9,22 +10,22 @@ import { BiChevronLeft } from "react-icons/bi";
 import { Retractable } from 'components/layout';
 import { FlexDiv, Loading } from "styledComponents";
 
-
 //Utilities.
 import Valid from "utilities/Valid";
 import provinces from "./utils/provinces";
-
 import { branchesContent } from "./models/branches";
 import { base64ToBlob } from "utilities/conversions";
 
+//Servicios.
+import updateBranch from './services/updateBranch';
+function getBranchLogo(callback: Function) {return ""}
 
 type props = {
   branch: branchesContent;
 }
 
-/**Formulario para visualizar y cambiar datos de un punto de venta.
- * Precisa del parámetro ID para recuperar los datos del punto específico.*/
-export default function PointOptions({branch}:props): JSX.Element {
+/**Formulario para visualizar y cambiar datos de una instalación/sucursal.*/
+export default function EditBranch({branch}:props): JSX.Element {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -39,40 +40,39 @@ export default function PointOptions({branch}:props): JSX.Element {
   //  Datos del punto de venta.  //
   const [name,       setName] =       useState();
   //Dirección.
-  const [province,   setProvince] =   useState("Buenos Aires");
+  const [province,   setProvince] =   useState();
   const [department, setDepartment] = useState();
   const [locality,   setLocality] =   useState();
   const [postalCode, setPostalCode] = useState();
   const [street,     setStreet] =     useState();
-  const [number,     setNumber] =     useState();
+  const [addressNumber,     setAddressNumber] =     useState();
   //Contacto.
   const [email,      setEmail] =      useState();
   const [phone,      setPhone] =      useState();
   //Personalización.
   const [photo,      setPhoto] =      useState(null);
   const [logo,       setLogo] =       useState(null);
-  const [color,      setColor] =      useState("#ffffff");
-
-  function getLogo(callback: Function) {return ""}
+  const [color,      setColor] =      useState(branch.preferenceColor);
 
 
   useEffect(()=>{
-    base64ToBlob(branch.logo.logo).then(convertedPhoto=>setPhoto(convertedPhoto));
-    getLogo((ok:boolean, content:string) => {
+    base64ToBlob(branch.photo).then(convertedPhoto=>setPhoto(convertedPhoto));
+
+    /* getBranchLogo((ok:boolean, content:string) => {
       if (ok) base64ToBlob(content).then(convertedLogo=>setLogo(convertedLogo));
-    })
+    }) */
   },[]);
 
   function validate():void {
     setError(undefined);
-    if (!Valid.names(name, setError)) return;
-    if (!Valid.address(department)) return setError("El departamento debe ser de entre 4 y 40 caracteres");
-    if (!Valid.address(locality)) return setError("La localidad debe ser de entre 4 y 40 caracteres");
-    if (!Valid.postalCode(postalCode, setError)) return;
-    if (!Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
-    if (!Valid.addressNumber(number, setError)) return;
-    if (!Valid.email(email, setError)) return;
-    if (!Valid.phone(phone, setError)) return;
+    if (name          && !Valid.names(name, setError)) return;
+    if (department    && !Valid.address(department)) return setError("El departamento debe ser de entre 4 y 40 caracteres");
+    if (locality      && !Valid.address(locality)) return setError("La localidad debe ser de entre 4 y 40 caracteres");
+    if (postalCode    && !Valid.postalCode(postalCode, setError)) return;
+    if (street        && !Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
+    if (addressNumber && !Valid.addressNumber(addressNumber, setError)) return;
+    if (email         && !Valid.email(email, setError)) return;
+    if (phone         && !Valid.phone(phone, setError)) return;
     if (!Valid.image(photo, setError)) return;
     if (!Valid.image(logo)) return setError("El logo no puede superar los 2MB");
     if (!Valid.hexColor(color, setError)) return;
@@ -80,8 +80,32 @@ export default function PointOptions({branch}:props): JSX.Element {
   }
 
   function submit():void {
-    updateBranch();
+    setLoading(true);
+    const updatedBranch: branch = {
+      name: name,
+      email: email,
+      phone: phone,
+      address: {
+        province: province,
+        department: department,
+        locality: locality,
+        postalCode: postalCode,
+        street: street,
+        addressNumber: addressNumber
+      },
+      logo: logo,
+      photo: photo,
+      color: color
+    }
+
+
+    updateBranch(branch.branchId, updatedBranch, (ok:boolean, message:string) => {
+      if (ok) setSuccess(true)
+      else setError(message);
+    });
+    setLoading(false)
   }
+
 
   return (
     <Form title={"Editando sucursal "+branch.name} onSubmit={validate} >
@@ -104,7 +128,7 @@ export default function PointOptions({branch}:props): JSX.Element {
           placeholder={branch.postalCode} />
           <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}
           placeholder={branch.street}                          />
-          <Field  label="Altura" bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)}
+          <Field  label="Altura" bind={[addressNumber, setAddressNumber]}         type="number" validator={Valid.addressNumber(addressNumber)}
            placeholder={branch.numberAddress}/>
         </FlexDiv>
 
@@ -137,7 +161,7 @@ export default function PointOptions({branch}:props): JSX.Element {
 
       <Message type="error" message={error} />
 
-      {success?<Message type="success" message={`Se han guardado los datos de "${name}"`} />:
+      {success?<Message type="success" message={`Se han guardado los datos de "${name?name:branch.name}"`} />:
       loading?<Loading />:<Button text="Guardar" type="submit" />}
     </Form>
   );

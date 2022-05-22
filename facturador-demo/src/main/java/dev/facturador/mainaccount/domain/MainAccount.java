@@ -86,6 +86,8 @@ public final class MainAccount {
         }
         if (StringUtils.hasText(request.getUserUpdate().newAvatar())) {
             account.getUserMainAccount().getAvatarUser().setAvatar(request.getUserUpdate().newAvatar());
+        } else {
+            account.getUserMainAccount().getAvatarUser().setAvatar("");
         }
         if (StringUtils.hasText(request.getTraderUpdate().newBusinessName())) {
             account.getAccountOwner().setName(request.getTraderUpdate().newBusinessName());

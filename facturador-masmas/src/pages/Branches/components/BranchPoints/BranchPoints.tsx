@@ -7,6 +7,10 @@ import FlexDiv from "styledComponents/FlexDiv";
 
 export default function BranchPoints(): JSX.Element {
 
+    function deletePointOfSale() {
+        window.confirm("¿Está seguro de que quiere eliminar este punto de venta?\nEsta acción no puede ser revertida.");
+    }
+
     return (
         <div data-component="BranchPoints">
             <h1>Puntos de venta</h1>
@@ -15,7 +19,7 @@ export default function BranchPoints(): JSX.Element {
                 <div className="point-list">
                     <h3>N°999</h3>
 
-                    <BsFillXCircleFill />
+                    <BsFillXCircleFill onClick={deletePointOfSale} />
                 </div>
             </FlexDiv>
 
@@ -23,19 +27,6 @@ export default function BranchPoints(): JSX.Element {
                 +
             </div>
 
-            
-                
-                {/* <h2>N°</h2>
-                <h2>piso</h2>
-                <h2>unidad</h2>
-
-                <p>999</p>
-                <p>2</p>
-                <p>1</p>
-
-                <p>999</p>
-                <p>2</p>
-                <p>1</p> */}
         </div>
     );
 }

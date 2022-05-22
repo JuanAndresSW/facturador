@@ -44,7 +44,7 @@ export default function Branches(): JSX.Element {
   /**Pantalla de selección de opciones de punto de venta. */
   const selectionScreen = (
     <Section label="Administrar instalaciones y puntos de venta">
-      <FlexDiv justify="space-around">
+      <FlexDiv justify="flex-start">
 
         {
           !branches? <Loading/>:
@@ -56,7 +56,7 @@ export default function Branches(): JSX.Element {
               key={index}
               title={branch.name}
               subtitle={branch.locality + ' ' + branch.street + ' ' + branch.numberAddress}
-              image={branch.photo.photo}
+              image={branch.photo.length>10?branch.photo:null}
               onClick={() => viewBranch(branch)}
                />
             )

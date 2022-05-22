@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {branchesContent} from './models/branches';
 //UI.
 import BranchBanner from "./components/BranchBanner/BranchBanner";
@@ -9,8 +9,7 @@ import { BiChevronLeft } from "react-icons/bi";
 
 
 
-/**Formulario para visualizar y cambiar datos de una sucursal.
- * Precisa del parámetro ID para recuperar el logo.*/
+/**Menú para visualizar y cambiar datos de una sucursal y sus puntos de venta.*/
 export default function ManageBranch({branch}:{branch:branchesContent}): JSX.Element {
 
   const navigate = useNavigate();

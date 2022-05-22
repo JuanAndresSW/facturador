@@ -21,7 +21,7 @@ export default function Message({type, message}:props): JSX.Element {
         </p>:
         <div className="success">
             <p>💾 {message}</p>
-            <Button onClick={() => {navigate(-1); window.location.reload()}} text={"Regresar"}/>
+            <Button onClick={() => {navigate('/'); window.location.reload()}} text={"Regresar"}/>
         </div>
         
     );

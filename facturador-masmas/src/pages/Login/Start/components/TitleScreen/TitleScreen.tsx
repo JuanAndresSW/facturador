@@ -51,8 +51,7 @@ export default function TitleScreen(): JSX.Element {
     <div className="title-wrapper">
       <h1>Más que un facturador</h1>
       <h2>
-        facturador++ fue diseñado para facilitar el proceso contable para
-        pequeñas empresas y empresas simuladas.
+        facturador++ fue diseñado para facilitar el proceso contable de empresas simuladas.
       </h2>
 
       <input

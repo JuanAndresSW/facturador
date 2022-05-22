@@ -12,7 +12,7 @@ export default function BranchBanner({branch}:{branch:branchesContent}): JSX.Ele
     
 
     useEffect(()=>{
-        base64ToBlob(branch.photo.photo).then(logoAsBlob=>{
+        base64ToBlob(branch.photo).then(logoAsBlob=>{
         setPhoto(URL.createObjectURL(logoAsBlob));
         });
     }, []);
@@ -22,10 +22,10 @@ export default function BranchBanner({branch}:{branch:branchesContent}): JSX.Ele
           <img src={photo?photo:null} alt="" />
           <h2>{branch.name}</h2>
           <h3>{branch.locality + ' ' + branch.street + ' ' + branch.numberAddress}</h3>
-          <FlexDiv>
+          <div>
           <Button text="Editar" onClick={()=>navigate('./editar')} />
           <Button type="delete" text="Eliminar" />
-          </FlexDiv>
+          </div>
         </div>
     );
 }

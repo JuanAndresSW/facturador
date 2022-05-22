@@ -86,7 +86,7 @@ export default class Valid {
 
   public static hexColor(hexColor: string, setError?: Function): boolean {
     if (/^#[\da-f]{6}$/.test(hexColor)) return true;
-    if (setError) setError("Ingrese una altura válida");
+    if (setError) setError("Ingrese un color válido.");
     return false;
   }
 }

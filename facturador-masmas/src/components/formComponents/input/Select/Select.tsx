@@ -4,7 +4,7 @@ import './Select.css';
 
 type props = {
     label?: string;
-    options: {id: string, value: string, tooltip?:string}[];
+    options: string[];
     fallback?: string;
     bind: [any, React.Dispatch<React.SetStateAction<string>>];
 }
@@ -21,8 +21,8 @@ export default function Select({ label = "", fallback="", options, bind }: props
     if (options === undefined) {return <Loading />}
     if (options.length === 0) {return <span>{fallback}</span>}
     if (options.length === 1) {
-        bind[1](options[0].id)
-        return <p>{options[0].value}</p>
+        bind[1](options[0])
+        return <p>{options[0]}</p>
     }
 
     return (
@@ -30,9 +30,9 @@ export default function Select({ label = "", fallback="", options, bind }: props
         <select onChange={e=>bind[1](e.target.value)} value={bind[0]}>
             {
                 options.map(option => 
-                    <option key={option.id} title={option.tooltip}
-                    value={option.id}>
-                        {option.value}
+                    <option key={option} title={option}
+                    value={option}>
+                        {option}
                     </option>
                 )
             }
