@@ -1,40 +1,45 @@
 package dev.facturador.pointofsale.domain;
 
-import dev.facturador.trader.domain.Trader;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.branch.domain.Branch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@SuppressWarnings("ALL")
 @Entity
 @Table(name = "point_of_sale")
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-public final class PointOfSale implements Serializable {
-    public static final Long serialVersinUID = 1L;
+public class PointOfSale implements Serializable {
+    public static final Long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id_point_of_sale")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idPointOfSale;
+    private long pointOfSaleId;
 
-    @Column(name = "address", nullable = false, length = 50)
-    private String address;
+    @Column(name = "point_of_sale_number", nullable = false)
+    private int pointOfSaleNumber;
 
-    @Column(name = "email", nullable = false, length = 128)
-    private String email;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_branch", nullable = false, updatable = false)
+    private Branch branchOwner;
 
-    @Column(name = "name", nullable = false, length = 20)
-    private String name;
+    public static PointOfSale create(PointOfSaleCreate values) {
+        var pointOfSale = new PointOfSale();
+        pointOfSale.setPointOfSaleNumber(values.getActualNumber()+1);
+        pointOfSale.setBranchOwner(new Branch(values.getIDBranch()));
+        return pointOfSale;
+    }
+    public static PointOfSale create(Long id) {
+        var pointOfSale = new PointOfSale();
+        pointOfSale.setPointOfSaleId(id);
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_trader", nullable = false)
-    private Trader traderOwner;
-
+        return pointOfSale;
+    }
 }
