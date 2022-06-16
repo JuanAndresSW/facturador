@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
-import {branchesContent} from '../../models/branches';
-import { base64ToBlob } from "utilities/conversions";
+import {branchesContent}              from '../../models/branches';
+import { base64ToBlob }               from "utilities/conversions";
 import './BranchBanner.css';
-import { Button } from "components/formComponents";
-import { useNavigate } from "react-router-dom";
-import FlexDiv from "styledComponents/FlexDiv";
+import { Button, Message }            from "components/formComponents";
+import { useNavigate }                from "react-router-dom";
+import deleteBranch                   from '../../services/deleteBranch';
+import { Confirm }                    from "components/layout";
 
 export default function BranchBanner({branch}:{branch:branchesContent}): JSX.Element {
     const [photo, setPhoto] = useState(undefined);
+    const [error, setError] = useState("");
     const navigate = useNavigate();
     
+    function tryDeleteBranch() {
+      deleteBranch(branch.branchId, (ok:boolean, data:string)=> {
+        if (ok) {
+          navigate(-1);
+          window.location.reload();
+        }
+        else setError(data);
+      })
+    }
 
     useEffect(()=>{
         base64ToBlob(branch.photo).then(logoAsBlob=>{
@@ -24,8 +35,11 @@ export default function BranchBanner({branch}:{branch:branchesContent}): JSX.Ele
           <h3>{branch.locality + ' ' + branch.street + ' ' + branch.numberAddress}</h3>
           <div>
           <Button text="Editar" onClick={()=>navigate('./editar')} />
-          <Button type="delete" text="Eliminar" />
+          <Confirm label="La instalación y los puntos serán eliminados. Las operaciones se conservarán." onConfirm={tryDeleteBranch}>
+            <Button type="delete" text="Eliminar" />
+          </Confirm>
           </div>
+          <Message type="error" message={error} />
         </div>
     );
 }

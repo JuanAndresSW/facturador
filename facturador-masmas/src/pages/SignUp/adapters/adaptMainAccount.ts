@@ -1,7 +1,7 @@
 import mainAccount from '../models/mainAccount';
 import {fileToBase64, toFormattedCUIT} from 'utilities/conversions';
 
-export default async function adaptMainAccount(account: mainAccount): Promise<string> {
+export default async function   adaptMainAccount(account: mainAccount): Promise<string> {
     return JSON.stringify({
         user: {
           username: account.user.username.trim(),

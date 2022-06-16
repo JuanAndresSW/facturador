@@ -1,10 +1,10 @@
 import React from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import {branchesContent} from './models/branches';
 //UI.
 import BranchBanner from "./components/BranchBanner/BranchBanner";
 import BranchPoints from "./components/BranchPoints/BranchPoints";
 import EditBranch from './EditBranch';
-import { Route, Routes, useNavigate } from "react-router-dom";
 import { BiChevronLeft } from "react-icons/bi";
 
 
@@ -17,7 +17,7 @@ export default function ManageBranch({branch}:{branch:branchesContent}): JSX.Ele
   const manageBranch = (
     <>
     <BranchBanner branch={branch} />
-    <BranchPoints />
+    <BranchPoints branchID={branch.branchId} />
     </>
   )
 

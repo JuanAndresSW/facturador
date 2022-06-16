@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import branch from "./models/branch";
 
 //Servicios.
-import createBranch from './services/createBranch';
+import postBranch from './services/postBranch';
 
 //Utilidades.
 import provinces from './utils/provinces';
@@ -87,7 +87,7 @@ export default function NewBranch(): JSX.Element {
       photo: photo,
       color: color
     }
-    createBranch(branch, (ok: boolean, error: string): void => {
+    postBranch(branch, (ok: boolean, error: string): void => {
       setLoading(false);
       if (!ok) setError(error);
       else setSuccess(true);

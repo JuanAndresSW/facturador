@@ -10,6 +10,7 @@ export default function getSessionByToken(callback: Function): void {
 
   const access = getToken("access");
 
+  //Salir si no existe posibilidad de que el token sea válido.
   if (!/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(access)) 
   return callback(false, "El token no contiene un formato válido.");
 

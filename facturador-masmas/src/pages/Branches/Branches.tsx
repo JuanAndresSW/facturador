@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewPoint from './NewBranch';
 
 //Componentes.
@@ -14,7 +14,6 @@ import branches, {branchesContent} from './models/branches';
 import { Loading, OptionWithPhoto } from "styledComponents";
 import { Section, Plus, FlexDiv } from "styledComponents";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { MdModeEdit } from "react-icons/md";
 
 
 /**Muestra opciones para crear, ver y editar sucursales. */
@@ -35,7 +34,6 @@ export default function Branches(): JSX.Element {
   useEffect(()=>{
     getBranches(async (ok:boolean, content: branches)=>{
       if (ok) setBranches(content);
-      else console.log('error');
     });
   }, []);
 
@@ -82,7 +80,7 @@ export default function Branches(): JSX.Element {
     <Routes>
       <Route index                            element={selectionScreen} />
       <Route path={"/nuevo"}                  element={<NewPoint />} />
-      <Route path={''+branchID+'/*'}  element={<ManageBranch branch={branch} />} />
+      <Route path={''+branchID+'/*'}          element={<ManageBranch branch={branch} />} />
     </Routes>
   );
 }

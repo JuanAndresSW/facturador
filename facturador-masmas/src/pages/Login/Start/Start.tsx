@@ -6,7 +6,7 @@ import Phone from "./components/PhonePreview/PhonePreview";
 import {Footer} from "styledComponents";
 import background from 'assets/img/main2.jpg';
 
-/**Devuelve la página principal cuando no hay sesión válida en las cookies*/
+/**Devuelve la página principal cuando no hay un token válido en las cookies.*/
 export default function Start(): JSX.Element {
   return (
     <>

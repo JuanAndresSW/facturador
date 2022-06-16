@@ -1,6 +1,6 @@
 /**
  * Implementa una capa de abstracción para la API XMLHR.
- * Permite realizar operaciones get, post, put, delete y scan del header enviando los datos
+ * Permite realizar operaciones get, post, put, delete y head (scan del header) enviando los datos
  * a un URL, y pudiendo adjuntar un JWT opcional.
  * @param {("GET"|"POST"|"PUT"|"DELETE"|"HEAD")} [method] - El método HTTP a ser utilizado.
  * @param {string}   [url]            - Sufijo del url del recurso.

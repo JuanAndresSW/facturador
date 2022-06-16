@@ -1,7 +1,7 @@
 [data-component="branch-banner"] {
     background-color: #fefefe;
     min-height: 14rem;
-    padding: 2rem 0 0;
+    padding: 2rem 0 0 2rem;
     border-bottom: 2px dashed #999;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: #111;
@@ -11,7 +11,7 @@
     border-radius: 15px;
     float: left;
     height: 12rem;
-    margin: 0 2rem;
+    margin-right: 2rem;
 }
 
 [data-component="branch-banner"]>h2 {
@@ -20,7 +20,8 @@
 
 [data-component="branch-banner"]>div {
     margin: 0;
-    display: inline !important;
+    display: inline-block;
+    min-width: "200px";
 }
 
 [data-component="branch-banner"]>div>* {

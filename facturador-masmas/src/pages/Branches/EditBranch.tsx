@@ -17,7 +17,7 @@ import { branchesContent } from "./models/branches";
 import { base64ToBlob } from "utilities/conversions";
 
 //Servicios.
-import updateBranch from './services/updateBranch';
+import putBranch from './services/putBranch';
 function getBranchLogo(callback: Function) {return ""}
 
 type props = {
@@ -99,7 +99,7 @@ export default function EditBranch({branch}:props): JSX.Element {
     }
 
 
-    updateBranch(branch.branchId, updatedBranch, (ok:boolean, message:string) => {
+    putBranch(branch.branchId, updatedBranch, (ok:boolean, message:string) => {
       if (ok) setSuccess(true)
       else setError(message);
     });
