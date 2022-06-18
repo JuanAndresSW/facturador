@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.net.URI;
 
-@Slf4j
+/**EndPoint para crear la sucursal*/
 @RestController
 @RequestMapping(path = "/api/branches")
 public class CreateBranchResource {
@@ -26,6 +26,7 @@ public class CreateBranchResource {
         this.commandBus = commandBus;
     }
 
+    /**Ejecuta el comando para crear una sucursal*/
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate values) throws Exception {

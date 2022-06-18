@@ -2,6 +2,7 @@ package dev.facturador.account.application.command.delete;
 
 import dev.facturador.global.application.commands.Command;
 
+/**Comando para eliminar la cuenta*/
 public class AccountDeleteCommand extends Command {
     private final String username;
 
@@ -12,7 +13,7 @@ public class AccountDeleteCommand extends Command {
     public String getUsername() {
         return this.username;
     }
-
+    /**Builder del comando*/
     public static class Builder {
         private String username;
 

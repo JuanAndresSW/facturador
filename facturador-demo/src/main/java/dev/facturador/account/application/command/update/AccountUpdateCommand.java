@@ -5,6 +5,7 @@ import dev.facturador.account.domain.AccountUpdate;
 import dev.facturador.global.application.commands.Command;
 import lombok.Getter;
 
+/**Comando para actualizar la cuenta*/
 @Getter
 public class AccountUpdateCommand extends Command {
 
@@ -15,7 +16,7 @@ public class AccountUpdateCommand extends Command {
         this.accountUpdate = accountUpdate;
         this.actualAccount = actualAccount;
     }
-
+    /**Builder del comando*/
     public static class Builder {
         private AccountUpdate accountUpdate;
         private Account actualAccount;

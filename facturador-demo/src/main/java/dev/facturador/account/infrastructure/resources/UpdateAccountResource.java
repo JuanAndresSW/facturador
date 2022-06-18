@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Slf4j
+/**EndPoint para actualizar los datos de la cuenta de usuario*/
 @RestController
 @RequestMapping(path = "/api/accounts")
 public class UpdateAccountResource {
@@ -28,6 +28,11 @@ public class UpdateAccountResource {
         this.queryBus = queryBus;
     }
 
+    /**
+     * Se ejecuta una Query para obtener los datos de la cuenta y comprobar que no sean repetidos
+     * Se ejecuta el comando con los nuevos datos y los datos antiguos para actualizarlos
+     * @param accountForUpdate Objeto {@link AccountUpdate} contiene los nuevos datos de la cuenta
+     * */
     @PreAuthorize("isAuthenticated()")
     @PutMapping
     public HttpEntity<Void> updateAccount(@Valid @RequestBody AccountUpdate accountForUpdate)

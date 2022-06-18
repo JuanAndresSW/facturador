@@ -5,6 +5,7 @@ import dev.facturador.global.application.commands.Command;
 import lombok.Getter;
 import lombok.ToString;
 
+/** Comando para registrar la cuenta*/
 @Getter
 @ToString
 public class AccountRegisterCommand extends Command {
@@ -13,7 +14,7 @@ public class AccountRegisterCommand extends Command {
     private AccountRegisterCommand(AccountRegister accountRegister) {
         this.accountRegister = accountRegister;
     }
-
+    /**Builder del comando */
     public static class Builder {
         private AccountRegister accountRegister;
 

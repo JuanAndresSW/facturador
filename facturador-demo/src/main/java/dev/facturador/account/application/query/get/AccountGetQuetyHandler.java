@@ -6,6 +6,7 @@ import dev.facturador.global.application.querys.QueryHandler;
 import dev.facturador.global.domain.exception.ResourceNotFound;
 import org.springframework.stereotype.Component;
 
+/**Maneja la Query de {@link AccountGetQuery} retornado la entidad para ser mas generico*/
 @Component
 public class AccountGetQuetyHandler implements QueryHandler<Account, AccountGetQuery> {
     private final GetAccountUseCase useCase;
@@ -16,7 +17,9 @@ public class AccountGetQuetyHandler implements QueryHandler<Account, AccountGetQ
 
     @Override
     public Account handle(AccountGetQuery query) throws ResourceNotFound {
-        var user = useCase.handleGetAccount(query.getMainAccountIdUsername());
+        //Recupera la cuenta
+        var user = useCase.handleGetAccount(query.getUsername());
+        //Como puede que esta cuenta no exista comprueba que no haya venido vacía
         if (user.isEmpty()) {
             throw new ResourceNotFound("No existe una cuenta con este username");
         }

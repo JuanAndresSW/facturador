@@ -6,9 +6,9 @@ import dev.facturador.global.application.commands.CommandHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+/**Manejador del comando {@link AccountUpdateCommand}*/
 @Component
 public class AccountUpdateCommandHandler implements CommandHandler<AccountUpdateCommand> {
-
     private final UpdateAccountUseCase useCase;
 
     public AccountUpdateCommandHandler(UpdateAccountUseCase useCase) {
@@ -17,11 +17,12 @@ public class AccountUpdateCommandHandler implements CommandHandler<AccountUpdate
 
     @Override
     public void handle(AccountUpdateCommand command) throws ErrorInDataForUpdate {
-        var result = useCase.allChecksToUpdate(command.getMainAccountUpdate(), command.getMainAccount());
+        //Comprueba que la informacion nueva no sea exactamente la misma, y que la contraseña sea correcta
+        var result = useCase.allChecksToUpdate(command.getAccountUpdate(), command.getActualAccount());
         if (StringUtils.hasText(result)) {
             throw new ErrorInDataForUpdate(result);
         }
-
-        useCase.handleAccountUpdate(command.getMainAccountUpdate(), command.getMainAccount());
+        //Actualiza si no tiene problemas en la comprobación
+        useCase.handleAccountUpdate(command.getAccountUpdate(), command.getActualAccount());
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**Llama al repositorio de Account y crea/registra la cuenta*/
 @Service
 @Transactional
 public class RegisterAccountUseCase {

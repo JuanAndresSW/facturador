@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+/**Se encarga de actualizar la cuenta*/
 @Service
 @Transactional
 public class UpdateAccountUseCase {
@@ -17,37 +18,13 @@ public class UpdateAccountUseCase {
     @Autowired
     private ChecksAccountUseCase checksUseCase;
 
+    /**Llama al repositorio y actualiza la cuenta*/
     public void handleAccountUpdate(AccountUpdate request, Account account) {
         var user = Account.create(request, account);
         repository.saveAndFlush(user);
     }
 
-    public String verifyUsernameAndCodeNotExists(AccountUpdate tryUpdate) {
-        String message = null;
-        if (StringUtils.hasText(tryUpdate.getUserUpdate().updatedUsername()) && StringUtils.hasText(tryUpdate.getTraderUpdate().updatedCuit())) {
-            message = this.checksUseCase.errorIfCuitOrUsernameIsInUse(tryUpdate.getUserUpdate().updatedUsername(), tryUpdate.getTraderUpdate().updatedCuit());
-        }
-        if (!StringUtils.hasText(message)) {
-            if (StringUtils.hasText(tryUpdate.getTraderUpdate().updatedCuit())) {
-                message = this.checksUseCase.errorIfCuitIsInUse(tryUpdate.getTraderUpdate().updatedCuit());
-            }
-            if (StringUtils.hasText(tryUpdate.getUserUpdate().updatedUsername())) {
-                message = this.checksUseCase.errorIfUsernameIsInUse(tryUpdate.getUserUpdate().updatedUsername());
-            }
-        }
-        return message;
-    }
-
-    public String checkOldPasswordIsTrue(AccountUpdate tryUpdate, Account user) {
-        var argon = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
-        String passwordEncoded = user.getOwnerUser().getPassword();
-        String password = tryUpdate.getUserUpdate().password();
-        if (!argon.matches(password, passwordEncoded)) {
-            return "La contraseña antigua es incorrecta";
-        }
-        return null;
-    }
-
+    /**Llama a todas las comprobaciones*/
     public String allChecksToUpdate(AccountUpdate data, Account user) {
         String message = null;
         if (StringUtils.hasText(data.getUserUpdate().updatedPassword())) {
@@ -67,18 +44,47 @@ public class UpdateAccountUseCase {
         return null;
     }
 
+    /**Verifica que el username y el CUIT o ambos no esten en uso*/
+    public String verifyUsernameAndCodeNotExists(AccountUpdate tryUpdate) {
+        String message = null;
+        if (StringUtils.hasText(tryUpdate.getUserUpdate().updatedUsername()) && StringUtils.hasText(tryUpdate.getTraderUpdate().updatedCuit())) {
+            message = this.checksUseCase.errorIfCuitOrUsernameIsInUse(tryUpdate.getUserUpdate().updatedUsername(), tryUpdate.getTraderUpdate().updatedCuit());
+        }
+        if (!StringUtils.hasText(message)) {
+            if (StringUtils.hasText(tryUpdate.getTraderUpdate().updatedCuit())) {
+                message = this.checksUseCase.errorIfCuitIsInUse(tryUpdate.getTraderUpdate().updatedCuit());
+            }
+            if (StringUtils.hasText(tryUpdate.getUserUpdate().updatedUsername())) {
+                message = this.checksUseCase.errorIfUsernameIsInUse(tryUpdate.getUserUpdate().updatedUsername());
+            }
+        }
+        return message;
+    }
+    /**Verifica que la contraseña antigua sea igual a la almacenada*/
+    public String checkOldPasswordIsTrue(AccountUpdate tryUpdate, Account user) {
+        var argon = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
+        String passwordEncoded = user.getOwnerUser().getPassword();
+        String password = tryUpdate.getUserUpdate().password();
+        if (!argon.matches(password, passwordEncoded)) {
+            return "La contraseña antigua es incorrecta";
+        }
+        return null;
+    }
+
+
+    /**Si quiere actualizar nombre de comerciante y categoria comprueba que no sean los mismos*/
     public String verifyNameAndCategoryAreDifferent(AccountUpdate data, Account user) {
         if (StringUtils.hasText(data.getTraderUpdate().updatedBusinessName())) {
             String businessName = user.getOwnerTrader().getName();
             if (businessName.equals(data.getTraderUpdate().updatedBusinessName())) {
-                return "La informacion debe de ser distinta a la actual para actualizarla";
+                return "La información debe de ser distinta a la actual para actualizarla";
             }
         }
         if (StringUtils.hasText(data.getTraderUpdate().updatedVatCategory())) {
             String actualVat = user.getOwnerTrader().getVat().name();
             String updatedVat = data.getTraderUpdate().updatedVatCategory();
             if (actualVat.equalsIgnoreCase(updatedVat)) {
-                return "La informacion debe de ser distinta a la actual para actualizarla";
+                return "La información debe de ser distinta a la actual para actualizarla";
             }
         }
         return null;

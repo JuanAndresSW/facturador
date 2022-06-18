@@ -5,6 +5,7 @@ import dev.facturador.global.application.querys.QueryHandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+/**Manejador de la Query {@link AccountSingInQuery}*/
 @Component
 public class AccountSingInQueryHandler
         implements QueryHandler<HttpHeaders, AccountSingInQuery> {
@@ -15,6 +16,7 @@ public class AccountSingInQueryHandler
         this.useCase = useCase;
     }
 
+    /**Solo sede la operacion al caso de uso*/
     @Override
     public HttpHeaders handle(AccountSingInQuery query) throws Exception {
 

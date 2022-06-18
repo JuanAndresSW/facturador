@@ -6,6 +6,7 @@ import dev.facturador.global.domain.exception.ResourceNotFound;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/**Manejador del comando {@link BranchDeleteCommand}*/
 @Component
 public class BranchDeleteCommandHandler implements CommandHandler<BranchDeleteCommand> {
 
@@ -17,9 +18,11 @@ public class BranchDeleteCommandHandler implements CommandHandler<BranchDeleteCo
 
     @Override
     public void handle(BranchDeleteCommand command) throws ResourceNotFound {
+        //Verifica que exista esta sucursal
         if (!useCase.verify(command.getBranchId())) {
             throw new ResourceNotFound("Esta sucursal no existe");
         }
+        //Si existe le sede la eliminacion al caso de uso
         useCase.handleBranchDelete(command.getBranchId());
     }
 }

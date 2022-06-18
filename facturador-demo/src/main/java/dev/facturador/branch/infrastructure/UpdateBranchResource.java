@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Slf4j
+/**EndPoint para actualizar la sucursal*/
 @RestController
 @RequestMapping(path = "/api/branches")
 public class UpdateBranchResource {
@@ -24,7 +24,8 @@ public class UpdateBranchResource {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
     }
-
+    /**Ejecuta una Query para traer la sucursal
+     * Luego ejecuta un comando para actualizar la sucursal*/
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{IDBranch}")
     public HttpEntity<Void> updateBranch(@PathVariable(name = "IDBranch") long IDBranch,

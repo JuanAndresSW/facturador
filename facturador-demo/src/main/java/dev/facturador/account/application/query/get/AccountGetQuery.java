@@ -4,6 +4,7 @@ import dev.facturador.account.domain.Account;
 import dev.facturador.global.application.querys.Query;
 import lombok.Getter;
 
+/**Query para recuperar cuenta*/
 @Getter
 public class AccountGetQuery extends Query<Account> {
 
@@ -12,7 +13,7 @@ public class AccountGetQuery extends Query<Account> {
     public AccountGetQuery(String username) {
         this.username = username;
     }
-
+    /**Builder de la cuenta*/
     public static class Builder {
         private String username;
 

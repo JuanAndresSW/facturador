@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
+/**EndPoint para recuperar el Logo*/
 @RestController
 @RequestMapping(path = "/api/branches")
 public class GetLogoResource {
@@ -22,6 +22,7 @@ public class GetLogoResource {
         this.queryBus = queryBus;
     }
 
+    /**Ejecuta la Query para recuperar el logo de la sucursal*/
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{IDBranch}/get-logo")
     public HttpEntity<String> getLogo(@PathVariable(name = "IDBranch") long IDBranch)

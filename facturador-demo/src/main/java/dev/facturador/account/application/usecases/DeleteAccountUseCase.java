@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**Caso de uso llama al repositorio de Account y elimina la cuenta*/
 @Service
 @Transactional
 public class DeleteAccountUseCase {

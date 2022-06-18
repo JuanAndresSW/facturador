@@ -4,6 +4,7 @@ import dev.facturador.branch.application.usecase.CreateBranchUseCase;
 import dev.facturador.global.application.commands.CommandHandler;
 import org.springframework.stereotype.Component;
 
+/**Manejador de comando de {@link BranchCreateCommand}*/
 @Component
 public class BranchCreateCommandHandler implements CommandHandler<BranchCreateCommand> {
     private final CreateBranchUseCase useCase;
@@ -15,6 +16,6 @@ public class BranchCreateCommandHandler implements CommandHandler<BranchCreateCo
     @Override
     public void handle(BranchCreateCommand command) throws Exception {
 
-        useCase.handleBranchCreate(command.getPointOfSaleCreate());
+        useCase.handleBranchCreate(command.getBranchCreate());
     }
 }

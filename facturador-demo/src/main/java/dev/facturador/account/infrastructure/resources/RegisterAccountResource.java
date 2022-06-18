@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Stream;
 
+/** EndPoint para Registrar cuenta de usuario*/
 @RestController
 @RequestMapping(path = "/api/auth/accounts")
 public class RegisterAccountResource {
@@ -29,9 +30,9 @@ public class RegisterAccountResource {
     }
 
     /**
-     * Registra la cuenta principal en la base de datos
+     * Ejecuta el comando para registrar la cuenta
      * <br/>
-     * Envia los datos necesarios para Iniciar sesion
+     * Luego ejecuta una query para generar los tokens para el inicio de sesion
      */
     @PostMapping
     public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountRegister accountForRegister) throws Exception {

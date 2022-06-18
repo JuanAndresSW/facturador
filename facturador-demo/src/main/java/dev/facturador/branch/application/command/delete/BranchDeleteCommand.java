@@ -1,7 +1,10 @@
 package dev.facturador.branch.application.command.delete;
 
 import dev.facturador.global.application.commands.Command;
+import lombok.Getter;
 
+/**Comando para eliminar la sucursal*/
+@Getter
 public class BranchDeleteCommand extends Command {
     private final Long branchId;
 
@@ -12,7 +15,7 @@ public class BranchDeleteCommand extends Command {
     public Long getBranchId() {
         return this.branchId;
     }
-
+    /**Builder del comando*/
     public static class Builder {
         private Long branchId;
 

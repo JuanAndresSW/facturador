@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotEmpty;
 
-@Slf4j
+/** EndPoint para recuperar algunos datos del comerciante*/
 @RestController
 @RequestMapping(path = "/api/accounts")
 public class GetPartOfTraderResource {
@@ -24,11 +24,16 @@ public class GetPartOfTraderResource {
         this.queryBus = queryBus;
     }
 
+    /**
+     *  Se encarga de llamar al manejador de Qurys para ejecutar la query
+     * @param username Se consiguen los datos con el username
+     * @return Datos del trader: nombre de comerciante, categoría de vat y CUIT
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{username}")
     public HttpEntity<AccountTraderData> getTraderData(@PathVariable @NotEmpty String username) throws Exception {
         AccountGetQuery query = AccountGetQuery.Builder.getInstance()
-                .mainAccountIdUsername(username).build();
+                .username(username).build();
 
         var user = queryBus.handle(query);
         var response = AccountTraderData.valueOf(user);

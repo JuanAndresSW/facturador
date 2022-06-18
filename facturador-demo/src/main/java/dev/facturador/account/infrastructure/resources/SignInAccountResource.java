@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-@Slf4j
+/** EndPoint para iniciar session*/
 @RestController
 @RequestMapping(path = "/api/auth/accounts")
 public class SignInAccountResource {
@@ -30,9 +30,10 @@ public class SignInAccountResource {
     }
 
     /**
-     * Este metodo realiza el trabajo de inicio de sesion sin la base del Registro
+     * Ejecuta la query para recuperar los datos para iniciar sesion
      *
-     * @param keyRequest Es {@link AccountSingInRequest}, este contiene las credenciales de inicio de sesion
+     * @param keyRequest Es {@link AccountSingInRequest}, este contiene las credenciales de inicio de session
+     * @return Datos necesarios para iniciar sesin
      */
     @PostMapping("/log-in")
     public HttpEntity<LinkedHashMap<String, String>> loginWithJSON(@Valid @RequestBody AccountSingInRequest keyRequest) throws Exception {

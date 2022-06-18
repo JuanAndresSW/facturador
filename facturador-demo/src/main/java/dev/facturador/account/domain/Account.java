@@ -49,7 +49,7 @@ public final class Account {
         account.setOwnerUser(new User(username));
         return account;
     }
-
+    /**Named Contructor para el registro de cuenta*/
     public static Account create(AccountRegister request) {
         var account = new Account();
         account.setOwnerTrader(new Trader(
@@ -74,7 +74,7 @@ public final class Account {
         account.setCreateAt(LocalDateTime.now());
         return account;
     }
-
+    /**Named Contructor para la actualizacion de la cuenta*/
     public static Account create(AccountUpdate request, Account account) {
         if (StringUtils.hasText(request.getUserUpdate().updatedUsername())) {
             account.getOwnerUser().setUsername(request.getUserUpdate().updatedUsername());
@@ -100,12 +100,12 @@ public final class Account {
         }
         return account;
     }
-
+    /**Hace el hash de la contraseña para antes de guardar*/
     public static String hashPassword(String password) {
         var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         return argon2.encode(password);
     }
-
+    /**Pasa la categoria de String a ENUM*/
     public static Vat defineVat(String vatName) {
         if (vatName.contains("Inscripto")) {
             return Vat.REGISTERED_RESPONSIBLE;

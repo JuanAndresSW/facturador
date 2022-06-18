@@ -4,6 +4,7 @@ import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.BranchUpdate;
 import dev.facturador.global.application.commands.Command;
 
+/**Comando para actualizar sucursal*/
 public class BranchUpdateCommand extends Command {
     private final BranchUpdate branchUpdate;
     private final Branch branch;
@@ -20,7 +21,7 @@ public class BranchUpdateCommand extends Command {
     public Branch getBranch() {
         return this.branch;
     }
-
+    /**Builder del comando*/
     public static class Builder {
         private BranchUpdate branchUpdate;
         private Branch branch;

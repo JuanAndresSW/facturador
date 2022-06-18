@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**Caso de uso llama al repositorio de Account y recupera la cuenta*/
 @Service
 @Transactional
 public class GetAccountUseCase {

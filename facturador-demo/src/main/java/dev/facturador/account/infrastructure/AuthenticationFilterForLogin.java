@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Slf4j
+/** Esta clase hace de filtro para la autenticacion */
 @RequiredArgsConstructor
 public class AuthenticationFilterForLogin extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
@@ -28,12 +28,12 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
     }
 
     /**
-     * Verifica que las credenciales sean válidas <br/>
-     * Y en caso de que sean válidas crea un usuario autenticado con estas
+     * Verifica que las credenciales sean "auténticas" <br/>
+     * Y en caso de que sean válidas crea un usuario autenticado por Spring
      *
      * @param request  Objeto {@link HttpServletRequest} recibe la request
      * @param response Objeto {@link HttpServletResponse} marca la respuesta de la {@code request}
-     * @return {@link Authentication} user
+     * @return {@link Authentication} Usuario autenticado
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -45,13 +45,13 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
     }
 
     /**
-     * Este método es llamado cuando las credenciales pasadas a {@code attemptAuthentication} son válidas <br/>
-     * Este método se encarga de crear los tokens con el usuario autenticado recibido
+     * Este método es llamado cuando las credenciales pasadas a {@code attemptAuthentication} son autenticas <br/>
+     * Aqui es donde se crean los tokens y se pasa la informacion necesaria para log-in
      *
      * @param request    Objeto {@link HttpServletRequest} recibe la request
      * @param response   Objeto {@link HttpServletResponse} marca la respuesta de la {@code request}
-     * @param chain      Objeto {@link FilterChain} caso que quieres filtrar de alguna manera
-     * @param authResult Objeto {@link Authentication} Este parametro contiene la respuesta de {@code attemptAuthentication}
+     * @param chain      Objeto {@link FilterChain} En caso de que quieras llevar la cadena de filtro a otro
+     * @param authResult Objeto {@link Authentication} Este es el usuario salido de {@code attemptAuthentication}
      */
     @Override
     protected void successfulAuthentication
