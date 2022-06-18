@@ -1,6 +1,6 @@
 package dev.facturador.user.infrastructure;
 
-import dev.facturador.shared.application.querys.QueryBus;
+import dev.facturador.global.application.querys.QueryBus;
 import dev.facturador.user.application.query.UserGetAvatarQuery;
 import dev.facturador.user.domain.UserIdUsername;
 import lombok.extern.slf4j.Slf4j;

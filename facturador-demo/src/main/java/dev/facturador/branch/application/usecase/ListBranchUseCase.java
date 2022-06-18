@@ -2,9 +2,8 @@ package dev.facturador.branch.application.usecase;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.BranchRepository;
-import dev.facturador.branch.domain.BranchTraderId;
-import dev.facturador.shared.domain.sharedpayload.Page;
-import dev.facturador.shared.domain.sharedpayload.PagedResponse;
+import dev.facturador.global.domain.sharedpayload.Page;
+import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,7 @@ public class ListBranchUseCase {
     @Autowired
     private BranchRepository repository;
 
-    public PagedResponse<Branch> handle(BranchTraderId branchTraderId, Page page) {
+    public PagedResponse<Branch> handleBranchList(Long traderId, Page page) {
         Pageable pageable = null;
         if (page.getOrder().equals("asc")) {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.ASC, page.getSort());
@@ -30,8 +29,11 @@ public class ListBranchUseCase {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.DESC, page.getSort());
         }
 
-        var pages = repository.findByTraderOwnerIdTrader(branchTraderId.IDTrader(), pageable);
+        var pages = repository.findByTraderOwnerTraderId(traderId, pageable);
+
+        pages.getContent().forEach(branch -> branch.setPointsOfSaleCreated(null));
         List<Branch> content = pages.getNumberOfElements() == 0 ? Collections.emptyList() : pages.getContent();
+
         if (!content.isEmpty()) {
             content.forEach(branch -> branch.setLogo(null));
         }

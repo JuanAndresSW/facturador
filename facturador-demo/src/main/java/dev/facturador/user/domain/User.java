@@ -31,7 +31,7 @@ public class User {
 
     @JsonBackReference
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserAvatar avatarUser;
+    private UserAvatar userAvatar;
 
     public User(String username, String password, String email) {
         this.username = username;
@@ -47,7 +47,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", newUsername='" + username + '\'' +
+                ", updatedUsername='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';

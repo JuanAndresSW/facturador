@@ -1,13 +1,11 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.branch.application.command.delete.BranchDeleteCommand;
-import dev.facturador.branch.domain.BranchID;
+import dev.facturador.global.application.commands.CommandBus;
+import dev.facturador.global.application.querys.QueryBus;
 import dev.facturador.pointofsale.application.command.PointOfSaleDeleteCommand;
 import dev.facturador.pointofsale.application.subdomain.command.ControlOfPosUpdateCommand;
 import dev.facturador.pointofsale.application.subdomain.query.ControlOfPosGetQuery;
-import dev.facturador.pointofsale.domain.subdomain.ControlOfPosData;
-import dev.facturador.shared.application.commands.CommandBus;
-import dev.facturador.shared.application.querys.QueryBus;
+import dev.facturador.pointofsale.domain.subdomain.PosControlData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class DeletePointOfSaleResource {
-    private CommandBus commandBus;
-    private QueryBus queryBus;
+    private final CommandBus commandBus;
+    private final QueryBus queryBus;
 
     public DeletePointOfSaleResource(CommandBus commandBus, QueryBus queryBus) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
     }
 
-    @PreAuthorize("hasAuthority('MAIN')")
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{IDPointOfSale}/trader/{IDTrader}")
     public HttpEntity<Void> deletePointOfSale(@PathVariable(name = "IDPointOfSale") long IDPointOfSale,
                                               @PathVariable(name = "IDTrader") long IDTrader)
@@ -45,7 +43,7 @@ public class DeletePointOfSaleResource {
         var control = queryBus.handle(query);
 
         var commandForControl = ControlOfPosUpdateCommand.Builder.getInstance()
-                .data(ControlOfPosData.starter(control.getControlOfPosId(), control.getCurrentCount(), control.getTotalCount(), false)).build();
+                .data(PosControlData.starter(control.getPointsOfSaleControlId(), control.getCurrentCount(), control.getTotalCount(), false)).build();
 
         this.commandBus.handle(commandForControl);
 

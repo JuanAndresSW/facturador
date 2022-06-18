@@ -2,11 +2,11 @@ package dev.facturador.branch.application.command.update;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.BranchUpdate;
-import dev.facturador.shared.application.commands.Command;
+import dev.facturador.global.application.commands.Command;
 
 public class BranchUpdateCommand extends Command {
-    private BranchUpdate branchUpdate;
-    private Branch branch;
+    private final BranchUpdate branchUpdate;
+    private final Branch branch;
 
     public BranchUpdateCommand(BranchUpdate branchUpdate, Branch branch) {
         this.branchUpdate = branchUpdate;

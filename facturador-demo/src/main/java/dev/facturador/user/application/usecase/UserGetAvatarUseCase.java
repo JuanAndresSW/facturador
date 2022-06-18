@@ -17,10 +17,10 @@ public class UserGetAvatarUseCase {
 
     public UserAvatar handle(UserIdUsername userIndex) {
         var user = repository.findByUsername(userIndex.getUsername());
-        if (user.get().getAvatarUser() == null) {
+        if (user.get().getUserAvatar() == null) {
             return null;
         }
-        var userAvatar = user.get().getAvatarUser();
+        var userAvatar = user.get().getUserAvatar();
         log.info("Avatar is: {}", userAvatar);
         return userAvatar;
     }

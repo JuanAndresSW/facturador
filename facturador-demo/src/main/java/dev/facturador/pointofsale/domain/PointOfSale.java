@@ -26,16 +26,22 @@ public class PointOfSale implements Serializable {
     private int pointOfSaleNumber;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_branch", nullable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_branch", nullable = false, updatable = false, referencedColumnName = "id_branch")
     private Branch branchOwner;
+
+    public PointOfSale(long pointOfSaleId) {
+        super();
+        this.pointOfSaleId = pointOfSaleId;
+    }
 
     public static PointOfSale create(PointOfSaleCreate values) {
         var pointOfSale = new PointOfSale();
-        pointOfSale.setPointOfSaleNumber(values.getActualNumber()+1);
+        pointOfSale.setPointOfSaleNumber(values.getPosControl().getTotalCount() + 1);
         pointOfSale.setBranchOwner(new Branch(values.getIDBranch()));
         return pointOfSale;
     }
+
     public static PointOfSale create(Long id) {
         var pointOfSale = new PointOfSale();
         pointOfSale.setPointOfSaleId(id);

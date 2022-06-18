@@ -14,7 +14,7 @@ public class CreateBranchUseCase {
     @Autowired
     private BranchRepository repository;
 
-    public void handle(BranchCreate value) {
+    public void handleBranchCreate(BranchCreate value) {
         var branch = Branch.create(value);
         repository.save(branch);
     }

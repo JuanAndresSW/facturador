@@ -38,5 +38,5 @@ public final class BranchCreate implements Serializable {
     private String logo;
 
     @Size(min = 7, max = 7)
-    private String color;
+    private String preferenceColor;
 }

@@ -1,8 +1,7 @@
 package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.application.command.delete.BranchDeleteCommand;
-import dev.facturador.branch.domain.BranchID;
-import dev.facturador.shared.application.commands.CommandBus;
+import dev.facturador.global.application.commands.CommandBus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class DeleteBranchResource {
-    private CommandBus commandBus;
+    private final CommandBus commandBus;
 
     public DeleteBranchResource(CommandBus commandBus) {
         this.commandBus = commandBus;
     }
 
-    @PreAuthorize("hasAuthority('MAIN')")
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{IDBranch}")
     public HttpEntity<Void> deleteBranch(@PathVariable(name = "IDBranch") long IDBranch) throws Exception {
         var command = BranchDeleteCommand.Builder.getInstance()
-                .branchID(BranchID.valueof(IDBranch)).build();
+                .branchId(IDBranch).build();
 
         commandBus.handle(command);
 

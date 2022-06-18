@@ -1,15 +1,15 @@
 package dev.facturador.pointofsale.application.query;
 
 import dev.facturador.branch.domain.exception.BranchBadSorting;
+import dev.facturador.global.application.querys.QueryHandler;
+import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import dev.facturador.pointofsale.application.usecase.ListPointOfSaleUseCase;
 import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.application.querys.QueryHandler;
-import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PointOfSaleListQueryHandler implements QueryHandler<PagedResponse<PointOfSale>, PointOfSaleListQuery> {
-    private ListPointOfSaleUseCase useCase;
+    private final ListPointOfSaleUseCase useCase;
 
     public PointOfSaleListQueryHandler(ListPointOfSaleUseCase useCase) {
         this.useCase = useCase;
@@ -20,7 +20,7 @@ public class PointOfSaleListQueryHandler implements QueryHandler<PagedResponse<P
         validatePageNumberAndSize
                 (query.getPage().getIndex(), query.getPage().getSize(), query.getPage().getOrder());
 
-        var response = useCase.handleListOfPointsOfSale(query.getBranchID(), query.getPage());
+        var response = useCase.handlePointOfSaleList(query.getBranchID(), query.getPage());
 
         return response;
     }

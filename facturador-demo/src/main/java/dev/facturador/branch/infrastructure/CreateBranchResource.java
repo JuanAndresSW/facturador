@@ -2,7 +2,7 @@ package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.application.command.create.BranchCreateCommand;
 import dev.facturador.branch.domain.BranchCreate;
-import dev.facturador.shared.application.commands.CommandBus;
+import dev.facturador.global.application.commands.CommandBus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ import java.net.URI;
 @RequestMapping(path = "/api/branches")
 public class CreateBranchResource {
 
-    private CommandBus commandBus;
+    private final CommandBus commandBus;
 
     public CreateBranchResource(CommandBus commandBus) {
         this.commandBus = commandBus;
     }
 
-    @PreAuthorize("hasAuthority('MAIN')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate values) throws Exception {
         var command = BranchCreateCommand.Builder.getInstance()

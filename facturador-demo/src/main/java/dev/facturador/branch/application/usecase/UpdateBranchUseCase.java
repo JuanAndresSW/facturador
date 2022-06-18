@@ -15,8 +15,7 @@ public class UpdateBranchUseCase {
     @Autowired
     private BranchRepository repository;
 
-    public void handle(BranchUpdate updatedBranch, Branch branch) {
-        log.info("Entree hacer save and flush");
+    public void handleBranchUpdate(BranchUpdate updatedBranch, Branch branch) {
         var updateBranch = Branch.create(updatedBranch, branch);
         repository.saveAndFlush(updateBranch);
     }

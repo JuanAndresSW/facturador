@@ -1,10 +1,9 @@
 package dev.facturador.pointofsale.application.usecase;
 
+import dev.facturador.global.domain.sharedpayload.Page;
+import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.pointofsale.domain.PointOfSaleBranchID;
 import dev.facturador.pointofsale.domain.PointOfSaleRepository;
-import dev.facturador.shared.domain.sharedpayload.Page;
-import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +20,7 @@ public final class ListPointOfSaleUseCase {
     @Autowired
     private PointOfSaleRepository repository;
 
-    public PagedResponse<PointOfSale> handleListOfPointsOfSale(PointOfSaleBranchID pointOfSaleBranchID, Page page) {
+    public PagedResponse<PointOfSale> handlePointOfSaleList(Long branchId, Page page) {
         Pageable pageable = null;
         if (page.getOrder().equals("asc")) {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.ASC, page.getSort());
@@ -30,7 +29,7 @@ public final class ListPointOfSaleUseCase {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.DESC, page.getSort());
         }
 
-        var pages = repository.findByBranchOwnerBranchId(pointOfSaleBranchID.getBranchID(), pageable);
+        var pages = repository.findByBranchOwnerBranchId(branchId, pageable);
 
         List<PointOfSale> content = pages.getNumberOfElements() == 0 ? Collections.emptyList() : pages.getContent();
 

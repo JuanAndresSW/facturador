@@ -12,7 +12,7 @@
 
     <groupId>org.conjunto.solucion</groupId>
     <artifactId>facturador-demo</artifactId>
-    <version>0.2.2</version>
+    <version>0.4</version>
     <packaging>war</packaging>
     <name>facturador-demo</name>
     <description>Aplicacion para generar documentos comerciales</description>
@@ -25,6 +25,7 @@
     </properties>
 
     <dependencies>
+        <!-- Utilidades -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -45,6 +46,7 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
+        <!-- Seguridad -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
@@ -64,6 +66,7 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- Base de datos -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -74,6 +77,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

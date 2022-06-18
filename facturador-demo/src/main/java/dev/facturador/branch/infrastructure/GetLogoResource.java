@@ -1,8 +1,7 @@
 package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.application.query.get.BranchGetQuery;
-import dev.facturador.branch.domain.BranchID;
-import dev.facturador.shared.application.querys.QueryBus;
+import dev.facturador.global.application.querys.QueryBus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/branches")
 public class GetLogoResource {
 
-    private QueryBus queryBus;
+    private final QueryBus queryBus;
 
     public GetLogoResource(QueryBus queryBus) {
         this.queryBus = queryBus;
     }
 
-    @PreAuthorize("hasAuthority('MAIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{IDBranch}/get-logo")
     public HttpEntity<String> getLogo(@PathVariable(name = "IDBranch") long IDBranch)
             throws Exception {
 
         var query = BranchGetQuery.Builder.getInstance()
-                .branchID(BranchID.valueof(IDBranch)).build();
+                .branchId(IDBranch).build();
 
         var branch = queryBus.handle(query);
 

@@ -1,12 +1,12 @@
 package dev.facturador.pointofsale.application.command;
 
+import dev.facturador.global.application.commands.Command;
 import dev.facturador.pointofsale.domain.PointOfSaleCreate;
-import dev.facturador.shared.application.commands.Command;
 import lombok.Getter;
 
 @Getter
 public class PointOfSaleCreateCommand extends Command {
-    private PointOfSaleCreate pointOfSaleCreate;
+    private final PointOfSaleCreate pointOfSaleCreate;
 
     public PointOfSaleCreateCommand(PointOfSaleCreate pointOfSaleCreate) {
         this.pointOfSaleCreate = pointOfSaleCreate;

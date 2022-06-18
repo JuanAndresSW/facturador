@@ -1,6 +1,8 @@
 package dev.facturador.branch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "branch")
@@ -24,41 +27,48 @@ public final class Branch implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long branchId;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private String name;
-    @Column(name = "email", nullable = false, length = 128)
+    @Column(nullable = false, length = 128)
     private String email;
-    @Column(name = "phone", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String phone;
 
-    @Column(name = "province", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String province;
-    @Column(name = "department", nullable = false, length = 45)
+    @Column(nullable = false, length = 45)
     private String department;
-    @Column(name = "locality", nullable = false, length = 45)
+    @Column(nullable = false, length = 45)
     private String locality;
     @Column(name = "postal_code", nullable = false, length = 10)
     private String postalCode;
-    @Column(name = "street", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String street;
-    @Column(name = "number_address", nullable = false, length = 5)
-    private String numberAddress;
+    @Column(name = "address_number", nullable = false, length = 5)
+    private String addressNumber;
 
     @Column(name = "preference_color", nullable = false, length = 7)
     private String preferenceColor;
-    @Column(name = "date_of_create", nullable = false, length = 7)
-    private LocalDate dateOfCreate;
+    @Column(name = "creation_date", nullable = false, length = 7)
+    private LocalDate createAt;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_trader", nullable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_trader", nullable = false, updatable = false, referencedColumnName = "id_trader")
     private Trader traderOwner;
 
-    @Column(name = "logo", nullable = false)
+    @Lob
+    @Column(nullable = false)
     private String logo;
 
-    @Column(name = "photo", nullable = false)
+    @Lob
+    @Column(nullable = false)
     private String photo;
+
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "branchOwner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<PointOfSale> pointsOfSaleCreated;
 
     public Branch(long branchId) {
         super();
@@ -85,8 +95,8 @@ public final class Branch implements Serializable {
         this.preferenceColor = preferenceColor;
     }
 
-    public static Branch create(BranchID value) {
-        var branch = new Branch(value.getBranchID());
+    public static Branch create(Long value) {
+        var branch = new Branch(value);
         return branch;
     }
 
@@ -115,8 +125,8 @@ public final class Branch implements Serializable {
         if (StringUtils.hasText(updatedValues.getUpdatedStreet())) {
             branch.setStreet(updatedValues.getUpdatedStreet());
         }
-        if (StringUtils.hasText(updatedValues.getUpdatedNumberAddress())) {
-            branch.setNumberAddress(updatedValues.getUpdatedNumberAddress());
+        if (StringUtils.hasText(updatedValues.getUpdatedAddressNumber())) {
+            branch.setAddressNumber(updatedValues.getUpdatedAddressNumber());
         }
 
         if (StringUtils.hasText(updatedValues.getUpdatedPhoto())) {
@@ -130,8 +140,8 @@ public final class Branch implements Serializable {
             branch.setLogo("undefined");
         }
 
-        if (StringUtils.hasText(updatedValues.getUpdatedColor())) {
-            branch.setPreferenceColor(updatedValues.getUpdatedColor());
+        if (StringUtils.hasText(updatedValues.getUpdatedPreferenceColor())) {
+            branch.setPreferenceColor(updatedValues.getUpdatedPreferenceColor());
         }
 
         return branch;
@@ -147,13 +157,13 @@ public final class Branch implements Serializable {
                 values.getAddress().getLocality(),
                 values.getAddress().getPostalCode(),
                 values.getAddress().getStreet(),
-                values.getColor());
+                values.getPreferenceColor());
 
-        if (values.getAddress().getNumberAddress() != 0) {
-            branch.setNumberAddress(String.valueOf(values.getAddress().getNumberAddress()));
+        if (values.getAddress().getAddressNumber() != 0) {
+            branch.setAddressNumber(String.valueOf(values.getAddress().getAddressNumber()));
         }
-        if (values.getAddress().getNumberAddress() == 0) {
-            branch.setNumberAddress("S/N");
+        if (values.getAddress().getAddressNumber() == 0) {
+            branch.setAddressNumber("S/N");
         }
 
         if (StringUtils.hasText(values.getPhoto())) {
@@ -167,7 +177,7 @@ public final class Branch implements Serializable {
             branch.setLogo("undefined");
         }
 
-        branch.setDateOfCreate(LocalDate.now());
+        branch.setCreateAt(LocalDate.now());
         branch.setTraderOwner(new Trader(values.getIDTrader()));
 
         return branch;
@@ -185,9 +195,9 @@ public final class Branch implements Serializable {
                 ", locality='" + locality + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", street='" + street + '\'' +
-                ", numberAddress='" + numberAddress + '\'' +
+                ", numberAddress='" + addressNumber + '\'' +
                 ", preferenceColor='" + preferenceColor + '\'' +
-                ", dateOfCreate=" + dateOfCreate +
+                ", dateOfCreate=" + createAt +
                 ", logo=" + logo +
                 ", photo=" + photo +
                 '}';

@@ -1,33 +1,32 @@
 package dev.facturador.branch.application.command.delete;
 
-import dev.facturador.branch.domain.BranchID;
-import dev.facturador.shared.application.commands.Command;
+import dev.facturador.global.application.commands.Command;
 
 public class BranchDeleteCommand extends Command {
-    private BranchID branchID;
+    private final Long branchId;
 
-    public BranchDeleteCommand(BranchID branchID) {
-        this.branchID = branchID;
+    public BranchDeleteCommand(Long branchId) {
+        this.branchId = branchId;
     }
 
-    public BranchID getBranchID() {
-        return this.branchID;
+    public Long getBranchId() {
+        return this.branchId;
     }
 
     public static class Builder {
-        private BranchID branchID;
+        private Long branchId;
 
         public static BranchDeleteCommand.Builder getInstance() {
             return new BranchDeleteCommand.Builder();
         }
 
-        public BranchDeleteCommand.Builder branchID(BranchID branchID) {
-            this.branchID = branchID;
+        public BranchDeleteCommand.Builder branchId(Long branchID) {
+            this.branchId = branchID;
             return this;
         }
 
         public BranchDeleteCommand build() {
-            return new BranchDeleteCommand(branchID);
+            return new BranchDeleteCommand(branchId);
         }
     }
 }

@@ -1,10 +1,10 @@
 package dev.facturador.branch.application.command.create;
 
 import dev.facturador.branch.domain.BranchCreate;
-import dev.facturador.shared.application.commands.Command;
+import dev.facturador.global.application.commands.Command;
 
 public class BranchCreateCommand extends Command {
-    private BranchCreate branchCreate;
+    private final BranchCreate branchCreate;
 
     public BranchCreateCommand(BranchCreate branchCreate) {
         this.branchCreate = branchCreate;

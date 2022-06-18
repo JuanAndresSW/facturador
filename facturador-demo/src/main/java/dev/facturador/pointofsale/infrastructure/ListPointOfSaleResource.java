@@ -1,11 +1,10 @@
 package dev.facturador.pointofsale.infrastructure;
 
+import dev.facturador.global.application.querys.QueryBus;
+import dev.facturador.global.domain.sharedpayload.Page;
+import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import dev.facturador.pointofsale.application.query.PointOfSaleListQuery;
 import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.pointofsale.domain.PointOfSaleBranchID;
-import dev.facturador.shared.application.querys.QueryBus;
-import dev.facturador.shared.domain.sharedpayload.Page;
-import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class ListPointOfSaleResource {
-    private QueryBus queryBus;
+    private final QueryBus queryBus;
 
     public ListPointOfSaleResource(QueryBus queryBus) {
         this.queryBus = queryBus;
     }
 
-    @PreAuthorize("hasAuthority('MAIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/branch/{IDBranch}")
     public HttpEntity<PagedResponse<PointOfSale>> toListPointOfSale(
             @RequestParam(value = "index") int index,
@@ -30,10 +29,10 @@ public class ListPointOfSaleResource {
             @RequestParam(value = "sort") String sort,
             @RequestParam(value = "order") String order,
             @PathVariable(name = "IDBranch") long branchID) throws Exception {
-        log.info("Entre al metodo");
+
         var query = PointOfSaleListQuery.Builder.getInstance()
                 .page(Page.starter(index, size, sort, order))
-                .branchID(PointOfSaleBranchID.starter(branchID))
+                .branchId(branchID)
                 .build();
 
         var response = queryBus.handle(query);
