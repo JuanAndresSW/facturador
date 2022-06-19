@@ -1,34 +1,32 @@
 package dev.facturador.branch.application.query.get;
 
 import dev.facturador.branch.domain.Branch;
-import dev.facturador.branch.domain.BranchID;
-import dev.facturador.shared.application.querys.Query;
+import dev.facturador.global.application.querys.Query;
+import lombok.Getter;
 
+/**Query para recuperar sucursal*/
+@Getter
 public class BranchGetQuery extends Query<Branch> {
-    private BranchID branchID;
+    private final Long branchId;
 
-    public BranchGetQuery(BranchID branchID) {
-        this.branchID = branchID;
+    public BranchGetQuery(Long branchId) {
+        this.branchId = branchId;
     }
-
-    public BranchID getBranchID() {
-        return this.branchID;
-    }
-
+    /**Builder del comando*/
     public static class Builder {
-        private BranchID branchID;
+        private Long branchId;
 
         public static BranchGetQuery.Builder getInstance() {
             return new BranchGetQuery.Builder();
         }
 
-        public BranchGetQuery.Builder branchID(BranchID branchID) {
-            this.branchID = branchID;
+        public BranchGetQuery.Builder branchId(Long branchId) {
+            this.branchId = branchId;
             return this;
         }
 
         public BranchGetQuery build() {
-            return new BranchGetQuery(branchID);
+            return new BranchGetQuery(branchId);
         }
     }
 }

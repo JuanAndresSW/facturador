@@ -2,14 +2,13 @@ package dev.facturador.branch.application.query.get;
 
 import dev.facturador.branch.application.usecase.GetBranchUseCase;
 import dev.facturador.branch.domain.Branch;
-import dev.facturador.shared.application.querys.QueryHandler;
-import lombok.extern.slf4j.Slf4j;
+import dev.facturador.global.application.querys.QueryHandler;
 import org.springframework.stereotype.Component;
 
-@Slf4j
+/**Manejador de la Query {@link BranchGetQuery} devuelve la entidad {@link Branch}*/
 @Component
 public class BranchGetQuetyHandler implements QueryHandler<Branch, BranchGetQuery> {
-    private GetBranchUseCase useCase;
+    private final GetBranchUseCase useCase;
 
     public BranchGetQuetyHandler(GetBranchUseCase useCase) {
         this.useCase = useCase;
@@ -17,6 +16,6 @@ public class BranchGetQuetyHandler implements QueryHandler<Branch, BranchGetQuer
 
     @Override
     public Branch handle(BranchGetQuery query) throws Exception {
-        return useCase.get(query.getBranchID());
+        return useCase.handleGetBranch(query.getBranchId());
     }
 }

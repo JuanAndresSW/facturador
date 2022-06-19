@@ -12,7 +12,7 @@
 
     <groupId>org.conjunto.solucion</groupId>
     <artifactId>facturador-demo</artifactId>
-    <version>0.2.2</version>
+    <version>0.4</version>
     <packaging>war</packaging>
     <name>facturador-demo</name>
     <description>Aplicacion para generar documentos comerciales</description>

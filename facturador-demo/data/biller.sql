@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `account`
+--
+
+DROP TABLE IF EXISTS `account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `account` (
+  `id_account` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_trader` int unsigned NOT NULL,
+  `id_user` int unsigned NOT NULL,
+  `creation_date` datetime NOT NULL,
+  PRIMARY KEY (`id_account`),
+  KEY `id_user_main_fk_idx` (`id_user`),
+  KEY `id_trader_main_account_fk_idx` (`id_trader`),
+  CONSTRAINT `id_trader_account_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`),
+  CONSTRAINT `id_user_account_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account`
+--
+
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `branch`
 --
 
@@ -32,16 +61,16 @@ CREATE TABLE `branch` (
   `locality` varchar(45) NOT NULL,
   `postal_code` varchar(10) NOT NULL,
   `street` varchar(50) NOT NULL,
-  `number_address` varchar(5) NOT NULL,
+  `address_number` varchar(5) NOT NULL,
   `preference_color` varchar(7) NOT NULL,
-  `date_of_create` date NOT NULL,
+  `creation_date` date NOT NULL,
   `photo` mediumtext NOT NULL,
   `logo` mediumtext NOT NULL,
   `id_trader` int unsigned NOT NULL,
   PRIMARY KEY (`id_branch`),
   KEY `id_trader_branch_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_branch_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,40 +79,7 @@ CREATE TABLE `branch` (
 
 LOCK TABLES `branch` WRITE;
 /*!40000 ALTER TABLE `branch` DISABLE KEYS */;
-INSERT INTO `branch` VALUES (34,'Super Dino','superdino@gmail.com','3757644100','Misiones','Puerto Iguazu','Esperanza','3377','Victoria Aguirre','10','#fff000','2022-04-27','xjiownurfvbhngtmokfmeiwnfduojrefreknfmwuieobfnherjodikmwiefonureifvnxoaopxsqimciurenvcureigvfj','fdjafnhicwenrvhreioaociscmjrnvhijevnoxkqmwxiwurfgnthjgvemxqa',17);
 /*!40000 ALTER TABLE `branch` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `branch_account`
---
-
-DROP TABLE IF EXISTS `branch_account`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `branch_account` (
-  `id_branch_account` int unsigned NOT NULL AUTO_INCREMENT,
-  `id_main_account_creator` int unsigned NOT NULL,
-  `id_branch_assigned` int unsigned NOT NULL,
-  `id_user` int unsigned NOT NULL,
-  `date_of_create` datetime NOT NULL,
-  PRIMARY KEY (`id_branch_account`),
-  KEY `id_main_account_fk_idx` (`id_main_account_creator`),
-  KEY `id_user_branch_fk_idx` (`id_user`),
-  KEY `id_branch_assigned_fk_idx` (`id_branch_assigned`),
-  CONSTRAINT `id_branch_assigned_fk` FOREIGN KEY (`id_branch_assigned`) REFERENCES `branch` (`id_branch`),
-  CONSTRAINT `id_main_account_fk` FOREIGN KEY (`id_main_account_creator`) REFERENCES `main_account` (`id_main_account`),
-  CONSTRAINT `id_user_branch_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `branch_account`
---
-
-LOCK TABLES `branch_account` WRITE;
-/*!40000 ALTER TABLE `branch_account` DISABLE KEYS */;
-/*!40000 ALTER TABLE `branch_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -175,36 +171,6 @@ CREATE TABLE `invoice` (
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `main_account`
---
-
-DROP TABLE IF EXISTS `main_account`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `main_account` (
-  `id_main_account` int unsigned NOT NULL AUTO_INCREMENT,
-  `id_trader` int unsigned NOT NULL,
-  `id_user` int unsigned NOT NULL,
-  `date_of_create` datetime NOT NULL,
-  PRIMARY KEY (`id_main_account`),
-  KEY `id_user_main_fk_idx` (`id_user`),
-  KEY `id_trader_main_account_fk_idx` (`id_trader`),
-  CONSTRAINT `id_trader_main_account_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`),
-  CONSTRAINT `id_user_main_account_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `main_account`
---
-
-LOCK TABLES `main_account` WRITE;
-/*!40000 ALTER TABLE `main_account` DISABLE KEYS */;
-INSERT INTO `main_account` VALUES (22,17,23,'2022-04-17 15:03:42');
-/*!40000 ALTER TABLE `main_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -332,14 +298,12 @@ DROP TABLE IF EXISTS `point_of_sale`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `point_of_sale` (
   `id_point_of_sale` int unsigned NOT NULL AUTO_INCREMENT,
-  `point_of_sale_number` int unsigned NOT NULL,
-  `floor` varchar(4) NOT NULL,
-  `unit` varchar(4) NOT NULL,
+  `point_of_sale_number` int NOT NULL,
   `id_branch` int unsigned NOT NULL,
   PRIMARY KEY (`id_point_of_sale`),
   KEY `id_branch_pos_fk_idx` (`id_branch`),
   CONSTRAINT `id_branch_pos_fk` FOREIGN KEY (`id_branch`) REFERENCES `branch` (`id_branch`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -348,36 +312,34 @@ CREATE TABLE `point_of_sale` (
 
 LOCK TABLES `point_of_sale` WRITE;
 /*!40000 ALTER TABLE `point_of_sale` DISABLE KEYS */;
-INSERT INTO `point_of_sale` VALUES (1,1,'0','1',34);
 /*!40000 ALTER TABLE `point_of_sale` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `products`
+-- Table structure for table `points_of_sale_control`
 --
 
-DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `points_of_sale_control`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `products` (
-  `id_products` int unsigned NOT NULL AUTO_INCREMENT,
-  `quantity` int NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `id_branch` int unsigned NOT NULL,
-  PRIMARY KEY (`id_products`),
-  KEY `id_branch_product_fk_idx` (`id_branch`),
-  CONSTRAINT `id_branch_product_fk` FOREIGN KEY (`id_branch`) REFERENCES `branch` (`id_branch`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `points_of_sale_control` (
+  `id_pos_control` int NOT NULL AUTO_INCREMENT,
+  `current_count` int NOT NULL,
+  `total_count` int NOT NULL,
+  `id_trader` int unsigned NOT NULL,
+  PRIMARY KEY (`id_pos_control`),
+  KEY `id_trader_control_of_pos_fk_idx` (`id_trader`),
+  CONSTRAINT `id_trader_control_of_pos_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `products`
+-- Dumping data for table `points_of_sale_control`
 --
 
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+LOCK TABLES `points_of_sale_control` WRITE;
+/*!40000 ALTER TABLE `points_of_sale_control` DISABLE KEYS */;
+/*!40000 ALTER TABLE `points_of_sale_control` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -574,13 +536,13 @@ DROP TABLE IF EXISTS `trader`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trader` (
   `id_trader` int unsigned NOT NULL AUTO_INCREMENT,
-  `unique_key` varchar(15) NOT NULL,
+  `cuit` varchar(15) NOT NULL,
   `name` varchar(20) NOT NULL,
   `vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
-  `active` int unsigned NOT NULL,
-  `passive` int unsigned NOT NULL,
+  `actives` int unsigned NOT NULL,
+  `passives` int unsigned NOT NULL,
   PRIMARY KEY (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -589,7 +551,6 @@ CREATE TABLE `trader` (
 
 LOCK TABLES `trader` WRITE;
 /*!40000 ALTER TABLE `trader` DISABLE KEYS */;
-INSERT INTO `trader` VALUES (17,'20-45.340.911-3','Jose Lopez','MONOTAX_RESPONSIBLE',0,0);
 /*!40000 ALTER TABLE `trader` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -608,7 +569,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -617,7 +578,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (23,'lopezikaro16@gmail.com','$argon2id$v=19$m=2048,t=2,p=1$gfS2hurDubB8xLxsLSc47g$foBeifbIJuXVEfbloqhIgb0PxgWW0Liu9vzEJZyrS24','reimus');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -635,7 +595,7 @@ CREATE TABLE `user_avatar` (
   PRIMARY KEY (`id_user_avatar`),
   UNIQUE KEY `UK_9r98vdxdtt1tw76ecsrxpv2io` (`id_user`),
   CONSTRAINT `id_user_avatar_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -644,7 +604,6 @@ CREATE TABLE `user_avatar` (
 
 LOCK TABLES `user_avatar` WRITE;
 /*!40000 ALTER TABLE `user_avatar` DISABLE KEYS */;
-INSERT INTO `user_avatar` VALUES (22,'undefined',23);
 /*!40000 ALTER TABLE `user_avatar` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -657,4 +616,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-09  8:53:55
+-- Dump completed on 2022-06-18  6:02:38

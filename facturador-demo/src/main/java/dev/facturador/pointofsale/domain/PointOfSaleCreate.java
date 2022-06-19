@@ -1,5 +1,6 @@
 package dev.facturador.pointofsale.domain;
 
+import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,9 @@ import lombok.ToString;
 public final class PointOfSaleCreate {
     private Long IDBranch;
     private Long IDTrader;
-    private int actualNumber;
+    private PointsOfSaleControl posControl;
 
-    public static PointOfSaleCreate create(Long IDBranch, Long IDTrader, int actualNumber) {
-        return new PointOfSaleCreate(IDBranch, IDTrader, actualNumber);
+    public static PointOfSaleCreate valueOf(Long IDBranch, Long IDTrader, PointsOfSaleControl posControl) {
+        return new PointOfSaleCreate(IDBranch, IDTrader, posControl);
     }
 }

@@ -1,7 +1,7 @@
 package dev.facturador.notused.domain;
 
 import dev.facturador.branch.domain.Branch;
-import dev.facturador.shared.domain.sharedpayload.RequestState;
+import dev.facturador.global.domain.sharedpayload.RequestState;
 import dev.facturador.trader.domain.Trader;
 import lombok.*;
 

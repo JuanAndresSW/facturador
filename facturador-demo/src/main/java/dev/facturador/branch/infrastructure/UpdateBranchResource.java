@@ -2,10 +2,9 @@ package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.application.command.update.BranchUpdateCommand;
 import dev.facturador.branch.application.query.get.BranchGetQuery;
-import dev.facturador.branch.domain.BranchID;
 import dev.facturador.branch.domain.BranchUpdate;
-import dev.facturador.shared.application.commands.CommandBus;
-import dev.facturador.shared.application.querys.QueryBus;
+import dev.facturador.global.application.commands.CommandBus;
+import dev.facturador.global.application.querys.QueryBus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -14,24 +13,25 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Slf4j
+/**EndPoint para actualizar la sucursal*/
 @RestController
 @RequestMapping(path = "/api/branches")
 public class UpdateBranchResource {
-    private CommandBus commandBus;
-    private QueryBus queryBus;
+    private final CommandBus commandBus;
+    private final QueryBus queryBus;
 
     public UpdateBranchResource(CommandBus commandBus, QueryBus queryBus) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
     }
-
-    @PreAuthorize("hasAuthority('MAIN')")
+    /**Ejecuta una Query para traer la sucursal
+     * Luego ejecuta un comando para actualizar la sucursal*/
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{IDBranch}")
     public HttpEntity<Void> updateBranch(@PathVariable(name = "IDBranch") long IDBranch,
                                          @Valid @RequestBody BranchUpdate values) throws Exception {
         var query = BranchGetQuery.Builder.getInstance()
-                .branchID(BranchID.valueof(IDBranch)).build();
+                .branchId(IDBranch).build();
 
         var branch = queryBus.handle(query);
 
@@ -40,6 +40,6 @@ public class UpdateBranchResource {
 
         commandBus.handle(command);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

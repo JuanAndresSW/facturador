@@ -1,6 +1,8 @@
 package dev.facturador.branch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,9 @@ import org.springframework.util.StringUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
+/**Entidad Sucursal*/
 @Entity
 @Table(name = "branch")
 @NoArgsConstructor
@@ -24,41 +28,48 @@ public final class Branch implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long branchId;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private String name;
-    @Column(name = "email", nullable = false, length = 128)
+    @Column(nullable = false, length = 128)
     private String email;
-    @Column(name = "phone", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String phone;
 
-    @Column(name = "province", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String province;
-    @Column(name = "department", nullable = false, length = 45)
+    @Column(nullable = false, length = 45)
     private String department;
-    @Column(name = "locality", nullable = false, length = 45)
+    @Column(nullable = false, length = 45)
     private String locality;
     @Column(name = "postal_code", nullable = false, length = 10)
     private String postalCode;
-    @Column(name = "street", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String street;
-    @Column(name = "number_address", nullable = false, length = 5)
-    private String numberAddress;
+    @Column(name = "address_number", nullable = false, length = 5)
+    private String addressNumber;
 
     @Column(name = "preference_color", nullable = false, length = 7)
     private String preferenceColor;
-    @Column(name = "date_of_create", nullable = false, length = 7)
-    private LocalDate dateOfCreate;
+    @Column(name = "creation_date", nullable = false, length = 7)
+    private LocalDate createdAt;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_trader", nullable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_trader", nullable = false, updatable = false, referencedColumnName = "id_trader")
     private Trader traderOwner;
 
-    @Column(name = "logo", nullable = false)
+    @Lob
+    @Column(nullable = false)
     private String logo;
 
-    @Column(name = "photo", nullable = false)
+    @Lob
+    @Column(nullable = false)
     private String photo;
+
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "branchOwner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<PointOfSale> pointsOfSaleCreated;
 
     public Branch(long branchId) {
         super();
@@ -84,12 +95,12 @@ public final class Branch implements Serializable {
         this.street = street;
         this.preferenceColor = preferenceColor;
     }
-
-    public static Branch create(BranchID value) {
-        var branch = new Branch(value.getBranchID());
+    /**Named Contructor con solo el Id */
+    public static Branch create(Long value) {
+        var branch = new Branch(value);
         return branch;
     }
-
+    /**NamedContructor para el update*/
     public static Branch create(BranchUpdate updatedValues, Branch branch) {
         if (StringUtils.hasText(updatedValues.getUpdatedName())) {
             branch.setName(updatedValues.getUpdatedName());
@@ -115,28 +126,24 @@ public final class Branch implements Serializable {
         if (StringUtils.hasText(updatedValues.getUpdatedStreet())) {
             branch.setStreet(updatedValues.getUpdatedStreet());
         }
-        if (StringUtils.hasText(updatedValues.getUpdatedNumberAddress())) {
-            branch.setNumberAddress(updatedValues.getUpdatedNumberAddress());
+        if (StringUtils.hasText(updatedValues.getUpdatedAddressNumber())) {
+            branch.setAddressNumber(updatedValues.getUpdatedAddressNumber());
         }
 
         if (StringUtils.hasText(updatedValues.getUpdatedPhoto())) {
             branch.setPhoto(updatedValues.getUpdatedPhoto());
-        } else {
-            branch.setPhoto("undefined");
         }
         if (StringUtils.hasText(updatedValues.getUpdatedLogo())) {
             branch.setLogo(updatedValues.getUpdatedLogo());
-        } else {
-            branch.setLogo("undefined");
         }
 
-        if (StringUtils.hasText(updatedValues.getUpdatedColor())) {
-            branch.setPreferenceColor(updatedValues.getUpdatedColor());
+        if (StringUtils.hasText(updatedValues.getUpdatedPreferenceColor())) {
+            branch.setPreferenceColor(updatedValues.getUpdatedPreferenceColor());
         }
 
         return branch;
     }
-
+    /**Named Contructor para crear*/
     public static Branch create(BranchCreate values) {
         var branch = new Branch(
                 values.getName(),
@@ -147,30 +154,33 @@ public final class Branch implements Serializable {
                 values.getAddress().getLocality(),
                 values.getAddress().getPostalCode(),
                 values.getAddress().getStreet(),
-                values.getColor());
+                values.getPreferenceColor());
 
-        if (values.getAddress().getNumberAddress() != 0) {
-            branch.setNumberAddress(String.valueOf(values.getAddress().getNumberAddress()));
-        }
-        if (values.getAddress().getNumberAddress() == 0) {
-            branch.setNumberAddress("S/N");
-        }
+        branch.setAddressNumber(defineAddressNumber(values.getAddress()));
 
         if (StringUtils.hasText(values.getPhoto())) {
             branch.setPhoto(values.getPhoto());
-        } else {
+        }  else {
             branch.setPhoto("undefined");
         }
+
         if (StringUtils.hasText(values.getLogo())) {
             branch.setLogo(values.getLogo());
         } else {
             branch.setLogo("undefined");
         }
 
-        branch.setDateOfCreate(LocalDate.now());
+        branch.setCreatedAt(LocalDate.now());
         branch.setTraderOwner(new Trader(values.getIDTrader()));
 
         return branch;
+    }
+
+    public static String defineAddressNumber(BranchAddress address){
+        if (address.getAddressNumber() != 0) {
+            return String.valueOf(address.getAddressNumber());
+        }
+        return "S/N";
     }
 
     @Override
@@ -185,9 +195,9 @@ public final class Branch implements Serializable {
                 ", locality='" + locality + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", street='" + street + '\'' +
-                ", numberAddress='" + numberAddress + '\'' +
+                ", addressNumber='" + addressNumber + '\'' +
                 ", preferenceColor='" + preferenceColor + '\'' +
-                ", dateOfCreate=" + dateOfCreate +
+                ", createdAt=" + createdAt +
                 ", logo=" + logo +
                 ", photo=" + photo +
                 '}';

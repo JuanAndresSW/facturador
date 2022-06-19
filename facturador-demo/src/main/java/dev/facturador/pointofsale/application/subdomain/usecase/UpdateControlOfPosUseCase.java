@@ -1,8 +1,8 @@
 package dev.facturador.pointofsale.application.subdomain.usecase;
 
-import dev.facturador.pointofsale.domain.subdomain.ControlOfPointOfSale;
-import dev.facturador.pointofsale.domain.subdomain.ControlOfPointOfSaleRepository;
-import dev.facturador.pointofsale.domain.subdomain.ControlOfPosData;
+import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControlRepository;
+import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
+import dev.facturador.pointofsale.domain.subdomain.PosControlData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UpdateControlOfPosUseCase {
     @Autowired
-    private ControlOfPointOfSaleRepository repository;
+    private PointsOfSaleControlRepository repository;
 
-    public void handle(ControlOfPosData data) throws Exception {
+    public void handle(PosControlData data) throws Exception {
         log.info("Data is: {}", data);
-        repository.saveAndFlush(ControlOfPointOfSale.create(data));
+        repository.saveAndFlush(PointsOfSaleControl.create(data));
     }
 }

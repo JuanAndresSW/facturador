@@ -1,32 +1,32 @@
 package dev.facturador.branch.application.query.tolist;
 
 import dev.facturador.branch.domain.Branch;
-import dev.facturador.branch.domain.BranchTraderId;
-import dev.facturador.shared.application.querys.Query;
-import dev.facturador.shared.domain.sharedpayload.Page;
-import dev.facturador.shared.domain.sharedpayload.PagedResponse;
+import dev.facturador.global.application.querys.Query;
+import dev.facturador.global.application.sharedpayload.Page;
+import dev.facturador.global.application.sharedpayload.PagedResponse;
 import lombok.Getter;
 
+/**Query para recuperar el lsitado de sucursales devuelve un {@link PagedResponse}*/
 @Getter
 public class BranchListQuery extends Query<PagedResponse<Branch>> {
-    private BranchTraderId branchTraderId;
-    private Page page;
+    private final Long traderId;
+    private final Page page;
 
-    public BranchListQuery(BranchTraderId branchTraderId, Page page) {
-        this.branchTraderId = branchTraderId;
+    public BranchListQuery(Long traderId, Page page) {
+        this.traderId = traderId;
         this.page = page;
     }
-
+    /**Builder de la Query*/
     public static class Builder {
-        private BranchTraderId branchTraderId;
+        private Long traderId;
         private Page page;
 
         public static BranchListQuery.Builder getInstance() {
             return new BranchListQuery.Builder();
         }
 
-        public BranchListQuery.Builder traderID(BranchTraderId branchTraderId) {
-            this.branchTraderId = branchTraderId;
+        public BranchListQuery.Builder traderID(Long traderId) {
+            this.traderId = traderId;
             return this;
         }
 
@@ -36,7 +36,7 @@ public class BranchListQuery extends Query<PagedResponse<Branch>> {
         }
 
         public BranchListQuery build() {
-            return new BranchListQuery(branchTraderId, page);
+            return new BranchListQuery(traderId, page);
         }
     }
 }

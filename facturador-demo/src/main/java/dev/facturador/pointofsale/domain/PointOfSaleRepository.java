@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PointOfSaleRepository extends JpaRepository<PointOfSale, Long> {
 
     Page<PointOfSale> findByBranchOwnerBranchId(Long branchID, Pageable pageable);
+
+    Boolean existsByPointOfSaleId(Long pointOfSaleId);
 }

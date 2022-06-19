@@ -1,19 +1,18 @@
 package dev.facturador.pointofsale.application.command;
 
 
-import dev.facturador.branch.application.command.delete.BranchDeleteCommand;
-import dev.facturador.branch.domain.BranchID;
-import dev.facturador.shared.application.commands.Command;
+import dev.facturador.global.application.commands.Command;
 import lombok.Getter;
 
+/**Comando para eliminar un punto de venta*/
 @Getter
 public class PointOfSaleDeleteCommand extends Command {
-    private Long pointOfSaleId;
+    private final Long pointOfSaleId;
 
     public PointOfSaleDeleteCommand(Long pointOfSaleId) {
         this.pointOfSaleId = pointOfSaleId;
     }
-
+    /**Builder del comando*/
     public static class Builder {
         private Long pointOfSaleId;
 

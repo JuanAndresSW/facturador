@@ -26,6 +26,6 @@ public class BranchAddress {
     @Size(min = 4, max = 40)
     private String street;
     @NotNull
-    private int numberAddress;
+    private int addressNumber;
 
 }

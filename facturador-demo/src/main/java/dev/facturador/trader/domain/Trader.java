@@ -1,13 +1,16 @@
 package dev.facturador.trader.domain;
 
-import dev.facturador.pointofsale.domain.subdomain.ControlOfPointOfSale;
-import dev.facturador.shared.domain.sharedpayload.Vat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.branch.domain.Branch;
+import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -21,48 +24,52 @@ public final class Trader implements Serializable {
     @Id
     @Column(name = "id_trader")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idTrader;
+    private long traderId;
 
-    @Column(name = "unique_key", nullable = false, length = 15, updatable = false, unique = true)
-    private String uniqueKey;
+    @Column(nullable = false, length = 15, updatable = false, unique = true)
+    private String cuit;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "vat_category", nullable = false,
             columnDefinition = "enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE')")
     private Vat vat;
 
-    @Column(name = "name", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(name = "passive", nullable = false)
-    private int passive;
+    @Column(nullable = false)
+    private int passives;
 
-    @Column(name = "active", nullable = false)
-    private int active;
+    @Column(nullable = false)
+    private int actives;
 
     @OneToOne(mappedBy = "trader", cascade = CascadeType.ALL)
-    private ControlOfPointOfSale controlOfPointOfSale;
+    private PointsOfSaleControl pointsOfSaleControl;
 
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Branch> branchesCreated;
 
-    public Trader(long idTrader) {
-        this.idTrader = idTrader;
+    public Trader(long traderId) {
+        this.traderId = traderId;
     }
 
-    public Trader(long idTrader, String uniqueKey, String name) {
-        this.idTrader = idTrader;
-        this.uniqueKey = uniqueKey;
+    public Trader(long traderId, String cuit, String name) {
+        this.traderId = traderId;
+        this.cuit = cuit;
         this.name = name;
     }
 
-    public Trader(String uniqueKey, String name, int active, int passive) {
-        this.uniqueKey = uniqueKey;
+    public Trader(String cuit, String name, int actives, int passives) {
+        this.cuit = cuit;
         this.name = name;
-        this.active = active;
-        this.passive = passive;
+        this.actives = actives;
+        this.passives = passives;
     }
 
-    public Trader(String uniqueKey, String name) {
-        this.uniqueKey = uniqueKey;
+    public Trader(String cuit, String name) {
+        this.cuit = cuit;
         this.name = name;
     }
 
@@ -76,12 +83,12 @@ public final class Trader implements Serializable {
     @Override
     public String toString() {
         return "Trader{" +
-                "idTrader=" + idTrader +
-                ", uniqueKey='" + uniqueKey + '\'' +
+                "idTrader=" + traderId +
+                ", cuit='" + cuit + '\'' +
                 ", vatCategory=" + vat.getNameVat() +
                 ", name='" + name + '\'' +
-                ", active='" + active + '\'' +
-                ", passive='" + passive + '\'' +
+                ", actives='" + actives + '\'' +
+                ", passive='" + passives + '\'' +
                 '}';
     }
 }

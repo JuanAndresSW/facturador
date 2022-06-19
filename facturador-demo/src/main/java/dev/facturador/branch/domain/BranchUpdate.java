@@ -28,11 +28,11 @@ public final class BranchUpdate {
 
     @Size(min = 4, max = 50)
     private String updatedStreet;
-    private String updatedNumberAddress;
+    private String updatedAddressNumber;
     @Lob
     private String updatedLogo;
     @Lob
     private String updatedPhoto;
     @Size(min = 7, max = 7)
-    private String updatedColor;
+    private String updatedPreferenceColor;
 }

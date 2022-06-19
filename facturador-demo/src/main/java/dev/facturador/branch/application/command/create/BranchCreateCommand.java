@@ -1,19 +1,18 @@
 package dev.facturador.branch.application.command.create;
 
 import dev.facturador.branch.domain.BranchCreate;
-import dev.facturador.shared.application.commands.Command;
+import dev.facturador.global.application.commands.Command;
+import lombok.Getter;
 
+/**Comando para crear la sucursal*/
+@Getter
 public class BranchCreateCommand extends Command {
-    private BranchCreate branchCreate;
+    private final BranchCreate branchCreate;
 
     public BranchCreateCommand(BranchCreate branchCreate) {
         this.branchCreate = branchCreate;
     }
-
-    public BranchCreate getPointOfSaleCreate() {
-        return this.branchCreate;
-    }
-
+    /**Builder del comando*/
     public static class Builder {
         private BranchCreate branchCreate;
 
