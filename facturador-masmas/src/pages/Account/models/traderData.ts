@@ -1,3 +1,4 @@
+/**Objeto de datos del comerciante. */
 type traderData = {
     businessName: string,
     VATCategory: string,

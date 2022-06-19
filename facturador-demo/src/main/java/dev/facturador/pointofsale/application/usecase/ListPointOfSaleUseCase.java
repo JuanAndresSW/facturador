@@ -1,7 +1,5 @@
 package dev.facturador.pointofsale.application.usecase;
 
-import dev.facturador.branch.domain.Branch;
-import dev.facturador.branch.domain.BranchTraderId;
 import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.pointofsale.domain.PointOfSaleBranchID;
 import dev.facturador.pointofsale.domain.PointOfSaleRepository;
@@ -23,12 +21,12 @@ public final class ListPointOfSaleUseCase {
     @Autowired
     private PointOfSaleRepository repository;
 
-    public PagedResponse<PointOfSale> handle(PointOfSaleBranchID pointOfSaleBranchID, Page page) {
-        Pageable pageable= null;
-        if(page.getOrder().equals("asc")){
+    public PagedResponse<PointOfSale> handleListOfPointsOfSale(PointOfSaleBranchID pointOfSaleBranchID, Page page) {
+        Pageable pageable = null;
+        if (page.getOrder().equals("asc")) {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.ASC, page.getSort());
         }
-        if(page.getOrder().equals("desc")){
+        if (page.getOrder().equals("desc")) {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.DESC, page.getSort());
         }
 

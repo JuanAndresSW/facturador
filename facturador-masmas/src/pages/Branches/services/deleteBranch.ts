@@ -1,11 +1,12 @@
-import ajax from 'interceptors/ajax';
+import ajax from 'ports/ajax';
 import getToken from 'services/getToken';
 
-export default async function deleteBranch(ID:number, callback: Function): Promise<void> {
-    ajax('DELETE', 'branches/'+ID, {token: getToken('access')}, handle);
+/**Elimina la sucursal especificada por IDBranch. */
+export default async function deleteBranch(IDBranch:number, callback: Function): Promise<void> {
+    ajax('DELETE', 'branches/'+IDBranch, {token: getToken('access')}, handle);
 
     function handle(status: number, content: string) {
-        if (status === 200) callback(true, 'Se ha eliminado la instalación');
+        if (status === 204) callback(true, 'Se ha eliminado la instalación');
         else callback(false, content);
     }
 }

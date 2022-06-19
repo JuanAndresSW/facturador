@@ -1,7 +1,7 @@
 package dev.facturador.branch.application.command.delete;
 
 import dev.facturador.branch.domain.BranchID;
-import dev.facturador.shared.application.comandbus.Command;
+import dev.facturador.shared.application.commands.Command;
 
 public class BranchDeleteCommand extends Command {
     private BranchID branchID;

@@ -15,13 +15,13 @@ import defaultLogo from 'assets/svg/default-logo.svg';
 import defaultPhoto from 'assets/svg/default-photo.svg';
 import { Field, Form, Select, Image, Message, Button, Color } from "components/formComponents";
 import { BiChevronLeft } from "react-icons/bi";
-import { Retractable } from 'components/layout';
-import { FlexDiv, Loading } from "styledComponents";
+import { Loading } from 'components/standalone';
+import { FlexDiv, Retractable } from "components/wrappers";
 import Valid from "utilities/Valid";
 
 
 
-/**Formulario para crear un nuevo punto de venta. */
+/**Formulario para crear una nueva sucursal. */
 export default function NewBranch(): JSX.Element {
 
   const navigate = useNavigate();
@@ -55,17 +55,17 @@ export default function NewBranch(): JSX.Element {
 
   function validate(): void {
     setError(undefined);
-    if (!Valid.names(name, setError)) return;
-    if (!Valid.address(department)) return setError("El departamento debe ser de entre 4 y 40 caracteres");
-    if (!Valid.address(locality)) return setError("La localidad debe ser de entre 4 y 40 caracteres");
+    if (!Valid.names(name, setError))            return;
+    if (!Valid.address(department))              return setError("El departamento debe ser de entre 4 y 40 caracteres");
+    if (!Valid.address(locality))                return setError("La localidad debe ser de entre 4 y 40 caracteres");
     if (!Valid.postalCode(postalCode, setError)) return;
-    if (!Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
-    if (!Valid.addressNumber(number, setError)) return;
-    if (!Valid.email(email, setError)) return;
-    if (!Valid.phone(phone, setError)) return;
-    if (!Valid.image(photo, setError)) return;
-    if (!Valid.image(logo)) return setError("El logo no puede superar los 2MB");
-    if (!Valid.hexColor(color, setError)) return;
+    if (!Valid.address(street))                  return setError("La calle debe ser de entre 4 y 40 caracteres");
+    if (!Valid.addressNumber(number, setError))  return;
+    if (!Valid.email(email, setError))           return;
+    if (!Valid.phone(phone, setError))           return;
+    if (!Valid.image(photo, setError))           return;
+    if (!Valid.image(logo))                      return setError("El logo no puede superar los 2MB");
+    if (!Valid.hexColor(color, setError))        return;
     submit();
   }
 
@@ -85,7 +85,7 @@ export default function NewBranch(): JSX.Element {
       },
       logo: logo,
       photo: photo,
-      color: color
+      preferenceColor: color
     }
     postBranch(branch, (ok: boolean, error: string): void => {
       setLoading(false);
@@ -141,7 +141,7 @@ export default function NewBranch(): JSX.Element {
       <Message type="error" message={error} />
 
       {success?<Message type="success" message={`Se ha creado el punto de venta "${name}"`} />:
-      loading?<Loading />:<Button text="Crear" type="submit" />}
+      loading?<Loading />:<Button type="submit">Crear</Button>}
     </Form>
   );
 }

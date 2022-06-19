@@ -2,27 +2,24 @@ import React from 'react';
 import { Navigate, Route, Routes} from 'react-router-dom';
 
 //Componentes.
-import LoggedHeader from './components/LoggedHeader/LoggedHeader';
-import Subheader from './components/SubHeader/Subheader';
-import NavBar from './components/NavBar/NavBar';
-import Main from './components/Main/Main';
+import {LoggedHeader, Subheader, NavBar, Main} from './components';
 
 //Stateless.
-import { Footer } from 'styledComponents';
+import { Footer } from 'components/standalone';
 import {MdClass, MdPoll, MdOutlineHomeWork, MdOutlineEmojiPeople, MdMonetizationOn} from 'react-icons/md';
 
 //Páginas.
 import Operation from 'pages/Operation/Operation';
-import Books from 'pages/Books/Books';
-import Stats from 'pages/Stats/Stats';
-import Branches from 'pages/Branches/Branches';
+import Books     from 'pages/Books/Books';
+import Stats     from 'pages/Stats/Stats';
+import Branches  from 'pages/Branches/Branches';
 
 const paths = {
-    operation: "/operacion",
-    books: "/libros",
-    stats: "/estadisticas",
-    branches: "/sucursales",
-    clients: "/clientes"
+    operation:  "/operacion",
+    books:      "/libros",
+    stats:      "/estadisticas",
+    branches:   "/sucursales",
+    clients:    "/clientes"
 }
 
 const tabs = [
@@ -33,7 +30,7 @@ const tabs = [
     {path:paths.clients,   icon: <MdOutlineEmojiPeople />, label:'clientes'}
 ]
 
-//Devuelve la página principal dependiente de una sesión iniciada.
+/**Devuelve la página principal dependiente de una sesión iniciada. Contiene todas las vistas principales de la aplicación.*/
 export default function Home():JSX.Element {
 
     return (

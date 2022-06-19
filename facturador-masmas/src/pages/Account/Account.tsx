@@ -4,27 +4,18 @@ import { useNavigate } from "react-router-dom";
 //Servicios.
 import getLocalUserAvatar from './services/getLocalUserAvatar';
 import getTraderData from './services/getTraderData';
-import { updateMainAccount, updateBranchAccount } from './services/updateAccounts';
-import requestDeletionCode from './services/requestDeletionCode';
-import requestAccountDeletion from './services/requestAccountDeletion';
+import putAccount from './services/putAccount';
+import deleteAccount from './services/deleteAccount';
 //Validación.
 import Valid from "utilities/Valid";
 //GUI.
 import { Button, Message, Field, Form, Image, Radio } from "components/formComponents";
-import { Retractable } from "components/layout";
-import { FlexDiv, Loading, Section } from "styledComponents";
+import { Retractable, FlexDiv, Section } from "components/wrappers";
+import { Loading } from "components/standalone";
 import { BiChevronLeft } from "react-icons/bi";
 //Modelos.
 import editedAccount from "./models/editedAccount";
 import traderData from "./models/traderData";
-
-
-//## Funciones de implementación condicional. ##//
-const hasRootAccess = sessionStorage.getItem("role") === "MAIN";
-
-const updateAccount = hasRootAccess?
-(data:any, handler:Function)=> updateMainAccount(data, handler):
-(data:any, handler:Function)=> updateBranchAccount(data, handler);
 
 
 /**Un formulario que permite cambiar datos de la cuenta / eliminar la cuenta de usuario y el comerciante. */
@@ -62,14 +53,15 @@ export default function Account(): JSX.Element {
             if (ok && !avatar) setAvatar(file);
         });
 
-        if (hasRootAccess) {
-            getTraderData((ok:boolean, data:traderData):void => {
-                if (!ok) { setError(`${data}`); return; }
+        getTraderData((ok:boolean, data:traderData) => {
+            if (ok) {
                 setBusinessName (data.businessName);
                 setVatCategory  (data.VATCategory);
                 setCUIT         (data.CUIT);
-            });
-        }
+            }
+            else setError(''+data)
+        });
+
     }, []);
 
     /*VALIDACIÓN***************************************************************/
@@ -81,10 +73,8 @@ export default function Account(): JSX.Element {
             if (!Valid.password(newPassword, setError)) return;
             if (newPassword!==confirmPassword) return setError("Las contraseñas no coinciden");
         }
-        if (hasRootAccess)                                            {
-            if (newBusinessName && !Valid.names(newBusinessName)) return setError("La razón social debe ser de entre 3 y 20 caracteres");
-            if (newVATCategory && !Valid.vatCategory(newVATCategory, setError)) return;
-        }
+        if (newBusinessName && !Valid.names(newBusinessName)) return setError("La razón social debe ser de entre 3 y 20 caracteres");
+        if (newVATCategory && !Valid.vatCategory(newVATCategory, setError)) return;
         submit();
     }
 
@@ -96,30 +86,29 @@ export default function Account(): JSX.Element {
         const account: editedAccount = {
             user: {
                 username:     sessionStorage.getItem("username"),
-                newUsername:  newUsername,
+                updatedUsername:  newUsername,
                 password:     password,
-                newPassword:  newPassword,
-                newAvatar:    avatar,
+                updatedPassword:  newPassword,
+                updatedAvatar:    avatar,
             },
             trader: {
-                newBusinessName: newBusinessName,
-                newVATCategory:  newVATCategory,
+                updatedBusinessName: newBusinessName,
+                updatedVATCategory:  newVATCategory,
             }
         } 
-        updateAccount(account, (ok:boolean, data:string)=>{
+        putAccount(account, (ok:boolean, data:string)=>{
             setLoading(false);
-            if (ok) {
-                setSuccess(true);
-                if (newUsername) sessionStorage.setItem("username", newUsername);
-            }
-            else setError(data);
+            if (!ok) return setError(data);
+
+            setSuccess(true);
+            if (newUsername) sessionStorage.setItem("username", newUsername);
         });
     }
 
     //Envía el código de eliminación ingresado. Si es correcto, la cuenta de usuario es eliminada.
-    function deleteAccount() {
+    function requestAccountDeletion() {
         //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
-        requestAccountDeletion(deletionCode, (ok:boolean, data:string)=> {
+        deleteAccount(deletionCode, (ok:boolean, data:string)=> {
             if (!ok) setDeleteError(data);
             else setDeleteSuccess(true);
         });
@@ -152,23 +141,21 @@ export default function Account(): JSX.Element {
             validator={confirmPassword === newPassword} />
             </>}
 
-            {!hasRootAccess?null:
-                <Section label="Datos del comercio">
-                    <p style={{textAlign:"center", cursor:"default"}}>C.U.I.T.: {CUIT}</p>
+            <Section label="Datos del comercio">
+                <p style={{textAlign:"center", cursor:"default"}}>C.U.I.T.: {CUIT}</p>
 
-                    <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
-                    placeholder={businessName} validator={Valid.names(newBusinessName)} />
+                <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
+                placeholder={businessName} validator={Valid.names(newBusinessName)} />
                         
-                    <Radio legend={"Actualmente: "+VATCategory+". Nueva categoría:"} bind={[newVATCategory, setNewVATCategory]}
-                    options={["Responsable Inscripto", "Responsable Monotributista"]} />
-                </Section>
-            }
+                <Radio legend={"Actualmente: "+VATCategory+". Nueva categoría:"} bind={[newVATCategory, setNewVATCategory]}
+                options={["Responsable Inscripto", "Responsable Monotributista"]} />
+            </Section>
 
             <Message type="error" message={error} />
 
             {success? <Message type="success" message="Se han guardado los cambios"/>:
             loading?<Loading />:
-            <Button text="Confirmar cambios" type="submit" />}
+            <Button type="submit">Confirmar cambios</Button>}
             
 
             <p style={{textAlign:"center", color:"#fff", cursor:"default"}}>...</p>
@@ -187,9 +174,7 @@ export default function Account(): JSX.Element {
                 <FlexDiv>
                     <a href="about:blank" target='_blank'>Solicitar código</a>
 
-                    <Button type="delete"
-                    text="Borrar la cuenta"
-                    onClick={deleteAccount} />
+                    <Button type="delete" onClick={requestAccountDeletion}>Borrar la cuenta</Button>
                 </FlexDiv>}
                 
 

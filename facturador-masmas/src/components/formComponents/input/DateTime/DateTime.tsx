@@ -10,26 +10,29 @@ type props = {
 }
 
 /**
- * Un campo de escritura.
- * @param label - El título del input.
- * @param type - Tipo de input temporal.
- * @param nonPast - Si no debe aceptar valores anteriores a la fecha actual.
- * @param value - Array desestructurado asociado al valor del input.
- * @param onChange - Función que manejará el valor en el envento de un cambio.
+ * Un campo de selección de valores de fecha.
+ * @param props.label       - El título del input.
+ * @param props.type        - Tipo de input de tiempo. Por defecto es "date".
+ * @param props.nonPast     - Si debe o no aceptar valores anteriores a la fecha actual. Por defecto es falso.
+ * @param props.value       - Valor actual en forma de string.
+ * @param props.onChange    - Función que recibe el valor en el envento de un cambio.
  */
 export default function DateTime({ label = "", type="date", value, onChange, nonPast=false }: props): JSX.Element {
 
     let date = new Date();
-    const minDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
+    const currentDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
 
     const change = (value:string) => {
-        if (nonPast && Date.parse(value) >= Date.parse(minDate)) onChange(value);
+        if (nonPast && Date.parse(value) < Date.parse(currentDate))
+        return;
+        onChange(value);
     }
+
     return (
         <label> {label}
             <input
                 className="datetime"
-                min={minDate}
+                min={currentDate}
                 type={type}
                 value={value}
                 onChange={e => change(e.target.value)}

@@ -1,10 +1,9 @@
-import ajax from 'interceptors/ajax';
+import ajax from 'ports/ajax';
 import getToken from 'services/getToken';
 
-/**Retrieves the branch's logo, as a string. */
-
-export default function getBranchLogo(id: number, callback:Function) {
-    ajax("GET",id,{token: getToken('access')}, respond);
+/**Recupera el logo de la sucursal especificada, en base 64. */
+export default function getBranchLogo(IDBranch: number, callback:Function) {
+    ajax("GET","branches/"+IDBranch,{token: getToken('access')}, respond);
 
     function respond(status:number, content:string) {
         if (status === 200) callback(true, content);

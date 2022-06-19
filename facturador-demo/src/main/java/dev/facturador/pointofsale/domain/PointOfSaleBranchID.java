@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public final class PointOfSaleBranchID {
     private Long branchID;
 
-    public static PointOfSaleBranchID starter(Long branchID){
+    public static PointOfSaleBranchID starter(Long branchID) {
         return new PointOfSaleBranchID(branchID);
     }
 }

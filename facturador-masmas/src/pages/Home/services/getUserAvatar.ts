@@ -1,4 +1,4 @@
-import ajax from 'interceptors/ajax';
+import ajax from 'ports/ajax';
 import getToken from 'services/getToken';
 import { base64ToBlob } from 'utilities/conversions';
 
@@ -15,14 +15,13 @@ export default function getUserAvatar(callback: Function): void {
         ajax("GET","users/"+sessionStorage.getItem('username'),{token: getToken('access')}, returnAsFile);
 
     async function returnAsFile(status:number, base64:string):Promise<void> {
-        if (status !== 200) {callback(false); return;}
-        if (base64 === 'undefined') {callback(false); return;}
+        if (status !== 200 || base64 === 'undefined')
+        return callback(false);
     
-        const blob = await base64ToBlob(base64);
-        callback(true, blob);
+        callback(true, await base64ToBlob(base64));
             
-        //Almacenar en localstorage si no está almacenado.
-        if (!localStorage.getItem("avatar")) localStorage.setItem("avatar", base64);
-        return;
+        //Almacenar el avatar en localStorage si no está almacenado.
+        if (!localStorage.getItem("avatar"))
+        localStorage.setItem("avatar", base64);
     }
 }

@@ -1,7 +1,8 @@
+import { Option } from "components/standalone";
+import { Section } from 'components/wrappers';
 import React from "react";
+import { BiChevronLeft, BiHistory, BiLogInCircle, BiLogOutCircle, BiTransferAlt } from "react-icons/bi";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import {BiChevronLeft, BiHistory,BiLogInCircle,BiLogOutCircle,BiTransferAlt,} from "react-icons/bi";
-import {Section, Option} from 'styledComponents';
 import DocumentForm from "./OperationForm";
 
 /**Pantalla de selección de tipos de operaciones.*/

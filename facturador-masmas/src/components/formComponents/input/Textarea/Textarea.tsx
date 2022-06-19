@@ -7,6 +7,12 @@ type props = {
     bind: [string, React.Dispatch<React.SetStateAction<string>>]
 }
 
+/**
+ * Un elemento <textarea>
+ * @param props.label - El título del input.
+ * @param props.maxLength - Numero máximo de caracteres.
+ * @param props.bind - Array desestructurado asociado al valor del input.
+ */
 export default function Textarea({label, maxLength=50, bind}:props):JSX.Element {
     return (
         <label>{label}

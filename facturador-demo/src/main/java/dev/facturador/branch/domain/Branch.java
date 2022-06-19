@@ -13,7 +13,9 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "branch")
-@NoArgsConstructor @Getter @Setter
+@NoArgsConstructor
+@Getter
+@Setter
 public final class Branch implements Serializable {
     public static final Long serialVersionUID = 1L;
 
@@ -62,6 +64,7 @@ public final class Branch implements Serializable {
         super();
         this.branchId = branchId;
     }
+
     public Branch(String name,
                   String email,
                   String phone,
@@ -81,52 +84,53 @@ public final class Branch implements Serializable {
         this.street = street;
         this.preferenceColor = preferenceColor;
     }
+
     public static Branch create(BranchID value) {
         var branch = new Branch(value.getBranchID());
         return branch;
     }
 
     public static Branch create(BranchUpdate updatedValues, Branch branch) {
-        if(StringUtils.hasText(updatedValues.getUpdatedName())){
+        if (StringUtils.hasText(updatedValues.getUpdatedName())) {
             branch.setName(updatedValues.getUpdatedName());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedEmail())){
+        if (StringUtils.hasText(updatedValues.getUpdatedEmail())) {
             branch.setEmail(updatedValues.getUpdatedEmail());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedPhone())){
+        if (StringUtils.hasText(updatedValues.getUpdatedPhone())) {
             branch.setPhone(updatedValues.getUpdatedPhone());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedDepartment())){
+        if (StringUtils.hasText(updatedValues.getUpdatedDepartment())) {
             branch.setDepartment(updatedValues.getUpdatedDepartment());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedProvince())){
+        if (StringUtils.hasText(updatedValues.getUpdatedProvince())) {
             branch.setProvince(updatedValues.getUpdatedProvince());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedLocality())){
+        if (StringUtils.hasText(updatedValues.getUpdatedLocality())) {
             branch.setLocality(updatedValues.getUpdatedLocality());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedPostalCode())){
+        if (StringUtils.hasText(updatedValues.getUpdatedPostalCode())) {
             branch.setPostalCode(updatedValues.getUpdatedPostalCode());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedStreet())){
+        if (StringUtils.hasText(updatedValues.getUpdatedStreet())) {
             branch.setStreet(updatedValues.getUpdatedStreet());
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedNumberAddress())){
+        if (StringUtils.hasText(updatedValues.getUpdatedNumberAddress())) {
             branch.setNumberAddress(updatedValues.getUpdatedNumberAddress());
         }
 
-        if(StringUtils.hasText(updatedValues.getUpdatedPhoto())){
+        if (StringUtils.hasText(updatedValues.getUpdatedPhoto())) {
             branch.setPhoto(updatedValues.getUpdatedPhoto());
-        } else{
+        } else {
             branch.setPhoto("undefined");
         }
-        if(StringUtils.hasText(updatedValues.getUpdatedLogo())){
+        if (StringUtils.hasText(updatedValues.getUpdatedLogo())) {
             branch.setLogo(updatedValues.getUpdatedLogo());
-        } else{
+        } else {
             branch.setLogo("undefined");
         }
 
-        if(StringUtils.hasText(updatedValues.getUpdatedColor())){
+        if (StringUtils.hasText(updatedValues.getUpdatedColor())) {
             branch.setPreferenceColor(updatedValues.getUpdatedColor());
         }
 
@@ -145,7 +149,7 @@ public final class Branch implements Serializable {
                 values.getAddress().getStreet(),
                 values.getColor());
 
-        if(values.getAddress().getNumberAddress() != 0){
+        if (values.getAddress().getNumberAddress() != 0) {
             branch.setNumberAddress(String.valueOf(values.getAddress().getNumberAddress()));
         }
         if (values.getAddress().getNumberAddress() == 0) {

@@ -2,7 +2,7 @@ package dev.facturador.mainaccount.application.command.update;
 
 import dev.facturador.mainaccount.application.usecases.UpdateMainAccountUseCase;
 import dev.facturador.mainaccount.domain.exception.ErrorInDataForUpdate;
-import dev.facturador.shared.application.comandbus.CommandHandler;
+import dev.facturador.shared.application.commands.CommandHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

@@ -2,9 +2,9 @@ package dev.facturador.branch.application.query.get;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.BranchID;
-import dev.facturador.shared.application.querybus.Query;
+import dev.facturador.shared.application.querys.Query;
 
-public class BranchGetQuery extends Query<Branch>{
+public class BranchGetQuery extends Query<Branch> {
     private BranchID branchID;
 
     public BranchGetQuery(BranchID branchID) {

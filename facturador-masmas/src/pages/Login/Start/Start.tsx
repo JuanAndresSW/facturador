@@ -1,9 +1,11 @@
 import React from "react";
+
 import NotLoggedHeader from "./components/NotLoggedHeader/NotLoggedHeader";
 import TitleScreen from "./components/TitleScreen/TitleScreen";
 import Features from "./components/FeaturesPreview/FeaturesPreview";
 import Phone from "./components/PhonePreview/PhonePreview";
-import {Footer} from "styledComponents";
+import {Footer} from "components/standalone";
+
 import background from 'assets/img/main2.jpg';
 
 /**Devuelve la página principal cuando no hay un token válido en las cookies.*/

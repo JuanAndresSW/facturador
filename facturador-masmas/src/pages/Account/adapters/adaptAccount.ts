@@ -1,19 +1,20 @@
-import { fileToBase64, toFormattedCUIT } from 'utilities/conversions';
+import { fileToBase64 } from 'utilities/conversions';
 import editedAccount from '../models/editedAccount';
 
+/**Entrega a una cuenta el formato esperado por el servidor para actualizarla. */
 export default async function adaptAccount(acc: editedAccount): Promise<string> {
   
     return JSON.stringify({
         user: {
-            username:     acc.user.username,
-            newUsername:  acc.user.newUsername?     acc.user.newUsername.trim()       : null,
-            password:     acc.user.password?        acc.user.password.trim()          : null,
-            newPassword:  acc.user.newPassword?     acc.user.newPassword.trim()       : null,
-            newAvatar:    acc.user.newAvatar? await  fileToBase64(acc.user.newAvatar)             : null
+            username:         acc.user.username,
+            updatedUsername:  acc.user.updatedUsername?     acc.user.updatedUsername.trim()       : null,
+            password:         acc.user.password?            acc.user.password.trim()              : null,
+            updatedPassword:  acc.user.updatedPassword?     acc.user.updatedPassword.trim()       : null,
+            updatedAvatar:    acc.user.updatedAvatar? await fileToBase64(acc.user.updatedAvatar)  : null
         },
         trader: {
-            newBusinessName: acc.trader.newBusinessName? acc.trader.newBusinessName.trim()   : null,
-            newVATCategory:  acc.trader.newVATCategory?  acc.trader.newVATCategory.trim()    : null,
+            updatedBusinessName: acc.trader.updatedBusinessName? acc.trader.updatedBusinessName.trim()   : null,
+            updatedVatCategory:  acc.trader.updatedVATCategory?  acc.trader.updatedVATCategory.trim()    : null,
         }
     });
 }

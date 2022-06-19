@@ -14,7 +14,7 @@ public class GetBranchUseCase {
 
     public Branch get(BranchID branchID) throws ResourceNotFound {
         var branch = repository.findById(branchID.getBranchID());
-        if(branch.isEmpty()){
+        if (branch.isEmpty()) {
             throw new ResourceNotFound("No existe esta sucursal");
         }
         return branch.get();

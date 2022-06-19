@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 
-import { Message } from "components/formComponents";
 import postPointOfSale from '../../services/postPointOfSale';
 
-import { Loading } from "styledComponents";
+import { Message } from "components/formComponents";
+import { Loading } from "components/standalone";
 import { BsFillXCircleFill } from "react-icons/bs";
-import FlexDiv from "styledComponents/FlexDiv";
+import {FlexDiv} from "components/wrappers";
 import './BranchPoints.css';
 
 
 /**Muestra una lista de puntos de venta de una sucursal. Permite crear y eliminar puntos de venta. */
-export default function BranchPoints({branchID:number}:{branchID:number}): JSX.Element {
+export default function BranchPoints({IDBranch}:{IDBranch:number}): JSX.Element {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     function newPointOfSale(): void {
         setLoading(true);
-        postPointOfSale((ok:boolean,data:string)=>{
+        postPointOfSale(IDBranch, (ok:boolean,data:string)=>{
             if (ok) loadPointsOfSaleList();
             else setError(data);
         });

@@ -6,12 +6,14 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-@AllArgsConstructor @Getter @Setter
+@AllArgsConstructor
+@Getter
+@Setter
 public class BranchID {
     @NotNull
     private long BranchID;
 
-    public static BranchID valueof(long BranchID){
+    public static BranchID valueof(long BranchID) {
         return new BranchID(BranchID);
     }
 }

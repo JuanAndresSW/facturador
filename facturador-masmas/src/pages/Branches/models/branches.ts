@@ -1,3 +1,4 @@
+/**Objeto con una lista de sucursales e información de la lista. */
 type branches = {
     content: [{
         branchId: number,
@@ -9,12 +10,11 @@ type branches = {
         locality: string,
         postalCode: string,
         street: string,
-        numberAddress: string,
+        addressNumber: string,
         preferenceColor: string,
-        dateOfCreate: string,
+        createdAt: string,
         photo: string
     }],
-    
     page: number,
     size: number,
     totalElements: number,
@@ -23,6 +23,7 @@ type branches = {
 };
 export default branches;
 
+/**Sucursal con los datos en el formato recuperado de una lista de sucursales. */
 export type branchesContent = {
     branchId: number,
     name: string,
@@ -33,8 +34,8 @@ export type branchesContent = {
     locality: string,
     postalCode: string,
     street: string,
-    numberAddress: string,
+    addressNumber: string,
     preferenceColor: string,
-    dateOfCreate: string,
+    createdAt: string,
     photo: string
 }

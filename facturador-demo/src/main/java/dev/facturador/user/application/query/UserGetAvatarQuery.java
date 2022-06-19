@@ -1,6 +1,6 @@
 package dev.facturador.user.application.query;
 
-import dev.facturador.shared.application.querybus.Query;
+import dev.facturador.shared.application.querys.Query;
 import dev.facturador.user.domain.UserIdUsername;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

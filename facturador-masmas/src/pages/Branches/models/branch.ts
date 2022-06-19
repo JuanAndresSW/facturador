@@ -1,3 +1,4 @@
+/**Objeto con datos de una sucursal. */
 type branch = {
     name: string,
     email: string,
@@ -12,6 +13,6 @@ type branch = {
     },
     logo: File,
     photo: File,
-    color: string,
+    preferenceColor: string,
 };
 export default branch;

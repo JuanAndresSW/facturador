@@ -1,8 +1,8 @@
 package dev.facturador.shared.infrastructure;
 
-import dev.facturador.shared.application.querybus.Query;
-import dev.facturador.shared.application.querybus.QueryBus;
-import dev.facturador.shared.application.querybus.QueryHandler;
+import dev.facturador.shared.application.querys.Query;
+import dev.facturador.shared.application.querys.QueryBus;
+import dev.facturador.shared.application.querys.QueryHandler;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 

@@ -13,7 +13,7 @@ import { Button } from "components/formComponents";
 
 
 
-
+/**Imágen de avatar de usuario con menú de opciones. */
 export default function ProfileMenu(): JSX.Element {
     //Imágen de avatar de usuario.
     const [img, setImg] = useState(defaultImg);
@@ -43,7 +43,7 @@ export default function ProfileMenu(): JSX.Element {
             
                 <ul>
                     <li><NavLink to="/cuenta">Administrar la cuenta</NavLink></li>
-                    <li onMouseDown={closeSession}><Button type="delete" text="Cerrar sesión" /></li>
+                    <li onMouseDown={closeSession}><Button type="delete">Cerrar sesión</Button></li>
                 </ul>
             </div>
         </OutsideClickHandler>

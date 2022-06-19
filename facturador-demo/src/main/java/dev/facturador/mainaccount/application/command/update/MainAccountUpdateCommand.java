@@ -2,7 +2,7 @@ package dev.facturador.mainaccount.application.command.update;
 
 import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.mainaccount.domain.MainAccountUpdate;
-import dev.facturador.shared.application.comandbus.Command;
+import dev.facturador.shared.application.commands.Command;
 
 public class MainAccountUpdateCommand extends Command {
 

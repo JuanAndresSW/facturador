@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Data @NoArgsConstructor
+@Data
+@NoArgsConstructor
 public final class PagedResponse<T> {
     private List<T> content;
     private int page;

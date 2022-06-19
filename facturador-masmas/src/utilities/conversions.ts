@@ -3,19 +3,21 @@
 /**Devuelve un string base 64 a partir de un valor tipo File. */
 export const fileToBase64 = (file: File) => new Promise((resolve, reject): void => {
     const reader = new FileReader();
-    if (!file) {resolve(undefined);return};
+    if (!file) return resolve(undefined);
     reader.onerror = reject;
     reader.onload = () => resolve(reader.result);
     reader.readAsDataURL(file);
 });
 
-/**Devuelve un Blob a partir de un string en base 64. IMPORTANTE: Corta los primeros 22 caracteres de formato.
- * "data:image/jpeg;base64,".length === 22
+
+/**Devuelve un Blob a partir de un string en base 64.
+ * @important Corta los primeros 22 caracteres de formato. "data:image/jpeg;base64,".length === 22
 */
-export async function base64ToBlob(base64String:string) {
+export async function base64ToBlob(base64String:string): Promise<Blob> {
     const base64Response = await window.fetch(`data:image/jpeg;base64,${base64String.slice(22)}`);
     return await base64Response.blob();
 }
+
 
 /**Convierte un string de CUIT al formato AA-BB.BBB.BBB-A. */
 export const toFormattedCUIT = (code:string) => {

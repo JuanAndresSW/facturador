@@ -1,7 +1,7 @@
 package dev.facturador.branch.application.command.update;
 
 import dev.facturador.branch.application.usecase.UpdateBranchUseCase;
-import dev.facturador.shared.application.comandbus.CommandHandler;
+import dev.facturador.shared.application.commands.CommandHandler;
 import org.springframework.stereotype.Component;
 
 @Component

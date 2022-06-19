@@ -2,7 +2,7 @@ package dev.facturador.pointofsale.application.query;
 
 import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.pointofsale.domain.PointOfSaleBranchID;
-import dev.facturador.shared.application.querybus.Query;
+import dev.facturador.shared.application.querys.Query;
 import dev.facturador.shared.domain.sharedpayload.Page;
 import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import lombok.Getter;

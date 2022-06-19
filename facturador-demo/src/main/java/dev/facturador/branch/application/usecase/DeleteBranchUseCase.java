@@ -20,7 +20,7 @@ public class DeleteBranchUseCase {
         repository.delete(Branch.create(value));
     }
 
-    public boolean verify(BranchID value){
+    public boolean verify(BranchID value) {
         return repository.existsByBranchId(value.getBranchID());
     }
 }

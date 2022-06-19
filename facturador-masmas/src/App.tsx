@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import {SplashScreen, Error404} from 'styledComponents';
+import {SplashScreen, Error404} from 'components/standalone';
 
 //Controladores de la sesión.
 import getSessionByToken from 'services/getSessionByToken';

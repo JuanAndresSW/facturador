@@ -1,3 +1,4 @@
+/**Lista de provincias de argentina, en orden alfabético. Ciudad de Buenos Aires no incluida. */
 const provinces = [
     "Buenos Aires",
     "Catamarca",

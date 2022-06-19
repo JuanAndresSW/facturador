@@ -11,12 +11,12 @@ import getBranches from './services/getBranches';
 import branches, {branchesContent} from './models/branches';
 
 //GUI.
-import { Loading, OptionWithPhoto } from "styledComponents";
-import { Section, Plus, FlexDiv } from "styledComponents";
+import { Loading, OptionWithPhoto, Plus } from "components/standalone";
+import { Section, FlexDiv } from "components/wrappers";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 
-/**Muestra opciones para crear, ver y editar sucursales. */
+/**Muestra una lista de sucursales con opciones para crear, ver y editar. */
 export default function Branches(): JSX.Element {
 
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export default function Branches(): JSX.Element {
 
   //Recuperar la lista de sucursales.
   useEffect(()=>{
-    getBranches(async (ok:boolean, content: branches)=>{
+    getBranches(1, "createdAt", "asc", (ok:boolean, content: branches)=>{
       if (ok) setBranches(content);
     });
   }, []);
@@ -53,7 +53,7 @@ export default function Branches(): JSX.Element {
             <OptionWithPhoto
               key={index}
               title={branch.name}
-              subtitle={branch.locality + ' ' + branch.street + ' ' + branch.numberAddress}
+              subtitle={branch.locality + ' ' + branch.street + ' ' + branch.addressNumber}
               image={branch.photo.length>10?branch.photo:null}
               onClick={() => viewBranch(branch)}
                />

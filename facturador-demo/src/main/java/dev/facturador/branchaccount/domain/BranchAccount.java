@@ -3,11 +3,14 @@ package dev.facturador.branchaccount.domain;
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.mainaccount.domain.MainAccount;
 import dev.facturador.user.domain.User;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "branch_account")

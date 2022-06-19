@@ -2,7 +2,7 @@ package dev.facturador.mainaccount.application.command.register;
 
 import dev.facturador.mainaccount.application.usecases.RegisterMainAccountUseCase;
 import dev.facturador.mainaccount.domain.exception.IndexesAreRepeated;
-import dev.facturador.shared.application.comandbus.CommandHandler;
+import dev.facturador.shared.application.commands.CommandHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

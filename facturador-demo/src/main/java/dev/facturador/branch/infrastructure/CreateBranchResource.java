@@ -2,7 +2,7 @@ package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.application.command.create.BranchCreateCommand;
 import dev.facturador.branch.domain.BranchCreate;
-import dev.facturador.shared.application.comandbus.CommandBus;
+import dev.facturador.shared.application.commands.CommandBus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;

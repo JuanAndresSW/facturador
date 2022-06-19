@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.application.command;
 
 import dev.facturador.pointofsale.application.usecase.CreatePointOfSaleUseCase;
-import dev.facturador.shared.application.comandbus.CommandHandler;
+import dev.facturador.shared.application.commands.CommandHandler;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +16,6 @@ public class PointOfSaleCreateCommandHandler implements CommandHandler<PointOfSa
     @Override
     public void handle(PointOfSaleCreateCommand command) throws Exception {
 
-        useCase.handle(command.getPointOfSaleCreate());
+        useCase.handlePointOfSaleCreation(command.getPointOfSaleCreate());
     }
 }

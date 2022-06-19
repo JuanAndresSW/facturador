@@ -17,7 +17,7 @@ export default function ManageBranch({branch}:{branch:branchesContent}): JSX.Ele
   const manageBranch = (
     <>
     <BranchBanner branch={branch} />
-    <BranchPoints branchID={branch.branchId} />
+    <BranchPoints IDBranch={branch.branchId} />
     </>
   )
 

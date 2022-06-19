@@ -1,8 +1,8 @@
 package dev.facturador.shared.infrastructure;
 
-import dev.facturador.shared.application.comandbus.Command;
-import dev.facturador.shared.application.comandbus.CommandBus;
-import dev.facturador.shared.application.comandbus.CommandHandler;
+import dev.facturador.shared.application.commands.Command;
+import dev.facturador.shared.application.commands.CommandBus;
+import dev.facturador.shared.application.commands.CommandHandler;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 

@@ -1,14 +1,15 @@
+/**Una cuenta de usuario con uno o más datos actualizados. */
 type editedAccount = {
     user: {
         username:     string,
-        newUsername:  string,
+        updatedUsername:  string,
         password:     string,
-        newPassword:  string,
-        newAvatar:    File,
+        updatedPassword:  string,
+        updatedAvatar:    File,
     },
     trader: {
-        newBusinessName: string,
-        newVATCategory:  string,
+        updatedBusinessName: string,
+        updatedVATCategory:  string,
     }
 };
 export default editedAccount;

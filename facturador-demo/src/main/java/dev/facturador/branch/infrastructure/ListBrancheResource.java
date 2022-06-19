@@ -1,10 +1,10 @@
 package dev.facturador.branch.infrastructure;
 
-import dev.facturador.branch.domain.Branch;
-import dev.facturador.shared.domain.sharedpayload.Page;
-import dev.facturador.shared.application.querybus.QueryBus;
 import dev.facturador.branch.application.query.tolist.BranchListQuery;
+import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.BranchTraderId;
+import dev.facturador.shared.application.querys.QueryBus;
+import dev.facturador.shared.domain.sharedpayload.Page;
 import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

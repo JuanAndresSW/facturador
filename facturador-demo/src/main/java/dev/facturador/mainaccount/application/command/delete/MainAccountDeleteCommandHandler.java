@@ -2,7 +2,7 @@ package dev.facturador.mainaccount.application.command.delete;
 
 import dev.facturador.mainaccount.application.usecases.DeleteMainAccountUseCase;
 import dev.facturador.mainaccount.domain.exception.MainAccountNotExists;
-import dev.facturador.shared.application.comandbus.CommandHandler;
+import dev.facturador.shared.application.commands.CommandHandler;
 import org.springframework.stereotype.Component;
 
 @Component

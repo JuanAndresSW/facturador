@@ -2,18 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //Componentes del formulario.
-import { DateTime, Message, Field, Form, Radio, Select, Button, Switch, Table, Textarea } from "components/formComponents";
-import { Cond, Retractable } from 'components/layout';
-import { Section, FlexDiv } from 'styledComponents';
+import { Button, DateTime, Field, Form, Message, Radio, Select, Switch, Table, Textarea } from "components/formComponents";
+import { Cond, FlexDiv, Retractable, Section } from 'components/wrappers';
 import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
 //Elementos de documento generado.
-import { Invoice, CreditNote, DebitNote, Receipt, PurchaseOrder, Remittance, Check, PromissoryNote, } from "./documents";
+import { Check, CreditNote, DebitNote, Invoice, PromissoryNote, PurchaseOrder, Receipt, Remittance } from "./documents";
 //Utilidades.
 import getDocumentTitle from './utilities/getDocumentTitle';
 //Servicios.
-import retrievePointsOfSale from './services/retrievePointsOfSale';
-import retrievePartners from './services/retrievePartners';
 import retrieveGroups from './services/retrieveGroups';
+import retrievePartners from './services/retrievePartners';
+import retrievePointsOfSale from './services/retrievePointsOfSale';
 
 //Tipos.
 type props = {
@@ -189,7 +188,7 @@ export default function OperationForm({ flux, type }: props): JSX.Element {
 
       </Retractable>
 
-      <Button type="submit" text="Generar" />
+      <Button type="submit">Generar</Button>
     </Form>
   );
 }

@@ -1,4 +1,4 @@
-import ajax from 'interceptors/ajax';
+import ajax from 'ports/ajax';
 
 /**
  * Recupera un array de grupos a nombre de la cuenta solicitante.

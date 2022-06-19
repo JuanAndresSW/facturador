@@ -1,4 +1,4 @@
-import ajax from 'interceptors/ajax';
+import ajax from 'ports/ajax';
 
 
 /**

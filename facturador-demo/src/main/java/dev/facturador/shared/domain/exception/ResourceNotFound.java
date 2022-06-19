@@ -1,8 +1,8 @@
 package dev.facturador.shared.domain.exception;
 
-public class ResourceNotFound extends Exception{
+public class ResourceNotFound extends Exception {
 
-    public ResourceNotFound(String message){
+    public ResourceNotFound(String message) {
         super(message);
     }
 }

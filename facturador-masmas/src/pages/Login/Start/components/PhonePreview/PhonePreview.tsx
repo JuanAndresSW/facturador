@@ -12,6 +12,8 @@ import img4 from "../../assets/img/stats.jpg";
 import "./PhonePreview.css";
 
 const imgs: string[] = [img1, img2, img3, img4];
+
+/**Sección con una muestra visual de la aplicación para teléfonos móviles. */
 export default function PhonePreview(): JSX.Element {
   const settings = {
     arrows: false,

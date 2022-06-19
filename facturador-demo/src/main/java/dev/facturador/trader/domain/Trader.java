@@ -1,5 +1,6 @@
 package dev.facturador.trader.domain;
 
+import dev.facturador.pointofsale.domain.subdomain.ControlOfPointOfSale;
 import dev.facturador.shared.domain.sharedpayload.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,10 @@ public final class Trader implements Serializable {
 
     @Column(name = "active", nullable = false)
     private int active;
+
+    @OneToOne(mappedBy = "trader", cascade = CascadeType.ALL)
+    private ControlOfPointOfSale controlOfPointOfSale;
+
 
     public Trader(long idTrader) {
         this.idTrader = idTrader;

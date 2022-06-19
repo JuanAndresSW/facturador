@@ -1,7 +1,7 @@
 package dev.facturador.mainaccount.application.command.register;
 
 import dev.facturador.mainaccount.domain.MainAccountRegister;
-import dev.facturador.shared.application.comandbus.Command;
+import dev.facturador.shared.application.commands.Command;
 import lombok.ToString;
 
 @ToString

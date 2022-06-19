@@ -2,7 +2,7 @@ package dev.facturador.branch.application.command.update;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.BranchUpdate;
-import dev.facturador.shared.application.comandbus.Command;
+import dev.facturador.shared.application.commands.Command;
 
 public class BranchUpdateCommand extends Command {
     private BranchUpdate branchUpdate;
@@ -16,6 +16,7 @@ public class BranchUpdateCommand extends Command {
     public BranchUpdate getBranchUpdate() {
         return this.branchUpdate;
     }
+
     public Branch getBranch() {
         return this.branch;
     }
@@ -32,6 +33,7 @@ public class BranchUpdateCommand extends Command {
             this.branch = branch;
             return this;
         }
+
         public BranchUpdateCommand.Builder branchUpdate(BranchUpdate branchUpdate) {
             this.branchUpdate = branchUpdate;
             return this;

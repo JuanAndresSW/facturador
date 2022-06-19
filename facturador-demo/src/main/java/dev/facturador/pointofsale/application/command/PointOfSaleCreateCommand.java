@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.application.command;
 
 import dev.facturador.pointofsale.domain.PointOfSaleCreate;
-import dev.facturador.shared.application.comandbus.Command;
+import dev.facturador.shared.application.commands.Command;
 import lombok.Getter;
 
 @Getter
@@ -19,8 +19,8 @@ public class PointOfSaleCreateCommand extends Command {
             return new PointOfSaleCreateCommand.Builder();
         }
 
-        public PointOfSaleCreateCommand.Builder pointOfSaleCreate(PointOfSaleCreate branchCreate) {
-            this.pointOfSaleCreate = branchCreate;
+        public PointOfSaleCreateCommand.Builder pointOfSaleCreate(PointOfSaleCreate pointOfSaleCreate) {
+            this.pointOfSaleCreate = pointOfSaleCreate;
             return this;
         }
 

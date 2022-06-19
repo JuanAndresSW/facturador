@@ -9,10 +9,10 @@ import Valid from "utilities/Valid";
 
 //Componentes de formulario.
 import {Form, Field, Message, Button} from 'components/formComponents';
-import { BiKey, BiUser } from "react-icons/bi";
-import { FlexDiv, Loading } from "styledComponents";
+import { FlexDiv } from "components/wrappers";
+import { Loading } from "components/standalone";
 
-/**Devuelve un formulario para iniciar sesión.*/
+/**Un formulario para iniciar sesión.*/
 export default function Login(): JSX.Element {
 
   const [usernameOrEmail, setUser] = useState("");
@@ -42,7 +42,7 @@ export default function Login(): JSX.Element {
 
       <Message type="error" message={error} />
 
-      {loading?<Loading />:<Button type="submit" text="Ingresar" />}
+      {loading?<Loading />:<Button type="submit">Ingresar</Button>}
 
       <FlexDiv justify='space-between'>
         <a href="about:blank" target="_blank" 

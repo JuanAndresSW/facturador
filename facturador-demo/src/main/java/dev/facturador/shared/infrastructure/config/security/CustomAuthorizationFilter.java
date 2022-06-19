@@ -64,11 +64,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     }
 
     private boolean isNotRequiredAuthorization(HttpServletRequest request) {
-        return request.getServletPath().equals("/login") || request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/mainaccounts") || request.getServletPath().equals("/api/auth/refresh");
+        return request.getServletPath().equals("/login") || request.getServletPath().equals("/api/auth/mainaccounts/log-in") || request.getServletPath().equals("/api/auth/mainaccounts") || request.getServletPath().equals("/api/auth/refresh");
     }
 
     private boolean isRequiredAuthorization(HttpServletRequest request) {
-        return !request.getServletPath().equals("/login") && !request.getServletPath().equals("/api/auth/login") && !request.getServletPath().equals("/api/auth/mainaccounts") && !request.getServletPath().equals("/api/auth/refresh");
+        return !request.getServletPath().equals("/login") && !request.getServletPath().equals("/api/auth/mainaccounts/log-in") && !request.getServletPath().equals("/api/auth/mainaccounts") && !request.getServletPath().equals("/api/auth/refresh");
     }
 
 }

@@ -7,8 +7,8 @@ import defaultLogo from 'assets/svg/default-logo.svg';
 import defaultPhoto from 'assets/svg/default-photo.svg';
 import { Field, Form, Select, Image, Message, Button, Color } from "components/formComponents";
 import { BiChevronLeft } from "react-icons/bi";
-import { Retractable } from 'components/layout';
-import { FlexDiv, Loading } from "styledComponents";
+import { Loading } from 'components/standalone';
+import { FlexDiv, Retractable } from "components/wrappers";
 
 //Utilities.
 import Valid from "utilities/Valid";
@@ -95,7 +95,7 @@ export default function EditBranch({branch}:props): JSX.Element {
       },
       logo: logo,
       photo: photo,
-      color: color
+      preferenceColor: color
     }
 
 
@@ -129,7 +129,7 @@ export default function EditBranch({branch}:props): JSX.Element {
           <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}
           placeholder={branch.street}                          />
           <Field  label="Altura" bind={[addressNumber, setAddressNumber]}         type="number" validator={Valid.addressNumber(addressNumber)}
-           placeholder={branch.numberAddress}/>
+           placeholder={branch.addressNumber}/>
         </FlexDiv>
 
       </Retractable>
@@ -162,7 +162,7 @@ export default function EditBranch({branch}:props): JSX.Element {
       <Message type="error" message={error} />
 
       {success?<Message type="success" message={`Se han guardado los datos de "${name?name:branch.name}"`} />:
-      loading?<Loading />:<Button text="Guardar" type="submit" />}
+      loading?<Loading />:<Button type="submit">Guardar</Button>}
     </Form>
   );
 }

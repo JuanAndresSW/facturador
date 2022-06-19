@@ -1,6 +1,7 @@
 import { fileToBase64 } from 'utilities/conversions';
 import branch from '../models/branch';
 
+/**Adapta un objeto de sucursal a un formato esperado por el servidor para crear un nueva sucursal. */
 export default async function adaptBranchToSend(branch: branch): Promise<string> {
     return JSON.stringify({
         IDTrader: sessionStorage.getItem('IDTrader'),
@@ -13,10 +14,10 @@ export default async function adaptBranchToSend(branch: branch): Promise<string>
             locality:      branch.address.locality,
             postalCode:    branch.address.postalCode,
             street:        branch.address.street,
-            numberAddress: branch.address.addressNumber,
+            addressNumber: branch.address.addressNumber,
         },
         photo:  await fileToBase64(branch.photo),
         logo:   await fileToBase64(branch.logo),
-        color:  branch.color,
+        preferenceColor:  branch.preferenceColor,
     })
 }

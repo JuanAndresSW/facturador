@@ -1,8 +1,7 @@
 package dev.facturador.branch.application.command.create;
 
 import dev.facturador.branch.application.usecase.CreateBranchUseCase;
-import dev.facturador.shared.application.comandbus.CommandHandler;
-import lombok.extern.slf4j.Slf4j;
+import dev.facturador.shared.application.commands.CommandHandler;
 import org.springframework.stereotype.Component;
 
 @Component

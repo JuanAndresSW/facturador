@@ -1,6 +1,6 @@
 package dev.facturador.user.application.query;
 
-import dev.facturador.shared.application.querybus.QueryHandler;
+import dev.facturador.shared.application.querys.QueryHandler;
 import dev.facturador.user.application.usecase.UserGetAvatarUseCase;
 import dev.facturador.user.domain.exception.UserDontHaveAvatar;
 import org.springframework.stereotype.Component;

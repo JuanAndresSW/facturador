@@ -1,9 +1,9 @@
 package dev.facturador.branch.application.query.tolist;
 
 import dev.facturador.branch.domain.Branch;
-import dev.facturador.shared.domain.sharedpayload.Page;
-import dev.facturador.shared.application.querybus.Query;
 import dev.facturador.branch.domain.BranchTraderId;
+import dev.facturador.shared.application.querys.Query;
+import dev.facturador.shared.domain.sharedpayload.Page;
 import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import lombok.Getter;
 

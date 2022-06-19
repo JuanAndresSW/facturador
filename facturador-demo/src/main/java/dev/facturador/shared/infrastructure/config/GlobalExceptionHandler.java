@@ -25,7 +25,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Maneja una excepcion generica <br/>
      * Es decir cualquier excepcion que no tenga una clase propio se dirigira a este metodo
-     *
      */
     @ExceptionHandler(Exception.class)
     public HttpEntity<ErrorResponse> handleResourceNotFoundException(Exception exception, WebRequest webRequest) {
@@ -45,7 +44,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Maneja una BranchNotFound Exception <br/>
-     *
      */
     @ExceptionHandler(BranchNotFound.class)
     public HttpEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFound exception) {

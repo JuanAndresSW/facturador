@@ -3,8 +3,9 @@ import tryLogin from "../../../services/tryLogin";
 import Valid from "utilities/Valid";
 import "./TitleScreen.css";
 import { Message } from "components/formComponents";
-import { Loading } from "styledComponents";
+import { Loading } from "components/standalone";
 
+/**Título de la aplicación con inputs de credenciales para iniciar sesión. */
 export default function TitleScreen(): JSX.Element {
 
   //Controladores del formulario.

@@ -1,7 +1,7 @@
 package dev.facturador.branch.application.command.create;
 
 import dev.facturador.branch.domain.BranchCreate;
-import dev.facturador.shared.application.comandbus.Command;
+import dev.facturador.shared.application.commands.Command;
 
 public class BranchCreateCommand extends Command {
     private BranchCreate branchCreate;

@@ -60,7 +60,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserDetails userBuilder(User user, Trader trader, CustomUserRole rol) {
         Set<GrantedAuthority> authoritySet = Collections.singleton(new SimpleGrantedAuthority(rol.name()));
-        if(rol.equals(CustomUserRole.MAIN)){
+        if (rol.equals(CustomUserRole.MAIN)) {
             return new CustomUserDetails(
                     trader.getIdTrader(),
                     user.getUsername(),

@@ -1,6 +1,8 @@
 package dev.facturador.branch.application.usecase;
 
-import dev.facturador.branch.domain.*;
+import dev.facturador.branch.domain.Branch;
+import dev.facturador.branch.domain.BranchRepository;
+import dev.facturador.branch.domain.BranchTraderId;
 import dev.facturador.shared.domain.sharedpayload.Page;
 import dev.facturador.shared.domain.sharedpayload.PagedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +22,17 @@ public class ListBranchUseCase {
     private BranchRepository repository;
 
     public PagedResponse<Branch> handle(BranchTraderId branchTraderId, Page page) {
-        Pageable pageable= null;
-        if(page.getOrder().equals("asc")){
+        Pageable pageable = null;
+        if (page.getOrder().equals("asc")) {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.ASC, page.getSort());
         }
-        if(page.getOrder().equals("desc")){
+        if (page.getOrder().equals("desc")) {
             pageable = PageRequest.of(page.getIndex(), page.getSize(), Sort.Direction.DESC, page.getSort());
         }
 
         var pages = repository.findByTraderOwnerIdTrader(branchTraderId.IDTrader(), pageable);
         List<Branch> content = pages.getNumberOfElements() == 0 ? Collections.emptyList() : pages.getContent();
-        if(!content.isEmpty()){
+        if (!content.isEmpty()) {
             content.forEach(branch -> branch.setLogo(null));
         }
         return new PagedResponse<Branch>(content, pages.getNumber(), pages.getSize(),

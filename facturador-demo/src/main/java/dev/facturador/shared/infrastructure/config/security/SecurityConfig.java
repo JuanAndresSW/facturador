@@ -1,7 +1,7 @@
 package dev.facturador.shared.infrastructure.config.security;
 
+import dev.facturador.mainaccount.infrastructure.AuthenticationFilterForLogin;
 import dev.facturador.shared.infrastructure.CustomJWT;
-import dev.facturador.shared.infrastructure.auth.CustomAuthenticationFilter;
 import dev.facturador.shared.infrastructure.auth.CustomUserDetailsService;
 import dev.facturador.shared.infrastructure.config.JWTEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         //Filtros
-        http.addFilter(new CustomAuthenticationFilter(this.authenticationManagerBean(), customJWT()));
+        http.addFilter(new AuthenticationFilterForLogin(this.authenticationManagerBean(), customJWT()));
         http.addFilterBefore(new CustomAuthorizationFilter(customJWT()), UsernamePasswordAuthenticationFilter.class);
     }
 

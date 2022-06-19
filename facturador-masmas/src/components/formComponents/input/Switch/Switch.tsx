@@ -11,11 +11,11 @@ type props = {
 
 /**
  * Un interruptor ligado a un boolean declarado con setState. El valor izquierdo es falso, el derecho verdadero.
- * @param label - El título del input.
- * @param note - Nota extra acerca del input.
- * @param falseIcon - Elemento SVG a mostrar para el valor falso.
- * @param trueIcon - Elemento SVG a mostrar para el valor verdadero.
- * @param bind - Array desestructurado asociado al valor del input.
+ * @param props.label       - El título del input.
+ * @param props.note        - Nota extra acerca del input.
+ * @param props.falseIcon   - Elemento SVG a mostrar para el valor falso.
+ * @param props.trueIcon    - Elemento SVG a mostrar para el valor verdadero.
+ * @param props.bind        - Array desestructurado asociado al valor del input.
  */
 export default function Switch({ label = "", note, falseIcon, trueIcon, bind }: props): JSX.Element {
 

@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 //Componentes de formulario.
-import { Form, Field, Image, Message, Button, Radio } from 'components/formComponents';
-import { BiAt, BiChevronLeft, BiHash, BiHome, BiIdCard, BiKey, BiText, BiWallet } from "react-icons/bi";
-import { FlexDiv, Loading } from "styledComponents";
+import { Button, Field, Form, Image, Message, Radio } from 'components/formComponents';
+import { Loading } from "components/standalone";
+import { FlexDiv } from "components/wrappers";
+import { BiChevronLeft, BiHome } from "react-icons/bi";
 
 //Relacionado a la cuenta.
 import Valid from "utilities/Valid";
-import signup from "./services/signup";
-import mainAccount from './models/mainAccount';
+import account from './models/account';
+import postAccount from "./services/postAccount";
 
 
-/**
- * Devuelve un formulario de 2 partes para crear una nueva cuenta y comerciante.
- */
+/**Un formulario de 2 partes para crear una nueva cuenta de usuario.*/
 export default function SignUp(): JSX.Element {
 
   const navigate = useNavigate();
@@ -75,7 +74,7 @@ export default function SignUp(): JSX.Element {
   /**Envía al servidor los datos recolectados. */
   async function submit(): Promise<void> {
 
-    const account: mainAccount = {
+    const account: account = {
       user: {
         username: username,
         email: email,
@@ -89,17 +88,16 @@ export default function SignUp(): JSX.Element {
       }
     }
     setSending(true);
-    signup(account, handleResponse);
-  }
+    postAccount(account, (ok: boolean, data: string) => {
+      
+      setSending(false);
+      if (ok) {
+        setSuccess(true);
+        setTraderError("");
+        navigate("/inicio");
+      } else setTraderError(data);
 
-  /**Maneja la respuesta recibida del servidor. */
-  function handleResponse(ok: boolean, data: string) {
-    setSending(false);
-    if (ok) {
-      setSuccess(true);
-      setTraderError("");
-      navigate("/inicio");
-    } else setTraderError(data);
+    });
   }
 
   /*FORMULARIO*****************************************************/
@@ -130,7 +128,7 @@ export default function SignUp(): JSX.Element {
       <FlexDiv justify='space-between'>
         <Link to="/ingresar">Acceder</Link>
 
-        <Button type="submit" text="Siguiente" />
+        <Button type="submit">Siguiente</Button>
       </FlexDiv>
 
     </Form>
@@ -153,7 +151,7 @@ export default function SignUp(): JSX.Element {
       <Message type="error" message={traderError} />
 
       {success? <Message type="success" message={`Se ha creado la cuenta "${email}"`}/>:
-      sending? <Loading /> : <Button type="submit" text="Enviar" />}
+      sending? <Loading /> : <Button type="submit">Enviar</Button>}
     </Form>
     : null
   );

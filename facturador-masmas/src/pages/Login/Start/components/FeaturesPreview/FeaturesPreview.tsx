@@ -2,15 +2,15 @@ import React, { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import "./FeaturesPreview.css";
-import documento from "../../assets/svg/feat-doc.svg";
-import punto from "../../assets/svg/feat-punto.svg";
-import libro from "../../assets/svg/feat-libro.svg";
-import grafico from "../../assets/svg/feat-grafico.svg";
-import open from "../../assets/svg/feat-github.svg";
+import document from "../../assets/svg/feat-doc.svg";
+import pointOfSale from "../../assets/svg/feat-punto.svg";
+import book from "../../assets/svg/feat-libro.svg";
+import stats from "../../assets/svg/feat-grafico.svg";
+import openSource from "../../assets/svg/feat-github.svg";
 
 const feats = [
   <>
-    <img src={documento} />
+    <img src={document} />
     <h3>Crea documentos comerciales</h3>
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, reiciendis
@@ -19,7 +19,7 @@ const feats = [
     </p>
   </>,
   <>
-    <img src={punto} />
+    <img src={pointOfSale} />
     <h3>Administra instalaciones</h3>
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi debitis
@@ -29,7 +29,7 @@ const feats = [
     </p>
   </>,
   <>
-    <img src={libro} />
+    <img src={book} />
     <h3>Libros automáticos</h3>
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sapiente
@@ -39,7 +39,7 @@ const feats = [
     </p>
   </>,
   <>
-    <img src={grafico} />
+    <img src={stats} />
     <h3>Reportes personalizados</h3>
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, reiciendis
@@ -48,7 +48,7 @@ const feats = [
     </p>
   </>,
   <>
-    <img src={open} />
+    <img src={openSource} />
     <h3>Gratis y de código abierto</h3>
     <p>
       Amet consectetur adipisicing elit. Odio, reiciendis fuga dolore non veniam
@@ -57,7 +57,7 @@ const feats = [
   </>,
 ];
 
-//returns a list of application features that animates on scroll
+/**Una lista de características de la aplicación que se animan en scroll. */
 export default function FeaturesPreview() {
   useEffect(() => {
     Aos.init({}); //iniciar las animaciones globales de Aos

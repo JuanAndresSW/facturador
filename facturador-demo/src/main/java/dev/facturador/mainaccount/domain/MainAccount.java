@@ -3,6 +3,7 @@ package dev.facturador.mainaccount.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.facturador.branchaccount.domain.BranchAccount;
+import dev.facturador.pointofsale.domain.subdomain.ControlOfPointOfSale;
 import dev.facturador.shared.domain.sharedpayload.Vat;
 import dev.facturador.trader.domain.Trader;
 import dev.facturador.user.domain.User;
@@ -53,6 +54,7 @@ public final class MainAccount {
         account.setUserMainAccount(new User(username));
         return account;
     }
+
     public static MainAccount create(MainAccountRegister request) {
         var account = new MainAccount();
         account.setAccountOwner(new Trader(
@@ -72,6 +74,7 @@ public final class MainAccount {
         if (StringUtils.hasText(request.userRegister().avatar())) {
             account.getUserMainAccount().setAvatarUser(new UserAvatar(request.userRegister().avatar(), account.getUserMainAccount()));
         }
+        account.getAccountOwner().setControlOfPointOfSale(new ControlOfPointOfSale(0, 0, account.getAccountOwner()));
         account.setCreateAt(LocalDateTime.now());
         return account;
     }
