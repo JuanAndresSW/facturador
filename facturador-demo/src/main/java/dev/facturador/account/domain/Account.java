@@ -1,7 +1,6 @@
 package dev.facturador.account.domain;
 
 
-import dev.facturador.global.domain.sharedpayload.Vat;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import dev.facturador.trader.domain.Trader;
 import dev.facturador.user.domain.User;
@@ -35,7 +34,7 @@ public final class Account {
     private User ownerUser;
 
     @Column(name = "creation_date", nullable = false, updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     public Account(User ownerUser) {
         this.ownerUser = ownerUser;
@@ -45,7 +44,7 @@ public final class Account {
         var account = new Account();
         account.setOwnerTrader(null);
         account.setAccountId(null);
-        account.setCreateAt(null);
+        account.setCreatedAt(null);
         account.setOwnerUser(new User(username));
         return account;
     }
@@ -58,7 +57,7 @@ public final class Account {
                 0, 0));
 
         String vatName = request.traderRegister().vatCategory();
-        account.getOwnerTrader().setVat(defineVat(vatName));
+        account.getOwnerTrader().setVat(Trader.defineVat(vatName));
 
         String passwordHash = hashPassword(request.userRegister().password());
         account.setOwnerUser(new User(
@@ -71,7 +70,7 @@ public final class Account {
         }
 
         account.getOwnerTrader().setPointsOfSaleControl(new PointsOfSaleControl(0, 0, account.getOwnerTrader()));
-        account.setCreateAt(LocalDateTime.now());
+        account.setCreatedAt(LocalDateTime.now());
         return account;
     }
     /**Named Contructor para la actualizacion de la cuenta*/
@@ -85,8 +84,6 @@ public final class Account {
         }
         if (StringUtils.hasText(request.getUserUpdate().updatedAvatar())) {
             account.getOwnerUser().getUserAvatar().setAvatar(request.getUserUpdate().updatedAvatar());
-        } else {
-            account.getOwnerUser().getUserAvatar().setAvatar("");
         }
         if (StringUtils.hasText(request.getTraderUpdate().updatedBusinessName())) {
             account.getOwnerTrader().setName(request.getTraderUpdate().updatedBusinessName());
@@ -96,7 +93,7 @@ public final class Account {
         }
         if (StringUtils.hasText(request.getTraderUpdate().updatedVatCategory())) {
             String vatName = request.getTraderUpdate().updatedVatCategory();
-            account.getOwnerTrader().setVat(defineVat(vatName));
+            account.getOwnerTrader().setVat(Trader.defineVat(vatName));
         }
         return account;
     }
@@ -105,13 +102,6 @@ public final class Account {
         var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         return argon2.encode(password);
     }
-    /**Pasa la categoria de String a ENUM*/
-    public static Vat defineVat(String vatName) {
-        if (vatName.contains("Inscripto")) {
-            return Vat.REGISTERED_RESPONSIBLE;
-        }
-        return Vat.MONOTAX_RESPONSIBLE;
-    }
 
     @Override
     public String toString() {
@@ -119,7 +109,7 @@ public final class Account {
                 "mainAccountId=" + accountId +
                 ", accountOwner=" + ownerTrader +
                 ", userMainAccount=" + ownerUser +
-                ", createDate=" + createAt +
+                ", createDate=" + createdAt +
                 '}';
     }
 }

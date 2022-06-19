@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.util.Collection;
 
 /**
- * User Details Personalizado
+ * Clase con los datos necesarios para autenticar un usuario
  */
 @ToString
 @Getter

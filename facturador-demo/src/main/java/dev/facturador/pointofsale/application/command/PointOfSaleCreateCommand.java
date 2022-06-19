@@ -4,6 +4,7 @@ import dev.facturador.global.application.commands.Command;
 import dev.facturador.pointofsale.domain.PointOfSaleCreate;
 import lombok.Getter;
 
+/**Comando para crear un punto de venta*/
 @Getter
 public class PointOfSaleCreateCommand extends Command {
     private final PointOfSaleCreate pointOfSaleCreate;
@@ -11,7 +12,7 @@ public class PointOfSaleCreateCommand extends Command {
     public PointOfSaleCreateCommand(PointOfSaleCreate pointOfSaleCreate) {
         this.pointOfSaleCreate = pointOfSaleCreate;
     }
-
+    /**Builder del comando*/
     public static class Builder {
         private PointOfSaleCreate pointOfSaleCreate;
 

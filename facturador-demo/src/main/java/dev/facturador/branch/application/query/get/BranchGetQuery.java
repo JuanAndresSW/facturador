@@ -4,6 +4,7 @@ import dev.facturador.branch.domain.Branch;
 import dev.facturador.global.application.querys.Query;
 import lombok.Getter;
 
+/**Query para recuperar sucursal*/
 @Getter
 public class BranchGetQuery extends Query<Branch> {
     private final Long branchId;
@@ -11,8 +12,7 @@ public class BranchGetQuery extends Query<Branch> {
     public BranchGetQuery(Long branchId) {
         this.branchId = branchId;
     }
-
-
+    /**Builder del comando*/
     public static class Builder {
         private Long branchId;
 

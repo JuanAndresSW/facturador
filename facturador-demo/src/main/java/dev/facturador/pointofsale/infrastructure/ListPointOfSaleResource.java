@@ -1,17 +1,16 @@
 package dev.facturador.pointofsale.infrastructure;
 
 import dev.facturador.global.application.querys.QueryBus;
-import dev.facturador.global.domain.sharedpayload.Page;
-import dev.facturador.global.domain.sharedpayload.PagedResponse;
+import dev.facturador.global.application.sharedpayload.Page;
+import dev.facturador.global.application.sharedpayload.PagedResponse;
 import dev.facturador.pointofsale.application.query.PointOfSaleListQuery;
 import dev.facturador.pointofsale.domain.PointOfSale;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+/**EndPoint para Listar puntos de venta*/
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class ListPointOfSaleResource {
@@ -21,6 +20,15 @@ public class ListPointOfSaleResource {
         this.queryBus = queryBus;
     }
 
+    /**
+     * Se encarga ejecutar la Query que trae la paginacion de punto de venta
+     * @param index Define el numero de pagina
+     * @param size Define el tamaño de la pagina
+     * @param sort Define por que parametro se va ordenar la lista
+     * @param order Define si el orden es ascendente o descendente
+     * @param branchID ID para listar los puntos de venta
+     * @return Devuelve el objeto {@link PagedResponse} con los datos de paginacion
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/branch/{IDBranch}")
     public HttpEntity<PagedResponse<PointOfSale>> toListPointOfSale(

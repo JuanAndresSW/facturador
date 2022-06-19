@@ -19,8 +19,8 @@ import java.util.Map;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
-@Slf4j
+/**Es el filtro de autorización decide si la ruta que quieres entrar necesita autorizacion o no
+ * y si necesita autorización decide si darla o no*/
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     private final CustomJWT jwt;
 
@@ -75,15 +75,15 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     private boolean isNotRequiredAuthorization(HttpServletRequest request) {
         return request.getServletPath().equals("/login") ||
-                request.getServletPath().equals("/api/auth/mainaccounts/log-in") ||
-                request.getServletPath().equals("/api/auth/mainaccounts") ||
+                request.getServletPath().equals("/api/auth/accounts/log-in") ||
+                request.getServletPath().equals("/api/auth/accounts") ||
                 request.getServletPath().equals("/api/auth/refresh");
     }
 
     private boolean isRequiredAuthorization(HttpServletRequest request) {
         return !request.getServletPath().equals("/login") &&
-                !request.getServletPath().equals("/api/auth/mainaccounts/log-in") &&
-                !request.getServletPath().equals("/api/auth/mainaccounts") &&
+                !request.getServletPath().equals("/api/auth/accounts/log-in") &&
+                !request.getServletPath().equals("/api/auth/accounts") &&
                 !request.getServletPath().equals("/api/auth/refresh");
     }
 

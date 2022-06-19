@@ -3,7 +3,6 @@ package dev.facturador.trader.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.branch.domain.Branch;
-import dev.facturador.global.domain.sharedpayload.Vat;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

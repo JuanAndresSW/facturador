@@ -3,7 +3,7 @@ package dev.facturador.pointofsale.application.command;
 import dev.facturador.global.application.commands.CommandHandler;
 import dev.facturador.pointofsale.application.usecase.CreatePointOfSaleUseCase;
 import org.springframework.stereotype.Component;
-
+/**Manejador del comando {@link PointOfSaleCreateCommand}*/
 @Component
 public class PointOfSaleCreateCommandHandler implements CommandHandler<PointOfSaleCreateCommand> {
 
@@ -13,6 +13,7 @@ public class PointOfSaleCreateCommandHandler implements CommandHandler<PointOfSa
         this.useCase = useCase;
     }
 
+    /**Sede la operacion al caso de uso*/
     @Override
     public void handle(PointOfSaleCreateCommand command) throws Exception {
 

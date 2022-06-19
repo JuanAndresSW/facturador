@@ -5,7 +5,6 @@ import dev.facturador.global.application.querys.QueryBus;
 import dev.facturador.pointofsale.application.command.PointOfSaleCreateCommand;
 import dev.facturador.pointofsale.application.subdomain.query.ControlOfPosGetQuery;
 import dev.facturador.pointofsale.domain.PointOfSaleCreate;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@Slf4j
+/**EndPoint para crear un punto de venta*/
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class CreatePointOfSaleResource {
@@ -26,6 +25,13 @@ public class CreatePointOfSaleResource {
         this.queryBus = queryBus;
     }
 
+    /**
+     * Ejecuta las operaciones para crear el punto de venta
+     * Al modificar punto de venta se debe de actualizar PointOfSaleControl
+     * @param IDTrader ID para actualizar el PointOfSaleControl
+     * @param IDBranch ID para relacionar el punto de venta a esta sucursal
+     * @return Estado 201 created
+     */
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/branch/{IDBranch}/trader/{IDTrader}")
     public HttpEntity<Void> addPointOfSale(@PathVariable(name = "IDTrader") long IDTrader,

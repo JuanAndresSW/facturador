@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**Caso de uso para crear un punto de venta*/
 @Service
 @Transactional
 public class CreatePointOfSaleUseCase {
@@ -21,8 +22,9 @@ public class CreatePointOfSaleUseCase {
 
     public void handlerPointOfSaleCreation(PointOfSaleCreate values) {
         var pointofsale = PointOfSale.create(values);
+        //Se crea el punto de venta
         repository.save(pointofsale);
-
+        //Se actualiza el PointOfSaleControl
         controlRepository.saveAndFlush(PointsOfSaleControl.create(PosControlData.starter(
                 values.getPosControl().getPointsOfSaleControlId(),
                 values.getPosControl().getCurrentCount(),

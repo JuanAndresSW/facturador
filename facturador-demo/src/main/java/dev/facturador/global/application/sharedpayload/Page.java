@@ -1,4 +1,4 @@
-package dev.facturador.global.domain.sharedpayload;
+package dev.facturador.global.application.sharedpayload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

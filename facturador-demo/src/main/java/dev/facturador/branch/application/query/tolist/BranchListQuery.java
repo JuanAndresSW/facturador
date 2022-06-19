@@ -2,10 +2,11 @@ package dev.facturador.branch.application.query.tolist;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.global.application.querys.Query;
-import dev.facturador.global.domain.sharedpayload.Page;
-import dev.facturador.global.domain.sharedpayload.PagedResponse;
+import dev.facturador.global.application.sharedpayload.Page;
+import dev.facturador.global.application.sharedpayload.PagedResponse;
 import lombok.Getter;
 
+/**Query para recuperar el lsitado de sucursales devuelve un {@link PagedResponse}*/
 @Getter
 public class BranchListQuery extends Query<PagedResponse<Branch>> {
     private final Long traderId;
@@ -15,7 +16,7 @@ public class BranchListQuery extends Query<PagedResponse<Branch>> {
         this.traderId = traderId;
         this.page = page;
     }
-
+    /**Builder de la Query*/
     public static class Builder {
         private Long traderId;
         private Page page;

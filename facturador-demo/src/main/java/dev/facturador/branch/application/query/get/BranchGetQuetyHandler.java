@@ -5,6 +5,7 @@ import dev.facturador.branch.domain.Branch;
 import dev.facturador.global.application.querys.QueryHandler;
 import org.springframework.stereotype.Component;
 
+/**Manejador de la Query {@link BranchGetQuery} devuelve la entidad {@link Branch}*/
 @Component
 public class BranchGetQuetyHandler implements QueryHandler<Branch, BranchGetQuery> {
     private final GetBranchUseCase useCase;

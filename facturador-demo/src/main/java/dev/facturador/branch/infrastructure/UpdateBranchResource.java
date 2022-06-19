@@ -40,6 +40,6 @@ public class UpdateBranchResource {
 
         commandBus.handle(command);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

@@ -5,12 +5,13 @@ import dev.facturador.user.domain.UserIdUsername;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**Query para recuperar el userAvatar*/
 @Getter
 @AllArgsConstructor
 public class UserGetAvatarQuery extends Query<String> {
 
     private UserIdUsername userIdUsername;
-
+    /**Builder de la Query*/
     public static class Builder {
         private UserIdUsername userIdUsername;
 

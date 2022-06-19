@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**EntryPoint para cuando la persona intenta acceder a un recurso sin autorizacion*/
 @Component
 @Slf4j
 public class JWTEntryPoint implements AuthenticationEntryPoint {

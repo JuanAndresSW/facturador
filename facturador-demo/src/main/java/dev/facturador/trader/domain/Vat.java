@@ -1,4 +1,4 @@
-package dev.facturador.global.domain.sharedpayload;
+package dev.facturador.trader.domain;
 
 public enum Vat {
     REGISTERED_RESPONSIBLE("Responsable Inscripto"),

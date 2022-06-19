@@ -1,6 +1,6 @@
 package dev.facturador.notused.domain;
 
-import dev.facturador.global.domain.sharedpayload.Vat;
+import dev.facturador.trader.domain.Vat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

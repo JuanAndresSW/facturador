@@ -20,10 +20,11 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
+/**Clase con la configuracion de Seguridad*/
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+//Indico que uso PreAuthorize
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -54,11 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new CustomAuthorizationFilter(customJWT()), UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**Le indico cual es la clase que busca al usuario y con que enconder se codifica el password*/
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    //Todo lo de abajo solo es para marcar los siguientes como Bean dentro de Spring
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {

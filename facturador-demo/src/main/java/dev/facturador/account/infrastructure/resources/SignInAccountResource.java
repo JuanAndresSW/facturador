@@ -57,9 +57,9 @@ public class SignInAccountResource {
         return new LinkedHashMap<String, String>(
                 Map.of("username", username,
                         "IDTrader", IDTrader,
+                        "accessToken", headers.get("accessToken").get(0),
                         "actives", actives,
                         "passives", passives,
-                        "accessToken", headers.get("accessToken").get(0),
                         "refreshToken", headers.get("refreshToken").get(0)));
     }
 }

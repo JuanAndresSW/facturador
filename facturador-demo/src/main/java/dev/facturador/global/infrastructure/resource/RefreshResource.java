@@ -19,7 +19,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Slf4j
+/**EndPoint para refrescar los Tokens*/
 @RestController
 @RequestMapping(path = "/api/auth")
 public class RefreshResource {
@@ -60,13 +60,11 @@ public class RefreshResource {
     private CustomUserDetails creteUserWithToken(String authHeader, HttpServletResponse response) throws IOException {
         try {
             if (jwt.verifyToken(authHeader)) {
-                var token = authHeader.substring("Bearer ".length());
-                var email = jwt.createDecoder(token).getSubject();
+                var email = jwt.createUserByToken(authHeader);
 
                 return (CustomUserDetails) service.loadUserByUsername(email);
             }
         } catch (Exception ex) {
-            log.error("Error refresh in: {}", ex.getMessage());
             response.setStatus(FORBIDDEN.value());
             Map<String, String> error = new HashMap<>();
             error.put("error-message", ex.getMessage());

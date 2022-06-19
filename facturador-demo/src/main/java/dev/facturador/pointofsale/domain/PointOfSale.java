@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**Entidad punto de venta*/
 @Entity
 @Table(name = "point_of_sale")
 @NoArgsConstructor

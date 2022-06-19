@@ -24,9 +24,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
     /**
-     * Busca un usuario personalizado con un updatedUsername o email como credencial
+     * Busca un usuario personalizado con un username o email como credencial
      *
-     * @param usernameOrEmail Parametro para crear el usuario
+     * @param usernameOrEmail Parametro para buscar el usuario
      * @return Un {@link CustomUserDetails} usuario personalizado para Srping Security
      * @throws UsernameNotFoundException Si el usuario no existe arroja este excepcion
      */
