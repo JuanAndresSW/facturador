@@ -19,6 +19,7 @@ import java.util.Map;
 
 
 /** EndPoint para iniciar session*/
+@Slf4j
 @RestController
 @RequestMapping(path = "/api/auth/accounts")
 public class SignInAccountResource {
@@ -37,14 +38,14 @@ public class SignInAccountResource {
      */
     @PostMapping("/log-in")
     public HttpEntity<LinkedHashMap<String, String>> loginWithJSON(@Valid @RequestBody AccountSingInRequest keyRequest) throws Exception {
-
+        log.info("pasa loginwithjson");
         AccountSingInQuery query = AccountSingInQuery.Builder.getInstance()
                 .keys(keyRequest.usernameOrEmail(), keyRequest.password()).build();
 
         var headers = queryBus.handle(query);
-
+        log.info("pasa headers");
         var response = this.createLoginResponse(headers);
-
+        log.info("pasa response");
         return ResponseEntity.ok().body(response);
     }
 

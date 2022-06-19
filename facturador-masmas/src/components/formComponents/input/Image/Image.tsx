@@ -25,11 +25,11 @@ export default function Image({label, note, fallback=defaultAvatar, setter, img}
     <label className="image">
         {label}<span> {note}</span>
             
-        {img?.size<10? null :
+        {img?.size>10?
         <BsFillXCircleFill onClick={e=>{
           e.preventDefault();
           setter(undefined);
-          }} />}
+          }} /> : null}
             
         <input
           type="file"
