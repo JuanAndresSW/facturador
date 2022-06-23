@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**Entidad punto de venta*/
 @Entity
@@ -26,6 +27,9 @@ public class PointOfSale implements Serializable {
     @Column(name = "point_of_sale_number", nullable = false)
     private int pointOfSaleNumber;
 
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate createdAt;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_branch", nullable = false, updatable = false, referencedColumnName = "id_branch")
@@ -40,6 +44,7 @@ public class PointOfSale implements Serializable {
         var pointOfSale = new PointOfSale();
         pointOfSale.setPointOfSaleNumber(values.getPosControl().getTotalCount() + 1);
         pointOfSale.setBranchOwner(new Branch(values.getIDBranch()));
+        pointOfSale.setCreatedAt(LocalDate.now());
         return pointOfSale;
     }
 

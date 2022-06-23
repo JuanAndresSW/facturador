@@ -32,7 +32,7 @@ CREATE TABLE `account` (
   KEY `id_trader_main_account_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_account_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`),
   CONSTRAINT `id_user_account_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `branch` (
   PRIMARY KEY (`id_branch`),
   KEY `id_trader_branch_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_branch_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,32 +174,6 @@ LOCK TABLES `invoice` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `non_registered_operation`
---
-
-DROP TABLE IF EXISTS `non_registered_operation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `non_registered_operation` (
-  `id_non_registered_partner_requested` int unsigned NOT NULL,
-  `id_point_of_sale_requester` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  PRIMARY KEY (`id_non_registered_partner_requested`,`id_point_of_sale_requester`,`date_of_issue`),
-  KEY `reference_operation_in_non_registred_fk_idx` (`id_point_of_sale_requester`,`date_of_issue`),
-  CONSTRAINT `reference_operation_in_non_registered_fk` FOREIGN KEY (`id_point_of_sale_requester`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `non_registered_operation`
---
-
-LOCK TABLES `non_registered_operation` WRITE;
-/*!40000 ALTER TABLE `non_registered_operation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `non_registered_operation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `non_registered_partner`
 --
 
@@ -255,41 +229,6 @@ LOCK TABLES `operation` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `partner`
---
-
-DROP TABLE IF EXISTS `partner`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `partner` (
-  `id_trader_requester` int unsigned NOT NULL,
-  `id_branch_requester` int unsigned NOT NULL,
-  `id_trader_requested` int unsigned NOT NULL,
-  `id_branch_requested` int unsigned NOT NULL,
-  `request_date` datetime NOT NULL,
-  `use_count` int NOT NULL,
-  `request_state` enum('W','A','L') NOT NULL,
-  PRIMARY KEY (`id_trader_requester`,`id_branch_requester`,`id_trader_requested`,`id_branch_requested`),
-  KEY `id_branch_requested_fk_idx` (`id_branch_requested`),
-  KEY `id_branch_requester_fk_idx` (`id_branch_requester`),
-  KEY `id_trader_requested_fk` (`id_trader_requested`),
-  CONSTRAINT `id_branch_requested_fk` FOREIGN KEY (`id_branch_requested`) REFERENCES `branch` (`id_branch`),
-  CONSTRAINT `id_branch_requester_fk` FOREIGN KEY (`id_branch_requester`) REFERENCES `branch` (`id_branch`),
-  CONSTRAINT `id_trader_requested_fk` FOREIGN KEY (`id_trader_requested`) REFERENCES `trader` (`id_trader`),
-  CONSTRAINT `id_trader_requester_fk` FOREIGN KEY (`id_trader_requester`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `partner`
---
-
-LOCK TABLES `partner` WRITE;
-/*!40000 ALTER TABLE `partner` DISABLE KEYS */;
-/*!40000 ALTER TABLE `partner` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `point_of_sale`
 --
 
@@ -299,11 +238,12 @@ DROP TABLE IF EXISTS `point_of_sale`;
 CREATE TABLE `point_of_sale` (
   `id_point_of_sale` int unsigned NOT NULL AUTO_INCREMENT,
   `point_of_sale_number` int NOT NULL,
+  `creation_date` date NOT NULL,
   `id_branch` int unsigned NOT NULL,
   PRIMARY KEY (`id_point_of_sale`),
   KEY `id_branch_pos_fk_idx` (`id_branch`),
   CONSTRAINT `id_branch_pos_fk` FOREIGN KEY (`id_branch`) REFERENCES `branch` (`id_branch`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -330,7 +270,7 @@ CREATE TABLE `points_of_sale_control` (
   PRIMARY KEY (`id_pos_control`),
   KEY `id_trader_control_of_pos_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_control_of_pos_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -471,36 +411,6 @@ LOCK TABLES `receipt_x` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `registered_operation`
---
-
-DROP TABLE IF EXISTS `registered_operation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `registered_operation` (
-  `id_trader` int unsigned NOT NULL,
-  `id_branch` int unsigned NOT NULL,
-  `id_partner_trader` int unsigned NOT NULL,
-  `id_partner` int unsigned NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  PRIMARY KEY (`id_trader`,`id_branch`,`id_partner_trader`,`id_partner`,`id_point_of_sale_issuing`,`date_of_issue`),
-  KEY `reference_operation_in_registered_op_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_in_registered_op_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`),
-  CONSTRAINT `reference_partner_in_registered_op_fk` FOREIGN KEY (`id_trader`, `id_branch`, `id_partner_trader`, `id_partner`) REFERENCES `partner` (`id_trader_requester`, `id_branch_requester`, `id_trader_requested`, `id_branch_requested`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `registered_operation`
---
-
-LOCK TABLES `registered_operation` WRITE;
-/*!40000 ALTER TABLE `registered_operation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `registered_operation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `remittance`
 --
 
@@ -542,7 +452,7 @@ CREATE TABLE `trader` (
   `actives` int unsigned NOT NULL,
   `passives` int unsigned NOT NULL,
   PRIMARY KEY (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,7 +479,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -595,7 +505,7 @@ CREATE TABLE `user_avatar` (
   PRIMARY KEY (`id_user_avatar`),
   UNIQUE KEY `UK_9r98vdxdtt1tw76ecsrxpv2io` (`id_user`),
   CONSTRAINT `id_user_avatar_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -616,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-18  6:02:38
+-- Dump completed on 2022-06-22 11:17:52
