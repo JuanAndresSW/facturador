@@ -2,16 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //Servicios.
+import deleteAccount from './services/deleteAccount';
 import getLocalUserAvatar from './services/getLocalUserAvatar';
 import getTraderData from './services/getTraderData';
 import putAccount from './services/putAccount';
-import deleteAccount from './services/deleteAccount';
 //Validación.
 import Valid from "utilities/Valid";
 //GUI.
-import { Button, Message, Field, Form, Image, Radio } from "components/formComponents";
-import { Retractable, FlexDiv, Section } from "components/wrappers";
+import { Button, Field, Form, Image, Message, Radio } from "components/formComponents";
 import { Loading } from "components/standalone";
+import { Confirm, FlexDiv, Retractable, Section } from "components/wrappers";
 import { BiChevronLeft } from "react-icons/bi";
 //Modelos.
 import editedAccount from "./models/editedAccount";
@@ -36,7 +36,7 @@ export default function Account(): JSX.Element {
     const [deletionCode, setDeletionCode] =         useState("");
     //Datos del usuario.
     const [avatar, setAvatar] =                     useState(undefined);
-    const [newUsername, setNewUsername] =                 useState('');
+    const [newUsername, setNewUsername] =           useState('');
     const [password, setPassword] =                 useState("");
     const [newPassword, setNewPassword] =           useState("");
     const [confirmPassword, setConfirmPassword] =   useState("");
@@ -85,9 +85,8 @@ export default function Account(): JSX.Element {
         setLoading(true);
         const account: editedAccount = {
             user: {
-                username:     sessionStorage.getItem("username"),
                 updatedUsername:  newUsername,
-                password:     password,
+                password:         password,
                 updatedPassword:  newPassword,
                 updatedAvatar:    avatar,
             },
@@ -171,10 +170,13 @@ export default function Account(): JSX.Element {
                 {deleteSuccess? <Message type="success" message={`Se ha eliminado la cuenta`}/>:
                 loading? <Loading /> :
                 
-                <FlexDiv>
+                <FlexDiv justify='space-between'>
                     <a href="about:blank" target='_blank'>Solicitar código</a>
 
-                    <Button type="delete" onClick={requestAccountDeletion}>Borrar la cuenta</Button>
+                    <Confirm label="¿Está seguro de que quiere eliminar su cuenta? Esta acción es irreversible"
+                    onConfirm={requestAccountDeletion}>
+                        <Button type="delete">Borrar la cuenta</Button>
+                    </Confirm>
                 </FlexDiv>}
                 
 

@@ -5,7 +5,7 @@ type props = {
     label?: string;
     note?: string;
     placeholder?:string;
-    type?: "text" | "number" | "password" | "email" | "tel" | "url";
+    type?: "text" | "number" | "password" | "email" | "tel" | "url" | string;
     bind: [any, Function];
     validator?: boolean;
 }
@@ -16,6 +16,7 @@ type props = {
  * @param props.note - Nota extra acerca del input.
  * @param props.type - Un tipo específico de input textual.
  * @param props.bind - Array desestructurado asociado al valor del input.
+ * @param props.validator - Boolean que determina si el valor es válido o no.
  */
 export default function Field({ label = "", note, placeholder, type = "text", bind, validator=true }: props): JSX.Element {
     return (

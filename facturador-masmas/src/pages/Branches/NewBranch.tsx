@@ -105,7 +105,7 @@ export default function NewBranch(): JSX.Element {
       onClick={(state:boolean)=>{setBoolAddress(state); setBoolContact(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-          <Select label="Provincia"           bind={[province, setProvince]}     options={provinces} />
+          <Select label="Provincia"           value={province} onChange={setProvince}     options={provinces} />
           <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)} />
           <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}   />
           <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)} />

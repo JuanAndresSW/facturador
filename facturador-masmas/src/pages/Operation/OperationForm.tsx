@@ -2,204 +2,358 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //Componentes del formulario.
+import { BackArrow } from "components/standalone";
 import { Button, DateTime, Field, Form, Message, Radio, Select, Switch, Table, Textarea } from "components/formComponents";
 import { Cond, FlexDiv, Retractable, Section } from 'components/wrappers';
-import { BiChevronsDown, BiChevronsUp, BiGroup, BiPlusCircle, BiUser } from "react-icons/bi";
+import { BiChevronsDown, BiChevronsUp, BiExport, BiImport, BiPlus } from "react-icons/bi";
 //Elementos de documento generado.
 import { Check, CreditNote, DebitNote, Invoice, PromissoryNote, PurchaseOrder, Receipt, Remittance } from "./documents";
 //Utilidades.
 import getDocumentTitle from './utilities/getDocumentTitle';
+import isValidOperation from './utilities/isValidOperation';
+import Valid from "utilities/Valid";
 //Servicios.
-import retrieveGroups from './services/retrieveGroups';
-import retrievePartners from './services/retrievePartners';
-import retrievePointsOfSale from './services/retrievePointsOfSale';
-
+import postOperation from './services/postOperation';
+import getListsOfThirdsAndPoints from './services/getListsOfThirdsAndPoints';
 //Tipos.
+import operation from './models/operation';
 type props = {
-  flux: "in" | "out";
-  type: ("purchase-order" | "remittance" | "invoice" | "debit-note" | "credit-note" | "receipt-x" | "receipt" | "promissory-note" | "check" | "other");
+  type: ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch" | "Va");
 };
 
 /**
- * Devuelve un formulario que recolecta los datos necesitados por el back-end para generar un documento comercial.
- * @param props.flux Flujo de emisión del documento. Valores aceptados: 'in' | 'out'.
- * @param props.type Tipo de documento comercial en inglés y kebab-case.
+ * Devuelve un formulario que recolecta los datos necesitados por el back-end para generar una operación comercial.
+ * @param props.type Código del documento de dos caracteres.
  */
-export default function OperationForm({ flux, type }: props): JSX.Element {
+export default function OperationForm({ type }: props): JSX.Element {
 
-  //Solicitar los datos a mostrar en el primer renderizado.
-  useEffect(() => {
+  useEffect(()=>{
+    getListsOfThirdsAndPoints((ok:boolean, content: any)=> {
+      if (!ok) return;
 
-    retrievePointsOfSale((status:number,data:string)=>{
-      if (status===200) setDisplayPointsOfSale(JSON.parse(data));
-    });
-    retrievePartners((status:number,data:string)=>{
-      if (status===200) setDisplayPartners(JSON.parse(data));
-    });
-    retrieveGroups((status:number,data:string)=>{
-      if (status===200) setDisplayGroups(JSON.parse(data));
-    });
+      setBranches(content.map((branch: any) => {
+        return {
 
+          title: `${branch.locality} ${branch.street} N°${branch.addressNumber}`,
+          value: branch.IDBranch,
+          subOptions: branch.pointsOfSale.map((points: any) => {
+            return {
+              title: `N°${points.pointOfSaleNumber}`,
+              value: points.pointOfSaleID,
+            }
+          })
+        }
+      })); 
+    })
   }, []);
+ 
 
-  // #### Los datos del servidor necesarios para mostrar el formulario. #### //
-  const [displayPointsOfSale, setDisplayPointsOfSale] = useState(undefined);
-  const [displayPartners, setDisplayPartners] = useState(undefined);
-  const [displayGroups, setDisplayGroups] = useState(undefined);
-  const [displayRoot, setDisplayRoot] = useState(false);
+  //Datos de control del formulario.
+  const [error,               setError] =               useState("hello world");
+  const [success,             setSuccess] =             useState(false); 
+  const [toSend,              setToSend] =              useState(true);
+  const [thirds,              setThirds] =              useState();
+  const [thirdParty,          setThirdParty] =          useState();
+  const [branches,            setBranches] =            useState();
+  const [branch,              setBranch] =              useState();
 
-  // #### Los datos a ser enviados al servidor. #### //
-  //Todos.
-  const [IDpointOfSale, setIDPointOfSale] =     useState("");
-  const [sendingToGroup, setSendingToGroup] =   useState(false);
-  const [partner, setPartner] =                 useState("");
-  const [IDgroup, setIDGroup] =                 useState("");
-  //Factura, notas, remito y orden de compra.
-  const [productTable, setProductTable] =   useState([["", "", ""]]);
-  const [VATPercentage, setVATPercentage] = useState("21%");
-  const [observations, setObservations] =   useState("");
-  //Recibo x.
-  const [paymentTime, setPaymentTime] =     useState("");
-  const [paymentMethods, setPaymentMethods] =       useState([["", "", ""]]);
-  const [paymentImputation, setPaymentImputation] = useState([["", "", "", ""]]);
-  const [detailOfValues, setDetailOfValues] =       useState([["", "", "", "", ""]]);
-  //Recibo x y recibo
-  const [payer, setPayer] =                 useState("");
-  //Recibo, recibo x y pagaré.
-  const [payerAddress, setPayerAdress] =    useState("");
-  //Orden de compra.
-  const [seller, setSeller] =                   useState("");
-  const [conditions, setConditions] =           useState("");
-  const [deliveryDeadline, setDeliveryDeadline] =               useState("");
-  const [placeOfDelivery, setPlaceOfDelivery] = useState("");
-  const [carrier, setCarrier] =                 useState("");
-  //Recibo y pagaré.
-  const [descriptionOfValues, setDescriptionOfValues] =   useState("");
-  const [paymentDeadline, setPaymentDeadline] =           useState("");
-  //Recibo, pagaré y cheque.
-  const [amount, setAmount] = useState("");
-  //Pagaré.
-  const [protest, setProtest] = useState(false);
-  //Cheque.
-  const [delay, setDelay] = useState(0);
-  const [bank, setBank] = useState("");
+  //Datos del tercero.
+  const [IDpointOfSale,       setIDPointOfSale] =       useState();
+  const [CUIT,                setCUIT] =                useState();
+  const [name,                setName] =                useState();
+  const [address,             setAddress] =             useState();
+  const [phone,               setPhone] =               useState();
+  const [VATCategory,         setVATCategory] =         useState("Responsable Inscripto");
+  const [email,               setEmail]=                useState();
+  const [startOfActivities,   setStartOfActivities] =   useState();
+  const [postalCode,          setPostalCode] =          useState();
+  const [locality,            setLocality] =            useState();
+
+  //Datos de la operación
+  const [productTable,        setProductTable] =        useState([['0'],[''],['0']]);
+  const [observations,        setObservations] =        useState("");
+  const [seller,              setSeller] =              useState("");
+  const [sellConditions,      setSellConditions] =      useState("");
+  const [deadline,            setDeadline] =            useState("");
+  const [placeOfDelivery,     setPlaceOfDelivery] =     useState("");
+  const [carrier,             setCarrier] =             useState("");
+  const [IDRemittance,        setIDRemittance] =        useState();
+  const [tax,                 setTax] =                 useState(0);
+  const [VAT,                 setVAT] =                 useState("21%");
+  const [RxAmounts,           setRxAmounts] =           useState([['0'],['0'],['0']]);
+  const [RxInvoices,          setRxInvoices] =          useState([[""],['0'],['0'],['0']]);
+  const [RxDetails,           setRxDetails] =           useState([[""],[""],['0'],[""],['0']]);
+  const [paymentAddress,      setPaymentAdress] =       useState("");
+  const [paymentTime,         setPaymentTime] =         useState("");
+  const [description,         setDescription] =         useState("");
+  const [amount,              setAmount] =              useState(0);
+  const [noProtest,           setNoProtest] =           useState(false);
+  const [timeDelay,           setTimeDelay] =           useState(0);
+  const [crossed,             setCrossed] =             useState(false);
+
+
+  function generateOperation(): void {
+    setError("");
+
+    const operation: operation = {
+      IDPointOfSale:      parseInt(IDpointOfSale),
+      thirdParty: {
+        CUIT:             CUIT,
+        name:             name,
+        address:          address,
+        phone:            phone,
+        VATCategory:      VATCategory,
+        email:            email,
+        startOfActivities:startOfActivities,
+        postalCode:       postalCode,
+        locality:         locality
+      },
+      productTable: {
+        quantity:         productTable[0],
+        description:      productTable[1],
+        price:            productTable[2]
+      },
+      observations:       observations,
+      seller:             seller,
+      sellConditions:     sellConditions,
+      deadline:           deadline,
+      placeOfDelivery:    placeOfDelivery,
+      carrier:            carrier,
+      IDRemittance:       IDRemittance,
+      tax:                tax,
+      VAT:                parseInt(VAT),
+      receiptXTables: {
+        paymentMethods: {
+          check:          RxAmounts[0][0],
+          documents:      RxAmounts[1][0],
+          cash:           RxAmounts[2][0]
+        },
+        paymentImputation: {
+          type:           RxInvoices[0],
+          documentNumber: RxInvoices[1],
+          amount:         RxInvoices[2],
+          paid:           RxInvoices[3]
+        },
+        detailOfValues: {
+          type:           RxDetails[0],
+          bank:           RxDetails[1],
+          documentNumber: RxDetails[2],
+          depositDate:    RxDetails[3],
+          amount:         RxDetails[4]
+        }
+      },
+      payementAddress:    paymentAddress,
+      paymentTime:        paymentTime,
+      description:        description,
+      amount:             amount,
+      noProtest:          noProtest,
+      timeDelay:          timeDelay,
+      crossed:            crossed
+    };
+
+    if (isValidOperation(operation, type, toSend, setError)) {
+      postOperation(operation, type, toSend, (ok:boolean) => {
+        if (ok) setSuccess(true);
+      });
+    }
+  }
+
   
-
-  //Mensaje de error al generar el documento.
-  const [error, setError] = useState("hello world");
-
-
-  // #### El formulario #### //
   return (
-    <Form title={getDocumentTitle(type, flux)}>
+    
+    <Form title={getDocumentTitle(type, toSend)} onSubmit={generateOperation}>
 
+      <BackArrow />
+      <Cond bool={type !== "Va"}>
+        <Switch falseIcon={<BiImport />} trueIcon={<BiExport />} value={toSend} setter={setToSend}></Switch>
+      </Cond>
       <Message type="error" message={error} />
+
+
 
       <Section label="Partícipes">
 
-
         <FlexDiv>
-          <Select options={displayPointsOfSale} bind={[IDpointOfSale, setIDPointOfSale]}
-            fallback={displayRoot ? "No tienes ningún punto de venta. Crea tu primero:" : ""} />
-          <Cond bool={displayRoot}><PlusIcon link={"/"} /></Cond>
+          <Select options={branches} value={branch} onChange={setBranch} subValue={IDpointOfSale} subOnChange={setIDPointOfSale} 
+            fallback="Crea una sucursal:" label="Elige una sucursal y un punto de venta" />
+          <PlusIcon link={"/inicio/sucursales/nuevo"} />
         </FlexDiv>
 
-        <Cond bool={flux==="in"}>
-          <BiChevronsUp style={{ margin: "1.2rem auto", display: "block", cursor: "default", fontSize: "2rem", color: "white" }} />
-        </Cond>
-
-        <Cond bool={flux==="out"}>
-          <BiChevronsDown style={{ margin: "1.2rem auto", display: "block", cursor: "default", fontSize: "2rem", color: "white" }} />
-        </Cond>
-
-        <Switch falseIcon={<BiUser />} trueIcon={<BiGroup />} bind={[sendingToGroup, setSendingToGroup]} />
-
+        
+        <Cond bool={type !== "Va"}>
+        {toSend?
+        <BiChevronsDown style={{ margin: "0 auto", display: "block", cursor: "default", fontSize: "2rem", color: "#333" }} />:
+        <BiChevronsUp   style={{ margin: "0 auto", display: "block", cursor: "default", fontSize: "2rem", color: "#333" }} />}
         <FlexDiv>
           <Select
-            options=  {sendingToGroup ? displayGroups : displayPartners}
-            bind=     {sendingToGroup ? [IDgroup, setIDGroup] : [partner, setPartner]}
-            fallback= {sendingToGroup ? "No tienes ningún grupo. Crea tu primero:" : "No tienes ningún socio. Crea tu primero:"}
-          />
+            options={thirdParty} label="Elige un tercero (opcional)" value={thirdParty} onChange={setThirdParty}
+            fallback={"Registra un tercero para autocompletar datos de operaciones."} />
           <PlusIcon link="/" />
         </FlexDiv>
-
+        </Cond>
 
       </Section>
 
+
+      
+      <Cond bool={type !== "Va"}>
+      <Retractable label="Datos del tercero" initial={false}>
+
+        <FlexDiv>
+
+        <Field label="Nombre" bind={[name, setName]} validator={Valid.names(name)} />
+
+        <Cond bool={(!toSend&&"OcRmFaNdNcRxCh".includes(type)) || (toSend&&"OcRmFaNdNcRx".includes(type))}>
+          <Field label="C.U.I.T." bind={[CUIT, setCUIT]} validator={Valid.CUIT(CUIT)} />
+        </Cond>
+
+        </FlexDiv>
+
+        <Cond bool={"OcRmFaNdNcRx".includes(type)}>
+          <DateTime label="Fecha de inicio de actividades" value={startOfActivities} onChange={setStartOfActivities}  />
+        </Cond>
+
+        <FlexDiv>
+
+        <Cond bool={(!toSend&&!"Rs".includes(type)) || (toSend&&!"RsCh".includes(type))}>
+          <Field label="Domicilio" bind={[address, setAddress]} validator={Valid.address(address)} />
+        </Cond>
+
+        <Cond bool={toSend&&!"RsPa".includes(type)}>
+          <Field label="Localidad" bind={[locality, setLocality]} validator={Valid.address(locality)} />
+        </Cond>
+
+        <Cond bool={!"RsCh".includes(type)}>
+          <Field label="Teléfono" type="tel" bind={[phone, setPhone]} validator={Valid.phone(phone)} />
+        </Cond>
+
+        </FlexDiv>
+
+        <Cond bool={!"RsChPa".includes(type)}>
+          <FlexDiv>
+          <Field label="Email" type="email" bind={[email, setEmail]} validator={Valid.email(email)} />
+          <Cond bool={toSend}>
+            <Field label="Código postal" type="number" bind={[postalCode, setPostalCode]} validator={Valid.postalCode(postalCode)} />
+          </Cond>
+          </FlexDiv>
+          <Radio legend="Categoría" options={["Responsable Monotributista", "Responsable Inscripto"]} bind={[VATCategory, setVATCategory]} />
+        </Cond>
+
+      </Retractable>
+      </Cond>
+      
+
+      
       <Retractable label="Datos de la operación">
 
-
-        <Cond bool={("purchase-order" + "remittance" + "invoice" + "debit-note" + "credit-note").includes(type)}>
+        <Cond bool={"OcRmFaNdNc".includes(type)}>
           <Table
-            headers={[{ th: "Cantidad", type:"number" }, { th: "Descripción" }, { th: "Precio",type:"numebr" }]}
-            bind={[productTable, setProductTable]} maxRows={10}
-          />
-        </Cond>
-
-        <Cond bool={("invoice" + "debit-note" + "credit-note").includes(type)}>
-          <Radio legend="IVA" options={["21%", "10%", "4%", "0%"]} bind={[VATPercentage, setVATPercentage]} />
-        </Cond>
-
-        <Cond bool={("receipt-x"+"receipt").includes(type)}>
-          <Field label="Pagador" bind={[payer, setPayer]} />
-        </Cond>
-
-        <Cond bool={("receipt-x").includes(type)}>
-          <Table label="Forma de pago"
-            headers={[{ th: "Cheque",type:"number"}, { th: "Documentos", type:"number" }, { th: "Efectivo",type:"number"}]}
-            bind={[paymentMethods, setPaymentMethods]} maxRows={1}
-          />
-          <Table label="Imputación del pago"
-            headers={[{th:"Tipo"},{th:"Número",type:"number"},{th:"Importe",type:"number"},{th:"Abonado",type:"number"} ]}
-            bind={[paymentImputation, setPaymentImputation]} maxRows={3}
-          />
-          <Table label="Detalle de valores"
-            headers={[{th:"Tipo"},{th:"Banco"},{th:"Número"},{th:"Fecha de depósito", type:"date"},{th:"Importe",type:"number"}]}
-            bind={[detailOfValues, setDetailOfValues]} maxRows={3}
-          />
+            thead={[{ name: "Cantidad", type: "number" }, { name: "Descripción" }, { name: "Precio", type: "number" }]}
+            tbody={productTable} onChange={setProductTable} maxRows={10} />
         </Cond>
         
+        <FlexDiv>
+
+        <Cond bool={"RsPa".includes(type)}>
+          <DateTime label="Fecha límite" value={deadline} onChange={setDeadline} />
+        </Cond>
+
+        <Cond bool={"Pa"===type}>
+          <Switch label="Sin protesto" value={noProtest} setter={setNoProtest} />
+        </Cond>
+
+        </FlexDiv>
+
+        <Cond bool={"FaNdNc".includes(type)}>
+          <Field label="Impuesto" type="number" bind={[tax, setTax]}/>
+          <Radio legend="IVA" options={["21%", "10%", "4%", "0%"]} bind={[VAT, setVAT]} />
+        </Cond>
+
+        <Cond bool={"Rx"===type}>
+          <Table label="Forma de pago"
+            thead={[{ name: "Cheque", type: "number" }, { name: "Documentos", type: "number" }, { name: "Efectivo", type: "number" }]}
+            tbody={RxAmounts} onChange={setRxAmounts} maxRows={1} />
+
+          <Table label="Imputación del pago"
+            thead={[{ name: "Tipo" }, { name: "Número", type: "number" }, { name: "Importe", type: "number" }, { name: "Abonado", type: "number" }]}
+            tbody={RxInvoices} onChange={setRxInvoices} maxRows={3} />
+
+          <Table label="Detalle de valores"
+            thead={[{ name: "Tipo" }, { name: "Banco" }, { name: "Número" }, { name: "Fecha de depósito", type: "date" }, { name: "Importe", type: "number" }]}
+            tbody={RxDetails} onChange={setRxDetails} maxRows={3} />
+        </Cond>
+
+
+        <FlexDiv>
+        <Cond bool={"RsPaVa".includes(type)}>
+          <Field label="Descripción" bind={[description, setDescription]} />
+        </Cond>
+
+        <Cond bool={"RsPaVaCh".includes(type)}>
+          <Field type="number" note={"Va"===type?"(acepta valores negativos)":""} label={"Cantidad"} bind={[amount, setAmount]} />
+        </Cond>
+        </FlexDiv>
+
+
+        <Cond bool={"Ch"===type}>
+          <Field label="Diferencia de tiempo en días" type="number" bind={[timeDelay, setTimeDelay]} />
+          <Switch label="Cruzado" value={crossed} setter={setCrossed} />
+        </Cond>
 
       </Retractable>
 
+
+
+      <Cond bool={!"VaChRsPa".includes(type)}>
       <Retractable label="Datos opcionales">
 
-
-        <Cond bool={("purchase-order" + "remittance" + "invoice" + "debit-note" + "credit-note").includes(type)}>
+        <Cond bool={"OcRm".includes(type)}>
           <Textarea label="Observaciones" bind={[observations, setObservations]} />
         </Cond>
 
-        <Cond bool={type==="purchase-order"}>
+        <Cond bool={"Oc".includes(type)}>
           <Field label="Vendedor de preferencia" bind={[seller, setSeller]} />
+        </Cond>
+
+        <Cond bool={"OcFaNdNc".includes(type)}>
           <Radio legend="Condiciones de venta" options={["Al contado", "Cuenta corriente", "Cheque", "Pagaré"]}
-          bind={[conditions, setConditions]} />
-          <DateTime label="Fecha de preferencia "value={deliveryDeadline} onChange={setDeliveryDeadline} nonPast={true} />
-          <Field label="Lugar de entrega" bind={[placeOfDelivery, setPlaceOfDelivery]} />
-          <Field label="Transportista" bind={[carrier, setCarrier]} />
+          bind={[sellConditions, setSellConditions]} />
         </Cond>
 
-        <Cond bool={("receipt-x").includes(type)}>
-          <DateTime label="" type="time" value={paymentTime} onChange={setPaymentTime} />
-        </Cond>
-        <Cond bool={("receipt-x"+"receipt"+"promissory-note").includes(type)}>
-          <Field label="Domicilio de pago" bind={[payerAddress, setPayerAdress]} />
+        
+        <Cond bool={"Oc"===type}>
+          <FlexDiv>
+            <DateTime label="Fecha límite" nonPast value={deadline} onChange={setDeadline} />
+            <Field label="Lugar de entrega" bind={[placeOfDelivery, setPlaceOfDelivery]} />
+            <Field label="Transportista" bind={[carrier, setCarrier]} />
+          </FlexDiv>
         </Cond>
 
+        <Cond bool={"FaNdNc".includes(type)}>
+          <Field label="Remito N°" bind={[IDRemittance, setIDRemittance]}/>
+        </Cond>
+
+        <Cond bool={"Rx"===type}>
+          <FlexDiv>
+            <Field label="Domicilio de pago" bind={[paymentAddress, setPaymentAdress]} />
+            <DateTime label="Horario de pago" type="time" value={paymentTime} onChange={setPaymentTime} />
+          </FlexDiv>
+        </Cond>
 
       </Retractable>
+      </Cond>
+
+      <Message type="error" message={error} />
 
       <Button type="submit">Generar</Button>
     </Form>
   );
 }
 
-
-//# Los siguientes elementos son muy simples, por eso se decidió no moverlos a archivos separados. #//
-
 /**Un signo + con Link a la dirección especificada.*/
 const PlusIcon: React.FC<{ link: string }> = ({ link }) => {
   return (
-  <Link to={link} style={{ flex: .5, marginTop: ".3rem", fontSize: "2rem", display: "block", textAlign: "center", color: "#333" }}>
-    <BiPlusCircle />
+  <Link to={link} style={{ flex: .2, marginTop: ".3rem", fontSize: "1.2rem", display: "block", textAlign: "center", color: "#444" }}>
+    <BiPlus />
   </Link>)
 }

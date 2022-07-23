@@ -32,7 +32,7 @@ export default function Retractable({ children, label, initial=true, sync, onCli
     return (
         <div className= { extended ? "retractable" : "retractable folded" }>
 
-            <div onClick={change}>
+            <div onClick={change} data-retractable-header>
                 {label}
                 {extended?<BiChevronUp/>:<BiChevronDown/>}
             </div>

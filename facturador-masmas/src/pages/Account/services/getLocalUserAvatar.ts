@@ -7,7 +7,7 @@ export default function getLocalUserAvatar(callback: Function): void {
     else callback(false);
 
     async function returnAsFile():Promise<void> {
-        const blob = await base64ToBlob(localStorage.getItem('avatar')); //"data:image/png;base64,".length === 22
+        const blob = await base64ToBlob(localStorage.getItem('avatar'));
         callback(true, blob);
     }
 }

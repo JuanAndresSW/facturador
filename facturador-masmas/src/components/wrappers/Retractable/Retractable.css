@@ -1,4 +1,4 @@
-.retractable div:nth-child(1){
+.retractable [data-retractable-header]{
     display: flex;
     align-items: center;
     flex-flow: nowrap;
@@ -10,7 +10,7 @@
     font-family: monospace;
     cursor:pointer;
 }
-.retractable div svg {
+[data-retractable-header] svg {
     display: block;
     font-size: 2rem;
 }

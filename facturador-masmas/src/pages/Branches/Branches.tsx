@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import NewPoint from './NewBranch';
 
 //Componentes.
@@ -11,15 +11,24 @@ import getBranches from './services/getBranches';
 import branches, {branchesContent} from './models/branches';
 
 //GUI.
-import { Loading, OptionWithPhoto, Plus } from "components/standalone";
+import { Loading, OptionWithPhoto, Pagination, Plus } from "components/standalone";
 import { Section, FlexDiv } from "components/wrappers";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { Dropdown } from "components/formComponents";
+import { BiRefresh } from "react-icons/bi";
 
+
+const sortOptions = [
+  {name: "Ordenar por fecha",           value: "createdAt"},
+  {name: "Ordenar por nombre",          value: "name"},
+  {name: "Ordenar por nombre de calle", value: "street"}
+]
 
 /**Muestra una lista de sucursales con opciones para crear, ver y editar. */
 export default function Branches(): JSX.Element {
 
   const navigate = useNavigate();
+  const [updater, render] = useReducer(x => x + 1, 0);
 
   //Lista de sucursales.
   const [branches, setBranches]:
@@ -29,25 +38,40 @@ export default function Branches(): JSX.Element {
   [branchesContent, React.Dispatch<React.SetStateAction<branchesContent>>] = useState(undefined);
   //Id de la sucursal seleccionada.
   const [branchID, setBranchID] = useState(-1);
+  const [page, setPage] = useState(0);
+  const [sortBy, setSortBy] = useState("createdAt");
 
   //Recuperar la lista de sucursales.
-  useEffect(()=>{
-    getBranches(1, "createdAt", "asc", (ok:boolean, content: branches)=>{
+  useEffect(requestBranches, [page, sortBy]);
+
+  function requestBranches(): void {
+    getBranches(page, sortBy, "asc", (ok:boolean, content: branches)=>{
       if (ok) setBranches(content);
     });
-  }, []);
+  }
 
   
 
   /**Pantalla de selección de opciones de punto de venta. */
   const selectionScreen = (
     <Section label="Administrar instalaciones y puntos de venta">
-      <FlexDiv justify="flex-start">
+      {!branches? null :
+        <FlexDiv justify="flex-start">
+          <Pagination page={page} setPage={setPage} totalPages={branches.totalPages} last={branches.last} />
+          <Dropdown options={sortOptions} value={sortBy} onChange={setSortBy}/>
+          <BiRefresh onClick={requestBranches} style={{color:"#888", fontSize:"1.8rem", cursor:"pointer"}}/>
+        </FlexDiv>
+      }
+      <FlexDiv justify="flex-start" align="flex-start">
+
 
         {
           !branches? <Loading/>:
 
           <>
+
+          <Plus link="./nuevo" />
+          
           {
             branches.content.map((branch, index) => 
             <OptionWithPhoto
@@ -60,8 +84,6 @@ export default function Branches(): JSX.Element {
             )
             
           }
-            
-            <Plus link="./nuevo" />
           
           </>
         }

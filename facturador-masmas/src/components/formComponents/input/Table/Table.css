@@ -2,13 +2,22 @@ table {
     display: block;
     border: 1px solid #bbb;
     border-radius: 5px;
-    background-color: #ddd;
-    width: 100%;
-    padding: .2rem .4rem;
-    overflow-x: auto;
+    background-color: #eee;
+
+    width:min-content;
+    max-width: 98%;
+    max-height: 20rem;
+    margin: 0 auto;
+    overflow: auto;
+
+    border-spacing: 0;
 }
 table thead {
     cursor: default;
+    
+}
+table tbody {
+    white-space: nowrap;
 }
 table svg {
     display: block;
@@ -21,15 +30,25 @@ table svg {
 table svg:hover {
     cursor: pointer;
     color: #35f;
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 tbody label {
-    margin: 0 .4rem;
+    margin: 0 .2rem;
+}
+thead tr {
+    position: relative;
 }
 thead tr th {
     color: #333;
+    background-color: #eee;
+    border-bottom: #bbb solid 1px;
+
     font-family: monospace;
     font-weight: normal;
     font-size: .8rem;
     padding: .2rem;
+    min-width: 6rem;
+
+    position: sticky;
+    top: 0;
 }

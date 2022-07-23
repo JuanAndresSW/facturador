@@ -1,70 +1,49 @@
 import { Option } from "components/standalone";
-import { Section } from 'components/wrappers';
+import { FlexDiv, Section } from 'components/wrappers';
 import React from "react";
-import { BiChevronLeft, BiHistory, BiLogInCircle, BiLogOutCircle, BiTransferAlt } from "react-icons/bi";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import DocumentForm from "./OperationForm";
+import { Route, Routes } from "react-router-dom";
+import OperationForm from "./OperationForm";
 
-/**Pantalla de selección de tipos de operaciones.*/
+/**Pantalla de selección de tipos de operaciones, con el historial de operaciones.*/
 export default function Operation() {
   return (
     <Routes>
-      <Route index                element={OperationSelectionScreen} />
-      <Route path={"/enviar/*"}   element={<Documents flux="out" />} />
-      <Route path={"/recibir/*"}  element={<Documents flux="in" />} />
-      <Route path={"/registro"}   element={<>REGISTRO</>} />
-      <Route path={"/historial"}  element={<>HISTORIAL</>} />
+      <Route index                      element={OperationMainScreen} />
+      <Route path={"/factura"}          element={<OperationForm type="Fa" />} />
+      <Route path={"/nota-de-credito"}  element={<OperationForm type="Nc" />} />
+      <Route path={"/nota-de-debito"}   element={<OperationForm type="Nd" />} />
+      <Route path={"/recibo-x"}         element={<OperationForm type="Rx" />} />
+      <Route path={"/recibo"}           element={<OperationForm type="Rs" />} />
+      <Route path={"/orden-de-compra"}  element={<OperationForm type="Oc" />} />
+      <Route path={"/remito"}           element={<OperationForm type="Rm" />} />
+      <Route path={"/cheque"}           element={<OperationForm type="Ch" />} />
+      <Route path={"/pagare"}           element={<OperationForm type="Pa" />} />
+      <Route path={"/variacion"}        element={<OperationForm type="Va" />} />
     </Routes>
   );
 }
 
-const OperationSelectionScreen = (
+const OperationMainScreen = (
   
   <>
-    <Section label="Nuevo documento comercial">
-      <Option label="Enviar" icon={<BiLogOutCircle />} link="./enviar" />
-      <Option label="Recibir" icon={<BiLogInCircle />} link="./recibir" />
+    <Section label="Nueva operación">
+      <FlexDiv wrap={false} justify="flex-start">
+        <Option name="Factura"          label="Fa" link="./factura"         color="#fa1" />
+        <Option name="Orden de compra"  label="Oc" link="./orden-de-compra" color="#248" />
+        <Option name="Remito"           label="Rm" link="./remito"          color="#841" />
+        <Option name="Recibo X"         label="Rx" link="./recibo-x"        color="purple" />
+        <Option name="Recibo simple"    label="Rs" link="./recibo"          color="#299" />
+        <Option name="Nota de crédito"  label="Nc" link="./nota-de-credito" color="#285" />
+        <Option name="Nota de débito"   label="Nd" link="./nota-de-debito"  color="hotpink" />
+        <Option name="Pagaré"           label="Pa" link="./pagare"          color="842" />
+        <Option name="Cheque"           label="Ch" link="./cheque"          color="green" />
+        <Option name="Variación"        label="Va" link="./variacion"       color="gray" />
+      </FlexDiv>
     </Section>
 
-    <Section label="Otras operaciones">
-      <Option label="Registar un egreso o ingreso" icon={<BiTransferAlt />} link="./registro" />
-      <Option label="Ver o continuar con una transacción" icon={<BiHistory />} link="./historial" />
-    </Section>
+    <div>
+
+
+    </div>
   </>
-);
-
-
-/**Pantalla de selección de tipos de documentos comerciales.*/
-function Documents({ flux }: {flux:("in"|"out")}): JSX.Element {
-  const navigate = useNavigate();
-  return (
-    <>
-    <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
-    <Routes>
-      <Route index                      element={documentsSelectionScreen} />
-      <Route path={"/factura"}          element={<DocumentForm flux={flux} type="invoice" />} />
-      <Route path={"/nota-de-credito"}  element={<DocumentForm flux={flux} type="credit-note" />} />
-      <Route path={"/nota-de-debito"}   element={<DocumentForm flux={flux} type="debit-note" />} />
-      <Route path={"/recibo-x"}         element={<DocumentForm flux={flux} type="receipt-x" />} />
-      <Route path={"/recibo"}           element={<DocumentForm flux={flux} type="receipt" />} />
-      <Route path={"/orden-de-compra"}  element={<DocumentForm flux={flux} type="purchase-order" />} />
-      <Route path={"/remito"}           element={<DocumentForm flux={flux} type="remittance" />} />
-      <Route path={"/cheque"}           element={<DocumentForm flux={flux} type="check" />} />
-      <Route path={"/pagare"}           element={<DocumentForm flux={flux} type="promissory-note" />} />
-    </Routes></>
-  );
-}
-
-const documentsSelectionScreen = (
-  <Section>
-    <Option label="Factura"         link="./factura" />
-    <Option label="Nota de crédito" link="./nota-de-credito" />
-    <Option label="Nota de débito"  link="./nota-de-debito" />
-    <Option label="Recibo X"        link="./recibo-x" />
-    <Option label="Recibo"          link="./recibo" />
-    <Option label="Orden de compra" link="./orden-de-compra" />
-    <Option label="Remito"          link="./remito" />
-    <Option label="Pagaré"          link="./pagare" />
-    <Option label="Cheque"          link="./cheque" />
-  </Section>
 );

@@ -38,13 +38,13 @@
   display: none;
   background-color: #fff;
   border: 1px solid #777;
-  border-radius: 10px;
+  border-radius: 3px;
   font-family: monospace;
 }
 
 #profile-menu-list p {
   cursor: default;
-  font-size: 1.3rem;
+  font-size: 1rem;
   margin: .4rem;
   text-align: center;
   color: #272727;
@@ -52,7 +52,7 @@
 
 #profile-menu-list ul {
   list-style: none;
-  padding: .5rem;
+  padding: 0 .5rem;
 }
 
 #profile-menu-list ul li {
@@ -69,7 +69,6 @@
 
 #profile-menu-list ul li a {
   padding: .4rem .6rem;
-  border: 1px solid gainsboro;
   border-radius: 99px;
   text-decoration: none;
   color: black;
@@ -87,7 +86,7 @@
   content: "";
   position: absolute;
   right: 10%;
-  top: -10%;
+  top: -13%;
   border-width: 8px;
   border-style: solid;
   border-color: transparent transparent #555 transparent;

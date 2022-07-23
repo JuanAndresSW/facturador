@@ -28,8 +28,8 @@
 }
 
 .image svg {
-    font-size: 1.4rem;
-    display: block;
+    color: #aaa;
+    font-size: 1.2rem;
     position: absolute;
     bottom: 8.2rem;
     right: .1rem;

@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import postPointOfSale from '../../services/postPointOfSale';
+import getPointsOfSale from "../../services/getPointsOfSale";
+import deletePointOfSale from "../../services/deletePointOfSale";
+
+import { pointsOfSale } from '../../models/pointsOfSale';
 
 import { Message } from "components/formComponents";
-import { Loading } from "components/standalone";
+import { Loading, Pagination } from "components/standalone";
 import { BsFillXCircleFill } from "react-icons/bs";
-import {FlexDiv} from "components/wrappers";
+import {Confirm, FlexDiv} from "components/wrappers";
 import './BranchPoints.css';
 
 
@@ -13,42 +17,82 @@ import './BranchPoints.css';
 export default function BranchPoints({IDBranch}:{IDBranch:number}): JSX.Element {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [points, setPoints]:
+    [pointsOfSale, React.Dispatch<React.SetStateAction<pointsOfSale>>]  = useState();
+    const [page, setPage] = useState(0);
+
+    useEffect(loadPointsOfSaleList, [page]);
 
     function newPointOfSale(): void {
         setLoading(true);
-        postPointOfSale(IDBranch, (ok:boolean,data:string)=>{
+        postPointOfSale(IDBranch, (ok:boolean)=>{
             if (ok) loadPointsOfSaleList();
-            else setError(data);
+            else setError("Error al crear nuevo punto de venta.");
         });
         setLoading(false);
     }
 
     function loadPointsOfSaleList() {
-        console.log("this should load all pointsofsale");
+        getPointsOfSale(IDBranch, page, (ok:boolean, list:pointsOfSale) => {
+            if (ok) setPoints(list);
+        })
     }
 
-    function deletePointOfSale(): void {
-        window.confirm("¿Está seguro de que quiere eliminar este punto de venta?\nEsta acción no puede ser revertida.");
+    function requestDeletePointOfSale(IDPoint:number, index:number): void {
+        deletePointOfSale(IDPoint, (ok:boolean, error:string) => {
+            if (ok) loadPointsOfSaleList();
+            else setError(error);
+        });
     }
 
     return (
-        <div data-BranchPoints>
+        <div data-branchpoints>
             <h1>Puntos de venta</h1>
 
-            <FlexDiv>
-                <div className="point-list">
-                    <h3>N°999</h3>
+            {!points?null:
+                
+            <div style={{width:"70%"}}>
 
-                    <BsFillXCircleFill onClick={deletePointOfSale} />
-                </div>
-            </FlexDiv>
+                <FlexDiv>
 
-            {loading? <Loading /> :
-            <div className="point-plus" onClick={newPointOfSale}>
-                +
+                    <Pagination page={page} setPage={setPage} totalPages={points.totalPages} last={points.last}/>
+                    {loading? <Loading /> :
+
+            
+                    <div className="point-plus" onClick={newPointOfSale}>
+                        +
+                    </div>}
+                    
+                </FlexDiv>
+
+                <FlexDiv>
+
+                    {points.content.map((point, index)=>
+                        <div className="point" key={index}>
+
+                            <h3>N°{toFourDigitNumber(point.pointOfSaleNumber)}</h3>
+
+                            <Confirm label={`El punto de venta ${toFourDigitNumber(point.pointOfSaleNumber)} será eliminado, las operaciones se conservarán. ¿Estás seguro?`}
+                            onConfirm={()=>requestDeletePointOfSale(point.pointOfSaleId, index)}>
+                                <BsFillXCircleFill />
+                            </Confirm>
+                        </div>
+                    )}
+
+                </FlexDiv>
+
+                <Message type="error" message={error}/>
             </div>}
-
-            <Message type="error" message={error}/>
+            
         </div>
     );
+}
+
+function toFourDigitNumber(number: number): string {
+    switch(number.toString().length) {
+        case 1: return "000"+number;
+        case 2: return "00"+number;
+        case 3: return "0"+number;
+        default: return number.toString().slice(0,number.toString().length-4); 
+    }
 }

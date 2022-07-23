@@ -22,21 +22,22 @@ export default function OptionWithPhoto({ title, subtitle, image, onClick }: pro
 
     //Convertir la imágen base 64 a URL.
     const [photo, setPhoto] = useState(undefined);
-    useEffect(()=>{
+    useEffect(imageToURL, [image]);
+    function imageToURL(): void {
         if (image) {
             base64ToBlob(image).then((blob)=>{
                 setPhoto(URL.createObjectURL(blob));
             });
         } 
-    }, [])
+    }
 
     return (
         
         <div data-component='OptionWithPhoto'>
 
             <div>
-            <a onClick={onClick()}>
-                <img src={photo? photo : defaultPhoto  } />
+            <a onClick={()=>onClick()}>
+                <img src={photo?photo:defaultPhoto} />
                 <p><abbr title={title}>{title}</abbr></p>
                 <span><p><abbr title={subtitle}>{subtitle}</abbr></p></span>
             </a>

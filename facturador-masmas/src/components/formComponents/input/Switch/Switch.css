@@ -7,29 +7,22 @@
     margin: 1rem auto;
     background-color: #fff;
     border-radius: 999px;
-    border: 1px solid #ddd;
-}
-.switch svg {
-    color: #ccc;
-    display: block;
-    font-size: 2rem;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
+    border: 1px solid #aaa;
     cursor: pointer;
 }
-.switch.switch-true svg:nth-child(2) {
-    transform: scale(1.8);
+.switch svg {
+    color: #aaa;
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
     transition: .2s;
-    border: 1px solid gainsboro;
+}
+.switch.switch-true svg:nth-child(2) {
+    transform: scale(1.6);
     color: #3700ff;
-    background-color: #fff;
 }
 
 .switch.switch-false svg:nth-child(1) {
-    border: 1px solid gainsboro;
-    transform: scale(1.8);
-    transition: .2s;
-    color: #3700ff;
-    background-color: #fff;
+    transform: scale(1.6);
+    color: #ff2323;
 }

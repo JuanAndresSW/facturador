@@ -5,3 +5,5 @@ export {default as Option} from './Option/Option';
 export {default as OptionWithPhoto} from './OptionWithPhoto/OptionWithPhoto';
 export {default as Plus} from './Plus/Plus';
 export {default as SplashScreen} from './SplashScreen/SplashScreen';
+export {default as Pagination} from './Pagination/Pagination';
+export {default as BackArrow} from './BackArrow';

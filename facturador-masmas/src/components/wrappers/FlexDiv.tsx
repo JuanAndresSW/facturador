@@ -15,8 +15,12 @@ type props = {
  */
 const FlexDiv: React.FC<props> = ({children, wrap=true, justify="center", align="center"}) => {
     return (
-      <div style={{ display: "flex", alignItems: align, justifyContent: justify, 
-      flexFlow:wrap?'wrap':'nowrap', width:'100%' }}>
+      <div style={
+        { display: "flex", alignItems: align, justifyContent: justify, 
+          flexFlow:wrap?'wrap':'nowrap', width:'100%',
+          overflowX: "auto"
+        }}>
+
         {children}
       </div>
     )

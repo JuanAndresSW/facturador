@@ -1,5 +1,5 @@
+import { FlexDiv } from "components/wrappers";
 import React from "react";
-import { BiPlusCircle } from "react-icons/bi";
 import { MdAddCircleOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
 import './Plus.css';

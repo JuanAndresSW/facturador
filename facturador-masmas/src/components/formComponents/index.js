@@ -8,6 +8,7 @@ export {default as Textarea} from './input/Textarea/Textarea';
 export {default as Radio} from './input/Radio/Radio';
 export {default as Switch} from './input/Switch/Switch';
 export {default as Select} from './input/Select/Select';
+export {default as Dropdown} from './input/Dropdown/Dropdown';
 export {default as Table} from './input/Table/Table';
 export {default as DateTime} from './input/DateTime/DateTime';
 

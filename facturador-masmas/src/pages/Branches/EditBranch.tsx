@@ -18,7 +18,7 @@ import { base64ToBlob } from "utilities/conversions";
 
 //Servicios.
 import putBranch from './services/putBranch';
-function getBranchLogo(callback: Function) {return ""}
+import getBranchLogo from './services/getBranchLogo';
 
 type props = {
   branch: branchesContent;
@@ -58,9 +58,9 @@ export default function EditBranch({branch}:props): JSX.Element {
   useEffect(()=>{
     base64ToBlob(branch.photo).then(convertedPhoto=>setPhoto(convertedPhoto));
 
-    /* getBranchLogo((ok:boolean, content:string) => {
+    getBranchLogo(branch.branchId, (ok:boolean, content:string) => {
       if (ok) base64ToBlob(content).then(convertedLogo=>setLogo(convertedLogo));
-    }) */
+    });
   },[]);
 
   function validate():void {
@@ -119,7 +119,7 @@ export default function EditBranch({branch}:props): JSX.Element {
       onClick={(state:boolean)=>{setBoolAddress(state); setBoolContact(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-          <Select label="Provincia"           bind={[province?province:branch.province, setProvince]}     options={provinces} />
+          <Select label="Provincia"           value={province?province:branch.province} onChange={setProvince}     options={provinces} />
           <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)}
           placeholder={branch.department} />
           <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}

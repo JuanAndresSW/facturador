@@ -38,8 +38,7 @@ export default class Valid {
   }
 
   public static vatCategory(vatCategory: string, setError?: Function): boolean {
-    if (
-         vatCategory === "Responsable Monotributista" 
+    if ( vatCategory === "Responsable Monotributista" 
       || vatCategory === "Responsable Inscripto"
     ) return true;
     if (setError) setError("Seleccione una categoría");
@@ -87,6 +86,12 @@ export default class Valid {
   public static hexColor(hexColor: string, setError?: Function): boolean {
     if (/^#[\da-f]{6}$/.test(hexColor)) return true;
     if (setError) setError("Ingrese un color válido.");
+    return false;
+  }
+
+  public static date(date: string, setError?: Function): boolean {
+    if (/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(date)) return true;
+    if (setError) setError("Ingrese una fecha válida.");
     return false;
   }
 }

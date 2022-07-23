@@ -5,87 +5,72 @@ import Field from "../Field/Field";
 import './Table.css';
 
 type props = {
-    label?: string;
-    headers: {th:string, type? :string}[];
-    maxRows: number;
-    bind: [string[][], React.Dispatch<React.SetStateAction<string[][]>>];
+    label?: string,
+    thead: {name:string, type? : string}[],
+    tbody: string[][],
+    onChange: React.Dispatch<React.SetStateAction<any[][]>>,
+    maxRows?: number
 }
 
 /**
  * Una tabla cuyas celdas son campos de texto o numéricos. Permite agregar y eliminar filas.
- * @param props.label - El título de la tabla.
- * @param props.headers - Array de encabezados de columnas. Expresa td: el título, y number: si es un campo numérico.
- * @param props.maxRows - Número máximo de filas permitidas.
- * @param props.bind - Array desestructurado asociado al valor del input. El estado (0) es un array bidimensional, 
- * con cada sub-array siendo una fila con la misma longitud que la expresada en headers.
+ * @param props.label    - El título de la tabla.
+ * @param props.thead    - Lista de encabezados de columnas. Expresa el nombre y el tipo de input. Por dedefecto es de tipo texto.
+ * @param props.tbody    - array bidimensional, con cada array interno siendo una columna, habiendo la misma cantidad de elementos que la expresada en thead.
+ * @param props.onChange - Función a la cual se argumenta los nuevos valores de la tabla al momento de un cambio. 
+ * @param props.maxRows  - Número máximo de filas permitidas. Por defecto es 1.
  * @example 
- * headers = [{label:"foo"}, {label:"bar", number:true}];
- * bind = [table, setTable] = useState([["", "0"]]); //dos columnas y una fila
+ * thead = [{name:"foo"}, {name:"bar", type:"date"}];
+ * tbody = [[""][0]]; //Dos columnas y una fila.
  */
-export default function Table({ label = "", headers, maxRows, bind }: props): JSX.Element {
+export default function Table({ label="", thead, tbody, onChange, maxRows=1 }: props): JSX.Element {
 
-    /**Actualiza el valor de una celda de la tabla */
-    function setter(rowIndex:number, colIndex:number, value:string) {
-        //Ignorar si la celda es numérica y el número es negativo.
-        if (headers[colIndex].type==="number" && parseInt(value) < 1) return;
-        if (value.length > 20) return;
-        //Hacer una shallow copy y modificarla para forzar re-renderizado.
-        const table = [...bind[0]];
-        table[rowIndex][colIndex] = headers[colIndex].type==="number"? parseInt(value).toString() : value;
-        bind[1](table);
+    function setCellValue(rowIndex:number, colIndex:number, value:string) {
+        const newTable = [...tbody];
+        newTable[colIndex][rowIndex] = value;
+        onChange(newTable);
     }
-
     function addRow() {
-        const table = [...bind[0]];
-        table.push(headers.map(()=>""));
-        bind[1](table);
+        const newTable = [...tbody];
+        newTable.forEach(column=>column.push(undefined));
+        onChange(newTable);
     }
     function removeRow() {
-        const table = [...bind[0]];
-        table.pop();
-        bind[1](table);
+        const newTable = [...tbody];
+        newTable.forEach(column=>column.pop());
+        onChange(newTable);
     }
 
-    return (
-        <>
+    return (<>
+    
         <legend>{label}</legend>
         <table>
-            <thead>
-            <tr>
-                {headers.map((header, index) => 
-                    <th key={index}>{header.th}</th>
-                )}
-            </tr>
-            </thead>
+
+            <thead><tr>
+                { thead.map((header, index) => <th key={index}>{header.name}</th> )}
+            </tr></thead>
 
             <tbody>
-                {bind[0].map((row, rowIndex) => 
+                { tbody[0].map((cell, rowIndex) =>
+
                     <tr key={rowIndex}>
-                        {
-                        //Slice es usado para no exceder el número de columnas.
-                        row.slice(0, headers.length).map((cell, colIndex) =>
+
+                        {tbody.slice(0,thead.length).map((col, colIndex) =>
                         <td key={colIndex}>
                             {
-                            headers[colIndex].type === "date" ?
-                            (
-                                <DateTime value={cell} onChange={(value:string)=>
-                                setter(rowIndex, colIndex, value)} />
-                            )
-                            :
-                            (
-                                <Field 
-                                type={headers[colIndex].type === "number"?"number":"text"}
-                                bind={
-                                [cell,
-                                (value:string)=>setter(rowIndex, colIndex, value)]
-                                } />
-                            )
+                            thead[colIndex].type === "date" ?
+                    
+                            <DateTime value={col[rowIndex]} onChange={(value:string)=>setCellValue(rowIndex, colIndex, value)} />
                             
-                                
+                            :
+                            
+                            <Field type={thead[colIndex].type}
+                            bind={[col[rowIndex], (value:string)=>setCellValue(rowIndex, colIndex, value)]} />
                             }
-                            </td>
+                        </td>
                         )}
-                        {(rowIndex+1 === bind[0].length && rowIndex>0) ? 
+
+                        {rowIndex!==0 && rowIndex+1 === tbody[0].length ? 
                         <td onClick={removeRow}><BsFileMinusFill /></td> : null}
                     </tr>
                 )}
@@ -93,23 +78,21 @@ export default function Table({ label = "", headers, maxRows, bind }: props): JS
             </tbody>
 
 
-            {bind[0].length < maxRows ?
+            {tbody[0].length === maxRows ? null :
             <tfoot>
                 <tr>
                 {
-                    headers.map((h, index)=>
-                        (index+1 === headers.length)?
-                        <td key={h.th}>
-                            <BsFillPlusSquareFill onClick={addRow} />
+                    thead.map((th, index)=>
+                        <td key={index}>{
+                            index+1 !== thead.length ? null :
+                            <BsFillPlusSquareFill onClick={addRow}/>
+                        }
                         </td>
-                        :<td key={h.th} />
                     )
                 }
                 </tr>
-            </tfoot>
-            : null}
+            </tfoot>}
 
         </table>
-        </>
-    );
+    </>);
 };

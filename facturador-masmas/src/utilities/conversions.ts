@@ -10,11 +10,9 @@ export const fileToBase64 = (file: File) => new Promise((resolve, reject): void 
 });
 
 
-/**Devuelve un Blob a partir de un string en base 64.
- * @important Corta los primeros 22 caracteres de formato. "data:image/jpeg;base64,".length === 22
-*/
+/**Devuelve un Blob a partir de un string en base 64.*/
 export async function base64ToBlob(base64String:string): Promise<Blob> {
-    const base64Response = await window.fetch(`data:image/jpeg;base64,${base64String.slice(22)}`);
+    const base64Response = await window.fetch(base64String);
     return await base64Response.blob();
 }
 

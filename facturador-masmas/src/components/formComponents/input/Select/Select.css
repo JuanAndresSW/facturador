@@ -1,18 +1,26 @@
-.select {
-    width: 80%;
-    flex-grow: 1 1 auto;
-    margin: 1rem auto;
-}
-
-.select select{
-    width: 100%;
-    padding: .5rem 1rem;
+.select{
+    width: 50%;
+    padding: .3rem 1rem;
+    margin: .5rem 0;
     background-color: #efefef;
     color: #222;
     border: 1px solid gainsboro;
     border-radius: 4px;
     cursor: context-menu;
+    font-family: monospace;
 }
 .select:focus {
-    border-color: rgb(3, 3, 105);
+    border-color: #02bac7;
+}
+
+.sub-select{
+    width: min-content;
+    padding: .3rem;
+    margin: .5rem;
+    background-color: #efefef;
+    color: #222;
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    cursor: context-menu;
+    font-family: monospace;
 }

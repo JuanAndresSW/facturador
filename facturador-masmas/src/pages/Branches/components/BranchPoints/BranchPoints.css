@@ -1,72 +1,68 @@
-[data-BranchPoints] {
-    background-color: #fefefe;
-    min-height: 14rem;
-    padding: 2rem 0 2rem;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+[data-branchpoints] {
+  background-color: #fefefe;
+  min-height: 14rem;
+  padding: 2rem 0 2rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-[data-BranchPoints] .point-list {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #eee;
-    max-width: 155rem;
-    width: 50%;
-    padding: .6rem .4rem;
-    position: relative;
+[data-branchpoints] div {
+  margin: 0 auto;
 }
 
-[data-BranchPoints] h1 {
-    text-align: center;
+[data-branchpoints] div .point-plus {
+  display: inline-block;
+  margin: 1rem;
+  border-radius: 999px;
+  background-color: #ccc;
+  width: 4rem;
+  padding: .6rem .4rem;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: .1s;
+  transition: .1s;
 }
 
-[data-BranchPoints] .point-list h3 {
-    font-size: 1rem;
-    margin: 0 .4rem;
-    padding-right: 1rem;
-    border-right: 1px solid #bbb;
-    float: left;
-    display: block;
-    cursor: default;
-}
-[data-BranchPoints] .point-list input {
-    display: inline;
-    margin: 0 .8rem;
-    border: none;
-    border-bottom: 2px solid #aaa;
-    background-color: transparent;
+[data-branchpoints] div .point-plus:hover {
+  background-color: #bbb;
 }
 
-[data-BranchPoints] .point-list input:focus {
-    border-bottom: 2px solid #158eff;
-    outline: none;
+[data-branchpoints] .point {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #eee;
+  width: 10rem;
+  padding: .2rem .4rem;
+  margin: .8rem;
+  position: relative;
 }
 
-[data-BranchPoints] .point-list svg{
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-[data-BranchPoints] .point-list svg:hover {
-    color:#fd5454;
-    cursor: pointer;
-}
-
-.point-plus {
-    margin: 1rem auto;
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    background-color: #fefefe;
-    max-width: 155rem;
-    width: 50%;
-    padding: .6rem .4rem;
-    text-align: center;
-    cursor: pointer;
-    transition: .1s;
-
+[data-branchpoints] .point h3 {
+  font-size: 1rem;
+  margin: 0;
+  padding-right: 1rem;
+  border-right: 1px solid #bbb;
+  float: left;
+  display: block;
+  cursor: default;
 }
 
-.point-plus:hover {
-    transform: scale(1.05);
-    border: 2px solid #1e40fc;
-    color: #1e40fc;
+[data-branchpoints] .point svg {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #444;
 }
+
+[data-branchpoints] .point svg:hover {
+  color: #fd5454;
+  cursor: pointer;
+}
+
+[data-branchpoints]:nth-child(even) {
+  background-color: #ddf;
+}
+
+[data-branchpoints] h1 {
+  text-align: center;
+}
+/*# sourceMappingURL=BranchPoints.css.map */

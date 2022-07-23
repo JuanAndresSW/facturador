@@ -16,7 +16,7 @@ export default function Button({children, type="button", onClick=()=>{return}}:p
     return (
         <button type={type==="submit"?"submit":"button"} 
         className={type==="delete"?"button delete":"button"}
-        onClick={onClick()}>
+        onClick={()=>onClick()}>
             {children}
         </button>
     )

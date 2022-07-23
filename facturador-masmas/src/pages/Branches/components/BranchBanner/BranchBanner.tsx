@@ -17,10 +17,7 @@ export default function BranchBanner({branch}:{branch:branchesContent}): JSX.Ele
     
     function tryDeleteBranch() {
       deleteBranch(branch.branchId, (ok:boolean, data:string)=> {
-        if (ok) {
-          navigate(-1);
-          window.location.reload();
-        }
+        if (ok) navigate(-1);
         else setError(data);
       })
     }
@@ -36,12 +33,14 @@ export default function BranchBanner({branch}:{branch:branchesContent}): JSX.Ele
           <img src={photo?photo:null} alt="" />
           <h2>{branch.name}</h2>
           <h3>{branch.locality + ' ' + branch.street + ' ' + branch.addressNumber}</h3>
+
           <div>
           <Button onClick={()=>navigate('./editar')}>Editar</Button>
-          <Confirm label="La instalación y los puntos serán eliminados. Las operaciones se conservarán." onConfirm={tryDeleteBranch}>
+          <Confirm label="La instalación y los puntos de venta serán eliminados. Las operaciones se conservarán." onConfirm={tryDeleteBranch}>
             <Button type="delete">Eliminar</Button>
           </Confirm>
           </div>
+
           <Message type="error" message={error} />
         </div>
     );

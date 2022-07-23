@@ -6,11 +6,11 @@ export default async function adaptAccount(acc: editedAccount): Promise<string> 
   
     return JSON.stringify({
         user: {
-            username:         acc.user.username,
+            username:         sessionStorage.getItem("username"),
             updatedUsername:  acc.user.updatedUsername?     acc.user.updatedUsername.trim()       : null,
             password:         acc.user.password?            acc.user.password.trim()              : null,
             updatedPassword:  acc.user.updatedPassword?     acc.user.updatedPassword.trim()       : null,
-            updatedAvatar:    acc.user.updatedAvatar? await fileToBase64(acc.user.updatedAvatar)  : null
+            updatedAvatar:    acc.user.updatedAvatar? await fileToBase64(acc.user.updatedAvatar)  : "undefined"
         },
         trader: {
             updatedBusinessName: acc.trader.updatedBusinessName? acc.trader.updatedBusinessName.trim()   : null,

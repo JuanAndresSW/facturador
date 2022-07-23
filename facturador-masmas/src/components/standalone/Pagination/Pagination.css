@@ -1,0 +1,38 @@
+@font-face {
+    font-family: "nunito";
+    src: url(../../../assets/fonts/Nunito-VariableFont_wght.ttf);
+  }
+
+[data-pagination] {
+    padding: 0;
+    background-color: #ccc;
+    border-radius: 999px;
+    overflow: hidden;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+[data-pagination] svg {
+    padding: .5rem;
+    cursor: pointer;
+}
+[data-pagination] svg.unactive {
+    background-color: #bbb;
+    cursor: default;
+}
+[data-pagination] svg:hover {
+    background-color: #bbb;
+}
+
+
+[data-pagination] div {
+    font-family: nunito;
+    padding: 0 .4rem;
+    margin: 0;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    cursor: default;
+}

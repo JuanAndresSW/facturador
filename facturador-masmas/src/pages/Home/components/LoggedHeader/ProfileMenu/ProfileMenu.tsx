@@ -37,13 +37,13 @@ export default function ProfileMenu(): JSX.Element {
             <div id="profile-menu-list" className={active ? 'extended' : ''}>
 
             <p>{sessionStorage.getItem("username")?
-                sessionStorage.getItem("username") + ': '
+                sessionStorage.getItem("username")
                 : "???"}
             </p>
             
                 <ul>
                     <li><NavLink to="/cuenta">Administrar la cuenta</NavLink></li>
-                    <li onMouseDown={closeSession}><Button type="delete">Cerrar sesión</Button></li>
+                    <li onClick={closeSession}><Button type="delete">Cerrar sesión</Button></li>
                 </ul>
             </div>
         </OutsideClickHandler>
