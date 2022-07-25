@@ -3,6 +3,7 @@ package dev.facturador.trader.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.branch.domain.Branch;
+import dev.facturador.global.domain.Vat;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("ALL")
@@ -34,8 +36,8 @@ public final class Trader implements Serializable {
             columnDefinition = "enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE')")
     private Vat vat;
 
-    @Column(nullable = false, length = 20)
-    private String name;
+    @Column(name = "business_name", nullable = false, length = 20)
+    private String businessName;
 
     @Column(nullable = false)
     private int passives;
@@ -49,28 +51,28 @@ public final class Trader implements Serializable {
     @JsonIgnore
     @JsonBackReference
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<Branch> branchesCreated;
+    private Set<Branch> branches;
 
     public Trader(long traderId) {
         this.traderId = traderId;
     }
 
-    public Trader(long traderId, String cuit, String name) {
+    public Trader(long traderId, String cuit, String businessName) {
         this.traderId = traderId;
         this.cuit = cuit;
-        this.name = name;
+        this.businessName = businessName;
     }
 
-    public Trader(String cuit, String name, int actives, int passives) {
+    public Trader(String cuit, String businessName, int actives, int passives) {
         this.cuit = cuit;
-        this.name = name;
+        this.businessName = businessName;
         this.actives = actives;
         this.passives = passives;
     }
 
-    public Trader(String cuit, String name) {
+    public Trader(String cuit, String businessName) {
         this.cuit = cuit;
-        this.name = name;
+        this.businessName = businessName;
     }
 
     public static Vat defineVat(String vat) {
@@ -86,7 +88,7 @@ public final class Trader implements Serializable {
                 "idTrader=" + traderId +
                 ", cuit='" + cuit + '\'' +
                 ", vatCategory=" + vat.getNameVat() +
-                ", name='" + name + '\'' +
+                ", name='" + businessName + '\'' +
                 ", actives='" + actives + '\'' +
                 ", passive='" + passives + '\'' +
                 '}';

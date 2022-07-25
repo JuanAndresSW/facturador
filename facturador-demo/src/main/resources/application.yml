@@ -4,6 +4,11 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+  tomcat:
+    compression: on
+  compression:
+      enabled: true
+      min-response-size: 4096
 #Configuracion del log
 logging:
   level:

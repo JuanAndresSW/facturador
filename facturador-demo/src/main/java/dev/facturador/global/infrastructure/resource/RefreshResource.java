@@ -32,10 +32,11 @@ public class RefreshResource {
     }
 
     /**
+     * Se llama cuando el {@code Access-Token} ha expirado
      * Crea un nuevo {@code Access-Token y Refresh-Token} con el {@code Refresh-Token} anterior
      *
-     * @param request  Objeto {@link HttpServletRequest} recibe la request
-     * @param response Objeto {@link HttpServletResponse} marca la respuesta de la {@code request}
+     * @param request {@link HttpServletRequest} de la API de HttpServlet. Maneja la request
+     * @param response {@link HttpServletResponse} de la API HttpServlet. Marca la respuesta de la request
      */
     @GetMapping("/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {

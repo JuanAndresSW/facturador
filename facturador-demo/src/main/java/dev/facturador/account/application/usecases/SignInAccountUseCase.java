@@ -1,6 +1,6 @@
 package dev.facturador.account.application.usecases;
 
-import dev.facturador.account.application.query.signin.AccountSingInQuery;
+import dev.facturador.account.application.query.AccountSingInQuery;
 import dev.facturador.global.application.ReactiveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

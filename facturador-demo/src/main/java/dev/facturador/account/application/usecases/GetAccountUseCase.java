@@ -15,7 +15,7 @@ public class GetAccountUseCase {
     @Autowired
     private AccountRepository repository;
 
-    public Optional<Account> handleGetAccount(String username) {
+    public Optional<Account> handleGetTraderSummary(String username) {
         return repository.findByOwnerUserUsername(username);
     }
 }

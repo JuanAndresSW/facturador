@@ -1,11 +1,10 @@
 package dev.facturador.account.infrastructure.resources;
 
-import dev.facturador.account.application.command.update.AccountUpdateCommand;
-import dev.facturador.account.application.query.get.AccountGetQuery;
+import dev.facturador.account.application.command.AccountUpdateCommand;
+import dev.facturador.account.application.query.GetAccountQuery;
 import dev.facturador.account.domain.AccountUpdate;
 import dev.facturador.global.application.commands.CommandBus;
 import dev.facturador.global.application.querys.QueryBus;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,21 +28,24 @@ public class UpdateAccountResource {
     }
 
     /**
-     * Se ejecuta una Query para obtener los datos de la cuenta y comprobar que no sean repetidos
-     * Se ejecuta el comando con los nuevos datos y los datos antiguos para actualizarlos
-     * @param accountForUpdate Objeto {@link AccountUpdate} contiene los nuevos datos de la cuenta
-     * */
+     * Se encarga de intentar actualizar la cuenta
+     * Si los datos enviados son validos
+     *
+     * @param accountForUpdate {@link AccountUpdate} contiene los nuevos datos de la cuenta
+     * @return Estado 204 no content, si es correcto
+     * @throws Exception
+     */
     @PreAuthorize("isAuthenticated()")
     @PutMapping
     public HttpEntity<Void> updateAccount(@Valid @RequestBody AccountUpdate accountForUpdate)
             throws Exception {
-        String username = accountForUpdate.getUserUpdate().username();
-        AccountGetQuery query = AccountGetQuery.Builder.getInstance()
+        var username = accountForUpdate.getUserUpdate().username();
+        var query = GetAccountQuery.Builder.getInstance()
                 .username(username).build();
 
         var user = queryBus.handle(query);
 
-        AccountUpdateCommand command = AccountUpdateCommand.Builder.getInstance()
+        var command = AccountUpdateCommand.Builder.getInstance()
                 .mainAccountUpdate(accountForUpdate)
                 .actualMainAccount(user).build();
 

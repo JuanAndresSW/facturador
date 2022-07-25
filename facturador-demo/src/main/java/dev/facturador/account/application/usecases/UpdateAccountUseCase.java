@@ -75,7 +75,7 @@ public class UpdateAccountUseCase {
     /**Si quiere actualizar nombre de comerciante y categoria comprueba que no sean los mismos*/
     public String verifyNameAndCategoryAreDifferent(AccountUpdate data, Account user) {
         if (StringUtils.hasText(data.getTraderUpdate().updatedBusinessName())) {
-            String businessName = user.getOwnerTrader().getName();
+            String businessName = user.getOwnerTrader().getBusinessName();
             if (businessName.equals(data.getTraderUpdate().updatedBusinessName())) {
                 return "La información debe de ser distinta a la actual para actualizarla";
             }

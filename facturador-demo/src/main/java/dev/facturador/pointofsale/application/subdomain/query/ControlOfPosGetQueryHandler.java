@@ -17,7 +17,7 @@ public class ControlOfPosGetQueryHandler
     }
 
     @Override
-    public PointsOfSaleControl handle(ControlOfPosGetQuery query)
+    public PointsOfSaleControl handleGetBranch(ControlOfPosGetQuery query)
             throws Exception {
         return this.useCase.handle(query.getTraderID());
     }

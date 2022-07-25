@@ -26,11 +26,13 @@ public class CreatePointOfSaleResource {
     }
 
     /**
-     * Ejecuta las operaciones para crear el punto de venta
-     * Al modificar punto de venta se debe de actualizar PointOfSaleControl
-     * @param IDTrader ID para actualizar el PointOfSaleControl
-     * @param IDBranch ID para relacionar el punto de venta a esta sucursal
-     * @return Estado 201 created
+     * Crea un nuevo punto de venta.
+     * Si la creación es exitosa actualiza el control de puntos de venta.
+     * del trader al que le pertenezca el punto de venta creado.
+     *
+     * @param IDTrader ID del trader para actualizar el PointOfSaleControl
+     * @param IDBranch ID de la sucursal que crea el punto de venta
+     * @return Estado 201 created, Location "http:localhost:8080/api/pointsofsale
      */
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/branch/{IDBranch}/trader/{IDTrader}")

@@ -1,6 +1,6 @@
 package dev.facturador.branch.infrastructure;
 
-import dev.facturador.branch.application.command.delete.BranchDeleteCommand;
+import dev.facturador.branch.application.command.BranchDeleteCommand;
 import dev.facturador.global.application.commands.CommandBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,13 @@ public class DeleteBranchResource {
         this.commandBus = commandBus;
     }
 
-    /**Ejecuta el comando para eliminar una sucursal*/
+    /**
+     * Elimina una sucursal del trader solicitante
+     *
+     * @param IDBranch ID de la sucursal que se va a eliminar
+     * @return Estado 204, no content
+     * @throws Exception
+     */
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{IDBranch}")
     public HttpEntity<Void> deleteBranch(@PathVariable(name = "IDBranch") long IDBranch) throws Exception {

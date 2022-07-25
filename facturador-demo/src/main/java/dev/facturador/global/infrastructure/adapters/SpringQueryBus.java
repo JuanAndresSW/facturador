@@ -35,7 +35,7 @@ public class SpringQueryBus implements QueryBus {
             throw new Exception(String.format("No handler for %s", query.getClass().getName()));
         }
         //Si no dio error entonces solo busca la implementacion y ejecuta su metodo handle
-        return (T) handlers.get(query.getClass()).handle(query);
+        return (T) handlers.get(query.getClass()).handleGetBranch(query);
     }
 
     /**Busca la clase de la implementacion utilizando la libreria de {@link java.lang.reflect}*/

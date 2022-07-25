@@ -35,11 +35,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Maneja la excepcion de tipo Runtime exception
      */
     @ExceptionHandler(RuntimeException.class)
-    public HttpEntity<ErrorResponse> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest, HttpStatus status) {
+    public HttpEntity<ErrorResponse> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest) {
         var errorDetalles = new ErrorResponse(exception.getMessage());
-        if(status != null){
-            return new ResponseEntity<>(errorDetalles, status);
-        }
+
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
 

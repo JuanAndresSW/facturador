@@ -19,7 +19,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-/**EndPoint para cuando el ingresa, pero ya hay una sesion iniciada*/
+/**EndPoint para verificar si el Token no ha expirado*/
 @RestController
 @RequestMapping(path = "/api/auth")
 public class InitResource {
@@ -32,7 +32,14 @@ public class InitResource {
     }
 
     /**
-     * Busca los datos del usuario necesario para iniciar la App con los Tokens
+     * Se encarga de que el Token no ha expirado
+     * Si es válido envía los datos para realizar operaciones en la API
+     * (Util cuando el usuario se va y no cierra sesion. En estos casos solo se guarda el token)
+     *
+     *
+     * @param request {@link HttpServletRequest} de la API de HttpServlet. Maneja la request
+     * @param response {@link HttpServletResponse} de la API HttpServlet. Marca la respuesta de la request
+     * @throws IOException
      */
     @GetMapping("/init")
     public void initApp(HttpServletRequest request, HttpServletResponse response) throws IOException {

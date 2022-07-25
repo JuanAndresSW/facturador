@@ -4,5 +4,5 @@ package dev.facturador.global.application.querys;
 @FunctionalInterface
 public interface QueryHandler<T, U extends Query<T>> {
 
-    T handle(U query) throws Exception;
+    T handleGetBranch(U query) throws Exception;
 }

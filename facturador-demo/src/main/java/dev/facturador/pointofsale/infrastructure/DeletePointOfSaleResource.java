@@ -27,12 +27,13 @@ public class DeletePointOfSaleResource {
     }
 
     /**
-     * Se encarga de ejecutar las operaciones Query/Command para eliminar punto de venta
-     * Al modificar el punto de de venta tambien se debe actualizar la entidad PointOfSaleControl
+     * Se encarga de eliminar un punto de venta
+     * Si la eliminacion es exitosa actualiza el control del punto de venta
+     * Al trader al que le perteneció el punto de venta borrado
      *
-     * @param IDPointOfSale ID para eliminar el punto de venta
-     * @param IDTrader ID para modificar el PointOfSaleControl
-     * @return Codigo 204 no content
+     * @param IDPointOfSale ID del punto de venta ha eliminar
+     * @param IDTrader ID al que le pertenece el punto de venta
+     * @return Estado 204 no content
      */
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{IDPointOfSale}/trader/{IDTrader}")
@@ -42,7 +43,6 @@ public class DeletePointOfSaleResource {
 
         var command = PointOfSaleDeleteCommand.Builder.getInstance()
                 .pointOfSaleId(IDPointOfSale).build();
-
         this.commandBus.handle(command);
 
         var query = ControlOfPosGetQuery.Builder.getInstance()
@@ -51,7 +51,6 @@ public class DeletePointOfSaleResource {
 
         var commandForControl = ControlOfPosUpdateCommand.Builder.getInstance()
                 .data(PosControlData.starter(control.getPointsOfSaleControlId(), control.getCurrentCount(), control.getTotalCount(), false)).build();
-
         this.commandBus.handle(commandForControl);
 
         return ResponseEntity.noContent().build();
