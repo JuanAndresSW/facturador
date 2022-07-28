@@ -1,11 +1,9 @@
 ---
-#Puerto en el que se corre
+#Configuracion del Servidor
 server:
   error:
     include-message: always
     include-binding-errors: always
-  tomcat:
-    compression: on
   compression:
       enabled: true
       min-response-size: 4096
@@ -24,7 +22,7 @@ logging:
   pattern:
     dateformat: HH:mm:ss
 
-#Cofiguracion Spring
+#Cofiguracion Spring y Mysql
 spring:
   main:
     banner-mode: off
