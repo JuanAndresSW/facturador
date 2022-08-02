@@ -17,7 +17,7 @@ public class PointOfSaleListQueryHandler implements QueryHandler<PagedResponse<P
     }
 
     @Override
-    public PagedResponse handle(PointOfSaleListQuery query) throws Exception {
+    public PagedResponse handleGetBranch(PointOfSaleListQuery query) throws Exception {
         //Validacion
         validatePageNumberAndSize
                 (query.getPage().getIndex(), query.getPage().getSize(), query.getPage().getOrder());

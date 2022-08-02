@@ -1,8 +1,7 @@
 package dev.facturador.branch.infrastructure;
 
-import dev.facturador.branch.application.query.get.BranchGetQuery;
+import dev.facturador.branch.application.query.BranchGetQuery;
 import dev.facturador.global.application.querys.QueryBus;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +21,13 @@ public class GetLogoResource {
         this.queryBus = queryBus;
     }
 
-    /**Ejecuta la Query para recuperar el logo de la sucursal*/
+    /**
+     * Recupera el Logo de la sucursal solicitada y lo envía
+     *
+     * @param IDBranch ID de la sucursal
+     * @return El logo de la sucursal
+     * @throws Exception
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{IDBranch}/get-logo")
     public HttpEntity<String> getLogo(@PathVariable(name = "IDBranch") long IDBranch)

@@ -15,7 +15,7 @@ public class UserGetAvatarQueyHandler implements QueryHandler<String, UserGetAva
     }
 
     @Override
-    public String handle(UserGetAvatarQuery query) throws Exception {
+    public String handleGetBranch(UserGetAvatarQuery query) throws Exception {
         //Recupera el avatar
         var avatar = useCase.handle(query.getUserIdUsername());
         //Verifica que no sea nulo

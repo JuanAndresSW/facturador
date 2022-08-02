@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `facturador_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `facturador_db`;
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: localhost    Database: facturador_db
@@ -32,7 +34,7 @@ CREATE TABLE `account` (
   KEY `id_trader_main_account_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_account_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`),
   CONSTRAINT `id_user_account_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +55,7 @@ DROP TABLE IF EXISTS `branch`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `branch` (
   `id_branch` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL,
+  `fantasy_name` varchar(30) NOT NULL,
   `email` varchar(128) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `province` varchar(20) NOT NULL,
@@ -66,11 +68,11 @@ CREATE TABLE `branch` (
   `creation_date` date NOT NULL,
   `photo` mediumtext NOT NULL,
   `logo` mediumtext NOT NULL,
-  `id_trader` int unsigned NOT NULL,
+  `id_owner_trader` int unsigned NOT NULL,
   PRIMARY KEY (`id_branch`),
-  KEY `id_trader_branch_fk_idx` (`id_trader`),
-  CONSTRAINT `id_trader_branch_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `id_trader_branch_fk_idx` (`id_owner_trader`),
+  CONSTRAINT `id_trader_branch_fk` FOREIGN KEY (`id_owner_trader`) REFERENCES `trader` (`id_trader`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,213 +85,6 @@ LOCK TABLES `branch` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `check`
---
-
-DROP TABLE IF EXISTS `check`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `check` (
-  `id_check` int unsigned NOT NULL AUTO_INCREMENT,
-  `num_check` int unsigned NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `bank` varchar(20) NOT NULL,
-  `crossed` bit(1) NOT NULL,
-  `series` varchar(1) NOT NULL,
-  PRIMARY KEY (`id_check`),
-  KEY `reference_operation_check_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_check_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `check`
---
-
-LOCK TABLES `check` WRITE;
-/*!40000 ALTER TABLE `check` DISABLE KEYS */;
-/*!40000 ALTER TABLE `check` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `details_receipt`
---
-
-DROP TABLE IF EXISTS `details_receipt`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `details_receipt` (
-  `id_details_receipt` int unsigned NOT NULL AUTO_INCREMENT,
-  `amount` decimal(10,2) NOT NULL,
-  `deposit_date` date NOT NULL,
-  `num` int unsigned NOT NULL,
-  `kind_of_value` varchar(255) NOT NULL,
-  `id_receipt_x` int unsigned NOT NULL,
-  PRIMARY KEY (`id_details_receipt`),
-  KEY `id_receipt_x_details_fk_idx` (`id_receipt_x`),
-  CONSTRAINT `id_receipt_x_details_fk` FOREIGN KEY (`id_receipt_x`) REFERENCES `receipt_x` (`id_receipt_x`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `details_receipt`
---
-
-LOCK TABLES `details_receipt` WRITE;
-/*!40000 ALTER TABLE `details_receipt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `details_receipt` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `invoice`
---
-
-DROP TABLE IF EXISTS `invoice`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `invoice` (
-  `id_invoice` int unsigned NOT NULL AUTO_INCREMENT,
-  `num_invoice` int unsigned NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  `type` enum('A','B','C') NOT NULL,
-  `tax` varchar(2) NOT NULL,
-  `vat` varchar(1) NOT NULL,
-  `payment_form` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_invoice`),
-  KEY `reference_operation_invoice_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_invoice_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `invoice`
---
-
-LOCK TABLES `invoice` WRITE;
-/*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
-/*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `non_registered_operation`
---
-
-DROP TABLE IF EXISTS `non_registered_operation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `non_registered_operation` (
-  `id_non_registered_partner_requested` int unsigned NOT NULL,
-  `id_point_of_sale_requester` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  PRIMARY KEY (`id_non_registered_partner_requested`,`id_point_of_sale_requester`,`date_of_issue`),
-  KEY `reference_operation_in_non_registred_fk_idx` (`id_point_of_sale_requester`,`date_of_issue`),
-  CONSTRAINT `reference_operation_in_non_registered_fk` FOREIGN KEY (`id_point_of_sale_requester`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `non_registered_operation`
---
-
-LOCK TABLES `non_registered_operation` WRITE;
-/*!40000 ALTER TABLE `non_registered_operation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `non_registered_operation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `non_registered_partner`
---
-
-DROP TABLE IF EXISTS `non_registered_partner`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `non_registered_partner` (
-  `id_non_registered_partner` int unsigned NOT NULL AUTO_INCREMENT,
-  `unique_key` varchar(15) NOT NULL,
-  `address` varchar(50) NOT NULL,
-  `locality` varchar(20) NOT NULL,
-  `postal_code` varchar(10) NOT NULL,
-  `name_point_of_sale` varchar(20) NOT NULL,
-  `vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
-  `use_account` int NOT NULL,
-  PRIMARY KEY (`id_non_registered_partner`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `non_registered_partner`
---
-
-LOCK TABLES `non_registered_partner` WRITE;
-/*!40000 ALTER TABLE `non_registered_partner` DISABLE KEYS */;
-/*!40000 ALTER TABLE `non_registered_partner` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `operation`
---
-
-DROP TABLE IF EXISTS `operation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `operation` (
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  `flux` enum('I','O') NOT NULL,
-  `description` varchar(60) NOT NULL,
-  PRIMARY KEY (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `id_operation_pos_fk` FOREIGN KEY (`id_point_of_sale_issuing`) REFERENCES `point_of_sale` (`id_point_of_sale`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `operation`
---
-
-LOCK TABLES `operation` WRITE;
-/*!40000 ALTER TABLE `operation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `operation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `partner`
---
-
-DROP TABLE IF EXISTS `partner`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `partner` (
-  `id_trader_requester` int unsigned NOT NULL,
-  `id_branch_requester` int unsigned NOT NULL,
-  `id_trader_requested` int unsigned NOT NULL,
-  `id_branch_requested` int unsigned NOT NULL,
-  `request_date` datetime NOT NULL,
-  `use_count` int NOT NULL,
-  `request_state` enum('W','A','L') NOT NULL,
-  PRIMARY KEY (`id_trader_requester`,`id_branch_requester`,`id_trader_requested`,`id_branch_requested`),
-  KEY `id_branch_requested_fk_idx` (`id_branch_requested`),
-  KEY `id_branch_requester_fk_idx` (`id_branch_requester`),
-  KEY `id_trader_requested_fk` (`id_trader_requested`),
-  CONSTRAINT `id_branch_requested_fk` FOREIGN KEY (`id_branch_requested`) REFERENCES `branch` (`id_branch`),
-  CONSTRAINT `id_branch_requester_fk` FOREIGN KEY (`id_branch_requester`) REFERENCES `branch` (`id_branch`),
-  CONSTRAINT `id_trader_requested_fk` FOREIGN KEY (`id_trader_requested`) REFERENCES `trader` (`id_trader`),
-  CONSTRAINT `id_trader_requester_fk` FOREIGN KEY (`id_trader_requester`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `partner`
---
-
-LOCK TABLES `partner` WRITE;
-/*!40000 ALTER TABLE `partner` DISABLE KEYS */;
-/*!40000 ALTER TABLE `partner` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `point_of_sale`
 --
 
@@ -298,12 +93,13 @@ DROP TABLE IF EXISTS `point_of_sale`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `point_of_sale` (
   `id_point_of_sale` int unsigned NOT NULL AUTO_INCREMENT,
-  `point_of_sale_number` int NOT NULL,
-  `id_branch` int unsigned NOT NULL,
+  `point_of_sale_number` int unsigned NOT NULL,
+  `creation_date` date NOT NULL,
+  `id_owner_branch` int unsigned NOT NULL,
   PRIMARY KEY (`id_point_of_sale`),
-  KEY `id_branch_pos_fk_idx` (`id_branch`),
-  CONSTRAINT `id_branch_pos_fk` FOREIGN KEY (`id_branch`) REFERENCES `branch` (`id_branch`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `id_branch_pos_fk_idx` (`id_owner_branch`),
+  CONSTRAINT `id_branch_pos_fk` FOREIGN KEY (`id_owner_branch`) REFERENCES `branch` (`id_branch`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,14 +119,14 @@ DROP TABLE IF EXISTS `points_of_sale_control`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `points_of_sale_control` (
-  `id_pos_control` int NOT NULL AUTO_INCREMENT,
-  `current_count` int NOT NULL,
-  `total_count` int NOT NULL,
+  `id_pos_control` int unsigned NOT NULL AUTO_INCREMENT,
+  `current_count` int unsigned NOT NULL,
+  `total_count` int unsigned NOT NULL,
   `id_trader` int unsigned NOT NULL,
   PRIMARY KEY (`id_pos_control`),
   KEY `id_trader_control_of_pos_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_control_of_pos_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -343,188 +139,36 @@ LOCK TABLES `points_of_sale_control` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `promissory_note`
+-- Table structure for table `third_party`
 --
 
-DROP TABLE IF EXISTS `promissory_note`;
+DROP TABLE IF EXISTS `third_party`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `promissory_note` (
-  `id_promissory_note` int unsigned NOT NULL AUTO_INCREMENT,
-  `num_promissory_note` int unsigned NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `beneficiary` varchar(255) NOT NULL,
-  `contact` varchar(255) NOT NULL,
-  `deadline` date NOT NULL,
-  `protest` bit(1) NOT NULL,
-  `stamp` bit(1) NOT NULL,
-  PRIMARY KEY (`id_promissory_note`),
-  KEY `reference_operation_promissory_note_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_promissory_note_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
+CREATE TABLE `third_party` (
+  `id_third_party` int unsigned NOT NULL AUTO_INCREMENT,
+  `cuit` varchar(15) NOT NULL,
+  `email` varchar(128) NOT NULL,
+  `province` varchar(20) NOT NULL,
+  `department` varchar(45) NOT NULL,
+  `locality` varchar(45) NOT NULL,
+  `postal_code` varchar(10) NOT NULL,
+  `street` varchar(50) NOT NULL,
+  `address_number` varchar(5) NOT NULL,
+  `branch_name` varchar(30) NOT NULL,
+  `vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
+  `usage_counter` int unsigned NOT NULL,
+  PRIMARY KEY (`id_third_party`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `promissory_note`
+-- Dumping data for table `third_party`
 --
 
-LOCK TABLES `promissory_note` WRITE;
-/*!40000 ALTER TABLE `promissory_note` DISABLE KEYS */;
-/*!40000 ALTER TABLE `promissory_note` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `purchase_order`
---
-
-DROP TABLE IF EXISTS `purchase_order`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `purchase_order` (
-  `id_purchase_order` int unsigned NOT NULL AUTO_INCREMENT,
-  `num_purchase_order` int unsigned NOT NULL,
-  `deadline` date NOT NULL,
-  `place_of_delivery` varchar(20) NOT NULL,
-  `carrier` varchar(25) NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  `conditions` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_purchase_order`),
-  KEY `reference_operation_purchase_order_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_purchase_order_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `purchase_order`
---
-
-LOCK TABLES `purchase_order` WRITE;
-/*!40000 ALTER TABLE `purchase_order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `receipt`
---
-
-DROP TABLE IF EXISTS `receipt`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `receipt` (
-  `id_receipt` int unsigned NOT NULL AUTO_INCREMENT,
-  `num_receipt` int unsigned NOT NULL,
-  `amount` int NOT NULL,
-  `address` varchar(40) NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  `payer` varchar(40) NOT NULL,
-  `type` varchar(10) NOT NULL,
-  PRIMARY KEY (`id_receipt`),
-  KEY `reference_operation_receipt_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_receipt_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `receipt`
---
-
-LOCK TABLES `receipt` WRITE;
-/*!40000 ALTER TABLE `receipt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `receipt` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `receipt_x`
---
-
-DROP TABLE IF EXISTS `receipt_x`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `receipt_x` (
-  `id_receipt_x` int unsigned NOT NULL AUTO_INCREMENT,
-  `num_receipt_x` int unsigned NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  `cash` decimal(10,2) NOT NULL,
-  `check` decimal(10,2) NOT NULL,
-  `documents` decimal(10,2) NOT NULL,
-  `time` time NOT NULL,
-  `payer` varchar(40) NOT NULL,
-  `payer_address` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_receipt_x`),
-  KEY `reference_operation_receipt_x_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_receipt_x_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `receipt_x`
---
-
-LOCK TABLES `receipt_x` WRITE;
-/*!40000 ALTER TABLE `receipt_x` DISABLE KEYS */;
-/*!40000 ALTER TABLE `receipt_x` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `registered_operation`
---
-
-DROP TABLE IF EXISTS `registered_operation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `registered_operation` (
-  `id_trader` int unsigned NOT NULL,
-  `id_branch` int unsigned NOT NULL,
-  `id_partner_trader` int unsigned NOT NULL,
-  `id_partner` int unsigned NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  PRIMARY KEY (`id_trader`,`id_branch`,`id_partner_trader`,`id_partner`,`id_point_of_sale_issuing`,`date_of_issue`),
-  KEY `reference_operation_in_registered_op_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_in_registered_op_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`),
-  CONSTRAINT `reference_partner_in_registered_op_fk` FOREIGN KEY (`id_trader`, `id_branch`, `id_partner_trader`, `id_partner`) REFERENCES `partner` (`id_trader_requester`, `id_branch_requester`, `id_trader_requested`, `id_branch_requested`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `registered_operation`
---
-
-LOCK TABLES `registered_operation` WRITE;
-/*!40000 ALTER TABLE `registered_operation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `registered_operation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `remittance`
---
-
-DROP TABLE IF EXISTS `remittance`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `remittance` (
-  `id_remittance` int unsigned NOT NULL AUTO_INCREMENT,
-  `num_remittance` int unsigned NOT NULL,
-  `id_point_of_sale_issuing` int unsigned NOT NULL,
-  `date_of_issue` datetime NOT NULL,
-  PRIMARY KEY (`id_remittance`),
-  KEY `reference_operation_remittance_fk_idx` (`id_point_of_sale_issuing`,`date_of_issue`),
-  CONSTRAINT `reference_operation_remittance_fk` FOREIGN KEY (`id_point_of_sale_issuing`, `date_of_issue`) REFERENCES `operation` (`id_point_of_sale_issuing`, `date_of_issue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `remittance`
---
-
-LOCK TABLES `remittance` WRITE;
-/*!40000 ALTER TABLE `remittance` DISABLE KEYS */;
-/*!40000 ALTER TABLE `remittance` ENABLE KEYS */;
+LOCK TABLES `third_party` WRITE;
+/*!40000 ALTER TABLE `third_party` DISABLE KEYS */;
+/*!40000 ALTER TABLE `third_party` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -537,12 +181,12 @@ DROP TABLE IF EXISTS `trader`;
 CREATE TABLE `trader` (
   `id_trader` int unsigned NOT NULL AUTO_INCREMENT,
   `cuit` varchar(15) NOT NULL,
-  `name` varchar(20) NOT NULL,
+  `business_name` varchar(20) NOT NULL,
   `vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
   `actives` int unsigned NOT NULL,
   `passives` int unsigned NOT NULL,
   PRIMARY KEY (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,7 +213,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -595,7 +239,7 @@ CREATE TABLE `user_avatar` (
   PRIMARY KEY (`id_user_avatar`),
   UNIQUE KEY `UK_9r98vdxdtt1tw76ecsrxpv2io` (`id_user`),
   CONSTRAINT `id_user_avatar_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -616,4 +260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-18  6:02:38
+-- Dump completed on 2022-07-25  3:57:53

@@ -1,6 +1,6 @@
 package dev.facturador.account.infrastructure.resources;
 
-import dev.facturador.account.application.command.delete.AccountDeleteCommand;
+import dev.facturador.account.application.command.AccountDeleteCommand;
 import dev.facturador.global.application.commands.CommandBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,6 @@ public class DeleteAccountResource {
     }
 
     /**
-     * Se encarga de llamar al manejador de comandos para ejecutar el comando
      *
      * @param username Nombre de usuario de la cuenta que se quiere eliminar
      * @return RespomseEmtity vació con el código 204
@@ -33,7 +32,7 @@ public class DeleteAccountResource {
     @DeleteMapping("/{username}")
     public HttpEntity<Void> deleteAccount(@PathVariable @NotEmpty String username) throws Exception {
 
-        AccountDeleteCommand command = AccountDeleteCommand.Builder.getInstance()
+        var command = AccountDeleteCommand.Builder.getInstance()
                 .username(username).build();
 
         commandBus.handle(command);

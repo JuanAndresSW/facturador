@@ -19,9 +19,9 @@ public class GetAvatarUserResource {
     private QueryBus queryBus;
 
     /**
-     * Ejecuta las operaciones para enviar el avatar de usuario
+     * Recupera el avatar del usuario
      *
-     * @param username Nombre de usuario relacionado con avatar de usuario
+     * @param username Nombre de usuario al que le pertenece el avatar
      * @return avatar de usuario
      */
     @GetMapping("/{username}")

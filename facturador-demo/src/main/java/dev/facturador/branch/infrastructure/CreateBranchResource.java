@@ -1,9 +1,8 @@
 package dev.facturador.branch.infrastructure;
 
-import dev.facturador.branch.application.command.create.BranchCreateCommand;
+import dev.facturador.branch.application.command.BranchCreateCommand;
 import dev.facturador.branch.domain.BranchCreate;
 import dev.facturador.global.application.commands.CommandBus;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,12 +25,17 @@ public class CreateBranchResource {
         this.commandBus = commandBus;
     }
 
-    /**Ejecuta el comando para crear una sucursal*/
+    /**
+     * Crea una sucursal nueva para el trader Solicitante
+     *
+     * @param branchValues {@link BranchCreate} Contiene los datos para crear la sucursal
+     * @return Estado 201, Location {@code http:localhost:8080/api/branches}
+     */
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate values) throws Exception {
+    public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate branchValues) throws Exception {
         var command = BranchCreateCommand.Builder.getInstance()
-                .branchCreate(values).build();
+                .branchCreate(branchValues).build();
 
         commandBus.handle(command);
 

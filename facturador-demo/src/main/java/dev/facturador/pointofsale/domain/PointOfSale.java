@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**Entidad punto de venta*/
 @Entity
@@ -21,14 +22,17 @@ public class PointOfSale implements Serializable {
     @Id
     @Column(name = "id_point_of_sale")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long pointOfSaleId;
+    private Long pointOfSaleId;
 
     @Column(name = "point_of_sale_number", nullable = false)
-    private int pointOfSaleNumber;
+    private Integer pointOfSaleNumber;
+
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate createdAt;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_branch", nullable = false, updatable = false, referencedColumnName = "id_branch")
+    @JoinColumn(name = "id_owner_branch", nullable = false, updatable = false, referencedColumnName = "id_branch")
     private Branch branchOwner;
 
     public PointOfSale(long pointOfSaleId) {
@@ -36,10 +40,16 @@ public class PointOfSale implements Serializable {
         this.pointOfSaleId = pointOfSaleId;
     }
 
+    public PointOfSale(Long pointOfSaleId, Integer pointOfSaleNumber) {
+        this.pointOfSaleId = pointOfSaleId;
+        this.pointOfSaleNumber = pointOfSaleNumber;
+    }
+
     public static PointOfSale create(PointOfSaleCreate values) {
         var pointOfSale = new PointOfSale();
         pointOfSale.setPointOfSaleNumber(values.getPosControl().getTotalCount() + 1);
         pointOfSale.setBranchOwner(new Branch(values.getIDBranch()));
+        pointOfSale.setCreatedAt(LocalDate.now());
         return pointOfSale;
     }
 

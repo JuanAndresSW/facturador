@@ -4,6 +4,6 @@ public record AccountTraderData(String businessName, String vatCategory, String 
 
     public static AccountTraderData valueOf(Account account) {
         var trader = account.getOwnerTrader();
-        return new AccountTraderData(trader.getName(), trader.getVat().getNameVat(), trader.getCuit());
+        return new AccountTraderData(trader.getBusinessName(), trader.getVat().getNameVat(), trader.getCuit());
     }
 }

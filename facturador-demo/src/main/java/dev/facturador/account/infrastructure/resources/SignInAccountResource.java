@@ -1,9 +1,8 @@
 package dev.facturador.account.infrastructure.resources;
 
-import dev.facturador.account.application.query.signin.AccountSingInQuery;
+import dev.facturador.account.application.query.AccountSingInQuery;
 import dev.facturador.account.domain.AccountSingInRequest;
 import dev.facturador.global.application.querys.QueryBus;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -31,19 +30,18 @@ public class SignInAccountResource {
     }
 
     /**
-     * Ejecuta la query para recuperar los datos para iniciar sesion
+     * Permite realizar un inicio de sesion en caso que la haya cerrado o expirado
      *
-     * @param keyRequest Es {@link AccountSingInRequest}, este contiene las credenciales de inicio de session
-     * @return Datos necesarios para iniciar sesin
+     * @param keyRequest Es {@link AccountSingInRequest}, contiene las credenciales de inicio de session
+     * @return Datos necesarios para realizar operaciones una vez iniciada la sesion
      */
     @PostMapping("/log-in")
     public HttpEntity<LinkedHashMap<String, String>> loginWithJSON(@Valid @RequestBody AccountSingInRequest keyRequest) throws Exception {
-        log.info("pasa loginwithjson");
-        AccountSingInQuery query = AccountSingInQuery.Builder.getInstance()
+
+        var query = AccountSingInQuery.Builder.getInstance()
                 .keys(keyRequest.usernameOrEmail(), keyRequest.password()).build();
 
         var headers = queryBus.handle(query);
-        log.info("pasa headers");
         var response = this.createLoginResponse(headers);
         log.info("pasa response");
         return ResponseEntity.ok().body(response);

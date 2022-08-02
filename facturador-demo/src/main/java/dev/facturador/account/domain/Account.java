@@ -86,7 +86,7 @@ public final class Account {
             account.getOwnerUser().getUserAvatar().setAvatar(request.getUserUpdate().updatedAvatar());
         }
         if (StringUtils.hasText(request.getTraderUpdate().updatedBusinessName())) {
-            account.getOwnerTrader().setName(request.getTraderUpdate().updatedBusinessName());
+            account.getOwnerTrader().setBusinessName(request.getTraderUpdate().updatedBusinessName());
         }
         if (StringUtils.hasText(request.getTraderUpdate().updatedCuit())) {
             account.getOwnerTrader().setCuit(request.getTraderUpdate().updatedCuit());

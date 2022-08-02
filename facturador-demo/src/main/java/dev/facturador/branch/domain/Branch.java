@@ -2,6 +2,7 @@ package dev.facturador.branch.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.global.domain.Address;
 import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 /**Entidad Sucursal*/
@@ -26,10 +28,10 @@ public final class Branch implements Serializable {
     @Id
     @Column(name = "id_branch")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long branchId;
+    private Long branchId;
 
-    @Column(nullable = false, length = 30)
-    private String name;
+    @Column(name = "fantasy_name", nullable = false, length = 30)
+    private String fantasyName;
     @Column(nullable = false, length = 128)
     private String email;
     @Column(nullable = false, length = 20)
@@ -55,7 +57,7 @@ public final class Branch implements Serializable {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_trader", nullable = false, updatable = false, referencedColumnName = "id_trader")
+    @JoinColumn(name = "id_owner_trader", nullable = false, updatable = false, referencedColumnName = "id_trader")
     private Trader traderOwner;
 
     @Lob
@@ -69,14 +71,23 @@ public final class Branch implements Serializable {
     @JsonIgnore
     @JsonBackReference
     @OneToMany(mappedBy = "branchOwner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<PointOfSale> pointsOfSaleCreated;
+    private List<PointOfSale> pointsOfSale;
 
     public Branch(long branchId) {
         super();
         this.branchId = branchId;
     }
 
-    public Branch(String name,
+    public Branch(Long branchId, String fantasyName, String locality, String street, String addressNumber, List<PointOfSale> pointsOfSale) {
+        this.branchId = branchId;
+        this.fantasyName = fantasyName;
+        this.locality = locality;
+        this.street = street;
+        this.addressNumber = addressNumber;
+        this.pointsOfSale = pointsOfSale;
+    }
+
+    public Branch(String fantasyName,
                   String email,
                   String phone,
                   String province,
@@ -85,7 +96,7 @@ public final class Branch implements Serializable {
                   String postalCode,
                   String street,
                   String preferenceColor) {
-        this.name = name;
+        this.fantasyName = fantasyName;
         this.email = email;
         this.phone = phone;
         this.province = province;
@@ -103,7 +114,7 @@ public final class Branch implements Serializable {
     /**NamedContructor para el update*/
     public static Branch create(BranchUpdate updatedValues, Branch branch) {
         if (StringUtils.hasText(updatedValues.getUpdatedName())) {
-            branch.setName(updatedValues.getUpdatedName());
+            branch.setFantasyName(updatedValues.getUpdatedName());
         }
         if (StringUtils.hasText(updatedValues.getUpdatedEmail())) {
             branch.setEmail(updatedValues.getUpdatedEmail());
@@ -176,7 +187,7 @@ public final class Branch implements Serializable {
         return branch;
     }
 
-    public static String defineAddressNumber(BranchAddress address){
+    public static String defineAddressNumber(Address address){
         if (address.getAddressNumber() != 0) {
             return String.valueOf(address.getAddressNumber());
         }
@@ -187,7 +198,7 @@ public final class Branch implements Serializable {
     public String toString() {
         return "Branch{" +
                 "branchId=" + branchId +
-                ", name='" + name + '\'' +
+                ", name='" + fantasyName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", province='" + province + '\'' +

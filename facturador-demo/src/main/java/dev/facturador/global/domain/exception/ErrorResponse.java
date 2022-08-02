@@ -1,7 +1,10 @@
 package dev.facturador.global.domain.exception;
 
-public record ErrorResponse(String mensaje, String detalles) {
+public record ErrorResponse(Integer code, String message, String description) {
     public ErrorResponse(String mensaje) {
-        this(mensaje, null);
+        this(null, mensaje, null);
+    }
+    public ErrorResponse(String mensaje, String description) {
+        this(null, mensaje, description);
     }
 }

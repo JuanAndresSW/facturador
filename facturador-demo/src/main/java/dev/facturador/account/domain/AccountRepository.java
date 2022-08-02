@@ -14,8 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     void deleteByOwnerUserUsername(String username);
 
     Boolean existsByOwnerUserUsername(String username);
-
     Boolean existsByOwnerUserEmail(String email);
-
     Boolean existsByOwnerTraderCuit(String cuit);
 }

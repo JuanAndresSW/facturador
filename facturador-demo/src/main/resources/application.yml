@@ -1,9 +1,12 @@
 ---
-#Server
+#Configuracion del Servidor
 server:
   error:
     include-message: always
     include-binding-errors: always
+  compression:
+      enabled: true
+      min-response-size: 4096
 #Configuracion del log
 logging:
   level:
@@ -19,7 +22,7 @@ logging:
   pattern:
     dateformat: HH:mm:ss
 
-#Cofiguracion Spring
+#Cofiguracion Spring y Mysql
 spring:
   main:
     banner-mode: off
@@ -44,3 +47,5 @@ spring:
           storage_engine: innodb
         format_sql: true
 ...
+
+
