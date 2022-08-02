@@ -1,11 +1,8 @@
 import React from "react";
-type props = {
-    flux: string
-}
-export default function PurchaseOrder({flux}:props) {
-    return (
-    <div>
-        OrdenDeCompra:::: {flux}
-    </div>
-    )
+
+import FullSizeDocument from './common/FullSizeDocument/FullSizeDocument';
+
+
+export default function PurchaseOrder(): JSX.Element {
+    return <FullSizeDocument>Hi</FullSizeDocument>
 }

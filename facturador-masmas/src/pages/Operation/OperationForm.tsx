@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //Componentes del formulario.
-import { BackArrow } from "components/standalone";
+import { BackArrow, PDFButton } from "components/standalone";
 import { Button, DateTime, Field, Form, Message, Radio, Select, Switch, Table, Textarea } from "components/formComponents";
 import { Cond, FlexDiv, Retractable, Section } from 'components/wrappers';
 import { BiChevronsDown, BiChevronsUp, BiExport, BiImport, BiPlus } from "react-icons/bi";
@@ -36,10 +36,10 @@ export default function OperationForm({ type }: props): JSX.Element {
 
           title: `${branch.locality} ${branch.street} N°${branch.addressNumber}`,
           value: branch.IDBranch,
-          subOptions: branch.pointsOfSale.map((points: any) => {
+          subOptions: branch.pointsOfSale.map((point: any) => {
             return {
-              title: `N°${points.pointOfSaleNumber}`,
-              value: points.pointOfSaleID,
+              title: `N°${point.pointOfSaleNumber}`,
+              value: point.pointOfSaleID,
             }
           })
         }
@@ -345,7 +345,11 @@ export default function OperationForm({ type }: props): JSX.Element {
 
       <Message type="error" message={error} />
 
-      <Button type="submit">Generar</Button>
+      <FlexDiv justify='flex-end'>
+        <PDFButton elementToDisplay={<>Hi this works</>} />
+        <Button type="submit">Generar</Button>
+      </FlexDiv>
+      
     </Form>
   );
 }
