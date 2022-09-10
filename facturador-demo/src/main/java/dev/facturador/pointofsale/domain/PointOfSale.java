@@ -49,8 +49,8 @@ public class PointOfSale implements Serializable {
 
     public static PointOfSale create(PointOfSaleModel values) {
         var pointOfSale = new PointOfSale();
-        pointOfSale.setPointOfSaleNumber(values.getPosControl().getTotalCount() + 1);
-        pointOfSale.setBranchOwner(new Branch(values.getIDBranch()));
+        pointOfSale.setPointOfSaleNumber(values.posControl().getTotalCount() + 1);
+        pointOfSale.setBranchOwner(new Branch(values.IDBranch()));
         pointOfSale.setCreatedAt(LocalDate.now());
         return pointOfSale;
     }

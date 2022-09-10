@@ -1,4 +1,4 @@
-package dev.facturador.operation.shared.domain.model;
+package dev.facturador.operation.wholeoperation.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -20,7 +20,7 @@ public class ControlOfPosGetQueryHandler
         var control = repository.findByTraderTraderId(query.getTraderID());
 
         if (control.isEmpty()) {
-            throw new Exception("Comerciante no existe");
+            throw new Exception("No se ha encontrado al comerciante");
         }
         return control.get();
     }

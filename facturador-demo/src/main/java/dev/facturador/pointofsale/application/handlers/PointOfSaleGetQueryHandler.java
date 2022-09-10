@@ -34,7 +34,6 @@ public class PointOfSaleGetQueryHandler implements QueryHandler<HashMap<String, 
                 put("phone", pointOfSale.getBranchOwner().getPhone());
                 put("cuit", pointOfSale.getBranchOwner().getTraderOwner().getCuit());
                 put("vatCategory", pointOfSale.getBranchOwner().getTraderOwner().getVatCategory().vatToLowercaseAndSpanish());
-                put("color", pointOfSale.getBranchOwner().getPreferenceColor());
             }
         };
 

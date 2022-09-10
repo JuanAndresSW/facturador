@@ -1,8 +1,8 @@
-package dev.facturador.operation.invoice.infrastructure;
+package dev.facturador.operation.wholeoperation.infrastructure;
 
 import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
-import dev.facturador.operation.shared.domain.model.WholeOperationDisplayed;
-import dev.facturador.operation.invoice.domain.querys.GetInvoiceQuery;
+import dev.facturador.operation.wholeoperation.domain.model.WholeOperationDisplayed;
+import dev.facturador.operation.wholeoperation.domain.querys.GetAnyWholeOperationQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping(path = "/api/invoices")
-public class GetInvoiceResource {
+@RequestMapping(path = "/api/wholes/operations")
+public class GetAnWholeOperationResource {
     private final QueryBus queryBus;
 
     @Autowired
-    public GetInvoiceResource(QueryBus queryBus) {
+    public GetAnWholeOperationResource(QueryBus queryBus) {
         this.queryBus = queryBus;
     }
 
@@ -29,13 +29,14 @@ public class GetInvoiceResource {
                                                                     @NotNull @RequestParam(value = "IDTrader") long traderID,
                                                                     @NotNull @PathVariable(value = "repository") String repository) throws Exception {
 
-        var query = GetInvoiceQuery.builder()
-                .invoiceNumber(operationNumber)
+        var query = GetAnyWholeOperationQuery.builder()
+                .operationNumber(operationNumber)
                 .type(type)
                 .traderId(traderID)
                 .repository(repository).build();
 
         var response = queryBus.handle(query);
+
         return ResponseEntity.ok(response);
     }
 }

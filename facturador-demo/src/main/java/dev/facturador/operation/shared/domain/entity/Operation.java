@@ -2,7 +2,9 @@ package dev.facturador.operation.shared.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.facturador.operation.invoice.domain.Invoice;
+import dev.facturador.operation.wholeoperation.domain.entity.CreditNote;
+import dev.facturador.operation.wholeoperation.domain.entity.DebitNote;
+import dev.facturador.operation.wholeoperation.domain.entity.Invoice;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,7 +53,14 @@ public final class Operation implements Serializable {
     @JsonBackReference
     @OneToMany(mappedBy = "operation", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Invoice> invoices;
-
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "operation", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<DebitNote> debitnotes;
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "operation", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<CreditNote> creditnotes;
 
     public Operation(Trader traderOwner, String issuingPointOfSaleNumber) {
         this.traderOwner = traderOwner;

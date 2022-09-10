@@ -30,7 +30,7 @@ public class BranchCreateCommandHandler implements CommandHandler<BranchCreateCo
     @Override
     public void handle(BranchCreateCommand command) throws Exception {
         if (!this.traderWildCardService.handleExistsTrader(command.getBranchCreateRestModel().getIDTrader())) {
-            throw new Exception("No puedes crear una sucursal");
+            throw new Exception("No se ha encontrado al comerciante");
         }
 
         repository.save(Branch.create(command.getBranchCreateRestModel()));

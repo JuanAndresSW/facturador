@@ -1,13 +1,15 @@
-package dev.facturador.operation.invoice.domain;
+package dev.facturador.operation.wholeoperation.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.operation.wholeoperation.application.WholeOperation;
+import dev.facturador.operation.wholeoperation.domain.SellConditions;
 import dev.facturador.operation.shared.domain.DocumentType;
 import dev.facturador.operation.shared.domain.entity.Operation;
 import dev.facturador.operation.shared.domain.entity.Product;
 import dev.facturador.operation.shared.domain.entity.Receiver;
 import dev.facturador.operation.shared.domain.entity.Sender;
-import dev.facturador.operation.shared.domain.model.WholeOperationRestModel;
-import dev.facturador.operation.shared.domain.model.DataReququiredOperation;
+import dev.facturador.operation.wholeoperation.domain.model.DataReququiredOperation;
+import dev.facturador.operation.wholeoperation.domain.model.WholeOperationRestModel;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.facturador.operation.invoice.domain.SellConditions.defineSellCondition;
+import static dev.facturador.operation.wholeoperation.domain.SellConditions.defineSellCondition;
 import static dev.facturador.operation.shared.domain.AllVatCategory.defineAllVat;
 
 /**
@@ -28,17 +30,17 @@ import static dev.facturador.operation.shared.domain.AllVatCategory.defineAllVat
  */
 @Slf4j
 @Entity
-@Table(name = "invoice")
+@Table(name = "debit_note")
 @NoArgsConstructor
 @Getter
 @Setter
-public final class Invoice implements Serializable {
+public final class DebitNote implements Serializable {
     public static final Long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "id_invoice")
+    @Column(name = "id_debit")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long invoiceId;
+    private Long debitId;
 
 
     @Enumerated(value = EnumType.STRING)
@@ -58,47 +60,47 @@ public final class Invoice implements Serializable {
     private DocumentType type;
 
 
-    @Column(name = "count_invoice_number", nullable = false, length = 8)
+    @Column(name = "count_debit_number", nullable = false, length = 8)
     private Integer operationNumberCount;
 
-    @Column(name = "invoice_number", nullable = false)
-    private String invoiceNumber;
+    @Column(name = "debit_number", nullable = false)
+    private String debitNumber;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_operation_parent", nullable = false, updatable = false, referencedColumnName = "id_operation", unique = true)
     private Operation operation;
 
-    public Invoice(Long invoiceId,
-                   SellConditions sellConditions,
-                   Integer vat,
-                   LocalDate issueDate,
-                   DocumentType type,
-                   Integer operationNumberCount,
-                   String invoiceNumber,
-                   Operation operation) {
-        this.invoiceId = invoiceId;
+    public DebitNote(Long debitId,
+                     SellConditions sellConditions,
+                     Integer vat,
+                     LocalDate issueDate,
+                     DocumentType type,
+                     Integer operationNumberCount,
+                     String debitNumber,
+                     Operation operation) {
+        this.debitId = debitId;
         this.sellConditions = sellConditions;
         this.vat = vat;
         this.issueDate = issueDate;
         this.type = type;
         this.operationNumberCount = operationNumberCount;
-        this.invoiceNumber = invoiceNumber;
+        this.debitNumber = debitNumber;
         this.operation = operation;
     }
 
-    public Invoice(Long invoiceId) {
-        this.invoiceId = invoiceId;
+    public DebitNote(Long debitId) {
+        this.debitId = debitId;
     }
 
-    public static Invoice create(WholeOperationRestModel values, DataReququiredOperation internalValues) {
-        var invoice = new Invoice();
+    public static DebitNote create(WholeOperationRestModel values, DataReququiredOperation internalValues) {
+        var invoice = new DebitNote();
         //Basic data
         invoice.setSellConditions(defineSellCondition(values.getSellConditions()));
         invoice.setVat(values.getVat());
         //Numero
         invoice.setOperationNumberCount(internalValues.getOperationNumberCount());
-        invoice.setInvoiceNumber(internalValues.getOperationNumber());
+        invoice.setDebitNumber(internalValues.getOperationNumber());
 
         //Crear operacion
         invoice.setOperation(new Operation(
@@ -137,13 +139,13 @@ public final class Invoice implements Serializable {
 
     @Override
     public String toString() {
-        return "Invoice{" +
+        return "DebitNote{" +
                 "sellConditions=" + sellConditions +
                 ", vat=" + vat +
                 ", issueDate=" + issueDate +
                 ", type=" + type +
                 ", posNumberInvoice=" + operationNumberCount +
-                ", invoiceNumber=" + invoiceNumber +
+                ", invoiceNumber=" + debitNumber +
                 ", operation=" + operation +
                 '}';
     }

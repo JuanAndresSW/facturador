@@ -1,6 +1,7 @@
-package dev.facturador.operation.shared.domain.model;
+package dev.facturador.operation.wholeoperation.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.facturador.operation.shared.domain.model.ProductModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

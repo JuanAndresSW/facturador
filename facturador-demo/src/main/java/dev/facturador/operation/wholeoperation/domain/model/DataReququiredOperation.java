@@ -1,8 +1,9 @@
-package dev.facturador.operation.shared.domain.model;
+package dev.facturador.operation.wholeoperation.domain.model;
 
 import dev.facturador.global.domain.VatCategory;
 import dev.facturador.operation.shared.application.OperationService;
 import dev.facturador.operation.shared.domain.DocumentType;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +11,7 @@ import lombok.Setter;
 import java.util.HashMap;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public final class DataReququiredOperation {
     private DocumentType type;
     private String operationNumber;
@@ -23,11 +23,9 @@ public final class DataReququiredOperation {
     private String senderPhone;
     private String senderCuit;
     private String senderVatCategory;
-    private String color;
 
     public static DataReququiredOperation valueOf(HashMap<String, Object> values) {
         var response = new DataReququiredOperation();
-        response.setColor(String.valueOf(values.get("color")));
         response.setSenderCuit(String.valueOf(values.get("cuit")));
         response.setSenderPhone(String.valueOf(values.get("phone")));
         response.setSenderAddressNumber(String.valueOf(values.get("addressNumber")));
