@@ -3,7 +3,8 @@ package dev.facturador.trader.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.branch.domain.Branch;
-import dev.facturador.global.domain.Vat;
+import dev.facturador.global.domain.VatCategory;
+import dev.facturador.operation.shared.domain.entity.Operation;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("ALL")
@@ -34,16 +34,10 @@ public final class Trader implements Serializable {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "vat_category", nullable = false,
             columnDefinition = "enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE')")
-    private Vat vat;
+    private VatCategory vatCategory;
 
     @Column(name = "business_name", nullable = false, length = 20)
     private String businessName;
-
-    @Column(nullable = false)
-    private int passives;
-
-    @Column(nullable = false)
-    private int actives;
 
     @OneToOne(mappedBy = "trader", cascade = CascadeType.ALL)
     private PointsOfSaleControl pointsOfSaleControl;
@@ -52,6 +46,11 @@ public final class Trader implements Serializable {
     @JsonBackReference
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Branch> branches;
+
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Operation> operations;
 
     public Trader(long traderId) {
         this.traderId = traderId;
@@ -63,34 +62,19 @@ public final class Trader implements Serializable {
         this.businessName = businessName;
     }
 
-    public Trader(String cuit, String businessName, int actives, int passives) {
-        this.cuit = cuit;
-        this.businessName = businessName;
-        this.actives = actives;
-        this.passives = passives;
-    }
-
     public Trader(String cuit, String businessName) {
         this.cuit = cuit;
         this.businessName = businessName;
     }
 
-    public static Vat defineVat(String vat) {
-        if (vat.contains("Inscripto")) {
-            return Vat.REGISTERED_RESPONSIBLE;
-        }
-        return Vat.MONOTAX_RESPONSIBLE;
-    }
 
     @Override
     public String toString() {
         return "Trader{" +
                 "idTrader=" + traderId +
                 ", cuit='" + cuit + '\'' +
-                ", vatCategory=" + vat.getNameVat() +
+                ", vatCategory=" + vatCategory.vatToLowercaseAndSpanish() +
                 ", name='" + businessName + '\'' +
-                ", actives='" + actives + '\'' +
-                ", passive='" + passives + '\'' +
                 '}';
     }
 }

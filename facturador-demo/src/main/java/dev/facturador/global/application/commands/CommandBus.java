@@ -1,6 +1,8 @@
 package dev.facturador.global.application.commands;
 
-/**CommandBus generico*/
+/**
+ * CommandBus generico
+ */
 @FunctionalInterface
 public interface CommandBus {
 

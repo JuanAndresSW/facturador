@@ -1,27 +1,29 @@
 package dev.facturador.user.application.query;
 
-import dev.facturador.global.application.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
 import dev.facturador.global.domain.exception.ResourceNotFound;
-import dev.facturador.user.application.usecase.UserGetAvatarUseCase;
-import org.springframework.stereotype.Component;
+import dev.facturador.user.application.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**Manejador de la Quey {@link UserGetAvatarQuery}*/
-@Component
+/**
+ * Manejador de la Quey {@link UserGetAvatarQuery}
+ */
+@AllArgsConstructor
+@Service
 public class UserGetAvatarQueyHandler implements QueryHandler<String, UserGetAvatarQuery> {
-    private final UserGetAvatarUseCase useCase;
-
-    public UserGetAvatarQueyHandler(UserGetAvatarUseCase useCase) {
-        this.useCase = useCase;
-    }
+    @Autowired
+    private final UserRepository repository;
 
     @Override
-    public String handleGetBranch(UserGetAvatarQuery query) throws Exception {
-        //Recupera el avatar
-        var avatar = useCase.handle(query.getUserIdUsername());
-        //Verifica que no sea nulo
-        if (avatar.getAvatar() == null) {
+    public String handle(UserGetAvatarQuery query) throws Exception {
+        var user = repository.findByUsername(query.getUserIdUsername().getUsername());
+
+        if (user.isEmpty()) {
             throw new ResourceNotFound("Avatar not found");
         }
-        return avatar.getAvatar();
+
+        return user.get().getUserAvatar().getAvatar();
     }
 }

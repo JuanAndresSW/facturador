@@ -1,22 +1,26 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.global.application.commands.CommandBus;
-import dev.facturador.global.application.querys.QueryBus;
-import dev.facturador.pointofsale.application.command.PointOfSaleCreateCommand;
-import dev.facturador.pointofsale.application.subdomain.query.ControlOfPosGetQuery;
-import dev.facturador.pointofsale.domain.PointOfSaleCreate;
+import dev.facturador.global.domain.abstractcomponents.commands.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.pointofsale.domain.PointOfSaleModel;
+import dev.facturador.pointofsale.domain.commands.PointOfSaleCreateCommand;
+import dev.facturador.pointofsale.domain.subdomain.ControlOfPosGetQuery;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
-/**EndPoint para crear un punto de venta*/
+/**
+ * EndPoint para crear un punto de venta
+ */
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class CreatePointOfSaleResource {
-
     private final CommandBus commandBus;
     private final QueryBus queryBus;
 
@@ -45,7 +49,7 @@ public class CreatePointOfSaleResource {
 
 
         var command = PointOfSaleCreateCommand.Builder.getInstance()
-                .pointOfSaleCreate(PointOfSaleCreate.valueOf(IDBranch, IDTrader, control)).build();
+                .pointOfSaleCreate(PointOfSaleModel.valueOf(IDBranch, IDTrader, control)).build();
 
         commandBus.handle(command);
 

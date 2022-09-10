@@ -1,6 +1,8 @@
 package dev.facturador.global.application.querys;
 
-/**QueryBus generico*/
+/**
+ * QueryBus generico
+ */
 @FunctionalInterface
 public interface QueryBus {
 

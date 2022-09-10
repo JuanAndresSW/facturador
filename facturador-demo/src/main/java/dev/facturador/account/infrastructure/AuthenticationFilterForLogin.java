@@ -3,7 +3,6 @@ package dev.facturador.account.infrastructure;
 import dev.facturador.global.domain.CustomUserDetails;
 import dev.facturador.global.infrastructure.adapters.CustomJWT;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/** Esta clase hace de filtro para la autenticacion */
+/**
+ * Esta clase hace de filtro para la autenticacion
+ */
 @RequiredArgsConstructor
 public class AuthenticationFilterForLogin extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
@@ -60,13 +61,10 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
         var URL = request.getRequestURI();
         String accesToken = jwt.createAccesToken(user.getEmail(), URL);
         String refreshToken = jwt.createRefreshToken(user.getEmail(), URL);
-
         response.setHeader("accessToken", accesToken);
         response.setHeader("refreshToken", refreshToken);
 
         response.setHeader("username", user.getUsername());
-        response.setHeader("actives", String.valueOf(user.getActives()));
-        response.setHeader("passives", String.valueOf(user.getPassives()));
         response.setHeader("IDTrader", String.valueOf(user.getTraderId()));
 
     }

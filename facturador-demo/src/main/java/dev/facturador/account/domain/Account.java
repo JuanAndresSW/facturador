@@ -1,6 +1,7 @@
 package dev.facturador.account.domain;
 
 
+import dev.facturador.global.domain.BeanClock;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import dev.facturador.trader.domain.Trader;
 import dev.facturador.user.domain.User;
@@ -13,6 +14,8 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static dev.facturador.global.domain.VatCategory.defineVat;
 
 @Entity
 @Table(name = "account")
@@ -48,16 +51,19 @@ public final class Account {
         account.setOwnerUser(new User(username));
         return account;
     }
-    /**Named Contructor para el registro de cuenta*/
-    public static Account create(AccountRegister request) {
+
+    /**
+     * Named Contructor para el registro de cuenta
+     */
+    public static Account create(AccountRegisterRestModel request, BeanClock clock) {
         var account = new Account();
         account.setOwnerTrader(new Trader(
                 request.traderRegister().cuit(),
-                request.traderRegister().businessName(),
-                0, 0));
+                request.traderRegister().businessName()));
 
-        String vatName = request.traderRegister().vatCategory();
-        account.getOwnerTrader().setVat(Trader.defineVat(vatName));
+
+        account.getOwnerTrader().setVatCategory(
+                defineVat(request.traderRegister().vatCategory()));
 
         String passwordHash = hashPassword(request.userRegister().password());
         account.setOwnerUser(new User(
@@ -70,11 +76,14 @@ public final class Account {
         }
 
         account.getOwnerTrader().setPointsOfSaleControl(new PointsOfSaleControl(0, 0, account.getOwnerTrader()));
-        account.setCreatedAt(LocalDateTime.now());
+        account.setCreatedAt(LocalDateTime.now(clock.clock()));
         return account;
     }
-    /**Named Contructor para la actualizacion de la cuenta*/
-    public static Account create(AccountUpdate request, Account account) {
+
+    /**
+     * Named Contructor para la actualizacion de la cuenta
+     */
+    public static Account create(AccountUpdateRestModel request, Account account) {
         if (StringUtils.hasText(request.getUserUpdate().updatedUsername())) {
             account.getOwnerUser().setUsername(request.getUserUpdate().updatedUsername());
         }
@@ -93,11 +102,14 @@ public final class Account {
         }
         if (StringUtils.hasText(request.getTraderUpdate().updatedVatCategory())) {
             String vatName = request.getTraderUpdate().updatedVatCategory();
-            account.getOwnerTrader().setVat(Trader.defineVat(vatName));
+            account.getOwnerTrader().setVatCategory(defineVat(vatName));
         }
         return account;
     }
-    /**Hace el hash de la contraseña para antes de guardar*/
+
+    /**
+     * Hace el hash de la contraseña para antes de guardar
+     */
     public static String hashPassword(String password) {
         var argon2 = new Argon2PasswordEncoder(16, 32, 1, 2048, 2);
         return argon2.encode(password);

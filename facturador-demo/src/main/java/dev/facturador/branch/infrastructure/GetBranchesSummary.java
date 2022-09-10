@@ -1,7 +1,8 @@
 package dev.facturador.branch.infrastructure;
 
-import dev.facturador.global.application.querys.QueryBus;
-import dev.facturador.branch.application.query.BranchesSummaryQuery;
+import dev.facturador.branch.domain.query.BranchesSummaryQuery;
+import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-/** EndPoint para recuperar algunos datos del comerciante*/
+/**
+ * EndPoint para recuperar algunos datos del comerciante
+ */
 @RestController
 @RequestMapping(path = "/api/branches")
 public class GetBranchesSummary {
     private final QueryBus queryBus;
 
+    @Autowired
     public GetBranchesSummary(QueryBus queryBus) {
         this.queryBus = queryBus;
     }
@@ -33,11 +37,11 @@ public class GetBranchesSummary {
      * @throws Exception
      */
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/traders/{IDTrader}")
+    @GetMapping("/traders/{IDTrader}/summary")
     public HttpEntity<LinkedList<HashMap<String, Object>>> getBranchesSummary
     (@PathVariable(name = "IDTrader") long traderId) throws Exception {
 
-        var query = BranchesSummaryQuery.Builder.getInstance()
+        var query = BranchesSummaryQuery.builder()
                 .traderId(traderId).build();
 
         var response = queryBus.handle(query);

@@ -23,8 +23,6 @@ public class CustomUserDetails implements UserDetails {
     private String username;
     private String password;
     private String email;
-    private Integer actives;
-    private Integer passives;
     private Collection<? extends GrantedAuthority> authorities;
     private Boolean enabled;
 
@@ -32,17 +30,11 @@ public class CustomUserDetails implements UserDetails {
                              String username,
                              String password,
                              String email,
-                             Integer actives,
-                             Integer passives,
-                             Collection<? extends GrantedAuthority> authorities,
                              Boolean enable) {
         this.traderId = traderId;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.actives = actives;
-        this.passives = passives;
-        this.authorities = authorities;
         this.enabled = enable;
     }
 

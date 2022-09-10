@@ -1,6 +1,8 @@
 package dev.facturador.global.application.commands;
 
-/**CommandHandler Generico*/
+/**
+ * CommandHandler Generico
+ */
 @FunctionalInterface
 public interface CommandHandler<T extends Command> {
 

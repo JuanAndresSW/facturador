@@ -13,28 +13,36 @@ public class CustomJWT {
     private final String secrectKey;
     private final long expDateDefined;
 
-    /**Se define la Secrect Key para el Token y la fecha de exp*/
+    /**
+     * Se define la Secrect Key para el Token y la fecha de exp
+     */
     public CustomJWT() {
         this.secrectKey = "$argon2id$v=19$m=2048,t=2,p=1$F7XsIVx3YSVL6tGdyeGyrA$dLXD9Clq4po8/dL6b0IudGmgGyr+4cHNTM4fjqG5LDw";
         this.expDateDefined = 14400000;
     }
+
     /**
      * Recupera el subject del Token
+     *
      * @param authHeader Token salido del header AUTHORIZATION
      * @return Subject - en este caso es el Email
-     * */
+     */
     public String createUserByToken(String authHeader) {
         var token = authHeader.substring("Bearer ".length());
         var decodedJWT = createDecoder(token);
         return decodedJWT.getSubject();
     }
 
-    /**Verifica que el Token no este vacio y tenga la marca de Bearer*/
+    /**
+     * Verifica que el Token no este vacio y tenga la marca de Bearer
+     */
     public Boolean verifyToken(String auth) {
         return Boolean.TRUE.equals(StringUtils.hasText(auth) && auth.startsWith("Bearer "));
     }
 
-    /**Crea el accessToken */
+    /**
+     * Crea el accessToken
+     */
     public String createAccesToken(String email, String url) {
         return com.auth0.jwt.JWT.create()
                 .withSubject(email)
@@ -44,7 +52,9 @@ public class CustomJWT {
                 .sign(signKey());
     }
 
-    /**Crea el refresh Token*/
+    /**
+     * Crea el refresh Token
+     */
     public String createRefreshToken(String email, String url) {
         return com.auth0.jwt.JWT.create()
                 .withSubject(email)
@@ -53,11 +63,17 @@ public class CustomJWT {
                 .withIssuer(url)
                 .sign(signKey());
     }
-    /**Crea el algoritmo para decodificar el token*/
+
+    /**
+     * Crea el algoritmo para decodificar el token
+     */
     public Algorithm signKey() {
         return Algorithm.HMAC256(secrectKey.getBytes());
     }
-    /**Crea el token decodificado*/
+
+    /**
+     * Crea el token decodificado
+     */
     public DecodedJWT createDecoder(String token) {
         return com.auth0.jwt.JWT.require(this.signKey()).build().verify(token);
     }

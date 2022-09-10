@@ -1,6 +1,8 @@
 package dev.facturador.global.application.querys;
 
-/**QueryHandler Generico*/
+/**
+ * QueryHandler Generico
+ */
 @FunctionalInterface
 public interface QueryHandler<T, U extends Query<T>> {
 
