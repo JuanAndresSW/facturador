@@ -4,7 +4,7 @@ import dev.facturador.branch.application.BranchRepository;
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.exception.BranchBadSorting;
 import dev.facturador.branch.domain.query.PagingBranchesQuery;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import dev.facturador.global.domain.sharedpayload.Page;
 import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import lombok.AllArgsConstructor;

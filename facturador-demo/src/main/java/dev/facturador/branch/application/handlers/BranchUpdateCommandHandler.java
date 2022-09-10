@@ -3,7 +3,7 @@ package dev.facturador.branch.application.handlers;
 import dev.facturador.branch.application.BranchRepository;
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.command.BranchUpdateCommand;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

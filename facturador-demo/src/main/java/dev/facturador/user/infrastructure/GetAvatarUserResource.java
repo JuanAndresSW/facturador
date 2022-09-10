@@ -1,6 +1,6 @@
 package dev.facturador.user.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import dev.facturador.user.application.query.UserGetAvatarQuery;
 import dev.facturador.user.domain.UserIdUsername;
 import org.springframework.beans.factory.annotation.Autowired;

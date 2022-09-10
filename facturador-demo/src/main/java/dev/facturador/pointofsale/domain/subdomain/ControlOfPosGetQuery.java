@@ -1,6 +1,6 @@
 package dev.facturador.pointofsale.domain.subdomain;
 
-import dev.facturador.global.domain.abstractcomponents.querys.Query;
+import dev.facturador.global.domain.abstractcomponents.query.Query;
 
 public class ControlOfPosGetQuery extends Query<PointsOfSaleControl> {
     private final Long traderID;

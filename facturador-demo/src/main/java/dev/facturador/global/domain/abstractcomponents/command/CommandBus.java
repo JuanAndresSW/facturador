@@ -1,4 +1,4 @@
-package dev.facturador.global.domain.abstractcomponents.commands;
+package dev.facturador.global.domain.abstractcomponents.command;
 
 /**
  * CommandBus generico

@@ -1,6 +1,6 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import dev.facturador.global.domain.sharedpayload.Page;
 import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import dev.facturador.pointofsale.domain.PointOfSale;

@@ -1,6 +1,6 @@
 package dev.facturador.pointofsale.application.subdomain.handlers;
 
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import dev.facturador.pointofsale.application.subdomain.PointsOfSaleControlRepository;
 import dev.facturador.pointofsale.domain.subdomain.ControlOfPosGetQuery;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;

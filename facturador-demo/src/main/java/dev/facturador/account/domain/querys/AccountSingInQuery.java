@@ -1,6 +1,6 @@
 package dev.facturador.account.domain.querys;
 
-import dev.facturador.global.domain.abstractcomponents.querys.Query;
+import dev.facturador.global.domain.abstractcomponents.query.Query;
 import lombok.Data;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.LinkedMultiValueMap;

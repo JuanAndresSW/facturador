@@ -2,7 +2,7 @@ package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.query.PagingBranchesQuery;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import dev.facturador.global.domain.sharedpayload.Page;
 import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import org.springframework.beans.factory.annotation.Autowired;

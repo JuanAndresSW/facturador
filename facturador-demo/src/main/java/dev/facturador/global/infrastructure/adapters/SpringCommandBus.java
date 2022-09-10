@@ -1,8 +1,8 @@
 package dev.facturador.global.infrastructure.adapters;
 
-import dev.facturador.global.domain.abstractcomponents.commands.Command;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.Command;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

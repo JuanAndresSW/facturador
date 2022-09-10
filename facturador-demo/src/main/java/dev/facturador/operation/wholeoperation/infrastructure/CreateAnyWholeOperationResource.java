@@ -1,7 +1,7 @@
 package dev.facturador.operation.wholeoperation.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.commands.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import dev.facturador.operation.wholeoperation.domain.commands.CreateAnyWholeOperationCommand;
 import dev.facturador.operation.wholeoperation.domain.querys.GetRequiredOperationDataQuery;
 import dev.facturador.operation.wholeoperation.domain.model.WholeOperationRestModel;

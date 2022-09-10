@@ -2,7 +2,7 @@ package dev.facturador.account.infrastructure.resources;
 
 import dev.facturador.account.domain.AccountSignInRestModel;
 import dev.facturador.account.domain.querys.AccountSingInQuery;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

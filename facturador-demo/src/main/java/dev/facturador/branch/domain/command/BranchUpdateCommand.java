@@ -2,7 +2,7 @@ package dev.facturador.branch.domain.command;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.BranchUpdateRestModel;
-import dev.facturador.global.domain.abstractcomponents.commands.Command;
+import dev.facturador.global.domain.abstractcomponents.command.Command;
 import lombok.Builder;
 import lombok.Data;
 

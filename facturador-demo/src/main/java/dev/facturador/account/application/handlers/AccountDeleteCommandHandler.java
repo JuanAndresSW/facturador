@@ -3,7 +3,7 @@ package dev.facturador.account.application.handlers;
 import dev.facturador.account.application.AccountRepository;
 import dev.facturador.account.application.ChecksAccountService;
 import dev.facturador.account.domain.commands.AccountDeleteCommand;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import dev.facturador.global.domain.exception.ResourceNotFound;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

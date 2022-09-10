@@ -1,6 +1,6 @@
 package dev.facturador.operation.wholeoperation.application.handlers;
 
-import dev.facturador.global.domain.abstractcomponents.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import dev.facturador.operation.wholeoperation.application.CreditNoteRepository;
 import dev.facturador.operation.wholeoperation.application.DebitNoteRepository;
 import dev.facturador.operation.wholeoperation.application.InvoiceRepository;
@@ -8,7 +8,6 @@ import dev.facturador.operation.wholeoperation.domain.entity.CreditNote;
 import dev.facturador.operation.wholeoperation.domain.entity.DebitNote;
 import dev.facturador.operation.wholeoperation.domain.entity.Invoice;
 import dev.facturador.operation.wholeoperation.domain.commands.CreateAnyWholeOperationCommand;
-import dev.facturador.trader.domain.Trader;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

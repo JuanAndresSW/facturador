@@ -6,7 +6,7 @@ import dev.facturador.account.domain.Account;
 import dev.facturador.account.domain.commands.AccountRegisterCommand;
 import dev.facturador.account.domain.exception.IndexesAreRepeated;
 import dev.facturador.global.domain.BeanClock;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

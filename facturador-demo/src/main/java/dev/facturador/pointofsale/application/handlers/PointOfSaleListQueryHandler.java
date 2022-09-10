@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.application.handlers;
 
 import dev.facturador.branch.domain.exception.BranchBadSorting;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import dev.facturador.global.domain.sharedpayload.Page;
 import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import dev.facturador.pointofsale.application.PointOfSaleRepository;

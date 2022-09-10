@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.domain.commands;
 
 
-import dev.facturador.global.domain.abstractcomponents.commands.Command;
+import dev.facturador.global.domain.abstractcomponents.command.Command;
 import lombok.Getter;
 
 /**

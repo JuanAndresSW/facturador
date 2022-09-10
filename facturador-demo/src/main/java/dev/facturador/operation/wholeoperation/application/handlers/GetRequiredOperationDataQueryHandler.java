@@ -1,7 +1,7 @@
 package dev.facturador.operation.wholeoperation.application.handlers;
 
 import dev.facturador.global.domain.abstractcomponents.ReactiveRequest;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import dev.facturador.operation.wholeoperation.application.CreditNoteRepository;
 import dev.facturador.operation.wholeoperation.application.DebitNoteRepository;
 import dev.facturador.operation.wholeoperation.application.InvoiceRepository;

@@ -1,6 +1,6 @@
 package dev.facturador.operation.wholeoperation.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import dev.facturador.operation.wholeoperation.domain.model.WholeOperationDisplayed;
 import dev.facturador.operation.wholeoperation.domain.querys.GetAnyWholeOperationQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +27,14 @@ public class GetAnWholeOperationResource {
     public HttpEntity<WholeOperationDisplayed> getAnyWholeOperation(@NotEmpty @RequestParam(value = "operationNumber") String operationNumber,
                                                                     @NotEmpty @RequestParam(value = "type") String type,
                                                                     @NotNull @RequestParam(value = "IDTrader") long traderID,
+                                                                    @NotNull @RequestParam(value = "IDBranch") long branchId,
                                                                     @NotNull @PathVariable(value = "repository") String repository) throws Exception {
 
         var query = GetAnyWholeOperationQuery.builder()
                 .operationNumber(operationNumber)
                 .type(type)
                 .traderId(traderID)
+                .branchId(branchId)
                 .repository(repository).build();
 
         var response = queryBus.handle(query);

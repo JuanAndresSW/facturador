@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.commands.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import dev.facturador.pointofsale.domain.commands.PointOfSaleDeleteCommand;
 import dev.facturador.pointofsale.domain.subdomain.ControlOfPosGetQuery;
 import dev.facturador.pointofsale.domain.subdomain.ControlOfPosUpdateCommand;

@@ -2,7 +2,7 @@ package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.BranchCreateRestModel;
 import dev.facturador.branch.domain.command.BranchCreateCommand;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

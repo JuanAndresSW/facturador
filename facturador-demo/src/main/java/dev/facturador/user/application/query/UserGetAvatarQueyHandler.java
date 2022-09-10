@@ -1,6 +1,6 @@
 package dev.facturador.user.application.query;
 
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import dev.facturador.global.domain.exception.ResourceNotFound;
 import dev.facturador.user.application.UserRepository;
 import lombok.AllArgsConstructor;

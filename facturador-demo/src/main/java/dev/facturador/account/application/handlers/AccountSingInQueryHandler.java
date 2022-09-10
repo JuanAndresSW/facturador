@@ -2,7 +2,7 @@ package dev.facturador.account.application.handlers;
 
 import dev.facturador.account.domain.querys.AccountSingInQuery;
 import dev.facturador.global.domain.abstractcomponents.ReactiveRequest;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

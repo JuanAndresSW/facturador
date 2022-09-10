@@ -1,7 +1,7 @@
 package dev.facturador.account.infrastructure.resources;
 
 import dev.facturador.account.domain.commands.AccountDeleteCommand;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;

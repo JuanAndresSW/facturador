@@ -1,6 +1,6 @@
 package dev.facturador.operation.wholeoperation.domain.querys;
 
-import dev.facturador.global.domain.abstractcomponents.querys.Query;
+import dev.facturador.global.domain.abstractcomponents.query.Query;
 import dev.facturador.operation.wholeoperation.domain.model.DataReququiredOperation;
 import lombok.Builder;
 import lombok.Data;

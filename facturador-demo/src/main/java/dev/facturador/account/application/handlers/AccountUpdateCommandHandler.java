@@ -5,7 +5,7 @@ import dev.facturador.account.application.UpdateAccountService;
 import dev.facturador.account.domain.Account;
 import dev.facturador.account.domain.commands.AccountUpdateCommand;
 import dev.facturador.account.domain.exception.ErrorInDataForUpdate;
-import dev.facturador.global.domain.abstractcomponents.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package dev.facturador.pointofsale.application.handlers;
 
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import dev.facturador.pointofsale.application.PointOfSaleRepository;
 import dev.facturador.pointofsale.domain.querys.PointOfSaleGetQuery;
 import lombok.AllArgsConstructor;

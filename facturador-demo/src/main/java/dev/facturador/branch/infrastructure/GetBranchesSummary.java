@@ -1,7 +1,7 @@
 package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.query.BranchesSummaryQuery;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;

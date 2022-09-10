@@ -1,8 +1,8 @@
 package dev.facturador.global.infrastructure.adapters;
 
-import dev.facturador.global.domain.abstractcomponents.querys.Query;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryBus;
-import dev.facturador.global.domain.abstractcomponents.querys.QueryHandler;
+import dev.facturador.global.domain.abstractcomponents.query.Query;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryHandler;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

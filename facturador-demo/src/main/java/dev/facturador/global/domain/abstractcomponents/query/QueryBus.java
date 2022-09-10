@@ -1,4 +1,4 @@
-package dev.facturador.global.domain.abstractcomponents.querys;
+package dev.facturador.global.domain.abstractcomponents.query;
 
 /**
  * QueryBus generico

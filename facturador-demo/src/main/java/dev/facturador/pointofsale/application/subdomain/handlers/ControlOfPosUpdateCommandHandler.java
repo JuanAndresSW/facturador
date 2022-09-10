@@ -1,6 +1,6 @@
 package dev.facturador.pointofsale.application.subdomain.handlers;
 
-import dev.facturador.global.domain.abstractcomponents.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import dev.facturador.pointofsale.application.subdomain.PointsOfSaleControlRepository;
 import dev.facturador.pointofsale.domain.subdomain.ControlOfPosUpdateCommand;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
