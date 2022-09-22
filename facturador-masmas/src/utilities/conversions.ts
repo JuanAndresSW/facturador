@@ -25,3 +25,12 @@ export const toFormattedCUIT = (code:string) => {
     c.slice(2, 4) + '.' + c.slice(4, 7) + '.' + c.slice(7, 10) +
     '-' + c.charAt(10) : '';
 }
+
+export function toFourDigitNumber(number: number): string {
+    switch(number.toString().length) {
+        case 1: return "000"+number;
+        case 2: return "00"+number;
+        case 3: return "0"+number;
+        default: return number.toString().slice(0,number.toString().length-4); 
+    }
+}

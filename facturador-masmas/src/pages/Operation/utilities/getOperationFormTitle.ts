@@ -1,5 +1,7 @@
+import { operationCode } from "../models/operation";
+
 /**Encuentra un título apropiado para el formulario de documentos comerciales.*/
-export default function getTitle(type: string, toSend: boolean): string {
+export default function getOperationFormTitle(type: operationCode, toSend: boolean): string {
     let title: string;
     switch (type) {
         case "Oc":  title = "Nueva orden de compra "; break;
@@ -11,7 +13,6 @@ export default function getTitle(type: string, toSend: boolean): string {
         case "Rs":  title = "Nuevo recibo simple ";   break;
         case "Pa":  title = "Nuevo pagaré ";          break;
         case "Ch":  title = "Nuevo cheque ";          break;
-        case "Va":  return "Nueva variación patrimonial";
         default: return "Parámetro 'type' inesperado: "+type;
     }
     if (!toSend) return title + "de entrada";

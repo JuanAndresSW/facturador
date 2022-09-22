@@ -16,6 +16,8 @@ export default function getSessionByToken(callback: Function): void {
 
   else    ajax("GET","auth/init", { token: access }, handleAccessTokenResponse);
 
+
+  
   function handleAccessTokenResponse(status:number, data:string): void { 
     if (status === 200) success(data);
     else  ajax("POST","auth/refresh", { token: getToken("refresh") }, handleRefreshTokenResponse);

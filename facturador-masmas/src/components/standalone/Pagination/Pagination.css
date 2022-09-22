@@ -1,7 +1,7 @@
 @font-face {
     font-family: "nunito";
     src: url(../../../assets/fonts/Nunito-VariableFont_wght.ttf);
-  }
+}
 
 [data-pagination] {
     padding: 0;

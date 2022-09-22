@@ -10,6 +10,8 @@ import { Message } from "components/formComponents";
 import { Loading, Pagination } from "components/standalone";
 import { BsFillXCircleFill } from "react-icons/bs";
 import {Confirm, FlexDiv} from "components/wrappers";
+
+import { toFourDigitNumber } from "utilities/conversions";
 import './BranchPoints.css';
 
 
@@ -88,11 +90,3 @@ export default function BranchPoints({IDBranch}:{IDBranch:number}): JSX.Element 
     );
 }
 
-function toFourDigitNumber(number: number): string {
-    switch(number.toString().length) {
-        case 1: return "000"+number;
-        case 2: return "00"+number;
-        case 3: return "0"+number;
-        default: return number.toString().slice(0,number.toString().length-4); 
-    }
-}

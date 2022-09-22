@@ -2,7 +2,7 @@ import { fileToBase64 } from 'utilities/conversions';
 import branch from '../models/branch';
 
 /**Adapta un objeto de sucursal a un formato esperado por el servidor para crear un nueva sucursal. */
-export default async function adaptBranchToSend(branch: branch): Promise<string> {
+export default async function branchToJson(branch: branch): Promise<string> {
     return JSON.stringify({
         IDTrader: sessionStorage.getItem('IDTrader'),
         name:  branch.name,

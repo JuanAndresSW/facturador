@@ -6,7 +6,7 @@
     div {
         box-sizing: border-box;
         width: 8rem;
-        height: 9rem;
+        height: 8rem;
         border-radius: 4px;
         transition: .1s;
         display: flex;
@@ -19,8 +19,10 @@
         }
 
         p {
+            
             font-size: 4.5rem;
             span {
+                
                 font-size: 2rem;
             }
         }
@@ -32,6 +34,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        text-align: center;
     }
     
 }

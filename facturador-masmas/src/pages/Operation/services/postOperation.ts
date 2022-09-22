@@ -1,19 +1,22 @@
 import ajax from 'ports/ajax';
 import getToken from 'services/getToken';
-import operation from '../models/operation';
+import operation, { operationCode } from '../models/operation';
+import operationIdentifier from "../models/operationIdentifier";
+import operationToJson from "../adapters/operationToJson";
 
-export default function postOperation(operation: operation, type: string, toSend: boolean, callback: Function) {
-    ajax('POST', `operation/${getOperationName(type)}/${toSend?'send':'receive'}`,
-    {body: JSON.stringify(operation), token: getToken('access')}, handleResponse);
-
+export default function postOperation(operation: operation, type: operationCode, callback: Function) {
+    ajax('POST', `operation/${getOperationName(type)}/send`,
+    {body: operationToJson(operation, type), 
+    token: getToken('access')}, 
+    handleResponse);
 
     function handleResponse(httpStatus: number, content: string) {
-        if (httpStatus === 201) callback(true);
+        if (httpStatus === 201) callback(JSON.parse(content).operationNumber);
         else callback(false, content);
     }
 }
 
-function getOperationName(type: string): string {
+function getOperationName(type: operationCode): string {
     switch (type) {
         case "Oc":  return "purchase-order";
         case "Rm":  return "remittance";
@@ -24,7 +27,6 @@ function getOperationName(type: string): string {
         case "Rs":  return "receipt";
         case "Pa":  return "promissory-note";
         case "Ch":  return "check";
-        case "Va":  return "variation";
         default: return "Unexpected 'type' parameter: "+type;
     }
 }

@@ -1,25 +1,27 @@
 //React.
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
 //Componentes del formulario.
-import { BackArrow, PDFButton } from "components/standalone";
+import { BackArrow } from "components/standalone";
 import { Button, DateTime, Field, Form, Message, Radio, Select, Switch, Table, Textarea } from "components/formComponents";
 import { Cond, FlexDiv, Retractable, Section } from 'components/wrappers';
-import { BiChevronsDown, BiChevronsUp, BiExport, BiImport, BiPlus } from "react-icons/bi";
-//Elementos de documento generado.
-import { Check, CreditNote, DebitNote, Invoice, PromissoryNote, PurchaseOrder, Receipt, Remittance } from "./documents";
+import { BiChevronsDown } from "react-icons/bi";
+import PlusIcon from "./components/PlusIcon";
+import Filter from "./components/Filter";
+
+//Elementos de documento.
+import Document from "./Document";
 //Utilidades.
-import getDocumentTitle from './utilities/getDocumentTitle';
+import getOperationFormTitle from './utilities/getOperationFormTitle';
 import isValidOperation from './utilities/isValidOperation';
 import Valid from "utilities/Valid";
 //Servicios.
 import postOperation from './services/postOperation';
-import getListsOfThirdsAndPoints from './services/getListsOfThirdsAndPoints';
+import getListOfBranchesAndPoints from './services/getListOfBranchesAndPoints';
 //Tipos.
-import operation from './models/operation';
-type props = {
-  type: ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch" | "Va");
-};
+import operation, {operationCode} from './models/operation';
+import { toFourDigitNumber } from "utilities/conversions";
+type props = { type: operationCode };
 
 /**
  * Devuelve un formulario que recolecta los datos necesitados por el back-end para generar una operación comercial.
@@ -27,232 +29,250 @@ type props = {
  */
 export default function OperationForm({ type }: props): JSX.Element {
 
-  useEffect(()=>{
-    getListsOfThirdsAndPoints((ok:boolean, content: any)=> {
-      if (!ok) return;
+  //Comunicación con el servidor.
+  useEffect(()=>{ getListOfBranchesAndPoints(setBranchesAndPoints) }, []);
 
-      setBranches(content.map((branch: any) => {
-        return {
+  function generateOperation(): void {
+    setError("");
+    setLoading(true);
 
-          title: `${branch.locality} ${branch.street} N°${branch.addressNumber}`,
-          value: branch.IDBranch,
-          subOptions: branch.pointsOfSale.map((point: any) => {
-            return {
-              title: `N°${point.pointOfSaleNumber}`,
-              value: point.pointOfSaleID,
-            }
-          })
-        }
-      })); 
-    })
-  }, []);
+    if (isValidOperation(operation, type, setError)) {
+      postOperation(operation, type, (ok:boolean, content: string) => {
+        if (!ok) return setError(content);
+        setDocumentNumber(content);
+      });
+    }
+    setLoading(false);
+  }
  
 
   //Datos de control del formulario.
   const [error,               setError] =               useState("hello world");
-  const [success,             setSuccess] =             useState(false); 
-  const [toSend,              setToSend] =              useState(true);
-  const [thirds,              setThirds] =              useState();
-  const [thirdParty,          setThirdParty] =          useState();
+  const [loading,             setLoading] =             useState(false);
+  const [viewingDocument,     setViewingDocument] =     useState(false);
   const [branches,            setBranches] =            useState();
   const [branch,              setBranch] =              useState();
+  const [documentNumber,      setDocumentNumber] =      useState('');
 
-  //Datos del tercero.
-  const [IDpointOfSale,       setIDPointOfSale] =       useState();
-  const [CUIT,                setCUIT] =                useState();
-  const [name,                setName] =                useState();
-  const [address,             setAddress] =             useState();
-  const [phone,               setPhone] =               useState();
-  const [VATCategory,         setVATCategory] =         useState("Responsable Inscripto");
-  const [email,               setEmail]=                useState();
-  const [startOfActivities,   setStartOfActivities] =   useState();
-  const [postalCode,          setPostalCode] =          useState();
-  const [locality,            setLocality] =            useState();
-
-  //Datos de la operación
-  const [productTable,        setProductTable] =        useState([['0'],[''],['0']]);
-  const [observations,        setObservations] =        useState("");
-  const [seller,              setSeller] =              useState("");
-  const [sellConditions,      setSellConditions] =      useState("");
-  const [deadline,            setDeadline] =            useState("");
-  const [placeOfDelivery,     setPlaceOfDelivery] =     useState("");
-  const [carrier,             setCarrier] =             useState("");
-  const [IDRemittance,        setIDRemittance] =        useState();
-  const [tax,                 setTax] =                 useState(0);
-  const [VAT,                 setVAT] =                 useState("21%");
-  const [RxAmounts,           setRxAmounts] =           useState([['0'],['0'],['0']]);
-  const [RxInvoices,          setRxInvoices] =          useState([[""],['0'],['0'],['0']]);
-  const [RxDetails,           setRxDetails] =           useState([[""],[""],['0'],[""],['0']]);
-  const [paymentAddress,      setPaymentAdress] =       useState("");
-  const [paymentTime,         setPaymentTime] =         useState("");
-  const [description,         setDescription] =         useState("");
-  const [amount,              setAmount] =              useState(0);
-  const [noProtest,           setNoProtest] =           useState(false);
-  const [timeDelay,           setTimeDelay] =           useState(0);
-  const [crossed,             setCrossed] =             useState(false);
-
-
-  function generateOperation(): void {
-    setError("");
-
-    const operation: operation = {
-      IDPointOfSale:      parseInt(IDpointOfSale),
-      thirdParty: {
-        CUIT:             CUIT,
-        name:             name,
-        address:          address,
-        phone:            phone,
-        VATCategory:      VATCategory,
-        email:            email,
-        startOfActivities:startOfActivities,
-        postalCode:       postalCode,
-        locality:         locality
+  //Datos de la operación.
+  const [operation, setOperation]: [operation, React.Dispatch<React.SetStateAction<operation>>] =
+  useState({
+    IDPointOfSale: undefined,
+    thirdParty: {
+      CUIT:             '',
+      name:             '',
+      address:          '',
+      contact:          '',
+      VATCategory:      '',
+      postalCode:       '',
+      locality:         ''
+    },
+    productTable: {
+      quantity:         [0],
+      description:      [''],
+      price:            [0]
+    },
+    observations:       '',
+    seller:             '',
+    sellConditions:     "Cuenta corriente",
+    deadline:           '',
+    shippingAddress:     '',
+    carrier:            '',
+    remittance:       '',
+    VAT:                21,
+    receiptXTables: {
+      paymentMethods: {
+        check:          '0',
+        documents:      '0',
+        cash:           '0'
       },
-      productTable: {
-        quantity:         productTable[0],
-        description:      productTable[1],
-        price:            productTable[2]
+      paymentImputation: {
+        type:           [""],
+        documentNumber: ['0'],
+        amount:         ['0'],
+        paid:           ['0']
       },
-      observations:       observations,
-      seller:             seller,
-      sellConditions:     sellConditions,
-      deadline:           deadline,
-      placeOfDelivery:    placeOfDelivery,
-      carrier:            carrier,
-      IDRemittance:       IDRemittance,
-      tax:                tax,
-      VAT:                parseInt(VAT),
-      receiptXTables: {
-        paymentMethods: {
-          check:          RxAmounts[0][0],
-          documents:      RxAmounts[1][0],
-          cash:           RxAmounts[2][0]
-        },
-        paymentImputation: {
-          type:           RxInvoices[0],
-          documentNumber: RxInvoices[1],
-          amount:         RxInvoices[2],
-          paid:           RxInvoices[3]
-        },
-        detailOfValues: {
-          type:           RxDetails[0],
-          bank:           RxDetails[1],
-          documentNumber: RxDetails[2],
-          depositDate:    RxDetails[3],
-          amount:         RxDetails[4]
-        }
-      },
-      payementAddress:    paymentAddress,
-      paymentTime:        paymentTime,
-      description:        description,
-      amount:             amount,
-      noProtest:          noProtest,
-      timeDelay:          timeDelay,
-      crossed:            crossed
-    };
+      detailOfValues: {
+        type:           [''],
+        bank:           [''],
+        documentNumber: [''],
+        depositDate:    [''],
+        amount:         ['0']
+      }
+    },
+    paymentAddress:    '',
+    paymentTime:        '',
+    description:        '',
+    amount:             0,
+    noProtest:          false,
+    timeDelay:          0,
+    crossed:            false
+    
+  });
 
-    if (isValidOperation(operation, type, toSend, setError)) {
-      postOperation(operation, type, toSend, (ok:boolean) => {
-        if (ok) setSuccess(true);
-      });
-    }
+
+  //Setters personalizados.
+  function setBranchesAndPoints(ok:boolean, content: any): void {
+    if (!ok) return;
+    setBranches(content.map((branch: any) => {
+      return {
+        title: `${branch.locality} ${branch.street} N°${branch.addressNumber}`,
+        value: branch.branchID,
+        subOptions: branch.pointsOfSale.map((point: any) => {
+          return {
+            title: `N°${toFourDigitNumber(point.pointOfSaleNumber)}`,
+            value: point.pointOfSaleId,
+          }
+        })
+      }
+    })); 
   }
+  function setThirdParty(thirdParty: typeof operation.thirdParty) { setOperation({...operation, thirdParty: thirdParty}) }
 
+  function setProductTable(table: string[][]) {
+    const operationTemp = {...operation}
+    operationTemp.productTable.quantity =     table[0].map(quantity=>parseInt(quantity));
+    operationTemp.productTable.description =  table[1];
+    operationTemp.productTable.price =        table[2].map(quantity=>parseInt(quantity));
+    setOperation(operationTemp);
+  }
+  
   
   return (
     
-    <Form title={getDocumentTitle(type, toSend)} onSubmit={generateOperation}>
+    viewingDocument? <Document type={type} /> :
+
+
+    <Form title={getOperationFormTitle(type, true)} onSubmit={generateOperation}>
 
       <BackArrow />
-      <Cond bool={type !== "Va"}>
-        <Switch falseIcon={<BiImport />} trueIcon={<BiExport />} value={toSend} setter={setToSend}></Switch>
-      </Cond>
       <Message type="error" message={error} />
-
-
 
       <Section label="Partícipes">
 
         <FlexDiv>
-          <Select options={branches} value={branch} onChange={setBranch} subValue={IDpointOfSale} subOnChange={setIDPointOfSale} 
-            fallback="Crea una sucursal:" label="Elige una sucursal y un punto de venta" />
+          <Select options={branches} value={branch} onChange={setBranch} 
+          subValue={operation.IDPointOfSale} 
+          subOnChange={(ID: number) => setOperation({...operation, IDPointOfSale: ID})} 
+          fallback="Crea una sucursal:" label="Elige una sucursal y un punto de venta" />
           <PlusIcon link={"/inicio/sucursales/nuevo"} />
         </FlexDiv>
-
-        
-        <Cond bool={type !== "Va"}>
-        {toSend?
-        <BiChevronsDown style={{ margin: "0 auto", display: "block", cursor: "default", fontSize: "2rem", color: "#333" }} />:
-        <BiChevronsUp   style={{ margin: "0 auto", display: "block", cursor: "default", fontSize: "2rem", color: "#333" }} />}
-        <FlexDiv>
-          <Select
-            options={thirdParty} label="Elige un tercero (opcional)" value={thirdParty} onChange={setThirdParty}
-            fallback={"Registra un tercero para autocompletar datos de operaciones."} />
-          <PlusIcon link="/" />
-        </FlexDiv>
-        </Cond>
+ 
+        <BiChevronsDown style={{ margin: "0 auto", display: "block", cursor: "default", fontSize: "2rem", color: "#333" }} />
 
       </Section>
 
 
-      
-      <Cond bool={type !== "Va"}>
+
       <Retractable label="Datos del tercero" initial={false}>
 
         <FlexDiv>
 
-        <Field label="Nombre" bind={[name, setName]} validator={Valid.names(name)} />
+        <Filter by="receiverName" type={type}>
+          <Field label="Nombre"
+          bind={[operation.thirdParty.name, (name: string) => 
+          setThirdParty({...operation.thirdParty, name: name})]} 
+          validator={Valid.names(operation.thirdParty.name)} />
+        </Filter>
 
-        <Cond bool={(!toSend&&"OcRmFaNdNcRxCh".includes(type)) || (toSend&&"OcRmFaNdNcRx".includes(type))}>
-          <Field label="C.U.I.T." bind={[CUIT, setCUIT]} validator={Valid.CUIT(CUIT)} />
-        </Cond>
+        <Filter by="receiverCUIT" type={type}>
+          <Field label="C.U.I.T." bind={[operation.thirdParty.CUIT, (CUIT: string) => 
+          setThirdParty({...operation.thirdParty, CUIT: CUIT})]} 
+          validator={Valid.CUIT(operation.thirdParty.CUIT)} />
+        </Filter>
 
         </FlexDiv>
 
-        <Cond bool={"OcRmFaNdNcRx".includes(type)}>
-          <DateTime label="Fecha de inicio de actividades" value={startOfActivities} onChange={setStartOfActivities}  />
-        </Cond>
 
         <FlexDiv>
 
-        <Cond bool={(!toSend&&!"Rs".includes(type)) || (toSend&&!"RsCh".includes(type))}>
-          <Field label="Domicilio" bind={[address, setAddress]} validator={Valid.address(address)} />
-        </Cond>
+        <Filter by="receiverAddress" type={type}>
+          <Field label="Domicilio" note="(calle y altura)" bind={[operation.thirdParty.address, (address: string) => 
+          setThirdParty({...operation.thirdParty, address: address})]} validator={Valid.address(operation.thirdParty.address)} />
+        </Filter>
 
-        <Cond bool={toSend&&!"RsPa".includes(type)}>
-          <Field label="Localidad" bind={[locality, setLocality]} validator={Valid.address(locality)} />
-        </Cond>
-
-        <Cond bool={!"RsCh".includes(type)}>
-          <Field label="Teléfono" type="tel" bind={[phone, setPhone]} validator={Valid.phone(phone)} />
-        </Cond>
+        <Filter by="receiverLocality" type={type}>
+          <Field label="Localidad" bind={[operation.thirdParty.locality, (locality: string) => 
+          setThirdParty({...operation.thirdParty, locality: locality})]} validator={Valid.address(operation.thirdParty.locality)} />
+        </Filter>
 
         </FlexDiv>
 
-        <Cond bool={!"RsChPa".includes(type)}>
-          <FlexDiv>
-          <Field label="Email" type="email" bind={[email, setEmail]} validator={Valid.email(email)} />
-          <Cond bool={toSend}>
-            <Field label="Código postal" type="number" bind={[postalCode, setPostalCode]} validator={Valid.postalCode(postalCode)} />
-          </Cond>
-          </FlexDiv>
-          <Radio legend="Categoría" options={["Responsable Monotributista", "Responsable Inscripto"]} bind={[VATCategory, setVATCategory]} />
-        </Cond>
+        <Filter by="receiverVATCategory" type={type}>
+          <Radio legend="Categoría" options={["Responsable Monotributista", "Responsable Inscripto", "Consumidor Final", "Sujeto Exento"]} 
+          bind={[operation.thirdParty.VATCategory, (VATCategory: string) => 
+          setThirdParty({...operation.thirdParty, VATCategory: VATCategory})]} />
+        </Filter>
 
       </Retractable>
-      </Cond>
       
 
       
       <Retractable label="Datos de la operación">
 
-        <Cond bool={"OcRmFaNdNc".includes(type)}>
+        <Filter by="productTable" type={type}>
           <Table
             thead={[{ name: "Cantidad", type: "number" }, { name: "Descripción" }, { name: "Precio", type: "number" }]}
-            tbody={productTable} onChange={setProductTable} maxRows={10} />
-        </Cond>
+            tbody={[operation.productTable.quantity, operation.productTable.description, operation.productTable.price]} 
+            onChange={(newTable: string[][])=>setProductTable(newTable)} maxRows={10} />
+        </Filter>
+
+        <Filter by="vat" type={type}>
+          <Radio legend="IVA" options={[21, 10, 4, 0]} bind={[operation.VAT, (VAT: number)=>setOperation({...operation, VAT: VAT})]} />
+        </Filter>
         
-        <FlexDiv>
+      </Retractable>
+
+
+
+      <Cond bool={"OcRmFaNdNcRx".includes(type)}><Retractable label="Datos opcionales">
+
+        <Filter by="sellConditions" type={type}>
+          <Radio legend="Condiciones de venta" options={["Al contado", "Cuenta corriente", "Cheque", "Pagaré", "Otro"]}
+          bind={[operation.sellConditions, (sellConditions: string)=>setOperation({...operation, sellConditions: sellConditions})]} />
+        </Filter>
+
+        <Filter by="remittance" type={type}>
+          <Field label="Remito N°" bind={[operation.remittance, (remittance: string)=>setOperation({...operation, remittance: remittance})]}/>
+        </Filter>
+
+      </Retractable></Cond>
+
+      
+
+      <Message type="error" message={error} />
+
+      <FlexDiv justify='flex-end'>
+        {
+          !documentNumber?
+          <Button onClick={()=>setViewingDocument(true)}>Ver PDF</Button>:
+          <Button type="submit">Generar</Button>
+        }
+        
+      </FlexDiv>
+      
+    </Form>
+  );
+}
+
+
+/*
+BACKUP:
+
+
+<Cond bool={!"RsCh".includes(type)}>
+  <Field label="Teléfono" type="tel" bind={[phone, setPhone]} validator={Valid.phone(phone)} />
+</Cond>
+
+<FlexDiv>
+  <Field label="Email" type="email" bind={[email, setEmail]} validator={Valid.email(email)} />
+  <Cond bool={toSend}>
+    <Field label="Código postal" type="number" bind={[postalCode, setPostalCode]} validator={Valid.postalCode(postalCode)} />
+  </Cond>
+</FlexDiv>
+
+
+<FlexDiv>
 
         <Cond bool={"RsPa".includes(type)}>
           <DateTime label="Fecha límite" value={deadline} onChange={setDeadline} />
@@ -264,10 +284,7 @@ export default function OperationForm({ type }: props): JSX.Element {
 
         </FlexDiv>
 
-        <Cond bool={"FaNdNc".includes(type)}>
-          <Field label="Impuesto" type="number" bind={[tax, setTax]}/>
-          <Radio legend="IVA" options={["21%", "10%", "4%", "0%"]} bind={[VAT, setVAT]} />
-        </Cond>
+        
 
         <Cond bool={"Rx"===type}>
           <Table label="Forma de pago"
@@ -285,12 +302,12 @@ export default function OperationForm({ type }: props): JSX.Element {
 
 
         <FlexDiv>
-        <Cond bool={"RsPaVa".includes(type)}>
+        <Cond bool={"RsPa".includes(type)}>
           <Field label="Descripción" bind={[description, setDescription]} />
         </Cond>
 
-        <Cond bool={"RsPaVaCh".includes(type)}>
-          <Field type="number" note={"Va"===type?"(acepta valores negativos)":""} label={"Cantidad"} bind={[amount, setAmount]} />
+        <Cond bool={"RsPaCh".includes(type)}>
+          <Field type="number" label="Cantidad" bind={[amount, setAmount]} />
         </Cond>
         </FlexDiv>
 
@@ -300,12 +317,6 @@ export default function OperationForm({ type }: props): JSX.Element {
           <Switch label="Cruzado" value={crossed} setter={setCrossed} />
         </Cond>
 
-      </Retractable>
-
-
-
-      <Cond bool={!"VaChRsPa".includes(type)}>
-      <Retractable label="Datos opcionales">
 
         <Cond bool={"OcRm".includes(type)}>
           <Textarea label="Observaciones" bind={[observations, setObservations]} />
@@ -315,12 +326,7 @@ export default function OperationForm({ type }: props): JSX.Element {
           <Field label="Vendedor de preferencia" bind={[seller, setSeller]} />
         </Cond>
 
-        <Cond bool={"OcFaNdNc".includes(type)}>
-          <Radio legend="Condiciones de venta" options={["Al contado", "Cuenta corriente", "Cheque", "Pagaré"]}
-          bind={[sellConditions, setSellConditions]} />
-        </Cond>
 
-        
         <Cond bool={"Oc"===type}>
           <FlexDiv>
             <DateTime label="Fecha límite" nonPast value={deadline} onChange={setDeadline} />
@@ -329,35 +335,11 @@ export default function OperationForm({ type }: props): JSX.Element {
           </FlexDiv>
         </Cond>
 
-        <Cond bool={"FaNdNc".includes(type)}>
-          <Field label="Remito N°" bind={[IDRemittance, setIDRemittance]}/>
-        </Cond>
-
         <Cond bool={"Rx"===type}>
           <FlexDiv>
-            <Field label="Domicilio de pago" bind={[paymentAddress, setPaymentAdress]} />
+            <Field label="Domicilio de pago" bind={[paymentAddress, setPaymentAddress]} />
             <DateTime label="Horario de pago" type="time" value={paymentTime} onChange={setPaymentTime} />
           </FlexDiv>
         </Cond>
 
-      </Retractable>
-      </Cond>
-
-      <Message type="error" message={error} />
-
-      <FlexDiv justify='flex-end'>
-        <PDFButton elementToDisplay={<>Hi this works</>} />
-        <Button type="submit">Generar</Button>
-      </FlexDiv>
-      
-    </Form>
-  );
-}
-
-/**Un signo + con Link a la dirección especificada.*/
-const PlusIcon: React.FC<{ link: string }> = ({ link }) => {
-  return (
-  <Link to={link} style={{ flex: .2, marginTop: ".3rem", fontSize: "1.2rem", display: "block", textAlign: "center", color: "#444" }}>
-    <BiPlus />
-  </Link>)
-}
+*/

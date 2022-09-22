@@ -22,7 +22,7 @@ export default function Footer() {
         >
           <DiGithubBadge />
         </a>
-        <p>facturador++ versión 0.2.0</p>
+        <p>facturador++ versión 0.4.0</p>
       </div>
     </footer>
   );

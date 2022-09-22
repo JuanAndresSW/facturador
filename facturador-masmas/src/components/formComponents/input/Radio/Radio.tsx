@@ -4,8 +4,8 @@ import './Radio.css';
 type props = {
     legend: string;
     note?: string;
-    options: string[];
-    bind: [any, React.Dispatch<React.SetStateAction<any>>];
+    options: any[];
+    bind: [any, Function];
 }
 
 /**

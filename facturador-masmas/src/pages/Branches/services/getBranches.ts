@@ -9,7 +9,7 @@ const baseUrl = 'branches/trader/'+sessionStorage.getItem('IDTrader')+'?index=';
  * @param order - El modo de ordenar, ascendente o descendente.
  * @param callback  - La función que procesará la respuesta. El argumento es un boolean (ok) y un objeto branches.
 */
-export default function getBranches(index:number, sort: string,
+export default function getBranches(index:number, sort: ("createdAt"|"name"|"street"),
 order:("asc"|"desc"), callback: Function): void {
 
     ajax('GET', baseUrl+`${index}&size=10&sort=${sort}&order=${order}`,

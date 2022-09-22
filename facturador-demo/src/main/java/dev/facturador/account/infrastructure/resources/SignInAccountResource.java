@@ -18,7 +18,6 @@ import java.util.Map;
 
 
 /** EndPoint para iniciar session*/
-@Slf4j
 @RestController
 @RequestMapping(path = "/api/auth/accounts")
 public class SignInAccountResource {
@@ -43,7 +42,7 @@ public class SignInAccountResource {
 
         var headers = queryBus.handle(query);
         var response = this.createLoginResponse(headers);
-        log.info("pasa response");
+
         return ResponseEntity.ok().body(response);
     }
 

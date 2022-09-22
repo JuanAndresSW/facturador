@@ -1,5 +1,5 @@
 import account from '../models/account';
-import adaptPostAccount from '../adapters/adaptPostAccount';
+import accountToJson from '../adapters/accountToJson';
 import ajax from 'ports/ajax';
 import setSession from 'services/setSession';
 
@@ -8,7 +8,7 @@ const method = "POST";
 
 /**Intenta enviar un nuevo usuario al servidor para registrarlo. */
 export default async function postAccount(account: account, callback: Function): Promise<void> {
-    ajax(method, url, { body: await adaptPostAccount(account) }, respond);
+    ajax(method, url, { body: await accountToJson(account) }, respond);
 
     function respond(status: number, data:string) {
 
@@ -26,7 +26,7 @@ export default async function postAccount(account: account, callback: Function):
             return window.location.reload();
         }
 
-        try {callback(false, JSON.parse(data).mensaje);} //TODO: arreglar cómo se accede a esto.
+        try {callback(false, JSON.parse(data).mensaje);} //TODO: arreglar cómo se accede al mensaje.
         catch {callback(false, data);}
     }
 } 

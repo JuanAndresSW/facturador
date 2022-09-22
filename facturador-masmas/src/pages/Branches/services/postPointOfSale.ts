@@ -1,5 +1,6 @@
 import ajax from 'ports/ajax';
 import getToken from 'services/getToken';
+import {IDTrader} from 'utilities/constants';
 
 /**
  * Registra un nuevo punto de venta.
@@ -7,7 +8,7 @@ import getToken from 'services/getToken';
  * @param callback - La función que procesará la respuesta.
  */
 export default function postPointOfSale(IDBranch:number, callback: Function): void {
-    ajax('POST', `pointsofsale/branch/${IDBranch}/trader/${sessionStorage.getItem("IDTrader")}`,
+    ajax('POST', `pointsofsale/branch/${IDBranch}/trader/${IDTrader}`,
     {token: getToken('access')}, handle);
 
     function handle(status: number, content: string) {

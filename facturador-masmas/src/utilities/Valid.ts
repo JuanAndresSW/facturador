@@ -37,6 +37,13 @@ export default class Valid {
 
   }
 
+  public static sellConditions(conditions: string, setError?: Function): boolean {
+    if ("Al contado Cuenta corriente Cheque Pagaré Otro") return true;
+    if (setError) setError("Las condiciones de venta deben ser: Al contado, Cuenta corriente, Cheque, Pagaré u Otro");
+    return false;
+
+  }
+
   public static vatCategory(vatCategory: string, setError?: Function): boolean {
     if ( vatCategory === "Responsable Monotributista" 
       || vatCategory === "Responsable Inscripto"

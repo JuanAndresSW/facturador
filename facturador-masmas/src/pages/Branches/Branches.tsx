@@ -28,7 +28,6 @@ const sortOptions = [
 export default function Branches(): JSX.Element {
 
   const navigate = useNavigate();
-  const [updater, render] = useReducer(x => x + 1, 0);
 
   //Lista de sucursales.
   const [branches, setBranches]:
@@ -39,7 +38,8 @@ export default function Branches(): JSX.Element {
   //Id de la sucursal seleccionada.
   const [branchID, setBranchID] = useState(-1);
   const [page, setPage] = useState(0);
-  const [sortBy, setSortBy] = useState("createdAt");
+  const [sortBy, setSortBy]: [("createdAt"|"name"|"street"), React.Dispatch<React.SetStateAction<("createdAt"|"name"|"street")>>] 
+  = useState("createdAt");
 
   //Recuperar la lista de sucursales.
   useEffect(requestBranches, [page, sortBy]);

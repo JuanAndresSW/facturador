@@ -4,9 +4,9 @@ import branch from '../models/branch';
 import adaptUpdatedBranchToSend from '../adapters/adaptUpdatedBranchToSend';
 
 /**Envía los datos de una sucursal con uno o más datos actualizados.
- * @param IDBranch - Identificador de la sucursal a actualizar.
+ * @param IDBranch      - Identificador de la sucursal a actualizar.
  * @param updatedBranch - Objeto de sucursal actualizada.
- * @param callback  - La función que procesará la respuesta.
+ * @param callback      - La función que procesará la respuesta.
 */
 export default async function updateBranch(IDBranch:number, updatedBranch: branch,  callback: Function): Promise<void> {
     ajax('PUT', "branches/"+IDBranch, {token: getToken('access'), body: await adaptUpdatedBranchToSend(updatedBranch)}, handle);

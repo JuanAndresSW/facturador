@@ -7,8 +7,8 @@ import './Table.css';
 type props = {
     label?: string,
     thead: {name:string, type? : string}[],
-    tbody: string[][],
-    onChange: React.Dispatch<React.SetStateAction<any[][]>>,
+    tbody: (string|number)[][],
+    onChange: Function,
     maxRows?: number
 }
 
@@ -60,7 +60,7 @@ export default function Table({ label="", thead, tbody, onChange, maxRows=1 }: p
                             {
                             thead[colIndex].type === "date" ?
                     
-                            <DateTime value={col[rowIndex]} onChange={(value:string)=>setCellValue(rowIndex, colIndex, value)} />
+                            <DateTime value={col[rowIndex]+''} onChange={(value:string)=>setCellValue(rowIndex, colIndex, value)} />
                             
                             :
                             

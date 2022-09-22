@@ -1,18 +1,29 @@
 import React from "react";
+const html2pdf = require("html2pdf.js");
 
 type props = {
-    elementToDisplay: JSX.Element
+    nodeReference: React.MutableRefObject<undefined>
 }
 
-export default function FullSizeDocument({elementToDisplay}: props): JSX.Element {
-    function displayPDF(): void {
-        
+export default function FullSizeDocument({nodeReference}: props): JSX.Element {
+    const options = {
+        margin: .5,
+        filename: "test",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
     }
 
-    return <div 
+    function displayPDF(): void {
+        html2pdf().set(options).from(nodeReference.current).save();
+    }
+
+    return <button 
     onClick={()=>displayPDF()}
     style={{
         backgroundColor: "#f33",
+        width: "minContent",
+        border: "none",
         padding: ".4rem 1.4rem",
         borderRadius: "5px",
         color: "#fff",
@@ -20,5 +31,5 @@ export default function FullSizeDocument({elementToDisplay}: props): JSX.Element
         fontSize:"1.2rem",
         borderBottom: "2px solid #b00",
         cursor: "pointer"
-    }}>PDF</div>
+    }}>PDF</button>
 }

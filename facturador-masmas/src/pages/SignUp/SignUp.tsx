@@ -44,35 +44,30 @@ export default function SignUp(): JSX.Element {
 
   /*VALIDACIÓN***************************************************************/
 
-  /**Valida los datos del usuario. */
-  function validateUser(): void {
+  function userIsValid(): boolean {
     setUserError("");
 
-    if (!Valid.names(username, setUserError))     return;
-    if (!Valid.email(email, setUserError))        return; 
-    if (!Valid.password(password, setUserError))  return;
-    if (password !== passwordMatch) return setUserError("Las contraseñas no coinciden");
-    if (!Valid.image(avatar, setUserError))       return;
+    if (!Valid.names(username, setUserError))     return false;
+    if (!Valid.email(email, setUserError))        return false; 
+    if (!Valid.password(password, setUserError))  return false;
+    if (password !== passwordMatch) {setUserError("Las contraseñas no coinciden"); return false}
+    if (!Valid.image(avatar, setUserError))       return false;
 
-    setActive("trader");
+    return true;
   };
 
-  /**Valida los datos del comerciante. */
-  function validateTrader(): void {
+  function traderIsValid(): boolean {
     setTraderError("");
-
-    if (!Valid.names(businessName)) return setTraderError("La razón social debe ser de entre 3 y 20 caracteres");
-    if (!Valid.vatCategory(VATCategory, setTraderError)) return;
-    if (!Valid.CUIT(CUIT, setTraderError)) return;
-
-    //Si todo fue validado, se envían los datos.
-    submit();
+    if (!Valid.names(businessName)) {setTraderError("La razón social debe ser de entre 3 y 20 caracteres"); return false}
+    if (!Valid.vatCategory(VATCategory, setTraderError)) return false;
+    if (!Valid.CUIT(CUIT, setTraderError)) return false;
+    return true;
   };
 
   /*ENVIAR Y RECIBIR*************************************************/
 
   /**Envía al servidor los datos recolectados. */
-  async function submit(): Promise<void> {
+  function submit(): void {
 
     const account: account = {
       user: {
@@ -105,7 +100,7 @@ export default function SignUp(): JSX.Element {
   return (
     active === "user" ?
     
-    <Form title="Datos de la cuenta" onSubmit={validateUser}>
+    <Form title="Datos de la cuenta" onSubmit={()=>{if (userIsValid()) setActive("trader")}}>
       <Link to="/"><BiHome /></Link>
           
       
@@ -135,7 +130,7 @@ export default function SignUp(): JSX.Element {
     :
     active === "trader" ?
 
-    <Form title="Datos del comercio" onSubmit={validateTrader}>
+    <Form title="Datos del comercio" onSubmit={()=>{if (traderIsValid()) submit()}}>
       {sending? null : <BiChevronLeft onClick={() => setActive("user")} /> }
 
       <Field label="Escribe tu razón social" bind={[businessName, setBusinessName]}

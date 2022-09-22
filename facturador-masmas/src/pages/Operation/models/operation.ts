@@ -1,29 +1,29 @@
+export type operationCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch");
+
 type operation = {
     IDPointOfSale: number,
     thirdParty: {
         CUIT: string,
         name: string,
         address: string,
-        phone: string,
+        contact: string,
         VATCategory: string,
-        email: string,
-        startOfActivities: string,
+        startOfActivities?: string,
         postalCode: string,
         locality: string
     },
     productTable: {
-        quantity: string[], //int
+        quantity: number[],
         description: string[],
-        price: string[], //float
+        price: number[],
     },
     observations: string,
     seller: string,
     sellConditions: string,
     deadline: string,
-    placeOfDelivery: string,
+    shippingAddress: string,
     carrier: string,
-    IDRemittance: number, //int
-    tax: number,
+    remittance: string,
     VAT: number,
     receiptXTables: {
         paymentMethods: {
@@ -45,7 +45,7 @@ type operation = {
             amount: string[], //float
         }
     },
-    payementAddress: string,
+    paymentAddress: string,
     paymentTime: string,
     description: string,
     amount: number, //float

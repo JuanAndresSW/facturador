@@ -7,4 +7,5 @@ export {default as Plus} from './Plus/Plus';
 export {default as SplashScreen} from './SplashScreen/SplashScreen';
 export {default as Pagination} from './Pagination/Pagination';
 export {default as BackArrow} from './BackArrow';
+export {default as DataBox} from './DataBox/DataBox';
 export {default as PDFButton} from './PDFButton/PDFButton';

@@ -17,8 +17,7 @@ const FlexDiv: React.FC<props> = ({children, wrap=true, justify="center", align=
     return (
       <div style={
         { display: "flex", alignItems: align, justifyContent: justify, 
-          flexFlow:wrap?'wrap':'nowrap', width:'100%',
-          overflowX: "auto"
+          flexFlow:wrap?'wrap':'nowrap', width:'100%'
         }}>
 
         {children}
