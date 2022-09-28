@@ -1,14 +1,14 @@
 import ajax from 'ports/ajax';
 import Response from 'models/Response';
-import operation, { documentClassCode } from '../models/operation';
+import { documentClassCode } from '../models/operation';
 import operationIdentifier from "../models/operationIdentifier";
 import operationToJson from "../adapters/operationToJson";
 
-export default async function postOperation(operation: operation, documentClassCode: documentClassCode): Promise<Response> {
-    const response = await ajax('POST', `operation/${getOperationName(documentClassCode)}/send`, true, operationToJson(operation, documentClassCode))
+export default async function getOperation(operationIdentifier: operationIdentifier): Promise<Response> {
+    const response = await ajax('GET', `operation/send`, true);
 
     if (response.status === 201) return {...response, content: (JSON.parse(response.content))};
-    else return response;
+    return response;
 
 }
 

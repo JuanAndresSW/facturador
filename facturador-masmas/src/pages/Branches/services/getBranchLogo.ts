@@ -1,13 +1,7 @@
+import Response from 'models/Response';
 import ajax from 'ports/ajax';
-import getToken from 'services/getToken';
 
 /**Recupera el logo de la sucursal especificada, en base 64. */
-export default function getBranchLogo(IDBranch: number, callback:Function) {
-    ajax("GET","branches/"+IDBranch+"/get-logo",{token: getToken('access')}, respond);
-
-    function respond(status:number, content:string) {
-        if (status === 200) callback(true, content);
-        else callback(false, "Error");
-    }   
+export default async function getBranchLogo(IDBranch: number): Promise<Response> {
+    return await ajax("GET","branches/"+IDBranch+"/get-logo", true);
 }
-

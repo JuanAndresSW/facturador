@@ -20,19 +20,17 @@ export default function Login(): JSX.Element {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function submit(): void {
-    if ((Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && Valid.password(password)) {
-      setLoading(true);
-      tryLogin(usernameOrEmail, password, sideEffects);
-    }
-    else setError("Usuario o contraseña incorrecta");
+  async function submit(): Promise<void> {
+    if (!(Valid.names(usernameOrEmail) || Valid.email(usernameOrEmail)) && !Valid.password(password))
+    return setError("Usuario o contraseña incorrecta");
+ 
+    setLoading(true);
+    const response = await tryLogin(usernameOrEmail, password);
+    setLoading(false);
+    if (!response.ok) return setError(response.message);
+    setError("");
   };
 
-  function sideEffects(ok:boolean, error:string):void {
-    setLoading(false);
-    if (!ok) return setError(error);
-    setError("");
-  }
 
   return (
     <Form onSubmit={submit} title="Iniciar sesión">

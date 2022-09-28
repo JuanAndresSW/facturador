@@ -1,35 +1,31 @@
 import ajax       from 'ports/ajax';
+import Response from 'models/Response';
 import getToken   from './getToken';
 import setSession from './setSession';
 
-/**
- * Trata de iniciar sesión con el token almacenado.
- * @param {Function} callback - La función que implementa efectos adicionales al recibir la respuesta.
- */
-export default function getSessionByToken(callback: Function): void {
+/** Trata de iniciar sesión con el token almacenado.*/
+export default async function getSessionByToken(): Promise<Response> {
 
-  const access = getToken("access");
+  const access =  getToken("access");
+  const refresh = getToken("refresh");
 
   //Salir si no existe posibilidad de que el token sea válido.
   if (!/^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$/.test(access)) 
-  return  callback(false, "El token no contiene un formato válido.");
-
-  else    ajax("GET","auth/init", { token: access }, handleAccessTokenResponse);
-
+  return new Response("El token no contiene un formato válido");
 
   
-  function handleAccessTokenResponse(status:number, data:string): void { 
-    if (status === 200) success(data);
-    else  ajax("POST","auth/refresh", { token: getToken("refresh") }, handleRefreshTokenResponse);
-  };
-
-  function handleRefreshTokenResponse(status:number, data:string): void {  
-    if (status !== 200) callback(false, "Los tokens almacenados son erróneos o han expirado.")
-    else  success(data);
-  };
+  const accessTokenResponse = await ajax("GET","auth/init", true);
+  if (accessTokenResponse.status === 200) return success(accessTokenResponse.content);
   
-  function success(data: string): void {
-    setSession(data);
-    callback(true, "Token validado");
+  else {
+    const refreshTokenResponse = await ajax("POST","auth/refresh", true, undefined, true);
+
+    if (refreshTokenResponse.status === 200) return success(refreshTokenResponse.content)
+    else return new Response("Los tokens almacenados son erróneos o han expirado.");
+  }
+
+  function success(sessionJSON: string): Response {
+    setSession(sessionJSON);
+    return new Response("Token validado", '', 200, true);
   }
 }

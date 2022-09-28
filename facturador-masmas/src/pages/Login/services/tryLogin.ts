@@ -1,25 +1,23 @@
+import Response from 'models/Response';
 import ajax from 'ports/ajax';
 import setSession from 'services/setSession';
 
 /** Trata de iniciar sesión con los credenciales proporcionados.*/
-export default function tryLogin(usernameOrEmail: string, password: string, callback: Function): void {
-    ajax("POST", "auth/accounts/log-in", 
-    {
-      body: JSON.stringify({
-        usernameOrEmail: usernameOrEmail.trim(),
-        password:        password.trim(),
-      })
-    }, 
-    handleResponse);
+export default async function tryLogin(usernameOrEmail: string, password: string): Promise<Response> {
+  const response = await ajax("POST", "auth/accounts/log-in", false, 
+  JSON.stringify({
+    usernameOrEmail: usernameOrEmail.trim(),
+    password:        password.trim(),
+  }))
 
-    function handleResponse(httpStatus: number, content: string): void {
-      if (httpStatus === 200) {
-        localStorage.clear();
-        setSession(content);
-        callback(true);
-        return window.location.reload();
-      }
-      if (httpStatus >= 404)
-      return callback(false, "Usuario o contraseña incorrecta");
-    }
+  if (response.status === 200) {
+    localStorage.clear();
+    setSession(response.content);
+    window.location.reload();
+  }
+  if (response.status >= 404)
+  return {...response, message: "Usuario o contraseña incorrecta"};
+
+  return response;
+  
 }

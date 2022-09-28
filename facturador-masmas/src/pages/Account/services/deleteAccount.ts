@@ -1,13 +1,11 @@
 import ajax from 'ports/ajax';
-import getToken from 'services/getToken';
+import closeSession from 'services/closeSession';
+import Response from 'models/Response';
 
 /**Solicita la eliminación de la cuenta.*/
-export default function deleteAccount(deletionCode:string, callback:Function): void {
-    ajax("DELETE", `accounts/${sessionStorage.getItem("username")}`, { token: getToken('access') }, respond);
-    function respond(status:number, data:string) {
-        if (status !== 204) return callback(false, data);
-        localStorage.clear();
-        sessionStorage.clear();
-        callback(true); 
-    }
+export default async function deleteAccount(deletionCode?:string): Promise<Response> {
+    const response = await ajax("DELETE", `accounts/${sessionStorage.getItem("username")}`, true);
+       
+    if (response.status === 204) closeSession();
+    return response;
 }

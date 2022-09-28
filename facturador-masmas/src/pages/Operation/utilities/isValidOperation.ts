@@ -1,9 +1,11 @@
 import Valid from 'utilities/Valid';
-import operation from '../models/operation';
-import operationFilters, {operationProp} from "./operationFilters";
+import operationFilters from "./operationFilters";
+import documentProp from '../models/documentProp';
+import operation, { documentClassCode } from '../models/operation';
+
 
 /**Devuelve un boolean representando la validez de un objeto de operación. Envía un mensaje de error a una función.*/
-export default function isValidOperation(operation: operation, operationType: string, setError: Function): boolean {
+export default function isValidOperation(operation: operation, documentClassCode: documentClassCode, setError: Function): boolean {
 
     //Validar datos del comerciante.
     if (!Number.isInteger(operation.IDPointOfSale))
@@ -121,5 +123,5 @@ export default function isValidOperation(operation: operation, operationType: st
     return no("La diferencia de tiempo debe ser de entre 0 y 365 días.");
 
     function no(messaje: string):   boolean {setError(messaje);return false;}
-    function currentOperationIncludes(thisProperty: operationProp): boolean { return operationFilters[thisProperty].includes(operationType); }
+    function currentOperationIncludes(thisProperty: documentProp): boolean { return operationFilters[thisProperty].includes(documentClassCode); }
 }

@@ -36,17 +36,14 @@ export default function TitleScreen(): JSX.Element {
   }
 
   //Envía los datos de usuario al servidor.
-  function send():void {
+  async function send(): Promise<void> {
     setLoading(true);
-    tryLogin(usernameOrEmail, password, sideEffects);
-  }
-    
-  //Maneja la respuesta del servidor.
-  function sideEffects(ok:boolean, error:string):void {
+    const response = await tryLogin(usernameOrEmail, password);
     setLoading(false);
-    if (!ok) return setError(error);
+    if (!response.ok) return setError(response.message);
     reset();
   }
+
 
   return (
     <div className="title-wrapper">

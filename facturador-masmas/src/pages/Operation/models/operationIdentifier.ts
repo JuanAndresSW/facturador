@@ -1,5 +1,6 @@
-type operationIdentifier = {
-    operationNumber: string,
+type documentIdentifier = {
+    documentNumberLast8Digits: number,
+    type?: "A" | "B" | "C"
     operationType: 
     "Factura A" |
     "Factura B" | 
@@ -9,7 +10,6 @@ type operationIdentifier = {
     "Nota de crédito C" | 
     "Nota de débito A" | 
     "Nota de débito B" | 
-    "Nota de débito C",
-    dateOfIssue: string
+    "Nota de débito C"
 }
-export default operationIdentifier;
+export default documentIdentifier;

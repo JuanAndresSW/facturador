@@ -1,9 +1,10 @@
 import React from 'react';
 import { Cond } from 'components/wrappers';
-import operationFilters, {operationProp} from "../utilities/operationFilters";
-import {operationCode} from '../models/operation';
+import operationFilters from "../utilities/operationFilters";
+import {documentClassCode} from '../models/operation';
+import documentProp from '../models/documentProp';
 
 /**Muestra el contenido sólo si la propiedad 'by' es incluida en la operación actual. */
-export default function Filter({by, type, children}:{ by: operationProp, type: operationCode,children:  React.ReactNode }) {
-    return <Cond bool={operationFilters[by].includes(type)}>{children}</Cond>
+export default function Filter({by, classCode, children}:{ by: documentProp, classCode: documentClassCode,children:  React.ReactNode }) {
+    return <Cond bool={operationFilters[by].includes(classCode)}>{children}</Cond>
 }

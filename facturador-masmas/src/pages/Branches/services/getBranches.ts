@@ -1,5 +1,5 @@
+import Response from 'models/Response';
 import ajax from 'ports/ajax';
-import getToken from 'services/getToken';
 
 const baseUrl = 'branches/trader/'+sessionStorage.getItem('IDTrader')+'?index=';
 
@@ -7,16 +7,12 @@ const baseUrl = 'branches/trader/'+sessionStorage.getItem('IDTrader')+'?index=';
  * @param index - La página de la lista.
  * @param sort  - El campo en base al cual ordenar la lista.
  * @param order - El modo de ordenar, ascendente o descendente.
- * @param callback  - La función que procesará la respuesta. El argumento es un boolean (ok) y un objeto branches.
 */
-export default function getBranches(index:number, sort: ("createdAt"|"name"|"street"),
-order:("asc"|"desc"), callback: Function): void {
+export default async function getBranches(index:number, sort: ("createdAt"|"name"|"street"),
+order:("asc"|"desc")): Promise<Response> {
 
-    ajax('GET', baseUrl+`${index}&size=10&sort=${sort}&order=${order}`,
-    {token: getToken('access')}, handle);
+    const response = await ajax('GET', baseUrl+`${index}&size=10&sort=${sort}&order=${order}`, true);
 
-    function handle(status: number, content: string) {
-        if (status === 200) callback(true, JSON.parse(content));
-        else callback(false, content);
-    }
+    if (response.ok) return {...response, content: JSON.parse(response.content)}
+    return response;
 }

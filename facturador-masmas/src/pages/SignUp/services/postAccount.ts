@@ -2,31 +2,29 @@ import account from '../models/account';
 import accountToJson from '../adapters/accountToJson';
 import ajax from 'ports/ajax';
 import setSession from 'services/setSession';
+import Response from 'models/Response';
 
 const url = "auth/accounts";
 const method = "POST";
 
 /**Intenta enviar un nuevo usuario al servidor para registrarlo. */
-export default async function postAccount(account: account, callback: Function): Promise<void> {
-    ajax(method, url, { body: await accountToJson(account) }, respond);
+export default async function postAccount(account: account): Promise<Response> {
+    const response = await ajax(method, url, true, await accountToJson(account));
 
-    function respond(status: number, data:string) {
+    if (response.status === 201) {
+        
+        setSession(JSON.stringify({
+            accessToken:    JSON.parse(response.content).accessToken,
+            refreshToken:   JSON.parse(response.content).refreshToken,
+            username:       account.user.username,
+            actives:        '0',
+            passives:       '0'
+        }));
 
-        if (status === 201) {
+        window.location.reload();
 
-            setSession(JSON.stringify({
-                accessToken:    JSON.parse(data).accessToken,
-                refreshToken:   JSON.parse(data).refreshToken,
-                username:       account.user.username,
-                actives:        '0',
-                passives:       '0'
-            }));
-
-            callback(true);
-            return window.location.reload();
-        }
-
-        try {callback(false, JSON.parse(data).mensaje);} //TODO: arreglar cómo se accede al mensaje.
-        catch {callback(false, data);}
+        return response;
     }
+
+    return {...response, message: JSON.parse(response.content)?.mensaje}
 } 

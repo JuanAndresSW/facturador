@@ -19,30 +19,47 @@ import Valid from "utilities/Valid";
 import postOperation from './services/postOperation';
 import getListOfBranchesAndPoints from './services/getListOfBranchesAndPoints';
 //Tipos.
-import operation, {operationCode} from './models/operation';
+import operation, {documentClassCode} from './models/operation';
 import { toFourDigitNumber } from "utilities/conversions";
-type props = { type: operationCode };
+type props = { documentClassCode: documentClassCode };
 
 /**
- * Devuelve un formulario que recolecta los datos necesitados por el back-end para generar una operación comercial.
+ * Devuelve un formulario que recolecta los datos necesitados por el back-end para generar un documento comercial.
  * @param props.type Código del documento de dos caracteres.
  */
-export default function OperationForm({ type }: props): JSX.Element {
+export default function OperationForm({ documentClassCode }: props): JSX.Element {
+
+  //Identificadores recibidos del documento creado.
+  const [documentNumberLast8Digits, setDocumentNumberLast8Digits] = useState();
+  const [documentType, setDocumentType] =      useState();
+
 
   //Comunicación con el servidor.
-  useEffect(()=>{ getListOfBranchesAndPoints(setBranchesAndPoints) }, []);
+  useEffect(()=>{ getListOfBranchesAndPoints().then( response => {
+    if (!response.ok) return;
+    setBranchesAndPoints(response.content)
+  })});
 
-  function generateOperation(): void {
+
+
+  async function generateOperation(): Promise<void> {
     setError("");
     setLoading(true);
 
-    if (isValidOperation(operation, type, setError)) {
-      postOperation(operation, type, (ok:boolean, content: string) => {
-        if (!ok) return setError(content);
-        setDocumentNumber(content);
-      });
-    }
-    setLoading(false);
+    if (!isValidOperation(operation, documentClassCode, setError)) return console.log("operacion invalida");
+    
+    return console.log(operation);
+
+    /* const response = await postOperation(operation, documentClassCode);
+    if (!response.ok) return setError(response.message);
+
+    setDocumentNumberLast8Digits(response.content.operationNumber);
+    setDocumentType(response.content.type)
+    setLoading(false); */
+  }
+
+  function viewDocument() {
+    
   }
  
 
@@ -52,7 +69,7 @@ export default function OperationForm({ type }: props): JSX.Element {
   const [viewingDocument,     setViewingDocument] =     useState(false);
   const [branches,            setBranches] =            useState();
   const [branch,              setBranch] =              useState();
-  const [documentNumber,      setDocumentNumber] =      useState('');
+
 
   //Datos de la operación.
   const [operation, setOperation]: [operation, React.Dispatch<React.SetStateAction<operation>>] =
@@ -112,9 +129,9 @@ export default function OperationForm({ type }: props): JSX.Element {
 
 
   //Setters personalizados.
-  function setBranchesAndPoints(ok:boolean, content: any): void {
-    if (!ok) return;
-    setBranches(content.map((branch: any) => {
+  function setBranchesAndPoints(branchesAndPoints: any): void {
+    
+    setBranches(branchesAndPoints.map((branch: any) => {
       return {
         title: `${branch.locality} ${branch.street} N°${branch.addressNumber}`,
         value: branch.branchID,
@@ -140,10 +157,10 @@ export default function OperationForm({ type }: props): JSX.Element {
   
   return (
     
-    viewingDocument? <Document type={type} /> :
+    viewingDocument? <Document type={documentClassCode} /> :
 
 
-    <Form title={getOperationFormTitle(type, true)} onSubmit={generateOperation}>
+    <Form title={getOperationFormTitle(documentClassCode, true)} onSubmit={generateOperation}>
 
       <BackArrow />
       <Message type="error" message={error} />
@@ -168,14 +185,14 @@ export default function OperationForm({ type }: props): JSX.Element {
 
         <FlexDiv>
 
-        <Filter by="receiverName" type={type}>
+        <Filter by="receiverName" classCode={documentClassCode}>
           <Field label="Nombre"
           bind={[operation.thirdParty.name, (name: string) => 
           setThirdParty({...operation.thirdParty, name: name})]} 
           validator={Valid.names(operation.thirdParty.name)} />
         </Filter>
 
-        <Filter by="receiverCUIT" type={type}>
+        <Filter by="receiverCUIT" classCode={documentClassCode}>
           <Field label="C.U.I.T." bind={[operation.thirdParty.CUIT, (CUIT: string) => 
           setThirdParty({...operation.thirdParty, CUIT: CUIT})]} 
           validator={Valid.CUIT(operation.thirdParty.CUIT)} />
@@ -186,19 +203,19 @@ export default function OperationForm({ type }: props): JSX.Element {
 
         <FlexDiv>
 
-        <Filter by="receiverAddress" type={type}>
+        <Filter by="receiverAddress" classCode={documentClassCode}>
           <Field label="Domicilio" note="(calle y altura)" bind={[operation.thirdParty.address, (address: string) => 
           setThirdParty({...operation.thirdParty, address: address})]} validator={Valid.address(operation.thirdParty.address)} />
         </Filter>
 
-        <Filter by="receiverLocality" type={type}>
+        <Filter by="receiverLocality" classCode={documentClassCode}>
           <Field label="Localidad" bind={[operation.thirdParty.locality, (locality: string) => 
           setThirdParty({...operation.thirdParty, locality: locality})]} validator={Valid.address(operation.thirdParty.locality)} />
         </Filter>
 
         </FlexDiv>
 
-        <Filter by="receiverVATCategory" type={type}>
+        <Filter by="receiverVATCategory" classCode={documentClassCode}>
           <Radio legend="Categoría" options={["Responsable Monotributista", "Responsable Inscripto", "Consumidor Final", "Sujeto Exento"]} 
           bind={[operation.thirdParty.VATCategory, (VATCategory: string) => 
           setThirdParty({...operation.thirdParty, VATCategory: VATCategory})]} />
@@ -210,14 +227,14 @@ export default function OperationForm({ type }: props): JSX.Element {
       
       <Retractable label="Datos de la operación">
 
-        <Filter by="productTable" type={type}>
+        <Filter by="productTable" classCode={documentClassCode}>
           <Table
             thead={[{ name: "Cantidad", type: "number" }, { name: "Descripción" }, { name: "Precio", type: "number" }]}
             tbody={[operation.productTable.quantity, operation.productTable.description, operation.productTable.price]} 
             onChange={(newTable: string[][])=>setProductTable(newTable)} maxRows={10} />
         </Filter>
 
-        <Filter by="vat" type={type}>
+        <Filter by="vat" classCode={documentClassCode}>
           <Radio legend="IVA" options={[21, 10, 4, 0]} bind={[operation.VAT, (VAT: number)=>setOperation({...operation, VAT: VAT})]} />
         </Filter>
         
@@ -225,14 +242,14 @@ export default function OperationForm({ type }: props): JSX.Element {
 
 
 
-      <Cond bool={"OcRmFaNdNcRx".includes(type)}><Retractable label="Datos opcionales">
+      <Cond bool={"OcRmFaNdNcRx".includes(documentClassCode)}><Retractable label="Datos opcionales">
 
-        <Filter by="sellConditions" type={type}>
+        <Filter by="sellConditions" classCode={documentClassCode}>
           <Radio legend="Condiciones de venta" options={["Al contado", "Cuenta corriente", "Cheque", "Pagaré", "Otro"]}
           bind={[operation.sellConditions, (sellConditions: string)=>setOperation({...operation, sellConditions: sellConditions})]} />
         </Filter>
 
-        <Filter by="remittance" type={type}>
+        <Filter by="remittance" classCode={documentClassCode}>
           <Field label="Remito N°" bind={[operation.remittance, (remittance: string)=>setOperation({...operation, remittance: remittance})]}/>
         </Filter>
 
@@ -244,8 +261,8 @@ export default function OperationForm({ type }: props): JSX.Element {
 
       <FlexDiv justify='flex-end'>
         {
-          !documentNumber?
-          <Button onClick={()=>setViewingDocument(true)}>Ver PDF</Button>:
+          documentNumberLast8Digits?
+          <Button onClick={()=>viewDocument()}>Ver PDF</Button>:
           <Button type="submit">Generar</Button>
         }
         

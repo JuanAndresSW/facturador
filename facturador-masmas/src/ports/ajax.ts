@@ -1,48 +1,47 @@
+import Response from "models/Response";
+import getToken from "services/getToken";
+type HTTPMethod = ("GET"|"POST"|"PUT"|"DELETE");
+
 /**
  * Implementa una capa de abstracción para la API XMLHR.
- * Permite realizar operaciones get, post, put, delete y head (scan del header) enviando los datos
- * a un URL, y pudiendo adjuntar un JWT opcional.
- * @param {("GET"|"POST"|"PUT"|"DELETE"|"HEAD")} [method] - El método HTTP a ser utilizado.
- * @param {string}   [url]            - Sufijo del url del recurso.
- * @param {string}   [content.body]   - Cuerpo opcional de la petición.
- * @param {string}   [content.token]  - Token JWT opcional de la petición.
- * @param {Function} [callback]       - Función para manejar la respuesta. Siempre se invoca con dos argumentos: un código de estado de la petición, y el contenido, pudiendo ser un mensaje de error o los datos de respuesta.
+ * @param {HTTPMethod} [method]         - El método HTTP a ser utilizado.
+ * @param {string}     [url]            - Sufijo del url del recurso.
+ * @param {boolean}    [needsAuth]      - Si se debe incluir un token JWT. Por defecto es falso.
+ * @param {string}     [body]           - Cuerpo opcional de la petición.
+ * @param {boolean}    [refresh]        - Si el token a enviar es de refrescamiento.
+ * @return {Response}                   - La respuesta de la petición.
  */
-export default function ajax(method:("GET"|"POST"|"PUT"|"DELETE"|"HEAD"), url: string, 
-content: {body?:string, token?: string}, callback: Function): void {
+const ajax = (method: HTTPMethod, url: string, needsAuth: boolean=false, body?:string, refresh=false): Promise<Response> =>
+new Promise<Response>( resolve => {
 
   //Definir la request.
   const xhr = new XMLHttpRequest();
-  if (!xhr) {
-    callback(0, "Las solicitudes XMLHTTP no son soportadas en tu navegador");
-    return;
-  }
+  if (!xhr) resolve (new Response("Las solicitudes XMLHTTP no son soportadas en tu navegador"));
 
   //Configurar la request.
-  url =                     process.env.REACT_APP_API + url;
-  xhr.onreadystatechange =  handleResponse;
   xhr.timeout =             15000;
-  xhr.ontimeout = () =>     {return callback(0, "Se ha agotado el tiempo de espera del servidor");}
+  xhr.onreadystatechange =  handleResponse;
+  xhr.ontimeout = () =>     resolve (new Response("Se ha agotado el tiempo de espera del servidor"))
 
   //Abrir la request.
-  xhr.open(method, url, true);
-  if (content.body  !== undefined) xhr.setRequestHeader("Content-Type", "application/json");
-  if (content.token !== undefined) xhr.setRequestHeader("Authorization", 'Bearer ' + content.token);
-  
-  xhr.send(content.body);
+  xhr.open(method, process.env.REACT_APP_API + url, true);
+  if (body  !== undefined)  xhr.setRequestHeader("Content-Type", "application/json");
+  if (needsAuth)            xhr.setRequestHeader("Authorization", 'Bearer ' + getToken("access"));
+  xhr.send(body);
 
   //Manejar la respuesta.
   function handleResponse(): void {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      switch (xhr.status) {
-        case 0: return callback(0,   "No se ha podido establecer la comunicación con el servidor");
-        case 404: return callback(404, "No se ha encontrado el recurso solicitado");
-        case 401: return callback(401, "No tienes permiso para esta operación");
-        case 500: return callback(500, "Error del servidor");
-      } 
-      
-
-      callback(xhr.status, xhr.responseText);
-    }
+    if (xhr.readyState === XMLHttpRequest.DONE) 
+    
+    switch (xhr.status) {
+      case 0:   return resolve(new Response("No se ha podido establecer la comunicación con el servidor"));
+      case 404: return resolve(new Response("No se ha encontrado el recurso solicitado", '', 404));
+      case 401: return resolve(new Response("No tienes permiso para esta operación", '', 401));
+      case 500: return resolve(new Response("Error del servidor", '', 500));
+      default:  return resolve(new Response("", xhr.responseText, xhr.status, true));
+    } 
+    
   }
-}
+});
+
+export default ajax;

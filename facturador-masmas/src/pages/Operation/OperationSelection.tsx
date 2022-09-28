@@ -8,15 +8,15 @@ import OperationForm from "./OperationForm";
 export default function OperationSelection() {
   return <Routes>
     <Route index                      element={OperationMainScreen} />
-    <Route path={"/factura"}          element={<OperationForm type="Fa" />} />
-    <Route path={"/nota-de-credito"}  element={<OperationForm type="Nc" />} />
-    <Route path={"/nota-de-debito"}   element={<OperationForm type="Nd" />} />
-    <Route path={"/recibo-x"}         element={<OperationForm type="Rx" />} />
-    <Route path={"/recibo"}           element={<OperationForm type="Rs" />} />
-    <Route path={"/orden-de-compra"}  element={<OperationForm type="Oc" />} />
-    <Route path={"/remito"}           element={<OperationForm type="Rm" />} />
-    <Route path={"/cheque"}           element={<OperationForm type="Ch" />} />
-    <Route path={"/pagare"}           element={<OperationForm type="Pa" />} />
+    <Route path={"/factura"}          element={<OperationForm documentClassCode="Fa" />} />
+    <Route path={"/nota-de-credito"}  element={<OperationForm documentClassCode="Nc" />} />
+    <Route path={"/nota-de-debito"}   element={<OperationForm documentClassCode="Nd" />} />
+    <Route path={"/recibo-x"}         element={<OperationForm documentClassCode="Rx" />} />
+    <Route path={"/recibo"}           element={<OperationForm documentClassCode="Rs" />} />
+    <Route path={"/orden-de-compra"}  element={<OperationForm documentClassCode="Oc" />} />
+    <Route path={"/remito"}           element={<OperationForm documentClassCode="Rm" />} />
+    <Route path={"/cheque"}           element={<OperationForm documentClassCode="Ch" />} />
+    <Route path={"/pagare"}           element={<OperationForm documentClassCode="Pa" />} />
   </Routes>
 
 }

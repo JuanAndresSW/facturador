@@ -20,10 +20,10 @@ export default function ProfileMenu(): JSX.Element {
 
     //Pedir la imágen en el primer renderizado.
     useEffect(() => {
-        getUserAvatar((ok:boolean, blob: File) => {
-            if (ok && blob.size>1) setImg(URL.createObjectURL(blob));
+        getUserAvatar().then( response => {
+            if (response.ok && response.content.size>1) setImg(URL.createObjectURL(response.content));
         });
-    }, []);
+    });
 
     //Controlador de estado del menú.
     const [active, setActive] = useState(false);

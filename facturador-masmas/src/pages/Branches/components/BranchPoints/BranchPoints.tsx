@@ -25,26 +25,24 @@ export default function BranchPoints({IDBranch}:{IDBranch:number}): JSX.Element 
 
     useEffect(loadPointsOfSaleList, [page]);
 
-    function newPointOfSale(): void {
+    async function newPointOfSale(): Promise<void> {
         setLoading(true);
-        postPointOfSale(IDBranch, (ok:boolean)=>{
-            if (ok) loadPointsOfSaleList();
-            else setError("Error al crear nuevo punto de venta.");
-        });
+        const response = await postPointOfSale(IDBranch);
+        if (response.ok) loadPointsOfSaleList();
+        else setError("Error al crear nuevo punto de venta.");
         setLoading(false);
     }
 
     function loadPointsOfSaleList() {
-        getPointsOfSale(IDBranch, page, (ok:boolean, list:pointsOfSale) => {
-            if (ok) setPoints(list);
+        getPointsOfSale(IDBranch, page).then( response => {
+            if (response.ok) setPoints(response.content);
         })
     }
 
-    function requestDeletePointOfSale(IDPoint:number, index:number): void {
-        deletePointOfSale(IDPoint, (ok:boolean, error:string) => {
-            if (ok) loadPointsOfSaleList();
-            else setError(error);
-        });
+    async function requestDeletePointOfSale(IDPoint:number, index:number): Promise<void> {
+        const response = await deletePointOfSale(IDPoint);
+        if (response.ok) loadPointsOfSaleList();
+        else setError(error);
     }
 
     return (

@@ -67,7 +67,7 @@ export default function SignUp(): JSX.Element {
   /*ENVIAR Y RECIBIR*************************************************/
 
   /**Envía al servidor los datos recolectados. */
-  function submit(): void {
+  async function submit(): Promise<void> {
 
     const account: account = {
       user: {
@@ -83,16 +83,15 @@ export default function SignUp(): JSX.Element {
       }
     }
     setSending(true);
-    postAccount(account, (ok: boolean, data: string) => {
+    
+    const response = await postAccount(account);
       
-      setSending(false);
-      if (ok) {
-        setSuccess(true);
-        setTraderError("");
-        navigate("/inicio");
-      } else setTraderError(data);
-
-    });
+    setSending(false);
+    if (!response.ok) return setTraderError(response.message);
+    
+    setSuccess(true);
+    setTraderError("");
+    navigate("/inicio");
   }
 
   /*FORMULARIO*****************************************************/

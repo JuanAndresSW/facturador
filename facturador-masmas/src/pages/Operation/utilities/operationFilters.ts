@@ -1,6 +1,5 @@
 /**Especifica para cada propiedad de una operación los documentos que incluyen esa propiedad.
- * @example filters.property = "OcFa"; //La propiedad property es incluida en la orden de compra y la factura.
- */
+ * @example filters.property = "OcFa"; //La propiedad property es incluida en la orden de compra y la factura.*/
 const operationFilters = Object.freeze({
     senderCUIT:         "OcRmFaNdNcRxCh",
     senderAddress:      "OcRmFaNdNcRxPaCh",
@@ -21,14 +20,14 @@ const operationFilters = Object.freeze({
     seller:             "Oc",
     sellConditions:     "OcFaNdNc",
     deadline:           "OcRsPa",
-    shippingAddress:     "Oc",
+    shippingAddress:    "Oc",
     carrier:            "Oc",
     remittance:         "FaNdNc",
     vat:                "FaNdNc",
     paymentMethods:     "Rx",
     paymentImputation:  "Rx",
     detailOfValues:     "Rx",
-    paymentAddress:      "Rx",
+    paymentAddress:     "Rx",
     paymentTime:        "Rx",
     description:        "RsPa",
     amount:             "RePaCh",
@@ -38,36 +37,3 @@ const operationFilters = Object.freeze({
 });
 
 export default operationFilters;
-export type operationProp =
-    "senderCUIT"|
-    "receiverCUIT"|
-    "senderName"|
-    "receiverName"|
-    "senderAddress"|
-    "receiverAddress"|
-    "senderContact"|
-    "senderVATCategory"|
-    "receiverVATCategory"|
-    "startOfActivities"|
-    "receiverPostalCode"|
-    "receiverLocality"|
-    "productTable"|
-    "observations"|
-    "seller"|
-    "sellConditions"|
-    "deadline"|
-    "shippingAddress"|
-    "carrier"|
-    "remittance"|
-    "vat"|
-    "paymentMethods"|
-    "paymentImputation"|
-    "detailOfValues"|
-    "paymentAddress"|
-    "paymentTime"|
-    "description"|
-    "amount"|
-    "noProtest"|
-    "timeDelay"|
-    "crossed"
-;

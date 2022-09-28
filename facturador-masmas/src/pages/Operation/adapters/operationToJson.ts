@@ -1,16 +1,17 @@
-import operation, {operationCode} from "../models/operation";
-import operationFilters, {operationProp} from "../utilities/operationFilters";
+import operation, {documentClassCode} from "../models/operation";
+import documentProp from "../models/documentProp";
+import operationFilters from "../utilities/operationFilters";
 import {IDTrader} from "utilities/constants";
 
 /**Convierte a el objeto de operación en un string JSON usado por el back-end para generar un documento.
- * @param operation - El objeto de operación del cual se tomarán los datos.
+ * @param operation     - El objeto de operación del cual se tomarán los datos.
  * @param operationCode - El string de dos caracteres que indica el documento al cual corresponde la operación.
- * @param toSend - Indica si el documento está siendo enviado por el usuario (a un tercero) o por un tercero (al usuario).
+ * @param toSend        - Indica si el documento está siendo enviado por el usuario (a un tercero) o por un tercero (al usuario).
  */
-export default function operationToJson(operation: operation, operationCode: operationCode, toSend=true): string {
+export default function operationToJson(operation: operation, documentClassCode: documentClassCode, toSend=true): string {
 
-    function currentOperationIncludes(thisProperty: operationProp): boolean { 
-        return operationFilters[thisProperty].includes(operationCode); 
+    function currentOperationIncludes(thisProperty: documentProp): boolean { 
+        return operationFilters[thisProperty].includes(documentClassCode); 
     }
 
     const filteredOperation: any = {

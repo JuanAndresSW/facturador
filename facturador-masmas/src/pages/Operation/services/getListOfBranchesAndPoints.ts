@@ -1,17 +1,15 @@
 import ajax from 'ports/ajax';
 import { IDTrader } from 'utilities/constants';
-import getToken from 'services/getToken';
+import Response from 'models/Response';
 
 /**
  * Recupera un array de sucursales con sus puntos de venta a nombre de la cuenta solicitante.
- * @param callback La función que procesará la respuesta. 
  */
-export default function getListOfBranchesAndPoints(callback: Function): void {
-    ajax("GET", `branches/traders/${IDTrader}`, {token: getToken('access')}, handleResponse);
+export default async function getListOfBranchesAndPoints(): Promise<Response> {
+    const response = await ajax("GET", `branches/traders/${IDTrader}`, true);
 
-    function handleResponse(httpStatus: number, content: string): Function {
-        if (httpStatus === 400) return callback(true, []);
-        if (httpStatus === 200) return callback(true, JSON.parse(content));
-        return callback(false);
-    }
+    if (response.status === 400) return {...response, content: []};
+    if (response.status === 200) return {...response, content: JSON.parse(response.content)};
+    return response;
+    
 }

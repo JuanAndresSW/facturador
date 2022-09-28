@@ -48,21 +48,23 @@ export default function Account(): JSX.Element {
     const [CUIT, setCUIT] =                         useState("");
 
     //Pedir los datos actuales en el primer renderizado.
-    useEffect(() => {
-        getLocalUserAvatar((ok:boolean, file: Blob) => {
-            if (ok && !avatar) setAvatar(file);
+    useEffect(getAvatarAndTraderData);
+    
+    function getAvatarAndTraderData() {
+        getLocalUserAvatar().then(response => {
+            if (response.ok && !avatar) setAvatar(response.content);
         });
 
-        getTraderData((ok:boolean, data:traderData) => {
-            if (ok) {
-                setBusinessName (data.businessName);
-                setVatCategory  (data.VATCategory);
-                setCUIT         (data.CUIT);
-            }
-            else setError(''+data)
+        getTraderData().then(response=> {
+            if (!response.ok) return setError(response.message)
+            
+            const traderData: traderData = response.content;
+            setBusinessName (traderData.businessName);
+            setVatCategory  (traderData.VATCategory);
+            setCUIT         (traderData.CUIT);
         });
 
-    }, []);
+    }
 
     /*VALIDACIÓN***************************************************************/
 
@@ -95,22 +97,20 @@ export default function Account(): JSX.Element {
                 updatedVATCategory:  newVATCategory,
             }
         } 
-        putAccount(account, (ok:boolean, data:string)=>{
-            setLoading(false);
-            if (!ok) return setError(data);
-
-            setSuccess(true);
-            if (newUsername) sessionStorage.setItem("username", newUsername);
-        });
+        const response = await putAccount(account);
+        
+        if (!response.ok) return setError(response.message);
+        setSuccess(true);
+        if (newUsername) sessionStorage.setItem("username", newUsername);
     }
 
     //Envía el código de eliminación ingresado. Si es correcto, la cuenta de usuario es eliminada.
-    function requestAccountDeletion() {
+    async function requestAccountDeletion() {
         //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
-        deleteAccount(deletionCode, (ok:boolean, data:string)=> {
-            if (!ok) setDeleteError(data);
-            else setDeleteSuccess(true);
-        });
+        const response = await deleteAccount(deletionCode);
+        if (!response.ok) setDeleteError(response.message);
+        else setDeleteSuccess(true);
+     
     }
 
 

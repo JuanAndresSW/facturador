@@ -69,7 +69,7 @@ export default function NewBranch(): JSX.Element {
     submit();
   }
 
-  function submit(): void {
+  async function submit(): Promise<void> {
     setLoading(true);
     const branch: branch = {
       name: name,
@@ -87,11 +87,12 @@ export default function NewBranch(): JSX.Element {
       photo: photo,
       preferenceColor: color
     }
-    postBranch(branch, (ok: boolean, error: string): void => {
-      setLoading(false);
-      if (!ok) setError(error);
-      else setSuccess(true);
-    })
+    const response = await postBranch(branch);
+      
+    setLoading(false);
+    if (!response.ok) setError(response.message);
+    else setSuccess(true);
+
   }
 
   return (

@@ -58,8 +58,8 @@ export default function EditBranch({branch}:props): JSX.Element {
   useEffect(()=>{
     base64ToBlob(branch.photo).then(convertedPhoto=>setPhoto(convertedPhoto));
 
-    getBranchLogo(branch.branchId, (ok:boolean, content:string) => {
-      if (ok) base64ToBlob(content).then(convertedLogo=>setLogo(convertedLogo));
+    getBranchLogo(branch.branchId). then (response => {
+      if (response.ok) base64ToBlob(response.content).then(convertedLogo=>setLogo(convertedLogo));
     });
   },[]);
 
@@ -79,7 +79,7 @@ export default function EditBranch({branch}:props): JSX.Element {
     submit();
   }
 
-  function submit():void {
+  async function submit(): Promise<void> {
     setLoading(true);
     const updatedBranch: branch = {
       name: name,
@@ -99,10 +99,9 @@ export default function EditBranch({branch}:props): JSX.Element {
     }
 
 
-    putBranch(branch.branchId, updatedBranch, (ok:boolean, message:string) => {
-      if (ok) setSuccess(true)
-      else setError(message);
-    });
+    const response = await putBranch(branch.branchId, updatedBranch);
+    if (response.ok) setSuccess(true)
+    else setError(response.message);
     setLoading(false)
   }
 

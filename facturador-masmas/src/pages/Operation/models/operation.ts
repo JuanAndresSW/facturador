@@ -1,4 +1,4 @@
-export type operationCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch");
+export type documentClassCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch");
 
 type operation = {
     IDPointOfSale: number,
@@ -27,30 +27,30 @@ type operation = {
     VAT: number,
     receiptXTables: {
         paymentMethods: {
-            check: string, //float
-            documents: string, //float
-            cash: string //float
+            check: string,
+            documents: string,
+            cash: string
         },
         paymentImputation: {
             type: string[],
-            documentNumber: string[], //int
-            amount: string[], //float
-            paid: string[], //float
+            documentNumber: string[],
+            amount: string[],
+            paid: string[], 
         },
         detailOfValues: {
             type: string[],
             bank: string[],
-            documentNumber: string[], //int
+            documentNumber: string[],
             depositDate: string[],
-            amount: string[], //float
+            amount: string[],
         }
     },
     paymentAddress: string,
     paymentTime: string,
     description: string,
-    amount: number, //float
+    amount: number,
     noProtest: boolean, 
-    timeDelay: number, //int
+    timeDelay: number,
     crossed: boolean
 }
 export default operation;

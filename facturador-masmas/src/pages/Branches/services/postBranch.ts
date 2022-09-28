@@ -1,17 +1,11 @@
 import ajax from 'ports/ajax';
 import branch from '../models/branch';
 import branchToJson from '../adapters/branchToJson';
-import getToken from 'services/getToken';
+import Response from 'models/Response';
 
 /**Envía una sucursal para ser creada.
  * @param branch    - La sucursal a ser creada.
- * @param callback  - La función que procesará la respuesta.
 */
-export default async function postBranch(branch: branch, callback: Function): Promise<void> {
-    ajax('POST', 'branches', {body: await branchToJson(branch), token: getToken('access')}, handle);
-
-    function handle(status: number, content: string) {
-        if (status === 201) callback(true, 'Se ha creado la instalación');
-        else callback(false, content);
-    }
+export default async function postBranch(branch: branch): Promise<Response> {
+    return await ajax('POST', 'branches', true, await branchToJson(branch));
 }

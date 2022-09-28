@@ -1,7 +1,8 @@
-import { operationCode } from "../models/operation";
+import { documentClassCode } from "../models/operation";
+
 
 /**Encuentra un título apropiado para el formulario de documentos comerciales.*/
-export default function getOperationFormTitle(type: operationCode, toSend: boolean): string {
+export default function getOperationFormTitle(type: documentClassCode, toSend: boolean): string {
     let title: string;
     switch (type) {
         case "Oc":  title = "Nueva orden de compra "; break;

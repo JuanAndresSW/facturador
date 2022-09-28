@@ -45,8 +45,8 @@ export default function Branches(): JSX.Element {
   useEffect(requestBranches, [page, sortBy]);
 
   function requestBranches(): void {
-    getBranches(page, sortBy, "asc", (ok:boolean, content: branches)=>{
-      if (ok) setBranches(content);
+    getBranches(page, sortBy, "asc").then(response => {
+      if (response.ok) setBranches(response.content);
     });
   }
 

@@ -22,9 +22,12 @@ export default function App(): JSX.Element {
     const [auth, setAuth] = useState(undefined);
 
     //Comprobar la sesión con el servidor en el primer renderizado.
-    useEffect(() => getSessionByToken((ok: boolean) => { 
-        setAuth(ok);
-    }), []);
+    useEffect(tryGettinAuthorization);
+    function tryGettinAuthorization() {
+        getSessionByToken().then(response => setAuth(response.ok))
+    }
+    
+  
 
     return (
         (auth === undefined) ? <SplashScreen /> :
