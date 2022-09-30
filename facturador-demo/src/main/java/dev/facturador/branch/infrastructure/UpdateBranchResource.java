@@ -3,8 +3,8 @@ package dev.facturador.branch.infrastructure;
 import dev.facturador.branch.domain.BranchUpdateRestModel;
 import dev.facturador.branch.domain.command.BranchUpdateCommand;
 import dev.facturador.branch.domain.query.BranchGetQuery;
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,12 +18,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class UpdateBranchResource {
-    private final CommandBus commandBus;
-    private final QueryBus queryBus;
+    private final PortCommandBus portCommandBus;
+    private final PortQueryBus portQueryBus;
 
-    public UpdateBranchResource(CommandBus commandBus, QueryBus queryBus) {
-        this.commandBus = commandBus;
-        this.queryBus = queryBus;
+    public UpdateBranchResource(PortCommandBus portCommandBus, PortQueryBus portQueryBus) {
+        this.portCommandBus = portCommandBus;
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -41,12 +41,12 @@ public class UpdateBranchResource {
         var query = BranchGetQuery.builder()
                 .branchId(IDBranch).build();
 
-        var branch = queryBus.handle(query);
+        var branch = portQueryBus.handle(query);
 
         var command = BranchUpdateCommand.builder()
                 .branchUpdateRestModel(branchRestModel).branch(branch).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         return ResponseEntity.noContent().build();
     }

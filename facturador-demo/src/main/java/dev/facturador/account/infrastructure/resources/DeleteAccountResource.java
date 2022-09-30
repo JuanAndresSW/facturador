@@ -1,7 +1,7 @@
 package dev.facturador.account.infrastructure.resources;
 
 import dev.facturador.account.domain.commands.AccountDeleteCommand;
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +20,11 @@ import javax.validation.constraints.NotEmpty;
 @RestController
 @RequestMapping(path = "/api/accounts")
 public class DeleteAccountResource {
-    private final CommandBus commandBus;
+    private final PortCommandBus portCommandBus;
 
     @Autowired
-    public DeleteAccountResource(CommandBus commandBus) {
-        this.commandBus = commandBus;
+    public DeleteAccountResource(PortCommandBus portCommandBus) {
+        this.portCommandBus = portCommandBus;
     }
 
     /**
@@ -38,7 +38,7 @@ public class DeleteAccountResource {
         var command = AccountDeleteCommand.builder()
                 .username(username).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         return ResponseEntity.noContent().build();
     }

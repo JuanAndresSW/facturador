@@ -2,7 +2,7 @@ package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.BranchCreateRestModel;
 import dev.facturador.branch.domain.command.BranchCreateCommand;
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +20,10 @@ import java.net.URI;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class CreateBranchResource {
-    private final CommandBus commandBus;
+    private final PortCommandBus portCommandBus;
 
-    public CreateBranchResource(CommandBus commandBus) {
-        this.commandBus = commandBus;
+    public CreateBranchResource(PortCommandBus portCommandBus) {
+        this.portCommandBus = portCommandBus;
     }
 
     /**
@@ -38,7 +38,7 @@ public class CreateBranchResource {
         var command = BranchCreateCommand.builder()
                 .branchCreateRestModel(branchRestModel).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         return ResponseEntity.created(new URI("http:localhost:8080/api/branches")).build();
     }

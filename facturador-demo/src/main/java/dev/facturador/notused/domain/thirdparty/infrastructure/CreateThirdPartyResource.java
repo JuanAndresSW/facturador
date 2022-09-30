@@ -2,7 +2,7 @@ package dev.facturador.notused.domain.thirdparty.infrastructure;
 
 import dev.facturador.branch.domain.BranchCreateRestModel;
 import dev.facturador.branch.domain.command.BranchCreateCommand;
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +21,11 @@ import java.net.URI;
 @RestController
 @RequestMapping(path = "/api/clients")
 public class CreateThirdPartyResource {
-    private final CommandBus commandBus;
+    private final PortCommandBus portCommandBus;
 
     @Autowired
-    public CreateThirdPartyResource(CommandBus commandBus) {
-        this.commandBus = commandBus;
+    public CreateThirdPartyResource(PortCommandBus portCommandBus) {
+        this.portCommandBus = portCommandBus;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -34,7 +34,7 @@ public class CreateThirdPartyResource {
         var command = BranchCreateCommand.builder()
                 .branchCreateRestModel(branchRestModel).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         return ResponseEntity.created(new URI("http:localhost:8080/api/clients")).build();
     }

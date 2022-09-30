@@ -3,8 +3,8 @@ package dev.facturador.account.infrastructure.resources;
 import dev.facturador.account.domain.AccountUpdateRestModel;
 import dev.facturador.account.domain.commands.AccountUpdateCommand;
 import dev.facturador.account.domain.querys.GetAccountQuery;
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,12 +21,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(path = "/api/accounts")
 public class UpdateAccountResource {
-    private final CommandBus commandBus;
-    private final QueryBus queryBus;
+    private final PortCommandBus portCommandBus;
+    private final PortQueryBus portQueryBus;
 
-    public UpdateAccountResource(CommandBus commandBus, QueryBus queryBus) {
-        this.commandBus = commandBus;
-        this.queryBus = queryBus;
+    public UpdateAccountResource(PortCommandBus portCommandBus, PortQueryBus portQueryBus) {
+        this.portCommandBus = portCommandBus;
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -45,13 +45,13 @@ public class UpdateAccountResource {
         var query = GetAccountQuery.builder()
                 .username(username).build();
 
-        var user = queryBus.handle(query);
+        var user = portQueryBus.handle(query);
 
         var command = AccountUpdateCommand.builder()
                 .accountUpdateRestModel(accountRestModel)
                 .actualAccount(user).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         return ResponseEntity.noContent().build();
     }

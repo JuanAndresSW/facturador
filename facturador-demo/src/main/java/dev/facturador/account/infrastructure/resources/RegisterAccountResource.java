@@ -3,8 +3,8 @@ package dev.facturador.account.infrastructure.resources;
 import dev.facturador.account.domain.AccountRegisterRestModel;
 import dev.facturador.account.domain.commands.AccountRegisterCommand;
 import dev.facturador.account.domain.querys.AccountSingInQuery;
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * EndPoint para Registrar cuenta de usuario
@@ -23,12 +21,12 @@ import java.util.Objects;
 @RestController
 @RequestMapping(path = "/api/auth/accounts")
 public class RegisterAccountResource {
-    private final CommandBus commandBus;
-    private final QueryBus queryBus;
+    private final PortCommandBus portCommandBus;
+    private final PortQueryBus portQueryBus;
 
-    public RegisterAccountResource(CommandBus commandBus, QueryBus queryBus) {
-        this.commandBus = commandBus;
-        this.queryBus = queryBus;
+    public RegisterAccountResource(PortCommandBus portCommandBus, PortQueryBus portQueryBus) {
+        this.portCommandBus = portCommandBus;
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -45,23 +43,22 @@ public class RegisterAccountResource {
         var command = AccountRegisterCommand.builder()
                 .accountRegisterRestModel(accountRestModel).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         var username = command.getAccountRegisterRestModel().userRegister().username();
         var passwordNoHash = command.getAccountRegisterRestModel().userRegister().password();
 
         var query = AccountSingInQuery.Builder.getInstance()
-                .keys(username, passwordNoHash).build();
+                .keys(username, passwordNoHash)
+                .build();
 
-        var headers = queryBus.handle(query);
+        var response = portQueryBus.handle(query);
 
-        var accesToken = Objects.requireNonNull(headers.get("accessToken")).get(0);
-        var refreshToken = Objects.requireNonNull(headers.get("refreshToken")).get(0);
+        response.remove("username");
+        response.remove("IDTrader");
 
         return ResponseEntity.created(new URI("http:localhost:8080/api/mainaccounts"))
-                .body(new HashMap<String, String>(
-                        Map.of("accessToken", accesToken,
-                                "refreshToken", refreshToken)));
+                .body(response);
     }
 
 }

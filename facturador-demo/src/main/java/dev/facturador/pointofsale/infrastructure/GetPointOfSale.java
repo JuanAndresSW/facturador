@@ -1,6 +1,6 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import dev.facturador.pointofsale.domain.querys.PointOfSaleGetQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,11 @@ import java.util.HashMap;
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class GetPointOfSale {
-    private final QueryBus queryBus;
+    private final PortQueryBus portQueryBus;
 
     @Autowired
-    public GetPointOfSale(QueryBus queryBus) {
-        this.queryBus = queryBus;
+    public GetPointOfSale(PortQueryBus portQueryBus) {
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -40,7 +40,7 @@ public class GetPointOfSale {
             throws Exception {
         var query = PointOfSaleGetQuery.builder()
                 .pointOfSaleID(pointOfSaleID).build();
-        var response = queryBus.handle(query);
+        var response = portQueryBus.handle(query);
 
         return ResponseEntity.ok(response);
 
