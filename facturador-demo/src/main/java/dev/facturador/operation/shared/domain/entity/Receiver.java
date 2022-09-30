@@ -4,6 +4,8 @@ import dev.facturador.operation.shared.domain.AllVatCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,9 +43,24 @@ public final class Receiver implements Serializable {
     @Column(name = "receiver_locality", nullable = false, length = 45)
     private String receiverLocality;
 
-    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToOne
     @JoinColumn(name = "id_operation_parent", nullable = false, updatable = false, referencedColumnName = "id_operation", unique = true)
     private Operation operationReceiver;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Receiver receiver = (Receiver) o;
+
+        return new EqualsBuilder().append(getReceiverCode(), receiver.getReceiverCode()).append(getReceiverName(), receiver.getReceiverName()).append(getReceiverAddress(), receiver.getReceiverAddress()).append(getReceiverVatCategory(), receiver.getReceiverVatCategory()).append(getReceiverPostalCode(), receiver.getReceiverPostalCode()).append(getReceiverLocality(), receiver.getReceiverLocality()).isEquals();
+    }
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(getReceiverCode()).append(getReceiverName()).append(getReceiverAddress()).append(getReceiverVatCategory()).append(getReceiverPostalCode()).append(getReceiverLocality()).toHashCode();
+    }
 
     @Override
     public String toString() {

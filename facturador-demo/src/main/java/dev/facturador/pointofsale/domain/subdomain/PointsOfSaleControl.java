@@ -23,7 +23,7 @@ public final class PointsOfSaleControl {
     @Column(name = "total_count", nullable = false)
     private int totalCount;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "id_trader", nullable = false, unique = true, updatable = false)
     private Trader trader;
 

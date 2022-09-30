@@ -1,6 +1,6 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import dev.facturador.global.domain.sharedpayload.Page;
 import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import dev.facturador.pointofsale.domain.PointOfSale;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class PagingPointsOfSaleResource {
-    private final QueryBus queryBus;
+    private final PortQueryBus portQueryBus;
 
     @Autowired
-    public PagingPointsOfSaleResource(QueryBus queryBus) {
-        this.queryBus = queryBus;
+    public PagingPointsOfSaleResource(PortQueryBus portQueryBus) {
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -50,7 +50,7 @@ public class PagingPointsOfSaleResource {
                 .branchId(branchID)
                 .build();
 
-        var response = queryBus.handle(query);
+        var response = portQueryBus.handle(query);
 
         return ResponseEntity.ok().body(response);
     }

@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import dev.facturador.pointofsale.domain.commands.PointOfSaleDeleteCommand;
 import dev.facturador.pointofsale.domain.subdomain.ControlOfPosGetQuery;
 import dev.facturador.pointofsale.domain.subdomain.ControlOfPosUpdateCommand;
@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class DeletePointOfSaleResource {
-    private final CommandBus commandBus;
-    private final QueryBus queryBus;
+    private final PortCommandBus portCommandBus;
+    private final PortQueryBus portQueryBus;
 
     @Autowired
-    public DeletePointOfSaleResource(CommandBus commandBus, QueryBus queryBus) {
-        this.commandBus = commandBus;
-        this.queryBus = queryBus;
+    public DeletePointOfSaleResource(PortCommandBus portCommandBus, PortQueryBus portQueryBus) {
+        this.portCommandBus = portCommandBus;
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -47,15 +47,15 @@ public class DeletePointOfSaleResource {
 
         var command = PointOfSaleDeleteCommand.Builder.getInstance()
                 .pointOfSaleId(IDPointOfSale).build();
-        this.commandBus.handle(command);
+        this.portCommandBus.handle(command);
 
         var query = ControlOfPosGetQuery.Builder.getInstance()
                 .traderID(IDTrader).build();
-        var control = queryBus.handle(query);
+        var control = portQueryBus.handle(query);
 
         var commandForControl = ControlOfPosUpdateCommand.Builder.getInstance()
                 .data(RequiredPosControlData.starter(control.getPointsOfSaleControlId(), control.getCurrentCount(), control.getTotalCount(), false)).build();
-        this.commandBus.handle(commandForControl);
+        this.portCommandBus.handle(commandForControl);
 
         return ResponseEntity.noContent().build();
     }

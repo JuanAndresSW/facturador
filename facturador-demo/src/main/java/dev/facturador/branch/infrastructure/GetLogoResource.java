@@ -1,7 +1,7 @@
 package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.query.BranchGetQuery;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class GetLogoResource {
-    private final QueryBus queryBus;
+    private final PortQueryBus portQueryBus;
 
     @Autowired
-    public GetLogoResource(QueryBus queryBus) {
-        this.queryBus = queryBus;
+    public GetLogoResource(PortQueryBus portQueryBus) {
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -39,7 +39,7 @@ public class GetLogoResource {
         var query = BranchGetQuery.builder()
                 .branchId(IDBranch).build();
 
-        var branch = queryBus.handle(query);
+        var branch = portQueryBus.handle(query);
 
         return ResponseEntity.ok().body(branch.getLogo());
     }

@@ -26,6 +26,7 @@ logging:
 spring:
   main:
     banner-mode: off
+
   datasource:
     password: admin
     url: jdbc:mysql://localhost:3306/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC
@@ -36,6 +37,7 @@ spring:
       max-active: 50
       max-idle: 20
       min-idle: 15
+
   jpa:
     database: MYSQL
     database-platform: org.hibernate.dialect.MySQL5Dialect
@@ -46,10 +48,30 @@ spring:
         dialect:
           storage_engine: innodb
         format_sql: true
+
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
+
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
   #google drive api
 ...
 
