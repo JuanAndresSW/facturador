@@ -1,9 +1,10 @@
 package dev.facturador.global.infrastructure.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.facturador.global.domain.CustomUserDetails;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
-import dev.facturador.global.infrastructure.spring.security.CustomUserDetailsService;
+import dev.facturador.security.domain.CustomUserDetails;
+import dev.facturador.security.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.infrastructure.adapters.CustomUserDetailsService;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,7 +49,7 @@ public class RefreshResource {
         String email = userDetails.getEmail();
 
         var tokens = new HashMap<String, String>();
-        tokens.put("accessToken", jwt.createAccesToken(email, URL));
+        tokens.put("accessToken", jwt.createAccessToken(email, URL));
         tokens.put("refreshToken", jwt.createRefreshToken(email, URL));
 
         response.setContentType(APPLICATION_JSON_VALUE);
@@ -61,8 +62,9 @@ public class RefreshResource {
      */
     private CustomUserDetails creteUserWithToken(String authHeader, HttpServletResponse response) throws IOException {
         try {
-            if (jwt.verifyToken(authHeader)) {
-                var email = jwt.createUserByToken(authHeader);
+            var token = jwt.verifyToken(authHeader);
+            if (StringUtils.hasText(token)) {
+                var email = jwt.getTokenSubject(token);
 
                 return (CustomUserDetails) service.loadUserByUsername(email);
             }

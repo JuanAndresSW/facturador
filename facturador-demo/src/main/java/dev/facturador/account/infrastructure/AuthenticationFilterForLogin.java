@@ -1,7 +1,7 @@
 package dev.facturador.account.infrastructure;
 
-import dev.facturador.global.domain.CustomUserDetails;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.domain.CustomUserDetails;
+import dev.facturador.security.infrastructure.adapters.CustomJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,9 +59,10 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
     (HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         var user = (CustomUserDetails) authResult.getPrincipal();
         var URL = request.getRequestURI();
-        String accesToken = jwt.createAccesToken(user.getEmail(), URL);
+        String accessToken = jwt.createAccessToken(user.getEmail(), URL);
         String refreshToken = jwt.createRefreshToken(user.getEmail(), URL);
-        response.setHeader("accessToken", accesToken);
+
+        response.setHeader("accessToken", accessToken);
         response.setHeader("refreshToken", refreshToken);
 
         response.setHeader("username", user.getUsername());

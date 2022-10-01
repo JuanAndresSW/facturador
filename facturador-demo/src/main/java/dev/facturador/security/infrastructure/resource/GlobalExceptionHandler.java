@@ -1,6 +1,6 @@
-package dev.facturador.global.infrastructure.resource;
+package dev.facturador.security.infrastructure.resource;
 
-import dev.facturador.global.domain.exception.ErrorResponse;
+import dev.facturador.security.domain.Error;
 import dev.facturador.global.domain.exception.ResourceNotFound;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,8 +27,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Es decir cualquier excepcion que no tenga una clase propia se dirigirá a este método
      */
     @ExceptionHandler(Exception.class)
-    public HttpEntity<ErrorResponse> handleResourceNotFoundException(Exception exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(exception.getMessage());
+    public HttpEntity<Error> handleResourceNotFoundException(Exception exception, WebRequest webRequest) {
+        var errorDetalles = new Error(exception.getMessage());
 
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
@@ -37,8 +37,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Maneja la excepcion de tipo Runtime exception
      */
     @ExceptionHandler(RuntimeException.class)
-    public HttpEntity<ErrorResponse> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest) {
-        var errorDetalles = new ErrorResponse(exception.getMessage());
+    public HttpEntity<Error> handleRuntimeExceotion(RuntimeException exception, WebRequest webRequest) {
+        var errorDetalles = new Error(exception.getMessage());
 
         return new ResponseEntity<>(errorDetalles, HttpStatus.BAD_REQUEST);
     }
@@ -47,8 +47,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Maneja una ResourceNotFound Exception <br/>
      */
     @ExceptionHandler(ResourceNotFound.class)
-    public HttpEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFound ex) {
-        var errorDetalles = new ErrorResponse(ex.getMessage());
+    public HttpEntity<Error> handleResourceNotFoundException(ResourceNotFound ex) {
+        var errorDetalles = new Error(ex.getMessage());
         return new ResponseEntity<>(errorDetalles, HttpStatus.NOT_FOUND);
     }
 

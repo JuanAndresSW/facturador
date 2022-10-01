@@ -1,5 +1,6 @@
 ---
 #Configuracion del Servidor
+enableLoggingRequestDetails: false
 server:
   error:
     include-message: always
@@ -22,11 +23,11 @@ logging:
   pattern:
     dateformat: HH:mm:ss
 
-#Cofiguracion Spring y Mysql
+#Suprimir el banner de Spring
 spring:
   main:
     banner-mode: off
-
+#Configuracion de MySQL
   datasource:
     password: admin
     url: jdbc:mysql://localhost:3306/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC
@@ -37,29 +38,32 @@ spring:
       max-active: 50
       max-idle: 20
       min-idle: 15
-
+#Aclaraciones para JPA
   jpa:
+    #Lenguaje
     database: MYSQL
+    #Dialecto
     database-platform: org.hibernate.dialect.MySQL5Dialect
+    #Mostrar codigo SQL
     show-sql: true
+    #Desactivar OpenEntityManagerInViewInterceptor (Recomendable)
     open-in-view: false
     properties:
       hibernate:
         dialect:
           storage_engine: innodb
         format_sql: true
-
+#Configuracion de servlet para tamaño de la request
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-
+#Configuraciones de email
   mail:
     host: localhost
     port: 1025
     username: hello
     password: hello
-
     properties:
       mail:
         smtp:
@@ -71,8 +75,6 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
-
-  #google drive api
 ...
 
 
