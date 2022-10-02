@@ -1,5 +1,7 @@
 package dev.facturador.global.application.commands;
 
-/**Command Generico*/
+/**
+ * Command Generico
+ */
 public class Command {
 }

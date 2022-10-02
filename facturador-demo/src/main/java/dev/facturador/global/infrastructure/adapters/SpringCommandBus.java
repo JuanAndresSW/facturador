@@ -1,32 +1,41 @@
 package dev.facturador.global.infrastructure.adapters;
 
-import dev.facturador.global.application.commands.Command;
-import dev.facturador.global.application.commands.CommandBus;
-import dev.facturador.global.application.commands.CommandHandler;
+import dev.facturador.global.domain.abstractcomponents.command.Command;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.CommandHandler;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-/**Clase que recibe un comando y se encarga de buscar a que Handler le pertenece*/
-@Component
+/**
+ * Clase que recibe un comando y se encarga de buscar a que Handler le pertenece
+ */
+@Service
 @Primary
 public class SpringCommandBus implements CommandBus {
     private final Map<Class, CommandHandler> handlers;
 
-    /**Se encarga de buscar todos los comandos*/
+    /**
+     * Se encarga de buscar todos los comandos
+     */
     public SpringCommandBus(List<CommandHandler> commandHandlerImplementations) {
+
         this.handlers = new HashMap<>();
         commandHandlerImplementations.forEach(commandHandler -> {
-            Class<?> commandClass = getCommandClass(commandHandler);
+            Class<?> commandClass =
+                    getCommandClass(commandHandler);
             handlers.put(commandClass, commandHandler);
         });
     }
-    /**Busca un handler para el comando y ejecuta este si lo encuentra*/
+
+    /**
+     * Busca un handler para el comando y ejecuta este si lo encuentra
+     */
     @Override
     public void handle(Command command) throws Exception {
         //Si no existe un Handler con este comando da error
@@ -37,13 +46,25 @@ public class SpringCommandBus implements CommandBus {
         handlers.get(command.getClass()).handle(command);
     }
 
-    /**Busca la clase de la implementacion utilizando la libreria de {@link java.lang.reflect}*/
+    /**
+     * Busca la clase del comando que este relacionada con la instancia del handler pasada
+     *
+     * @param handler Instancia de algun command handler
+     * @return command object class
+     */
     public Class<?> getCommandClass(CommandHandler handler) {
-        Type commandInterface = ((ParameterizedType) handler.getClass()
-                .getGenericInterfaces()[0]).getActualTypeArguments()[0];
-        return getClass(commandInterface.getTypeName());
+        var methods = Arrays.stream(handler.getClass().getMethods()).toList()
+                .stream()
+                .filter(x -> x.getName().equalsIgnoreCase("handle"))
+                .filter(x -> !x.getParameterTypes()[0].getSimpleName().startsWith("Command"))
+                .collect(Collectors.toList());
+        return getClass(methods
+                .get(0).getParameterTypes()[0].getCanonicalName());
     }
-    /**Una vez recupera el nombre del tipo del handler recupera la clase de esta*/
+
+    /**
+     * Recupera un objeto Class en base el nombre de una clase
+     */
     public Class<?> getClass(String name) {
         try {
             return Class.forName(name);

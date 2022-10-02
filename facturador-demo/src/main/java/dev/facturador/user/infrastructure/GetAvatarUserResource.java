@@ -1,9 +1,8 @@
 package dev.facturador.user.infrastructure;
 
-import dev.facturador.global.application.querys.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import dev.facturador.user.application.query.UserGetAvatarQuery;
 import dev.facturador.user.domain.UserIdUsername;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +10,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**EndPoint para recuperar el avatar de usuario*/
+/**
+ * EndPoint para recuperar el avatar de usuario
+ */
 @RestController
 @RequestMapping(path = "/api/users")
 public class GetAvatarUserResource {
+
+    private final QueryBus queryBus;
+
     @Autowired
-    private QueryBus queryBus;
+    public GetAvatarUserResource(QueryBus queryBus) {
+        this.queryBus = queryBus;
+    }
 
     /**
      * Recupera el avatar del usuario

@@ -3,8 +3,7 @@ package dev.facturador.global.infrastructure.resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.global.domain.CustomUserDetails;
 import dev.facturador.global.infrastructure.adapters.CustomJWT;
-import dev.facturador.global.infrastructure.springservice.CustomUserDetailsService;
-import lombok.extern.slf4j.Slf4j;
+import dev.facturador.global.infrastructure.spring.security.CustomUserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +18,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-/**EndPoint para refrescar los Tokens*/
+/**
+ * EndPoint para refrescar los Tokens
+ */
 @RestController
 @RequestMapping(path = "/api/auth")
 public class RefreshResource {
@@ -35,7 +36,7 @@ public class RefreshResource {
      * Se llama cuando el {@code Access-Token} ha expirado
      * Crea un nuevo {@code Access-Token y Refresh-Token} con el {@code Refresh-Token} anterior
      *
-     * @param request {@link HttpServletRequest} de la API de HttpServlet. Maneja la request
+     * @param request  {@link HttpServletRequest} de la API de HttpServlet. Maneja la request
      * @param response {@link HttpServletResponse} de la API HttpServlet. Marca la respuesta de la request
      */
     @GetMapping("/refresh")

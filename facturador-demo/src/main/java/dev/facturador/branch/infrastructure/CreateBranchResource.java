@@ -1,8 +1,8 @@
 package dev.facturador.branch.infrastructure;
 
-import dev.facturador.branch.application.command.BranchCreateCommand;
-import dev.facturador.branch.domain.BranchCreate;
-import dev.facturador.global.application.commands.CommandBus;
+import dev.facturador.branch.domain.BranchCreateRestModel;
+import dev.facturador.branch.domain.command.BranchCreateCommand;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.net.URI;
 
-/**EndPoint para crear la sucursal*/
+/**
+ * EndPoint para crear la sucursal
+ */
 @RestController
 @RequestMapping(path = "/api/branches")
 public class CreateBranchResource {
-
     private final CommandBus commandBus;
 
     public CreateBranchResource(CommandBus commandBus) {
@@ -28,14 +29,14 @@ public class CreateBranchResource {
     /**
      * Crea una sucursal nueva para el trader Solicitante
      *
-     * @param branchValues {@link BranchCreate} Contiene los datos para crear la sucursal
+     * @param branchRestModel {@link BranchCreateRestModel} Contiene los datos para crear la sucursal
      * @return Estado 201, Location {@code http:localhost:8080/api/branches}
      */
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreate branchValues) throws Exception {
-        var command = BranchCreateCommand.Builder.getInstance()
-                .branchCreate(branchValues).build();
+    public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreateRestModel branchRestModel) throws Exception {
+        var command = BranchCreateCommand.builder()
+                .branchCreateRestModel(branchRestModel).build();
 
         commandBus.handle(command);
 

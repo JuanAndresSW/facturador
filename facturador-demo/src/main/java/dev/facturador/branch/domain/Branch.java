@@ -14,9 +14,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
-/**Entidad Sucursal*/
+/**
+ * Entidad Sucursal
+ */
 @Entity
 @Table(name = "branch")
 @NoArgsConstructor
@@ -106,13 +107,19 @@ public final class Branch implements Serializable {
         this.street = street;
         this.preferenceColor = preferenceColor;
     }
-    /**Named Contructor con solo el Id */
+
+    /**
+     * Named Contructor con solo el Id
+     */
     public static Branch create(Long value) {
         var branch = new Branch(value);
         return branch;
     }
-    /**NamedContructor para el update*/
-    public static Branch create(BranchUpdate updatedValues, Branch branch) {
+
+    /**
+     * NamedContructor para el update
+     */
+    public static Branch create(BranchUpdateRestModel updatedValues, Branch branch) {
         if (StringUtils.hasText(updatedValues.getUpdatedName())) {
             branch.setFantasyName(updatedValues.getUpdatedName());
         }
@@ -154,8 +161,11 @@ public final class Branch implements Serializable {
 
         return branch;
     }
-    /**Named Contructor para crear*/
-    public static Branch create(BranchCreate values) {
+
+    /**
+     * Named Contructor para crear
+     */
+    public static Branch create(BranchCreateRestModel values) {
         var branch = new Branch(
                 values.getName(),
                 values.getEmail(),
@@ -171,7 +181,7 @@ public final class Branch implements Serializable {
 
         if (StringUtils.hasText(values.getPhoto())) {
             branch.setPhoto(values.getPhoto());
-        }  else {
+        } else {
             branch.setPhoto("undefined");
         }
 
@@ -187,7 +197,7 @@ public final class Branch implements Serializable {
         return branch;
     }
 
-    public static String defineAddressNumber(Address address){
+    public static String defineAddressNumber(Address address) {
         if (address.getAddressNumber() != 0) {
             return String.valueOf(address.getAddressNumber());
         }

@@ -10,7 +10,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-/**Entidad punto de venta*/
+/**
+ * Entidad punto de venta
+ */
 @Entity
 @Table(name = "point_of_sale")
 @NoArgsConstructor
@@ -45,10 +47,10 @@ public class PointOfSale implements Serializable {
         this.pointOfSaleNumber = pointOfSaleNumber;
     }
 
-    public static PointOfSale create(PointOfSaleCreate values) {
+    public static PointOfSale create(PointOfSaleModel values) {
         var pointOfSale = new PointOfSale();
-        pointOfSale.setPointOfSaleNumber(values.getPosControl().getTotalCount() + 1);
-        pointOfSale.setBranchOwner(new Branch(values.getIDBranch()));
+        pointOfSale.setPointOfSaleNumber(values.posControl().getTotalCount() + 1);
+        pointOfSale.setBranchOwner(new Branch(values.IDBranch()));
         pointOfSale.setCreatedAt(LocalDate.now());
         return pointOfSale;
     }

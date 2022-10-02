@@ -1,17 +1,21 @@
 package dev.facturador.user.application.query;
 
-import dev.facturador.global.application.querys.Query;
+import dev.facturador.global.domain.abstractcomponents.query.Query;
 import dev.facturador.user.domain.UserIdUsername;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**Query para recuperar el userAvatar*/
+/**
+ * Query para recuperar el userAvatar
+ */
 @Getter
 @AllArgsConstructor
 public class UserGetAvatarQuery extends Query<String> {
+    private final UserIdUsername userIdUsername;
 
-    private UserIdUsername userIdUsername;
-    /**Builder de la Query*/
+    /**
+     * Builder de la Query
+     */
     public static class Builder {
         private UserIdUsername userIdUsername;
 

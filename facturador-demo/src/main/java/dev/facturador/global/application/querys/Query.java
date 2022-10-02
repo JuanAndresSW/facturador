@@ -1,5 +1,7 @@
 package dev.facturador.global.application.querys;
 
-/**Query Generica*/
+/**
+ * Query Generica
+ */
 public class Query<T> {
 }

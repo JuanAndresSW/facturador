@@ -46,6 +46,11 @@ spring:
         dialect:
           storage_engine: innodb
         format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  #google drive api
 ...
 
 

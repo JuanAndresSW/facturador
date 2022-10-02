@@ -3,7 +3,7 @@ package dev.facturador.global.infrastructure.resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.global.domain.CustomUserDetails;
 import dev.facturador.global.infrastructure.adapters.CustomJWT;
-import dev.facturador.global.infrastructure.springservice.CustomUserDetailsService;
+import dev.facturador.global.infrastructure.spring.security.CustomUserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-/**EndPoint para verificar si el Token no ha expirado*/
+/**
+ * EndPoint para verificar si el Token no ha expirado
+ */
 @RestController
 @RequestMapping(path = "/api/auth")
 public class InitResource {
@@ -36,8 +38,7 @@ public class InitResource {
      * Si es válido envía los datos para realizar operaciones en la API
      * (Util cuando el usuario se va y no cierra sesion. En estos casos solo se guarda el token)
      *
-     *
-     * @param request {@link HttpServletRequest} de la API de HttpServlet. Maneja la request
+     * @param request  {@link HttpServletRequest} de la API de HttpServlet. Maneja la request
      * @param response {@link HttpServletResponse} de la API HttpServlet. Marca la respuesta de la request
      * @throws IOException
      */
@@ -53,12 +54,13 @@ public class InitResource {
 
     /**
      * Verifica que el token sea valido
+     *
      * @return Devuelve el email guardado dentro del token para buscar al usuario
-     * */
+     */
     public String verifyTokenIsTrue(HttpServletRequest request, HttpServletResponse response) throws IOException {
-       //Saca el token del header
+        //Saca el token del header
         String authToken = request.getHeader(AUTHORIZATION);
-        try{
+        try {
             //Comprueba si es valido
             if (jwt.verifyToken(authToken)) {
                 //Recupera el Email del token
@@ -86,9 +88,7 @@ public class InitResource {
         var user = ((CustomUserDetails) service.loadUserByUsername(email));
 
         return new LinkedHashMap<String, String>(
-                        Map.of("username", user.getUsername(),
-                                "IDTrader", String.valueOf(user.getTraderId()),
-                                "actives", String.valueOf(user.getActives()),
-                                "passives", String.valueOf(user.getPassives()) ));
+                Map.of("username", user.getUsername(),
+                        "IDTrader", String.valueOf(user.getTraderId())));
     }
 }

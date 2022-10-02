@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `facturador_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `facturador_db`;
--- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
 -- Host: localhost    Database: facturador_db
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,7 +32,7 @@ CREATE TABLE `account` (
   KEY `id_trader_main_account_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_account_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`),
   CONSTRAINT `id_user_account_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +70,7 @@ CREATE TABLE `branch` (
   PRIMARY KEY (`id_branch`),
   KEY `id_trader_branch_fk_idx` (`id_owner_trader`),
   CONSTRAINT `id_trader_branch_fk` FOREIGN KEY (`id_owner_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,6 +80,128 @@ CREATE TABLE `branch` (
 LOCK TABLES `branch` WRITE;
 /*!40000 ALTER TABLE `branch` DISABLE KEYS */;
 /*!40000 ALTER TABLE `branch` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `credit_note`
+--
+
+DROP TABLE IF EXISTS `credit_note`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `credit_note` (
+  `id_credit` int unsigned NOT NULL AUTO_INCREMENT,
+  `sell_conditions` enum('CASH','CARD','CHECKING_ACCOUNT','DOCUMENT') NOT NULL,
+  `vat` int unsigned NOT NULL,
+  `issue_date` date NOT NULL,
+  `id_operation_parent` int unsigned NOT NULL,
+  `type` enum('A','B','C') NOT NULL,
+  `count_credit_number` int(8) unsigned zerofill NOT NULL,
+  `credit_number` varchar(13) NOT NULL,
+  PRIMARY KEY (`id_credit`),
+  UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
+  KEY `operation_credit_fk_idx` (`id_operation_parent`),
+  CONSTRAINT `operation_credit_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `credit_note`
+--
+
+LOCK TABLES `credit_note` WRITE;
+/*!40000 ALTER TABLE `credit_note` DISABLE KEYS */;
+/*!40000 ALTER TABLE `credit_note` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `debit_note`
+--
+
+DROP TABLE IF EXISTS `debit_note`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `debit_note` (
+  `id_debit` int unsigned NOT NULL AUTO_INCREMENT,
+  `sell_conditions` enum('CASH','CARD','CHECKING_ACCOUNT','DOCUMENT') NOT NULL,
+  `vat` int unsigned NOT NULL,
+  `issue_date` date NOT NULL,
+  `id_operation_parent` int unsigned NOT NULL,
+  `type` enum('A','B','C') NOT NULL,
+  `count_debit_number` int(8) unsigned zerofill NOT NULL,
+  `debit_number` varchar(13) NOT NULL,
+  PRIMARY KEY (`id_debit`),
+  UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
+  KEY `operation_debit_fk_idx` (`id_operation_parent`),
+  CONSTRAINT `operation_debit_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `debit_note`
+--
+
+LOCK TABLES `debit_note` WRITE;
+/*!40000 ALTER TABLE `debit_note` DISABLE KEYS */;
+/*!40000 ALTER TABLE `debit_note` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `invoice`
+--
+
+DROP TABLE IF EXISTS `invoice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice` (
+  `id_invoice` int unsigned NOT NULL AUTO_INCREMENT,
+  `sell_conditions` enum('CASH','CARD','CHECKING_ACCOUNT','DOCUMENT') NOT NULL,
+  `vat` int unsigned NOT NULL,
+  `issue_date` date NOT NULL,
+  `id_operation_parent` int unsigned NOT NULL,
+  `type` enum('A','B','C') NOT NULL,
+  `count_invoice_number` int(8) unsigned zerofill NOT NULL,
+  `invoice_number` varchar(13) NOT NULL,
+  PRIMARY KEY (`id_invoice`),
+  UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
+  KEY `operation_invoice_fk_idx` (`id_operation_parent`),
+  CONSTRAINT `operation_invoice_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `invoice`
+--
+
+LOCK TABLES `invoice` WRITE;
+/*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `operation`
+--
+
+DROP TABLE IF EXISTS `operation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `operation` (
+  `id_operation` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_issuing_trader` int unsigned NOT NULL,
+  `issuing_point_of_sale_number` varchar(3) NOT NULL,
+  PRIMARY KEY (`id_operation`),
+  KEY `operation_trader_fk_idx` (`id_issuing_trader`),
+  CONSTRAINT `operation_trader_fk` FOREIGN KEY (`id_issuing_trader`) REFERENCES `trader` (`id_trader`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `operation`
+--
+
+LOCK TABLES `operation` WRITE;
+/*!40000 ALTER TABLE `operation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `operation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -99,7 +219,7 @@ CREATE TABLE `point_of_sale` (
   PRIMARY KEY (`id_point_of_sale`),
   KEY `id_branch_pos_fk_idx` (`id_owner_branch`),
   CONSTRAINT `id_branch_pos_fk` FOREIGN KEY (`id_owner_branch`) REFERENCES `branch` (`id_branch`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +246,7 @@ CREATE TABLE `points_of_sale_control` (
   PRIMARY KEY (`id_pos_control`),
   KEY `id_trader_control_of_pos_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_control_of_pos_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,6 +256,97 @@ CREATE TABLE `points_of_sale_control` (
 LOCK TABLES `points_of_sale_control` WRITE;
 /*!40000 ALTER TABLE `points_of_sale_control` DISABLE KEYS */;
 /*!40000 ALTER TABLE `points_of_sale_control` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product` (
+  `id_product` int unsigned NOT NULL AUTO_INCREMENT,
+  `quantity` int unsigned NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `detail` varchar(30) NOT NULL,
+  `id_operation_parent` int unsigned NOT NULL,
+  PRIMARY KEY (`id_product`),
+  KEY `operation_product_fk_idx` (`id_operation_parent`),
+  CONSTRAINT `operation_product_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product`
+--
+
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `receiver`
+--
+
+DROP TABLE IF EXISTS `receiver`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `receiver` (
+  `id_receiver` int unsigned NOT NULL AUTO_INCREMENT,
+  `receiver_code` varchar(15) NOT NULL,
+  `receiver_name` varchar(30) NOT NULL,
+  `receiver_address` varchar(45) NOT NULL,
+  `receiver_vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE','EXCEMPT','END_CONSUMER','OTHER') NOT NULL,
+  `receiver_postal_code` varchar(8) NOT NULL,
+  `receiver_locality` varchar(45) NOT NULL,
+  `id_operation_parent` int unsigned NOT NULL,
+  PRIMARY KEY (`id_receiver`),
+  UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
+  KEY `operation_receiver_fk_idx` (`id_operation_parent`),
+  CONSTRAINT `operation_receiver_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `receiver`
+--
+
+LOCK TABLES `receiver` WRITE;
+/*!40000 ALTER TABLE `receiver` DISABLE KEYS */;
+/*!40000 ALTER TABLE `receiver` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sender`
+--
+
+DROP TABLE IF EXISTS `sender`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sender` (
+  `id_sender` int unsigned NOT NULL AUTO_INCREMENT,
+  `sender_code` varchar(15) NOT NULL,
+  `sender_name` varchar(30) NOT NULL,
+  `sender_address` varchar(45) NOT NULL,
+  `sender_contact` varchar(128) NOT NULL,
+  `sender_vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
+  `id_operation_parent` int unsigned NOT NULL,
+  PRIMARY KEY (`id_sender`),
+  UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
+  KEY `operation_sender_fk_idx` (`id_operation_parent`),
+  CONSTRAINT `operation_sender_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sender`
+--
+
+LOCK TABLES `sender` WRITE;
+/*!40000 ALTER TABLE `sender` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sender` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -183,10 +394,8 @@ CREATE TABLE `trader` (
   `cuit` varchar(15) NOT NULL,
   `business_name` varchar(20) NOT NULL,
   `vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
-  `actives` int unsigned NOT NULL,
-  `passives` int unsigned NOT NULL,
   PRIMARY KEY (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +422,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,7 +448,7 @@ CREATE TABLE `user_avatar` (
   PRIMARY KEY (`id_user_avatar`),
   UNIQUE KEY `UK_9r98vdxdtt1tw76ecsrxpv2io` (`id_user`),
   CONSTRAINT `id_user_avatar_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,4 +469,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-25  3:57:53
+-- Dump completed on 2022-09-10 14:39:24

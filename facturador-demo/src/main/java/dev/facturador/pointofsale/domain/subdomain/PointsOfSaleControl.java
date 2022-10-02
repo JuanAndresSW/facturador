@@ -38,7 +38,7 @@ public final class PointsOfSaleControl {
         this.trader = trader;
     }
 
-    public static PointsOfSaleControl create(PosControlData data) {
+    public static PointsOfSaleControl create(RequiredPosControlData data) {
         var control = new PointsOfSaleControl();
         if (data.getFlag()) {
             control.setCurrentCount(data.getCurrentCount() + 1);

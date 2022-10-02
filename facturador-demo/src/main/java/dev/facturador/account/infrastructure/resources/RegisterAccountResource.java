@@ -1,10 +1,10 @@
 package dev.facturador.account.infrastructure.resources;
 
-import dev.facturador.account.application.command.AccountRegisterCommand;
-import dev.facturador.account.application.query.AccountSingInQuery;
-import dev.facturador.account.domain.AccountRegister;
-import dev.facturador.global.application.commands.CommandBus;
-import dev.facturador.global.application.querys.QueryBus;
+import dev.facturador.account.domain.AccountRegisterRestModel;
+import dev.facturador.account.domain.commands.AccountRegisterCommand;
+import dev.facturador.account.domain.querys.AccountSingInQuery;
+import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-/** EndPoint para Registrar cuenta de usuario*/
+/**
+ * EndPoint para Registrar cuenta de usuario
+ */
 @RestController
 @RequestMapping(path = "/api/auth/accounts")
 public class RegisterAccountResource {
@@ -29,21 +33,22 @@ public class RegisterAccountResource {
 
     /**
      * En este endPoint se realiza el registro para tener una cuenta
-     *  que tenga acceso al Sistema (Basado en Tokens)
+     * que tenga acceso al Sistema (Basado en Tokens)
      *
-     * @param accountForRegister Objeto con los datos necesario para ingresar al sistema
+     * @param accountRestModel Objeto con los datos necesario para ingresar al sistema
      * @return Devuelve el Token de acceso y el token de refrescamiento
      * @throws Exception
      */
     @PostMapping
-    public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountRegister accountForRegister) throws Exception {
+    public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountRegisterRestModel accountRestModel) throws Exception {
 
-        var command = AccountRegisterCommand.Builder.getInstance()
-                .mainAccountRegister(accountForRegister).build();
+        var command = AccountRegisterCommand.builder()
+                .accountRegisterRestModel(accountRestModel).build();
+
         commandBus.handle(command);
 
-        var username = command.getAccountRegister().userRegister().username();
-        var passwordNoHash = command.getAccountRegister().userRegister().password();
+        var username = command.getAccountRegisterRestModel().userRegister().username();
+        var passwordNoHash = command.getAccountRegisterRestModel().userRegister().password();
 
         var query = AccountSingInQuery.Builder.getInstance()
                 .keys(username, passwordNoHash).build();
@@ -58,6 +63,5 @@ public class RegisterAccountResource {
                         Map.of("accessToken", accesToken,
                                 "refreshToken", refreshToken)));
     }
-
 
 }
