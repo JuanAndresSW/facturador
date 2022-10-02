@@ -2,7 +2,7 @@ package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.branch.domain.query.PagingBranchesQuery;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import dev.facturador.global.domain.sharedpayload.Page;
 import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class PagingBranchesResource {
-    private final QueryBus queryBus;
+    private final PortQueryBus portQueryBus;
 
     @Autowired
-    public PagingBranchesResource(QueryBus queryBus) {
-        this.queryBus = queryBus;
+    public PagingBranchesResource(PortQueryBus portQueryBus) {
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -50,7 +50,7 @@ public class PagingBranchesResource {
                 .page(Page.starter(index, size, sort, order))
                 .build();
 
-        var response = queryBus.handle(query);
+        var response = portQueryBus.handle(query);
 
         return ResponseEntity.ok().body(response);
     }

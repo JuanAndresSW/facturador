@@ -1,7 +1,7 @@
 package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.query.BranchesSummaryQuery;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +20,11 @@ import java.util.LinkedList;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class GetBranchesSummary {
-    private final QueryBus queryBus;
+    private final PortQueryBus portQueryBus;
 
     @Autowired
-    public GetBranchesSummary(QueryBus queryBus) {
-        this.queryBus = queryBus;
+    public GetBranchesSummary(PortQueryBus portQueryBus) {
+        this.portQueryBus = portQueryBus;
     }
 
 
@@ -44,7 +44,7 @@ public class GetBranchesSummary {
         var query = BranchesSummaryQuery.builder()
                 .traderId(traderId).build();
 
-        var response = queryBus.handle(query);
+        var response = portQueryBus.handle(query);
 
         return ResponseEntity.ok().body(response);
 

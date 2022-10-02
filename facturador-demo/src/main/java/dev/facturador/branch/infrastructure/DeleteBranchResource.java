@@ -1,7 +1,7 @@
 package dev.facturador.branch.infrastructure;
 
 import dev.facturador.branch.domain.command.BranchDeleteCommand;
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class DeleteBranchResource {
-    private final CommandBus commandBus;
+    private final PortCommandBus portCommandBus;
 
-    public DeleteBranchResource(CommandBus commandBus) {
-        this.commandBus = commandBus;
+    public DeleteBranchResource(PortCommandBus portCommandBus) {
+        this.portCommandBus = portCommandBus;
     }
 
     /**
@@ -36,7 +36,7 @@ public class DeleteBranchResource {
         var command = BranchDeleteCommand.builder()
                 .branchId(IDBranch).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         return ResponseEntity.noContent().build();
     }

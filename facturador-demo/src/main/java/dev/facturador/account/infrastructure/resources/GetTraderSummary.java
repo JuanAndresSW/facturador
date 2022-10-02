@@ -2,7 +2,7 @@ package dev.facturador.account.infrastructure.resources;
 
 import dev.facturador.account.domain.RequiredTraderData;
 import dev.facturador.account.domain.querys.GetAccountQuery;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +20,11 @@ import javax.validation.constraints.NotEmpty;
 @RestController
 @RequestMapping(path = "/api/accounts")
 public class GetTraderSummary {
-    private final QueryBus queryBus;
+    private final PortQueryBus portQueryBus;
 
     @Autowired
-    public GetTraderSummary(QueryBus queryBus) {
-        this.queryBus = queryBus;
+    public GetTraderSummary(PortQueryBus portQueryBus) {
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -39,7 +39,7 @@ public class GetTraderSummary {
         var query = GetAccountQuery.builder()
                 .username(username).build();
 
-        var user = queryBus.handle(query);
+        var user = portQueryBus.handle(query);
         var response = RequiredTraderData.valueOf(user);
 
         return ResponseEntity.ok().body(response);

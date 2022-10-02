@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.infrastructure;
 
-import dev.facturador.global.domain.abstractcomponents.command.CommandBus;
-import dev.facturador.global.domain.abstractcomponents.query.QueryBus;
+import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
+import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
 import dev.facturador.pointofsale.domain.PointOfSaleModel;
 import dev.facturador.pointofsale.domain.commands.PointOfSaleCreateCommand;
 import dev.facturador.pointofsale.domain.subdomain.ControlOfPosGetQuery;
@@ -21,12 +21,12 @@ import java.net.URI;
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class CreatePointOfSaleResource {
-    private final CommandBus commandBus;
-    private final QueryBus queryBus;
+    private final PortCommandBus portCommandBus;
+    private final PortQueryBus portQueryBus;
 
-    public CreatePointOfSaleResource(CommandBus commandBus, QueryBus queryBus) {
-        this.commandBus = commandBus;
-        this.queryBus = queryBus;
+    public CreatePointOfSaleResource(PortCommandBus portCommandBus, PortQueryBus portQueryBus) {
+        this.portCommandBus = portCommandBus;
+        this.portQueryBus = portQueryBus;
     }
 
     /**
@@ -45,13 +45,13 @@ public class CreatePointOfSaleResource {
 
         var query = ControlOfPosGetQuery.Builder.getInstance()
                 .traderID(IDTrader).build();
-        var control = queryBus.handle(query);
+        var control = portQueryBus.handle(query);
 
 
         var command = PointOfSaleCreateCommand.Builder.getInstance()
                 .pointOfSaleCreate(PointOfSaleModel.valueOf(IDBranch, IDTrader, control)).build();
 
-        commandBus.handle(command);
+        portCommandBus.handle(command);
 
         return ResponseEntity.created(new URI("http:localhost:8080/api/pointsofsale")).build();
     }
