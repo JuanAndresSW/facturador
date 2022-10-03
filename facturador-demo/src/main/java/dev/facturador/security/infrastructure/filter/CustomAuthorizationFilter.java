@@ -1,4 +1,4 @@
-package dev.facturador.global.infrastructure.spring.security.filter;
+package dev.facturador.security.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.global.infrastructure.adapters.CustomJWT;

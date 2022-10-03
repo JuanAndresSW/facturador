@@ -1,4 +1,4 @@
-package dev.facturador.global.infrastructure.spring.security.filter;
+package dev.facturador.security.infrastructure.filter;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

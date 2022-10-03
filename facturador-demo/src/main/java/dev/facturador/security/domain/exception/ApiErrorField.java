@@ -1,4 +1,4 @@
-package dev.facturador.global.domain.exception;
+package dev.facturador.security.domain.exception;
 
 public final class ApiErrorField {
     private Integer code;

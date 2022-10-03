@@ -1,7 +1,7 @@
-package dev.facturador.global.infrastructure.spring.security;
+package dev.facturador.security.infrastructure.adapter;
 
 import dev.facturador.account.application.AccountRepository;
-import dev.facturador.global.domain.CustomUserDetails;
+import dev.facturador.security.domain.CustomUserDetails;
 import dev.facturador.trader.domain.Trader;
 import dev.facturador.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;

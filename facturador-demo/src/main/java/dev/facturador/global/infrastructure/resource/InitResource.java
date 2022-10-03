@@ -1,9 +1,9 @@
 package dev.facturador.global.infrastructure.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.facturador.global.domain.CustomUserDetails;
+import dev.facturador.security.domain.CustomUserDetails;
 import dev.facturador.global.infrastructure.adapters.CustomJWT;
-import dev.facturador.global.infrastructure.spring.security.CustomUserDetailsService;
+import dev.facturador.security.infrastructure.adapter.CustomUserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

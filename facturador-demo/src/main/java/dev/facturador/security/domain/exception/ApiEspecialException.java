@@ -1,4 +1,4 @@
-package dev.facturador.global.domain.exception;
+package dev.facturador.security.domain.exception;
 
 import java.util.ArrayList;
 import java.util.List;

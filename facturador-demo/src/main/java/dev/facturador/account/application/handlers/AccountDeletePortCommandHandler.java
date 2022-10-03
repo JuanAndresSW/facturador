@@ -4,7 +4,7 @@ import dev.facturador.account.application.AccountRepository;
 import dev.facturador.account.application.ChecksAccountService;
 import dev.facturador.account.domain.commands.AccountDeleteCommand;
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandHandler;
-import dev.facturador.global.domain.exception.ResourceNotFound;
+import dev.facturador.security.domain.exception.ResourceNotFound;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

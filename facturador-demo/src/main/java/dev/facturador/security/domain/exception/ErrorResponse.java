@@ -1,4 +1,4 @@
-package dev.facturador.global.domain.exception;
+package dev.facturador.security.domain.exception;
 
 public record ErrorResponse(Integer code, String message, String description) {
     public ErrorResponse(String mensaje) {

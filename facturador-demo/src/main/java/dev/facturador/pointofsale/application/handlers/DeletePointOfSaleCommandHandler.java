@@ -1,7 +1,7 @@
 package dev.facturador.pointofsale.application.handlers;
 
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandHandler;
-import dev.facturador.global.domain.exception.ResourceNotFound;
+import dev.facturador.security.domain.exception.ResourceNotFound;
 import dev.facturador.pointofsale.application.PointOfSaleRepository;
 import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.pointofsale.domain.commands.PointOfSaleDeleteCommand;

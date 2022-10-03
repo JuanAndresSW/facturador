@@ -1,7 +1,7 @@
-package dev.facturador.global.infrastructure.resource;
+package dev.facturador.security.infrastructure.resource;
 
-import dev.facturador.global.domain.exception.ErrorResponse;
-import dev.facturador.global.domain.exception.ResourceNotFound;
+import dev.facturador.security.domain.exception.ErrorResponse;
+import dev.facturador.security.domain.exception.ResourceNotFound;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

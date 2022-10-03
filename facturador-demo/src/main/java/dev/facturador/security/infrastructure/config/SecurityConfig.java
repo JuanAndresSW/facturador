@@ -1,14 +1,11 @@
-package dev.facturador.global.infrastructure.spring.security.config;
+package dev.facturador.security.infrastructure.config;
 
 import dev.facturador.account.infrastructure.AuthenticationFilterForLogin;
-import dev.facturador.global.domain.CustomUserDetails;
 import dev.facturador.global.infrastructure.adapters.CustomJWT;
-import dev.facturador.global.infrastructure.spring.security.CustomUserDetailsService;
-import dev.facturador.global.infrastructure.spring.security.filter.CustomAuthorizationFilter;
-import dev.facturador.global.infrastructure.spring.security.filter.JWTEntryPoint;
+import dev.facturador.security.infrastructure.adapter.CustomUserDetailsService;
+import dev.facturador.security.infrastructure.filter.CustomAuthorizationFilter;
+import dev.facturador.security.infrastructure.filter.JWTEntryPoint;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,9 +49,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/").permitAll()
+                .antMatchers("/",
+                "/favicon.ico",
+                "/**/*.png",
+                "/**/*.gif",
+                "/**/*.svg",
+                "/**/*.jpg",
+                "/**/*.html",
+                "/**/*.css",
+                "/**/*.js").permitAll()
                 .anyRequest().authenticated();
 
+        http.authenticationProvider(daoAuthenticationProvider());
         //Filtros
         http.addFilter(new AuthenticationFilterForLogin(this.authenticationManagerBean(), customJWT()));
         http.addFilterBefore(new CustomAuthorizationFilter(customJWT()), UsernamePasswordAuthenticationFilter.class);
@@ -76,11 +82,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
         return provider;
-    }
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
