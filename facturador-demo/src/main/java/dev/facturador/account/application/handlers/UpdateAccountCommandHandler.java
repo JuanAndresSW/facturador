@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 @AllArgsConstructor
 @Service
 @Transactional
-public class AccountUpdatePortCommandHandler implements PortCommandHandler<AccountUpdateCommand> {
+public class UpdateAccountCommandHandler implements PortCommandHandler<AccountUpdateCommand> {
     private final UpdateAccountService useCase;
     @Autowired
     private final AccountRepository repository;

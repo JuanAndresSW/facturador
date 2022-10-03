@@ -1,7 +1,7 @@
 package dev.facturador.account.infrastructure;
 
 import dev.facturador.security.domain.CustomUserDetails;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.infrastructure.adapter.CustomJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

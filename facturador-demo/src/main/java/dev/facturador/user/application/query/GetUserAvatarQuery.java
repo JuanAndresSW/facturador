@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class UserGetAvatarQuery extends Query<String> {
+public class GetUserAvatarQuery extends Query<String> {
     private final UserIdUsername userIdUsername;
 
     /**
@@ -19,17 +19,17 @@ public class UserGetAvatarQuery extends Query<String> {
     public static class Builder {
         private UserIdUsername userIdUsername;
 
-        public static UserGetAvatarQuery.Builder getInstance() {
-            return new UserGetAvatarQuery.Builder();
+        public static GetUserAvatarQuery.Builder getInstance() {
+            return new GetUserAvatarQuery.Builder();
         }
 
-        public UserGetAvatarQuery.Builder userIdUsername(UserIdUsername userIdUsername) {
+        public GetUserAvatarQuery.Builder userIdUsername(UserIdUsername userIdUsername) {
             this.userIdUsername = userIdUsername;
             return this;
         }
 
-        public UserGetAvatarQuery build() {
-            return new UserGetAvatarQuery(userIdUsername);
+        public GetUserAvatarQuery build() {
+            return new GetUserAvatarQuery(userIdUsername);
         }
     }
 }

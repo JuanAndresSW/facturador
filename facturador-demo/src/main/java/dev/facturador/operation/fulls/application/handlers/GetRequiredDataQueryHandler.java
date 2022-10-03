@@ -22,7 +22,7 @@ import java.util.Optional;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class GetRequiredOperationDataPortQueryHandler implements PortQueryHandler<DataRequiredOperation, GetRequiredOperationDataQuery> {
+public class GetRequiredDataQueryHandler implements PortQueryHandler<DataRequiredOperation, GetRequiredOperationDataQuery> {
     @Autowired
     private final InvoiceRepository invoiceRepository;
     @Autowired

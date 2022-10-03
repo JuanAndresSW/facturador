@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-public class GetAnyFullOperationPortQueryHandler implements PortQueryHandler<FullOperationDisplayed, GetAnyFullOperationQuery> {
+public class GetAnyFullOperationQueryHandler implements PortQueryHandler<FullOperationDisplayed, GetAnyFullOperationQuery> {
     @Autowired
     private final InvoiceRepository invoiceRepository;
     @Autowired

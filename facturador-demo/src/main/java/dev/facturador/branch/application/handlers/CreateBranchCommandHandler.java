@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class BranchCreatePortCommandHandler implements PortCommandHandler<BranchCreateCommand> {
+public class CreateBranchCommandHandler implements PortCommandHandler<BranchCreateCommand> {
     private final TraderWildCardService traderWildCardService;
     @Autowired
     private final BranchRepository repository;

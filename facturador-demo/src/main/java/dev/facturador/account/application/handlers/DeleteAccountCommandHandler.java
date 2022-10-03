@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class AccountDeletePortCommandHandler implements PortCommandHandler<AccountDeleteCommand> {
+public class DeleteAccountCommandHandler implements PortCommandHandler<AccountDeleteCommand> {
     private final ChecksAccountService checkUseCase;
     @Autowired
     private final AccountRepository repository;

@@ -15,7 +15,7 @@ import java.util.LinkedList;
 @AllArgsConstructor
 @Service
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-public class BranchesSummaryPortQueryHandler
+public class SummaryBranchQueryHandler
         implements PortQueryHandler<LinkedList<HashMap<String, Object>>, BranchesSummaryQuery> {
     @Autowired
     private final BranchRepository repository;

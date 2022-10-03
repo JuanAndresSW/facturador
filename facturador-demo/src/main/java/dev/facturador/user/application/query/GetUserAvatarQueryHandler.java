@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Manejador de la Quey {@link UserGetAvatarQuery}
+ * Manejador de la Quey {@link GetUserAvatarQuery}
  */
 @AllArgsConstructor
 @Service
-public class UserGetAvatarQueyHandlerPort implements PortQueryHandler<String, UserGetAvatarQuery> {
+public class GetUserAvatarQueryHandler implements PortQueryHandler<String, GetUserAvatarQuery> {
     @Autowired
     private final UserRepository repository;
 
     @Override
-    public String handle(UserGetAvatarQuery query) throws Exception {
+    public String handle(GetUserAvatarQuery query) throws Exception {
         var user = repository.findByUsername(query.getUserIdUsername().getUsername());
 
         if (user.isEmpty()) {

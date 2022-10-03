@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 @AllArgsConstructor
 @Service
 @Transactional
-public class AccountRegisterPortCommandHandler implements PortCommandHandler<AccountRegisterCommand> {
+public class RegisterAccountCommandHandler implements PortCommandHandler<AccountRegisterCommand> {
     private final ChecksAccountService checkUseCase;
     @Autowired
     private final AccountRepository repository;

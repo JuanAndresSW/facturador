@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
-public class GetAccountPortQueryHandler implements PortQueryHandler<Account, GetAccountQuery> {
+public class GetAccountQueryHandler implements PortQueryHandler<Account, GetAccountQuery> {
     @Autowired
     private final AccountRepository repository;
 

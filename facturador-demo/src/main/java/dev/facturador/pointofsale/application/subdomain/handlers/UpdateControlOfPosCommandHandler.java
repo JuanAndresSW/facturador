@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class ControlOfPosUpdatePortCommandHandler implements PortCommandHandler<ControlOfPosUpdateCommand> {
+public class UpdateControlOfPosCommandHandler implements PortCommandHandler<ControlOfPosUpdateCommand> {
     private final PointsOfSaleControlRepository repository;
 
     @Override

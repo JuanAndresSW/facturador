@@ -2,7 +2,7 @@ package dev.facturador.global.infrastructure.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.security.domain.CustomUserDetails;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.infrastructure.adapter.CustomJWT;
 import dev.facturador.security.infrastructure.adapter.CustomUserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;

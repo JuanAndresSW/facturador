@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @AllArgsConstructor
 @Service
-public class BranchGetPortQueryHandler implements PortQueryHandler<Branch, BranchGetQuery> {
+public class GetBranchQueryHandler implements PortQueryHandler<Branch, BranchGetQuery> {
     @Autowired
     private final BranchRepository repository;
 

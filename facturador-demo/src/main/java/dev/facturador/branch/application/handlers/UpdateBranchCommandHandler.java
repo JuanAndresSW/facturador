@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class BranchUpdatePortCommandHandler implements PortCommandHandler<BranchUpdateCommand> {
+public class UpdateBranchCommandHandler implements PortCommandHandler<BranchUpdateCommand> {
     @Autowired
     private final BranchRepository repository;
 

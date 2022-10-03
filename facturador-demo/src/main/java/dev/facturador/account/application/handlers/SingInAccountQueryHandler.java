@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
  */
 @AllArgsConstructor
 @Service
-public class AccountSingInPortQueryHandler implements PortQueryHandler<LinkedHashMap<String, String>, AccountSingInQuery> {
+public class SingInAccountQueryHandler implements PortQueryHandler<LinkedHashMap<String, String>, AccountSingInQuery> {
     @Autowired
     private final PortEventBus portEventBus;
 

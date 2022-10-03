@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class PagingBranchesPortQueryHandler implements PortQueryHandler<PagedResponse<Branch>, PagingBranchesQuery> {
+public class PagingBranchQueryHandler implements PortQueryHandler<PagedResponse<Branch>, PagingBranchesQuery> {
     @Autowired
     private final BranchRepository repository;
 

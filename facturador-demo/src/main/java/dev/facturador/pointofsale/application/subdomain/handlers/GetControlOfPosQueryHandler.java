@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class ControlOfPosGetPortQueryHandler
+public class GetControlOfPosQueryHandler
         implements PortQueryHandler<PointsOfSaleControl, ControlOfPosGetQuery> {
     private final PointsOfSaleControlRepository repository;
 

@@ -1,7 +1,7 @@
 package dev.facturador.security.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.infrastructure.adapter.CustomJWT;
 import dev.facturador.security.domain.CustomUserDetails;
 import dev.facturador.security.infrastructure.adapter.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;

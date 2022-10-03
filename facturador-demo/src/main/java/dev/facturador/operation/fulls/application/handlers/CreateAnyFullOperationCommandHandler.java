@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Transactional(propagation = Propagation.REQUIRED)
 @Service
-public class CreateAnyFullOperationPortCommandHandler implements PortCommandHandler<CreateAnyFullOperationCommand> {
+public class CreateAnyFullOperationCommandHandler implements PortCommandHandler<CreateAnyFullOperationCommand> {
     @Autowired
     private final InvoiceRepository invoiceRepository;
     @Autowired

@@ -1,4 +1,4 @@
-package dev.facturador.global.infrastructure.adapters;
+package dev.facturador.security.infrastructure.adapter;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;

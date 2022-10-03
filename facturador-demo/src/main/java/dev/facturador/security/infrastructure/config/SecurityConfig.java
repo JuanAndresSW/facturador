@@ -1,23 +1,29 @@
 package dev.facturador.security.infrastructure.config;
 
 import dev.facturador.account.infrastructure.AuthenticationFilterForLogin;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.infrastructure.adapter.CustomJWT;
 import dev.facturador.security.infrastructure.adapter.CustomUserDetailsService;
 import dev.facturador.security.infrastructure.filter.CustomAuthorizationFilter;
-import dev.facturador.security.infrastructure.filter.JWTEntryPoint;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Clase con la configuracion de Seguridad
@@ -26,51 +32,53 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 //Indico que uso PreAuthorize
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final JWTEntryPoint unauthorizedHandler;
+public class SecurityConfig {
     private CustomUserDetailsService userDetailsService;
 
-    /**
-     * Configura la seguridad de las peticiones Http
-     *
-     * @param http Parámetro para cofigurar las peticiones
-     * @throws Exception Arroja una excepcion generica
-     */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                //Desactivo el Cross-site request forgery no es necesario
+            .csrf().disable()
+                //Desactivo el http-basic no es necesario
+            .httpBasic().disable()
+                //Marco una politica de no sesiones
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //Le digo que es lo que tiene que hacer el entry-point
+        http.exceptionHandling().authenticationEntryPoint(
+                (HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) ->
+                            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                         "Sorry, You're not authorized to access this resource."));
+
         //Autorización de las request
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/",
-                "/favicon.ico",
-                "/**/*.png",
-                "/**/*.gif",
-                "/**/*.svg",
-                "/**/*.jpg",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js").permitAll()
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js").permitAll()
                 .anyRequest().authenticated();
-
+        //Le marco cual es el provedor de autenticacion
         http.authenticationProvider(authenticationProvider());
+
         //Filtros
-        http.addFilter(new AuthenticationFilterForLogin(this.authenticationManagerBean(), customJWT()));
+        http.addFilter(new AuthenticationFilterForLogin(this.authenticationManager(), customJWT()));
         http.addFilterBefore(new CustomAuthorizationFilter(customJWT(), userDetailsService), UsernamePasswordAuthenticationFilter.class);
+        //Configuracion de CORS
+        http.cors().configurationSource( new CorsConfig().corsConfigurationSource());
+
+        return http.build();
     }
 
-    /**
-     * Le indico cual es la clase que busca al usuario y con que enconder se codifica el password
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(authenticationProvider());
     }
 
     //Apartir de aqui solo hay Beans
@@ -81,6 +89,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
         return provider;
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

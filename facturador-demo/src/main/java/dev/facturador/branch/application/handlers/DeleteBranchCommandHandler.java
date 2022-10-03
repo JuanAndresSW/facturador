@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class BranchDeletePortCommandHandler implements PortCommandHandler<BranchDeleteCommand> {
+public class DeleteBranchCommandHandler implements PortCommandHandler<BranchDeleteCommand> {
     @Autowired
     private final BranchRepository repository;
 
