@@ -40,45 +40,48 @@ public class GetAnyFullOperationPortQueryHandler implements PortQueryHandler<Ful
         var response = new FullOperationDisplayed();
         List<Branch> branch = new ArrayList<Branch>();
         if(query.getRepository().equals("invoice")){
-            var operation = retriveInvoice(query);
+            var operation = retrieveInvoice(query);
             response = FullOperationUtility.resolveInvoice(operation, response);
-            branch = operation.getOperation().getTraderOwner().getBranches().stream()
+            branch = operation.getOperation().getTraderOwner().getBranches()
+                    .stream()
                     .filter(x -> x.getBranchId().equals(query.getBranchId()))
                     .collect(Collectors.toList());
         }
         if(query.getRepository().equals("debit")){
-            var operation = retriveDebitNote(query);
+            var operation = retrieveDebitNote(query);
             response = FullOperationUtility.resolveDebitNote(operation, response);
-            branch = operation.getOperation().getTraderOwner().getBranches().stream()
+            branch = operation.getOperation().getTraderOwner().getBranches()
+                    .stream()
                     .filter(x -> x.getBranchId().equals(query.getBranchId()))
                     .collect(Collectors.toList());
         }
         if(query.getRepository().equals("credit")){
-            var operation = retriveCredittNote(query);
+            var operation = retrieveCreditNote(query);
             response = FullOperationUtility.resolveCreditNote(operation, response);
-            branch = operation.getOperation().getTraderOwner().getBranches().stream()
+            branch = operation.getOperation().getTraderOwner().getBranches()
+                    .stream()
                     .filter(x -> x.getBranchId().equals(query.getBranchId()))
                     .collect(Collectors.toList());
         }
 
         response.setPreferenceColor(branch.get(0).getPreferenceColor());
-
+        response.setLogo(branch.get(0).getLogo() != null ? branch.get(0).getLogo() : null);
         return response;
     }
 
-    private Invoice retriveInvoice(GetAnyFullOperationQuery query)throws Exception{
+    private Invoice retrieveInvoice(GetAnyFullOperationQuery query)throws Exception{
         var invoice = invoiceRepository.findInvoice(DocumentType.valueOf(query.getType()),  new Trader(query.getTraderId()), query.getOperationNumber());
         if (Objects.isNull(invoice))
             throw new Exception("El comerciante no tiene esta factura");
         return invoice;
     }
-    private DebitNote retriveDebitNote(GetAnyFullOperationQuery query)throws Exception{
+    private DebitNote retrieveDebitNote(GetAnyFullOperationQuery query)throws Exception{
         var debit = debitRepository.findDebitNote(DocumentType.valueOf(query.getType()),  new Trader(query.getTraderId()), query.getOperationNumber());
         if (Objects.isNull(debit))
             throw new Exception("El comerciante no tiene esta nota de debito");
         return debit;
     }
-    private CreditNote retriveCredittNote(GetAnyFullOperationQuery query)throws Exception{
+    private CreditNote retrieveCreditNote(GetAnyFullOperationQuery query)throws Exception{
         var credit = creditRepository.findCreditNote(DocumentType.valueOf(query.getType()),  new Trader(query.getTraderId()), query.getOperationNumber());
         if (Objects.isNull(credit))
             throw new Exception("El comerciante no tiene esta nota de credito");

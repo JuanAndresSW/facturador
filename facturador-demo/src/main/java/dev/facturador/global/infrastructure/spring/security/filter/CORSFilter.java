@@ -1,4 +1,4 @@
-package dev.facturador.security.infrastructure.filters;
+package dev.facturador.global.infrastructure.spring.security.filter;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -14,8 +14,8 @@ import java.io.IOException;
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class CORSFilter /*implements Filter*/ {
-/*
+public class CORSFilter implements Filter {
+
     @Override
     public void init(FilterConfig config) throws ServletException {
     }
@@ -37,5 +37,4 @@ public class CORSFilter /*implements Filter*/ {
     @Override
     public void destroy() {
     }
- */
 }

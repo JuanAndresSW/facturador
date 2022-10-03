@@ -1,10 +1,9 @@
 package dev.facturador.global.infrastructure.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.facturador.security.domain.CustomUserDetails;
-import dev.facturador.security.infrastructure.adapters.CustomJWT;
-import dev.facturador.security.infrastructure.adapters.CustomUserDetailsService;
-import org.springframework.util.StringUtils;
+import dev.facturador.global.domain.CustomUserDetails;
+import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.global.infrastructure.spring.security.CustomUserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,10 +62,9 @@ public class InitResource {
         String authToken = request.getHeader(AUTHORIZATION);
         try {
             //Comprueba si es valido
-            var token = jwt.verifyToken(authToken);
-            if (StringUtils.hasText(token)) {
+            if (jwt.verifyToken(authToken)) {
                 //Recupera el Email del token
-                return jwt.getTokenSubject(token);
+                return jwt.createUserByToken(authToken);
             }
         } catch (Exception ex) {
             response.setStatus(FORBIDDEN.value());

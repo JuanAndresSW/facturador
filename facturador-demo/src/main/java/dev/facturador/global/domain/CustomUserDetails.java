@@ -1,4 +1,4 @@
-package dev.facturador.security.domain;
+package dev.facturador.global.domain;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

@@ -42,7 +42,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
      @Query("SELECT t FROM Tutorial t WHERE " +
             "LOWER(t.title) LIKE LOWER(CONCAT('%',:searchTerm, '%')) OR " +
-            "LOWER(t.path) LIKE LOWER(CONCAT('%',:searchTerm, '%'))")
+            "LOWER(t.description) LIKE LOWER(CONCAT('%',:searchTerm, '%'))")
     List<Todo> findBySearchTerm(@Param("searchTerm") String searchTerm);
 
     Optional<T> findById(Predicate predicate);

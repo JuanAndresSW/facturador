@@ -22,7 +22,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @Service
-public class PointOfSaleListPortQueryHandler implements PortQueryHandler<PagedResponse<PointOfSale>, PointOfSaleListQuery> {
+public class ListPointOfSaleLQueryHandler implements PortQueryHandler<PagedResponse<PointOfSale>, PointOfSaleListQuery> {
     @Autowired
     private final PointOfSaleRepository repository;
 

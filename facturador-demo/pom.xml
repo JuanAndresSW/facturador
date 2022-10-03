@@ -12,7 +12,7 @@
 
     <groupId>org.conjunto.solucion</groupId>
     <artifactId>facturador-demo</artifactId>
-    <version>0.4</version>
+    <version>0.4.1</version>
     <packaging>war</packaging>
     <name>facturador-demo</name>
     <description>Aplicación para generar documentos comerciales</description>
@@ -23,8 +23,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-        <node.version>v16.10</node.version>
-        <yarn.version>v1.12.1</yarn.version>
     </properties>
 
     <dependencies>
@@ -114,47 +112,47 @@
 
     </dependencies>
 
+
+
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${project.parent.version}</version>
-                <configuration>
-                    <addResources>true</addResources>
-                    <executable>true</executable>
-                    <image>
-                        <name>hantsy/${project.artifactId}:latest</name>
-                        <verboseLogging>true</verboseLogging>
-                        <!--<env>
-                            <BP_JVM_VERSION>14.0.1</BP_JVM_VERSION>
-                        </env>-->
-                    </image>
-                </configuration>
-            </plugin>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${project.parent.version}</version>
+                    <configuration>
+                        <addResources>true</addResources>
+                        <executable>true</executable>
+                        <image>
+                            <name>hantsy/${project.artifactId}:latest</name>
+                            <verboseLogging>true</verboseLogging>
+                            <!--<env>
+                                <BP_JVM_VERSION>14.0.1</BP_JVM_VERSION>
+                            </env>-->
+                        </image>
+                    </configuration>
+                </plugin>
 
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <!-- see versions at https://search.maven.org/search?q=g:org.sonarsource.scanner.maven%20AND%20a:sonar-maven-plugin -->
-                <version>3.9.1.2184</version>
-            </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <!-- see versions at https://search.maven.org/search?q=g:org.sonarsource.scanner.maven%20AND%20a:sonar-maven-plugin -->
+                    <version>3.9.1.2184</version>
+                </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
-        </plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>17</source>
+                        <target>17</target>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
@@ -206,6 +204,11 @@
 
         <profile>
             <id>test-yarn</id>
+            <properties>
+                <node.version>v16.10</node.version>
+                <yarn.version>v1.12.1</yarn.version>
+            </properties>
+
             <build>
                 <plugins>
                     <plugin>
@@ -283,4 +286,5 @@
             </build>
         </profile>
     </profiles>
+
 </project>

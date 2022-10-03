@@ -42,8 +42,9 @@ public class GetRequiredOperationDataPortQueryHandler implements PortQueryHandle
                 HashMap.class,
                 "Authorization",
                 query.getHeader());
+        log.info("Pase la segunda request");
         var response = DataRequiredOperation.valueOf(request.getBody());
-
+        log.info("Cree el response");
         response.category(query.getReceiverCategory());
 
         Optional<OperationCount> projection = Optional.empty();
@@ -59,6 +60,7 @@ public class GetRequiredOperationDataPortQueryHandler implements PortQueryHandle
         if( Objects.isNull(projection.get().getOperationNumberCount())) {
             return response.defineNumber(0);
         }
+        log.info("Apunto de enviar la request");
         return response.defineNumber(projection.get().getOperationNumberCount());
     }
 }

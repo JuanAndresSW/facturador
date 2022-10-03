@@ -14,11 +14,11 @@ import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(path = "/api/wholes/operations")
-public class GetAnFullOperationResource {
+public class GetAnyFullOperationResource {
     private final PortQueryBus queryBus;
 
     @Autowired
-    public GetAnFullOperationResource(PortQueryBus queryBus) {
+    public GetAnyFullOperationResource(PortQueryBus queryBus) {
         this.queryBus = queryBus;
     }
 

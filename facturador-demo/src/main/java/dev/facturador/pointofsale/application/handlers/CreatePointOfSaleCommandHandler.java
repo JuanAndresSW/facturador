@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class PointOfSaleCreatePortCommandHandler implements PortCommandHandler<PointOfSaleCreateCommand> {
+public class CreatePointOfSaleCommandHandler implements PortCommandHandler<PointOfSaleCreateCommand> {
     @Autowired
     private final PointOfSaleRepository repository;
     @Autowired

@@ -90,11 +90,11 @@ public final class Invoice implements Serializable {
     public Invoice(Long invoiceId) {
         this.invoiceId = invoiceId;
     }
-
     public static Invoice create(FullOperationRestModel values, DataRequiredOperation internalValues) {
         var invoice = new Invoice();
-        //Basic data
+        //Condicion de venta
         invoice.setSellConditions(defineSellCondition(values.getSellConditions()));
+        //Definir IVA
         invoice.setVat(values.getVat());
         //Numero
         invoice.setOperationNumberCount(internalValues.getOperationNumberCount());
@@ -102,7 +102,8 @@ public final class Invoice implements Serializable {
 
         //Crear operacion
         invoice.setOperation(new Operation(
-                new Trader(values.getIDTrader()), internalValues.getPointOfSaleNumber()));
+                new Trader(values.getIDTrader()),
+                internalValues.getPointOfSaleNumber()));
         //Crear receiver
         invoice.getOperation().setReceiver(new Receiver());
         invoice.getOperation().getReceiver().setReceiverCode(values.getReceiverCode());
@@ -124,8 +125,9 @@ public final class Invoice implements Serializable {
         //Crear productos
         List<Product> lista = new ArrayList<>();
 
-        values.getProducts().forEach(x -> lista.add(
-                new Product(x.getQuantity(), x.getPrice(), x.getDetail(), invoice.getOperation())));
+        values.getProducts().forEach(x ->
+                lista.add(new Product(x.getQuantity(), x.getPrice(), x.getDetail(), invoice.getOperation())));
+
         invoice.getOperation().setProducts(lista);
 
         //Definir tipo de factura
@@ -145,6 +147,7 @@ public final class Invoice implements Serializable {
 
         return new EqualsBuilder().append(getSellConditions(), invoice.getSellConditions()).append(getVat(), invoice.getVat()).append(getType(), invoice.getType()).append(getOperation(), invoice.getOperation()).isEquals();
     }
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(getSellConditions()).append(getVat()).append(getType()).append(getOperation()).toHashCode();

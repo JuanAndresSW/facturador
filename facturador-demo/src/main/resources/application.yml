@@ -6,8 +6,8 @@ server:
     include-message: always
     include-binding-errors: always
   compression:
-      enabled: true
-      min-response-size: 4096
+    enabled: true
+    min-response-size: 4096
 #Configuracion del log
 logging:
   level:
@@ -27,7 +27,7 @@ logging:
 spring:
   main:
     banner-mode: off
-#Configuracion de MySQL
+  #Configuracion de MySQL
   datasource:
     password: admin
     url: jdbc:mysql://localhost:3306/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC
@@ -38,7 +38,7 @@ spring:
       max-active: 50
       max-idle: 20
       min-idle: 15
-#Aclaraciones para JPA
+  #Aclaraciones para JPA
   jpa:
     #Lenguaje
     database: MYSQL
@@ -53,12 +53,12 @@ spring:
         dialect:
           storage_engine: innodb
         format_sql: true
-#Configuracion de servlet para tamaño de la request
+  #Configuracion de servlet para tamaño de la request
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-#Configuraciones de email
+  #Configuraciones de email
   mail:
     host: localhost
     port: 1025

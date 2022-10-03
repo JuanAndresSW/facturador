@@ -16,7 +16,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 @Service
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-public class PointOfSaleGetPortQueryHandler implements PortQueryHandler<HashMap<String, Object>, PointOfSaleGetQuery> {
+public class GetPointOfSaleQueryHandler implements PortQueryHandler<HashMap<String, Object>, PointOfSaleGetQuery> {
     @Autowired
     private final PointOfSaleRepository repository;
 

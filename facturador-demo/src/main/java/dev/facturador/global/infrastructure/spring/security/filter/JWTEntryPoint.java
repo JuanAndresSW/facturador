@@ -1,4 +1,4 @@
-package dev.facturador.security.infrastructure.filters;
+package dev.facturador.global.infrastructure.spring.security.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

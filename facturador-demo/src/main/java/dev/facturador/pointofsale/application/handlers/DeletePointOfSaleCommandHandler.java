@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 @Transactional
-public class PointOfSaleDeletePortCommandHandler
+public class DeletePointOfSaleCommandHandler
         implements PortCommandHandler<PointOfSaleDeleteCommand> {
     @Autowired
     private final PointOfSaleRepository repository;

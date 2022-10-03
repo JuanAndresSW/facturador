@@ -95,8 +95,9 @@ public final class DebitNote implements Serializable {
 
     public static DebitNote create(FullOperationRestModel values, DataRequiredOperation internalValues) {
         var debitNote = new DebitNote();
-        //Basic data
+        //Condicion de venta
         debitNote.setSellConditions(defineSellCondition(values.getSellConditions()));
+        //Definir IVA
         debitNote.setVat(values.getVat());
         //Numero
         debitNote.setOperationNumberCount(internalValues.getOperationNumberCount());

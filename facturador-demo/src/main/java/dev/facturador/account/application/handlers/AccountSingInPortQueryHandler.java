@@ -5,7 +5,6 @@ import dev.facturador.account.domain.querys.AccountSingInQuery;
 import dev.facturador.global.domain.abstractcomponents.event.PortEventBus;
 import dev.facturador.global.domain.abstractcomponents.query.PortQueryHandler;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -15,7 +14,6 @@ import java.util.LinkedHashMap;
 /**
  * Manejador de la Query {@link AccountSingInQuery}
  */
-@Slf4j
 @AllArgsConstructor
 @Service
 public class AccountSingInPortQueryHandler implements PortQueryHandler<LinkedHashMap<String, String>, AccountSingInQuery> {
@@ -27,7 +25,7 @@ public class AccountSingInPortQueryHandler implements PortQueryHandler<LinkedHas
      */
     @Override
     public LinkedHashMap<String, String> handle(AccountSingInQuery query) throws Exception {
-        log.info("Entre al handler");
+
         var event = ARequestLoginEvent.builder()
                 .body(BodyInserters.fromFormData(query.getKeys()))
                 .build();

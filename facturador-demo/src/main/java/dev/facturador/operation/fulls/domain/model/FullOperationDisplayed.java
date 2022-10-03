@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Lob;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,4 +35,6 @@ public final class FullOperationDisplayed {
     private String receiverLocality;
 
     private String preferenceColor;
+    @Lob
+    private String logo;
 }

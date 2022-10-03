@@ -95,8 +95,9 @@ public final class CreditNote implements Serializable {
 
     public static CreditNote create(FullOperationRestModel values, DataRequiredOperation internalValues) {
         var creditNote = new CreditNote();
-        //Basic data
+        //Condicion de venta
         creditNote.setSellConditions(defineSellCondition(values.getSellConditions()));
+        //Definir IVA
         creditNote.setVat(values.getVat());
         //Numero
         creditNote.setOperationNumberCount(internalValues.getOperationNumberCount());

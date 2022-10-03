@@ -21,6 +21,7 @@ import java.io.Serializable;
 public final class Product implements Serializable {
     public static final Long serialVersionUID = 1L;
 
+    @JsonIgnore
     @Id
     @Column(name = "id_product")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
