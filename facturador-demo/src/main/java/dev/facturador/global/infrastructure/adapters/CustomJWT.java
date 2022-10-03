@@ -2,6 +2,7 @@ package dev.facturador.global.infrastructure.adapters;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 /**
  * Clase encargada de manejar todo lo relacionado al Token JWT
  */
+@Slf4j
 public class CustomJWT {
     private final String secrectKey;
     private final long expDateDefined;
@@ -24,19 +26,22 @@ public class CustomJWT {
     /**
      * Recupera el subject del Token
      *
-     * @param authHeader Token salido del header AUTHORIZATION
+     * @param token Token salido del header AUTHORIZATION
      * @return Subject - en este caso es el Email
      */
-    public String createUserByToken(String authHeader) {
-        var token = authHeader.substring("Bearer ".length());
+    public String createUserByToken(String token) {
         var decodedJWT = createDecoder(token);
         return decodedJWT.getSubject();
+    }
+
+    public String token(String bearerToken){
+        return verifyToken(bearerToken) ? bearerToken.substring("Bearer ".length()) : null;
     }
 
     /**
      * Verifica que el Token no este vacio y tenga la marca de Bearer
      */
-    public Boolean verifyToken(String auth) {
+    private Boolean verifyToken(String auth) {
         return Boolean.TRUE.equals(StringUtils.hasText(auth) && auth.startsWith("Bearer "));
     }
 

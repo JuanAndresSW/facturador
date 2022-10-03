@@ -8,7 +8,6 @@ import dev.facturador.security.infrastructure.filter.JWTEntryPoint;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -60,10 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/**/*.js").permitAll()
                 .anyRequest().authenticated();
 
-        http.authenticationProvider(daoAuthenticationProvider());
+        http.authenticationProvider(authenticationProvider());
         //Filtros
         http.addFilter(new AuthenticationFilterForLogin(this.authenticationManagerBean(), customJWT()));
-        http.addFilterBefore(new CustomAuthorizationFilter(customJWT()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CustomAuthorizationFilter(customJWT(), userDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
@@ -71,12 +70,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider());
+        auth.authenticationProvider(authenticationProvider());
     }
 
     //Apartir de aqui solo hay Beans
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());

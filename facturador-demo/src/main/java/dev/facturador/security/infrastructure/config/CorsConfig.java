@@ -1,4 +1,4 @@
-package dev.facturador.security.infrastructure.filter;
+package dev.facturador.security.infrastructure.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,7 @@ import java.util.List;
 @Configuration
 @Profile("cors")
 @Slf4j
-public class WebConfig {
+public class CorsConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         var corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();

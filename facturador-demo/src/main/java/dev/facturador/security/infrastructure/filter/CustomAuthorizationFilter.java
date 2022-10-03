@@ -2,9 +2,14 @@ package dev.facturador.security.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.domain.CustomUserDetails;
+import dev.facturador.security.infrastructure.adapter.CustomUserDetailsService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -23,11 +28,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * Es el filtro de autorización decide si la ruta que quieres entrar necesita autorizacion o no
  * y si necesita autorización decide si darla o no
  */
+@Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     private final CustomJWT jwt;
+    private final CustomUserDetailsService userDetailsService;
 
-    public CustomAuthorizationFilter(CustomJWT jwt) {
+    @Autowired
+    public CustomAuthorizationFilter(CustomJWT jwt, CustomUserDetailsService userDetailsService) {
         this.jwt = jwt;
+        this.userDetailsService = userDetailsService;
     }
 
     /**
@@ -45,10 +54,13 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         }
         if (isRequiredAuthorization(request)) {
             String authHeader = request.getHeader(AUTHORIZATION);
-            if (jwt.verifyToken(authHeader)) {
+            var token = jwt.token(authHeader);
                 try {
-                    setUpSpringAuthentication(authHeader, request);
-
+                    if (StringUtils.hasText(token)) {
+                        setUpSpringAuthentication(token, request);
+                    } else {
+                        throw new Exception("Token is missing");
+                    }
                 } catch (Exception ex) {
                     response.setHeader("error", ex.getMessage());
                     response.setStatus(UNAUTHORIZED.value());
@@ -58,7 +70,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
-            }
+
             filterChain.doFilter(request, response);
         }
     }
@@ -66,10 +78,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     /**
      * Metodo para autenticarnos dentro del flujo de Spring
      */
-    private void setUpSpringAuthentication(String authHeader, HttpServletRequest request) {
+    private void setUpSpringAuthentication(String token, HttpServletRequest request) {
 
-        var email = jwt.createUserByToken(authHeader);
-        var authUser = new UsernamePasswordAuthenticationToken(email, null, null);
+        var email = jwt.createUserByToken(token);
+        var user = (CustomUserDetails)userDetailsService.loadUserByUsername(email);
+        var authUser = new UsernamePasswordAuthenticationToken(user, null, null);
         authUser.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authUser);
