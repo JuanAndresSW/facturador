@@ -12,10 +12,10 @@ import java.io.IOException;
 /**
  * Maneja el Filtro de Cors
  */
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CORSFilter implements Filter {
-
+//@Component
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+public class CORSFilter /*implements Filter*/ {
+/*
     @Override
     public void init(FilterConfig config) throws ServletException {
     }
@@ -37,4 +37,6 @@ public class CORSFilter implements Filter {
     @Override
     public void destroy() {
     }
+
+ */
 }
