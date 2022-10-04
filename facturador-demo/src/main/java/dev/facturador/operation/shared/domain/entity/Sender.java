@@ -1,5 +1,6 @@
 package dev.facturador.operation.shared.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.global.domain.VatCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 public final class Sender implements Serializable {
     public static final Long serialVersionUID = 1L;
 
+    @JsonIgnore
     @Id
     @Column(name = "id_sender")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +43,7 @@ public final class Sender implements Serializable {
     @Column(name = "sender_contact", nullable = false, length = 128)
     private String senderContact;
 
+    @JsonIgnore
     @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     @JoinColumn(name = "id_operation_parent", nullable = false, updatable = false, referencedColumnName = "id_operation", unique = true)
     private Operation operationSender;
@@ -63,8 +66,7 @@ public final class Sender implements Serializable {
     @Override
     public String toString() {
         return "Sender{" +
-                "senderId=" + senderId +
-                ", senderCode='" + senderCode + '\'' +
+                ", senderCode='" + senderCode +
                 ", senderName='" + senderName + '\'' +
                 ", senderAddress='" + senderAddress + '\'' +
                 ", senderVatCategory=" + senderVatCategory +

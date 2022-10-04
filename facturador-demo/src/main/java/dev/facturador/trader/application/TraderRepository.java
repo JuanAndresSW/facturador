@@ -2,6 +2,7 @@ package dev.facturador.trader.application;
 
 import dev.facturador.trader.domain.Trader;
 import org.springframework.data.jpa.repository.JpaRepository;
+import reactor.core.publisher.Mono;
 
 public interface TraderRepository extends JpaRepository<Trader, Long> {
     /*

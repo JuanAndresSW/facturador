@@ -1,12 +1,13 @@
 package dev.facturador.account.infrastructure;
 
-import dev.facturador.global.domain.CustomUserDetails;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
+import dev.facturador.security.domain.CustomUserDetails;
+import dev.facturador.security.infrastructure.adapter.CustomJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -14,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 /**
  * Esta clase hace de filtro para la autenticacion
@@ -69,6 +72,12 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
         response.setHeader("username", user.getUsername());
         response.setHeader("IDTrader", String.valueOf(user.getTraderId()));
 
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
+        SecurityContextHolder.clearContext();
+        response.setStatus(UNAUTHORIZED.value());
     }
 
 }

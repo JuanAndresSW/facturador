@@ -15,7 +15,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Entidad Operacion
@@ -47,15 +46,15 @@ public final class Operation implements Serializable {
     private Receiver receiver;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "operation", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private Invoice invoices;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "operation", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private DebitNote debitNote;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "operation", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private CreditNote creditNote;
 
     @JsonIgnore

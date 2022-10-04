@@ -12,7 +12,7 @@
 
     <groupId>org.conjunto.solucion</groupId>
     <artifactId>facturador-demo</artifactId>
-    <version>0.4</version>
+    <version>0.4.1</version>
     <packaging>war</packaging>
     <name>facturador-demo</name>
     <description>Aplicación para generar documentos comerciales</description>
@@ -23,23 +23,10 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-        <node.version>v16.13.1</node.version>
-        <yarn.version>v1.12.1</yarn.version>
     </properties>
 
     <dependencies>
-        <!-- Utilidades -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
+        <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -47,6 +34,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <!-- Utilidades -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -58,7 +57,10 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <!-- Seguridad -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
@@ -110,60 +112,77 @@
 
     </dependencies>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.1.2</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>index</report>
-                            <report>licenses</report>
-                            <report>dependency-info</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${project.parent.version}</version>
+                    <configuration>
+                        <addResources>true</addResources>
+                        <executable>true</executable>
+                        <image>
+                            <name>hantsy/${project.artifactId}:latest</name>
+                            <verboseLogging>true</verboseLogging>
+                            <!--<env>
+                                <BP_JVM_VERSION>14.0.1</BP_JVM_VERSION>
+                            </env>-->
+                        </image>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <!-- see versions at https://search.maven.org/search?q=g:org.sonarsource.scanner.maven%20AND%20a:sonar-maven-plugin -->
+                    <version>3.9.1.2184</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>17</source>
+                        <target>17</target>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <profiles>
         <profile>
-            <id>demo</id>
-            <build>
+            <id>dev</id>
+            <reporting>
                 <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>${project.parent.version}</version>
-                        <configuration>
-                            <addResources>true</addResources>
-                            <executable>true</executable>
-                        </configuration>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.8.1</version>
-                        <configuration>
-                            <source>17</source>
-                            <target>17</target>
-                        </configuration>
-                    </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-project-info-reports-plugin</artifactId>
                         <version>3.1.2</version>
+                        <reportSets>
+                            <reportSet>
+                                <reports>
+                                    <report>index</report>
+                                    <report>licenses</report>
+                                    <report>dependency-info</report>
+                                </reports>
+                            </reportSet>
+                        </reportSets>
                     </plugin>
+                </plugins>
+            </reporting>
 
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <version>2.8.2</version>
+                        <artifactId>maven-project-info-reports-plugin</artifactId>
+                        <version>3.1.2</version>
                     </plugin>
 
                     <plugin>
@@ -174,8 +193,24 @@
                             <skip>true</skip>
                         </configuration>
                     </plugin>
+                </plugins>
+            </build>
+            <properties>
+                <spring.profiles.active>
+                    dev
+                </spring.profiles.active>
+            </properties>
+        </profile>
 
-                    <!--PARTE TURBIA -->
+        <profile>
+            <id>test-yarn</id>
+            <properties>
+                <node.version>v16.10</node.version>
+                <yarn.version>v1.12.1</yarn.version>
+            </properties>
+
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
@@ -249,13 +284,7 @@
                     </plugin>
                 </plugins>
             </build>
-            <properties>
-                <spring.profiles.active>
-                    demo
-                </spring.profiles.active>
-            </properties>
         </profile>
-
     </profiles>
 
 </project>

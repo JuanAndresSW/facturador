@@ -1,7 +1,7 @@
 package dev.facturador.user.infrastructure;
 
 import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
-import dev.facturador.user.application.query.UserGetAvatarQuery;
+import dev.facturador.user.application.query.GetUserAvatarQuery;
 import dev.facturador.user.domain.UserIdUsername;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public class GetAvatarUserResource {
      */
     @GetMapping("/{username}")
     public ResponseEntity<String> getUserAvatar(@PathVariable String username) throws Exception {
-        UserGetAvatarQuery query = UserGetAvatarQuery.Builder.getInstance()
+        GetUserAvatarQuery query = GetUserAvatarQuery.Builder.getInstance()
                 .userIdUsername(UserIdUsername.starter(username)).build();
         var avatar = portQueryBus.handle(query);
         return ResponseEntity.ok().body(avatar);

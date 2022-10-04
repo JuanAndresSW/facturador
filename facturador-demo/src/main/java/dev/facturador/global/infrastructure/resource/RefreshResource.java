@@ -1,9 +1,10 @@
 package dev.facturador.global.infrastructure.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.facturador.global.domain.CustomUserDetails;
-import dev.facturador.global.infrastructure.adapters.CustomJWT;
-import dev.facturador.global.infrastructure.spring.security.CustomUserDetailsService;
+import dev.facturador.security.domain.CustomUserDetails;
+import dev.facturador.security.infrastructure.adapter.CustomJWT;
+import dev.facturador.security.infrastructure.adapter.CustomUserDetailsService;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,9 +62,9 @@ public class RefreshResource {
      */
     private CustomUserDetails creteUserWithToken(String authHeader, HttpServletResponse response) throws IOException {
         try {
-            if (jwt.verifyToken(authHeader)) {
-                var email = jwt.createUserByToken(authHeader);
-
+            var token = jwt.token(authHeader);
+            if (StringUtils.hasText(token)) {
+                var email = jwt.createUserByToken(token);
                 return (CustomUserDetails) service.loadUserByUsername(email);
             }
         } catch (Exception ex) {

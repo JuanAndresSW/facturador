@@ -40,14 +40,17 @@ public class CreateAnyFullOperationResource {
             @Valid @RequestBody FullOperationRestModel fullOperationRestModel,
             HttpServletRequest request,
             @NotNull @PathVariable(value = "repository") String repository) throws Exception {
+       log.info("Entre al endPoint");
+       log.info("RestModel is: {}", fullOperationRestModel);
         var query = GetRequiredOperationDataQuery.builder()
                 .pointOfSaleId(fullOperationRestModel.getIDPointOfSale())
                 .traderId(fullOperationRestModel.getIDTrader())
                 .header(request.getHeader("Authorization"))
                 .receiverCategory(fullOperationRestModel.getReceiverVatCategory())
                 .repository(repository).build();
-
+        log.info("Cree la query");
         var response = portQueryBus.handle(query);
+        log.info("Pase al query");
         var command = CreateAnyFullOperationCommand.builder()
                 .invoiceValues(fullOperationRestModel)
                 .internalValues(response)
