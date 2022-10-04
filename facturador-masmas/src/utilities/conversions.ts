@@ -1,11 +1,11 @@
 //Métodos de conversión y formateo.
 
 /**Devuelve un string base 64 a partir de un valor tipo File. */
-export const fileToBase64 = (file: File) => new Promise((resolve, reject): void => {
+export const fileToBase64 = (file: Blob) => new Promise<string>((resolve, reject): void => {
     const reader = new FileReader();
     if (!file) return resolve(undefined);
     reader.onerror = reject;
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => resolve(reader.result+'');
     reader.readAsDataURL(file);
 });
 

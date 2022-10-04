@@ -8,7 +8,7 @@ import {IDTrader} from "utilities/constants";
  * @param operationCode - El string de dos caracteres que indica el documento al cual corresponde la operación.
  * @param toSend        - Indica si el documento está siendo enviado por el usuario (a un tercero) o por un tercero (al usuario).
  */
-export default function operationToJson(operation: operation, documentClassCode: documentClassCode, toSend=true): string {
+export default function operationToJson(operation: operation, documentClassCode: documentClassCode, toSend: boolean): string {
 
     function currentOperationIncludes(thisProperty: documentProp): boolean { 
         return operationFilters[thisProperty].includes(documentClassCode); 
@@ -19,6 +19,8 @@ export default function operationToJson(operation: operation, documentClassCode:
         IDPointOfSale: operation.IDPointOfSale
     };
 
+
+    //Datos del receptor como tercero.
     if (toSend) {
         if (currentOperationIncludes("receiverCUIT"))
         filteredOperation["receiverCode"] =         operation.thirdParty.CUIT;
@@ -39,6 +41,8 @@ export default function operationToJson(operation: operation, documentClassCode:
         filteredOperation["receiverLocality"] =     operation.thirdParty.locality;
     }
 
+
+    //Datos del receptor emisor como tercero.
     else {
         if (currentOperationIncludes("senderCUIT"))
         filteredOperation["senderCode"] =           operation.thirdParty.CUIT;
@@ -60,8 +64,18 @@ export default function operationToJson(operation: operation, documentClassCode:
     }
 
     
+
+
+    //Datos de la operación.
+
     if (currentOperationIncludes("productTable"))
-    filteredOperation["products"] =        operation.productTable;
+    filteredOperation["products"] = operation.productTable.description.map((_, i) => {
+        return {
+            quantity: operation.productTable.quantity[i],
+            price:    operation.productTable.price[i],
+            detail:   operation.productTable.description[i],
+        }
+    });
 
     if (currentOperationIncludes("observations"))
     filteredOperation["observations"] =        operation.observations;

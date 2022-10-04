@@ -5,9 +5,10 @@ export default class Response {
     public content: any;
     public status:  number;
 
-    public constructor(message: string, content: any = null, status: number = 0, ok: boolean = false) {
+    public constructor(message: string, content: any = null, status = 0, ok: boolean = false) {
         this.ok = ok;
         this.message = message;
         this.content = content;
+        this.status = status;
     }
 }

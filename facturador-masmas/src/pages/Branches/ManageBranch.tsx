@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import {branchesContent} from './models/branches';
+import branch from './models/branch';
 //UI.
 import BranchBanner from "./components/BranchBanner/BranchBanner";
 import BranchPoints from "./components/BranchPoints/BranchPoints";
@@ -10,14 +10,14 @@ import { BiChevronLeft } from "react-icons/bi";
 
 
 /**Menú para visualizar y cambiar datos de una sucursal y sus puntos de venta.*/
-export default function ManageBranch({branch}:{branch:branchesContent}): JSX.Element {
+export default function ManageBranch({branch}:{branch:branch}): JSX.Element {
 
   const navigate = useNavigate();
 
   const manageBranch = (
     <>
     <BranchBanner branch={branch} />
-    <BranchPoints IDBranch={branch.branchId} />
+    <BranchPoints IDBranch={branch.ID} />
     </>
   )
 

@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import img1 from "../../assets/img/doc.png";
 import img2 from "../../assets/img/libro.jpg";
 import img3 from "../../assets/img/punto.jpg";
-import img4 from "../../assets/img/stats.jpg";
+import img4 from "../../assets/img/stats.png";
 
 import "./PhonePreview.css";
 

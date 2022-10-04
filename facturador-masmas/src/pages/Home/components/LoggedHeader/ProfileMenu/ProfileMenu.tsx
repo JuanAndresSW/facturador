@@ -23,7 +23,7 @@ export default function ProfileMenu(): JSX.Element {
         getUserAvatar().then( response => {
             if (response.ok && response.content.size>1) setImg(URL.createObjectURL(response.content));
         });
-    });
+    }, []);
 
     //Controlador de estado del menú.
     const [active, setActive] = useState(false);

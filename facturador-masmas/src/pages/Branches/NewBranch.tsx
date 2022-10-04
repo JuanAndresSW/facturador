@@ -107,11 +107,11 @@ export default function NewBranch(): JSX.Element {
 
         <FlexDiv>
           <Select label="Provincia"           value={province} onChange={setProvince}     options={provinces} />
-          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)} />
-          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}   />
+          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.address(department)} />
+          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.address(locality)}   />
           <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)} />
-          <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}                          />
-          <Field  label="Número de dirección" bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)} />
+          <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.address(street)}                          />
+          <Field  label="Altura " bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)} />
         </FlexDiv>
 
       </Retractable>

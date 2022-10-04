@@ -32,13 +32,14 @@ new Promise<Response>( resolve => {
   //Manejar la respuesta.
   function handleResponse(): void {
     if (xhr.readyState === XMLHttpRequest.DONE) 
-    
+
     switch (xhr.status) {
-      case 0:   return resolve(new Response("No se ha podido establecer la comunicación con el servidor"));
-      case 404: return resolve(new Response("No se ha encontrado el recurso solicitado", '', 404));
-      case 401: return resolve(new Response("No tienes permiso para esta operación", '', 401));
-      case 500: return resolve(new Response("Error del servidor", '', 500));
-      default:  return resolve(new Response("", xhr.responseText, xhr.status, true));
+      case 0:   resolve(new Response("No se ha podido establecer la comunicación con el servidor")); break;
+      case 400: resolve(new Response("Error al procesar la respuesta", ',', 400)); break;
+      case 404: resolve(new Response("No se ha encontrado el recurso solicitado", '', 404)); break;
+      case 401: resolve(new Response("No tienes permiso para esta operación", '', 401)); break;
+      case 500: resolve(new Response("Error del servidor", '', 500)); break;
+      default:  resolve(new Response("", xhr.responseText, xhr.status, true)); break;
     } 
     
   }

@@ -9,10 +9,10 @@ import { base64ToBlob } from 'utilities/conversions';
 export default async function getUserAvatar(): Promise<Response> {
 
     if (localStorage.getItem("avatar")) 
-        return new Response('', await base64ToBlob(localStorage.getItem("avatar")), 200, true);
+    return new Response('', await base64ToBlob(localStorage.getItem("avatar")), 200, true);
+
     else {
         const response = await ajax("GET","users/"+sessionStorage.getItem('username'), true);
-
-        return {...response, content: base64ToBlob(response.content), ok: (response.status === 200 && response.content !== 'undefined')}
+        return {...response, content: await base64ToBlob(response.content), ok: (response.status === 200 && response.content !== 'undefined')}
     }
 }

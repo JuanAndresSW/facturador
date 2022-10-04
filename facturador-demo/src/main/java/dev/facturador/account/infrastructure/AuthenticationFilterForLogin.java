@@ -24,7 +24,6 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
     private CustomJWT jwt;
 
     public AuthenticationFilterForLogin(AuthenticationManager authenticationManager, CustomJWT jwt) {
-        log.info("authFilterFL se ejecuta");
         this.authenticationManager = authenticationManager;
         this.jwt = jwt;
     }
@@ -41,7 +40,6 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        log.info("attemptAuth se ejecuta");
         String usernameOrEmail = request.getParameter("usernameOrEmail");
         String password = request.getParameter("password");
         var authenticationToken = new UsernamePasswordAuthenticationToken(usernameOrEmail, password);
@@ -61,7 +59,6 @@ public class AuthenticationFilterForLogin extends UsernamePasswordAuthentication
     protected void successfulAuthentication
     (HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        log.info("succAuth se ejecuta");
         var user = (CustomUserDetails) authResult.getPrincipal();
         var URL = request.getRequestURI();
         String accesToken = jwt.createAccesToken(user.getEmail(), URL);

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import './OptionWithPhoto.css'
 import defaultPhoto from 'assets/svg/default-photo.svg'
-import { base64ToBlob } from "utilities/conversions";
 
 type props = {
     title: string,
     subtitle: string,
-    image: string,
+    image: Blob,
     onClick?: Function
 }
 
@@ -19,25 +18,13 @@ type props = {
  */
 export default function OptionWithPhoto({ title, subtitle, image, onClick }: props): JSX.Element {
 
-
-    //Convertir la imágen base 64 a URL.
-    const [photo, setPhoto] = useState(undefined);
-    useEffect(imageToURL, [image]);
-    function imageToURL(): void {
-        if (image) {
-            base64ToBlob(image).then((blob)=>{
-                setPhoto(URL.createObjectURL(blob));
-            });
-        } 
-    }
-
     return (
         
         <div data-component='OptionWithPhoto'>
 
             <div>
             <a onClick={()=>onClick()}>
-                <img src={photo?photo:defaultPhoto} />
+                <img src={image.size>10?URL.createObjectURL(image):defaultPhoto} />
                 <p><abbr title={title}>{title}</abbr></p>
                 <span><p><abbr title={subtitle}>{subtitle}</abbr></p></span>
             </a>
@@ -45,3 +32,4 @@ export default function OptionWithPhoto({ title, subtitle, image, onClick }: pro
         </div>
     )
 }
+//TODO: renombrar este componente a BranchPreview y moverlo a la página Branches.

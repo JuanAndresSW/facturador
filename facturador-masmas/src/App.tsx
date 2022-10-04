@@ -22,7 +22,7 @@ export default function App(): JSX.Element {
     const [auth, setAuth] = useState(undefined);
 
     //Comprobar la sesión con el servidor en el primer renderizado.
-    useEffect(tryGettinAuthorization);
+    useEffect(tryGettinAuthorization, []);
     function tryGettinAuthorization() {
         getSessionByToken().then(response => setAuth(response.ok))
     }
@@ -35,11 +35,11 @@ export default function App(): JSX.Element {
         <Suspense fallback={<SplashScreen />}>
             <Routes>
 
-                <Route index               element={auth? <Start />  : <Navigate to={"/inicio"} />}   />   
-                <Route path="/ingresar"    element={auth? <Login />  : <Navigate to={"/"} />}   />
+                <Route index               element={!auth? <Start />  : <Navigate to={"/inicio"} />}   />   
+                <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to={"/"} />}   />
 
-                <Route path="/inicio/*"    element={!auth?  <Home />   : <Navigate to={"/ingresar"} />} />
-                <Route path="/cuenta"      element={!auth?  <Account />: <Navigate to={"/ingresar"} />} />
+                <Route path="/inicio/*"    element={auth?  <Home />   : <Navigate to={"/ingresar"} />} />
+                <Route path="/cuenta"      element={auth?  <Account />: <Navigate to={"/ingresar"} />} />
 
                 <Route path="/registrarse" element={ <SignUp />  } />
                 <Route path="/acerca-de/*" element={ <About />   } />

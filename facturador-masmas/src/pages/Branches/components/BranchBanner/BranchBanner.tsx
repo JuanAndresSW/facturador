@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate }                from "react-router-dom";
 
-import {branchesContent}              from '../../models/branches';
+import branch from "pages/Branches/models/branch";
+
 import { base64ToBlob }               from "utilities/conversions";
 import deleteBranch                   from '../../services/deleteBranch';
 
@@ -9,30 +10,25 @@ import { Button, Message }            from "components/formComponents";
 import { Confirm }                    from "components/wrappers";
 import './BranchBanner.css';
 
+
 /**Encabezado con un información de la sucursal, y botones para eliminar y modificarla. */
-export default function BranchBanner({branch}:{branch:branchesContent}): JSX.Element {
-    const [photo, setPhoto] = useState(undefined);
+export default function BranchBanner({branch}:{branch:branch}): JSX.Element {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     
     function tryDeleteBranch() {
-      deleteBranch(branch.branchId, (ok:boolean, data:string)=> {
+      deleteBranch(branch.ID, (ok:boolean, data:string)=> {
         if (ok) navigate(-1);
         else setError(data);
       })
     }
 
-    useEffect(()=>{
-        base64ToBlob(branch.photo).then(logoAsBlob=>{
-        setPhoto(URL.createObjectURL(logoAsBlob));
-        });
-    }, []);
 
     return (
         <div data-component="branch-banner">
-          <img src={photo?photo:null} alt="" />
+          <img src={branch.photo?.size>10?URL.createObjectURL(branch.photo):null} alt="" />
           <h2>{branch.name}</h2>
-          <h3>{branch.locality + ' ' + branch.street + ' ' + branch.addressNumber}</h3>
+          <h3>{branch.address.locality + ' ' + branch.address.street + ' ' + branch.address.addressNumber}</h3>
 
           <div>
           <Button onClick={()=>navigate('./editar')}>Editar</Button>

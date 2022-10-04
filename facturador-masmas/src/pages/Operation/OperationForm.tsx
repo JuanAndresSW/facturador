@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 //Componentes del formulario.
-import { BackArrow } from "components/standalone";
+import { BackArrow, Loading } from "components/standalone";
 import { Button, DateTime, Field, Form, Message, Radio, Select, Switch, Table, Textarea } from "components/formComponents";
 import { Cond, FlexDiv, Retractable, Section } from 'components/wrappers';
 import { BiChevronsDown } from "react-icons/bi";
@@ -15,12 +15,13 @@ import Document from "./Document";
 import getOperationFormTitle from './utilities/getOperationFormTitle';
 import isValidOperation from './utilities/isValidOperation';
 import Valid from "utilities/Valid";
+import { toFourDigitNumber } from "utilities/conversions";
 //Servicios.
 import postOperation from './services/postOperation';
 import getListOfBranchesAndPoints from './services/getListOfBranchesAndPoints';
 //Tipos.
 import operation, {documentClassCode} from './models/operation';
-import { toFourDigitNumber } from "utilities/conversions";
+
 type props = { documentClassCode: documentClassCode };
 
 /**
@@ -29,51 +30,47 @@ type props = { documentClassCode: documentClassCode };
  */
 export default function OperationForm({ documentClassCode }: props): JSX.Element {
 
-  //Identificadores recibidos del documento creado.
-  const [documentNumberLast8Digits, setDocumentNumberLast8Digits] = useState();
-  const [documentType, setDocumentType] =      useState();
+  //Identificador recibido del documento creado.
+  const [documentIdentifier, setDocumentIdentifier] = useState(undefined);
 
 
   //Comunicación con el servidor.
   useEffect(()=>{ getListOfBranchesAndPoints().then( response => {
     if (!response.ok) return;
     setBranchesAndPoints(response.content)
-  })});
-
+  })}, []);
 
 
   async function generateOperation(): Promise<void> {
     setError("");
+
+    if (!isValidOperation(operation, documentClassCode, setError)) return;
+
     setLoading(true);
-
-    if (!isValidOperation(operation, documentClassCode, setError)) return console.log("operacion invalida");
-    
-    return console.log(operation);
-
-    /* const response = await postOperation(operation, documentClassCode);
+    const response = await postOperation(operation);
     if (!response.ok) return setError(response.message);
 
-    setDocumentNumberLast8Digits(response.content.operationNumber);
-    setDocumentType(response.content.type)
-    setLoading(false); */
+    setDocumentIdentifier(response.content);
+    setLoading(false);
   }
 
   function viewDocument() {
-    
+    setViewingDocument(true)
   }
  
 
   //Datos de control del formulario.
-  const [error,               setError] =               useState("hello world");
+  const [error,               setError] =               useState("");
   const [loading,             setLoading] =             useState(false);
   const [viewingDocument,     setViewingDocument] =     useState(false);
   const [branches,            setBranches] =            useState();
-  const [branch,              setBranch] =              useState();
 
 
   //Datos de la operación.
   const [operation, setOperation]: [operation, React.Dispatch<React.SetStateAction<operation>>] =
   useState({
+    documentClassCode: documentClassCode,
+    IDBranch: -1,
     IDPointOfSale: undefined,
     thirdParty: {
       CUIT:             '',
@@ -157,7 +154,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
   
   return (
     
-    viewingDocument? <Document type={documentClassCode} /> :
+    viewingDocument? <Document identifier={documentIdentifier} /> :
 
 
     <Form title={getOperationFormTitle(documentClassCode, true)} onSubmit={generateOperation}>
@@ -168,7 +165,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
       <Section label="Partícipes">
 
         <FlexDiv>
-          <Select options={branches} value={branch} onChange={setBranch} 
+          <Select options={branches} value={operation.IDBranch} onChange={(ID: number) => setOperation({...operation, IDBranch: ID})} 
           subValue={operation.IDPointOfSale} 
           subOnChange={(ID: number) => setOperation({...operation, IDPointOfSale: ID})} 
           fallback="Crea una sucursal:" label="Elige una sucursal y un punto de venta" />
@@ -211,6 +208,11 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
         <Filter by="receiverLocality" classCode={documentClassCode}>
           <Field label="Localidad" bind={[operation.thirdParty.locality, (locality: string) => 
           setThirdParty({...operation.thirdParty, locality: locality})]} validator={Valid.address(operation.thirdParty.locality)} />
+        </Filter>
+
+        <Filter by="receiverPostalCode" classCode={documentClassCode}>
+        <Field label="Código postal" type="number" bind={[operation.thirdParty.postalCode, (postalCode: string) => 
+          setThirdParty({...operation.thirdParty, postalCode: postalCode})]} validator={Valid.postalCode(operation.thirdParty.postalCode)} />
         </Filter>
 
         </FlexDiv>
@@ -259,14 +261,24 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
 
       <Message type="error" message={error} />
 
+
+
       <FlexDiv justify='flex-end'>
-        {
-          documentNumberLast8Digits?
-          <Button onClick={()=>viewDocument()}>Ver PDF</Button>:
+
+        <Cond bool={documentIdentifier}>
+          <Message type="success" message="Se ha creado el documento comercial" />
+          
+        </Cond>
+
+        <Cond bool={documentIdentifier === undefined}>
+          <Button onClick={()=>viewDocument()}>Ver PDF</Button>
           <Button type="submit">Generar</Button>
-        }
+        </Cond>
+
         
       </FlexDiv>
+
+      <Cond bool={loading}><Loading /></Cond>
       
     </Form>
   );
@@ -284,7 +296,7 @@ BACKUP:
 <FlexDiv>
   <Field label="Email" type="email" bind={[email, setEmail]} validator={Valid.email(email)} />
   <Cond bool={toSend}>
-    <Field label="Código postal" type="number" bind={[postalCode, setPostalCode]} validator={Valid.postalCode(postalCode)} />
+    
   </Cond>
 </FlexDiv>
 

@@ -2,7 +2,7 @@ import { fileToBase64 } from 'utilities/conversions';
 import branch from '../models/branch';
 
 /**Adapta un objeto de sucursal actualizada a un formato esperado por la API. */
-export default async function adaptUpdatedBranchToSend(branch: branch): Promise<string> {
+export default async function updatedBranchToJson(branch: branch): Promise<string> {
     return JSON.stringify({
         updatedName:          branch.name,
         updatedEmail:         branch.email,

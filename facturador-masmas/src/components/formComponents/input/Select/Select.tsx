@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {Loading} from "components/standalone";
 import './Select.css';
+import { Cond } from "components/wrappers";
 
 type props = {
     label?: string,
@@ -29,7 +30,7 @@ type props = {
  * @param props.subValue
  * @param props.subOnChange
  */
-export default function Select({ label, fallback, options, value, onChange, subValue, subOnChange=()=>{} }: props): JSX.Element {
+export default function Select({ label, fallback, options=[], value, onChange, subValue, subOnChange=()=>{} }: props): JSX.Element {
 
     const [indexOfSelected, setIndexOfSelected] = useState(-1);
 
@@ -38,55 +39,55 @@ export default function Select({ label, fallback, options, value, onChange, subV
         return <p>{options[0].title}</p>
     }
 
-    return <>
+    return options?.length === 0 ? <>{fallback}</> :
        
-        <select
-        className="select"
-        onChange={ e => {subOnChange(undefined); onChange(e.target.value)} }
-        value={value}
-        defaultValue={0}
-        >
-            <option disabled value={0}>
-                {options === undefined? "Cargando..." : (options?.length === 0) ? fallback : label}   
-            </option>
 
-            {   !options? null :
-                options?.map((option, index) => 
-                    <option 
-                    key={option.value} 
-                    title={option.title? option.title : ''+option.value}
-                    value={option.value}
-                    onClick={()=>setIndexOfSelected(index)}>
-                        {option.title? option.title : option.value}
-                    
-                    </option>
-                )
-            }
-        </select>
-        
-        {(indexOfSelected===-1 || !options[indexOfSelected]?.subOptions) ? null :
+    <>
+    <select
+    className="select"
+    onChange={ e => {subOnChange(undefined); onChange(e.target.value)} }
+    value={value}
+    >
+        <option disabled value={0}>
+            {options === undefined? "Cargando..." : label}   
+        </option>
 
-        <select
-        className="sub-select"
-        onChange={ e => subOnChange(e.target.value) }
-        value={subValue}
-        defaultValue={"0"}>
-
-            <option value={"0"} />
-        
-            {
-                options[indexOfSelected]?.subOptions?.map(suboption => 
-                    <option 
-                    key={suboption.value} 
-                    title={suboption.title? suboption.title : ''+suboption.value}
-                    value={suboption.value}>
-                        {suboption.title? suboption.title : suboption.value}
-                    </option>
-                )
-            }
-        </select>
+        {   !options? null :
+            options?.map((option, index) => 
+                <option 
+                key={option.value} 
+                title={option.title? option.title : ''+option.value}
+                value={option.value}
+                onClick={()=>setIndexOfSelected(index)}>
+                    {option.title? option.title : option.value}
+                
+                </option>
+            )
         }
+    </select>
+    
+    <Cond bool={indexOfSelected!==-1 && !!options[indexOfSelected]?.subOptions}>
 
+    <select
+    className="sub-select"
+    onChange={ e => subOnChange(e.target.value) }
+    value={subValue}>
+
+        <option value={"0"} />
+    
+        {
+            options[indexOfSelected]?.subOptions?.map(suboption => 
+                <option 
+                key={suboption.value} 
+                title={suboption.title? suboption.title : ''+suboption.value}
+                value={suboption.value}>
+                    {suboption.title? suboption.title : suboption.value}
+                </option>
+            )
+        }
+    </select>
+    </Cond>
     </>
+
 };
 

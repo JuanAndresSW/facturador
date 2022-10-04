@@ -11,8 +11,8 @@ export default async function tryLogin(usernameOrEmail: string, password: string
   }))
 
   if (response.status === 200) {
-    localStorage.clear();
     setSession(response.content);
+    
     window.location.reload();
   }
   if (response.status >= 404)

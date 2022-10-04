@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import branch from './models/branch';
 
 //GUI.
 import defaultLogo from 'assets/svg/default-logo.svg';
@@ -13,7 +12,7 @@ import { FlexDiv, Retractable } from "components/wrappers";
 //Utilities.
 import Valid from "utilities/Valid";
 import provinces from "./utils/provinces";
-import { branchesContent } from "./models/branches";
+import branch from "./models/branch";
 import { base64ToBlob } from "utilities/conversions";
 
 //Servicios.
@@ -21,7 +20,7 @@ import putBranch from './services/putBranch';
 import getBranchLogo from './services/getBranchLogo';
 
 type props = {
-  branch: branchesContent;
+  branch: branch
 }
 
 /**Formulario para visualizar y cambiar datos de una instalación/sucursal.*/
@@ -56,9 +55,9 @@ export default function EditBranch({branch}:props): JSX.Element {
 
 
   useEffect(()=>{
-    base64ToBlob(branch.photo).then(convertedPhoto=>setPhoto(convertedPhoto));
+    setPhoto(branch.photo);
 
-    getBranchLogo(branch.branchId). then (response => {
+    getBranchLogo(branch.ID). then (response => {
       if (response.ok) base64ToBlob(response.content).then(convertedLogo=>setLogo(convertedLogo));
     });
   },[]);
@@ -99,7 +98,7 @@ export default function EditBranch({branch}:props): JSX.Element {
     }
 
 
-    const response = await putBranch(branch.branchId, updatedBranch);
+    const response = await putBranch(branch.ID, updatedBranch);
     if (response.ok) setSuccess(true)
     else setError(response.message);
     setLoading(false)
@@ -118,17 +117,17 @@ export default function EditBranch({branch}:props): JSX.Element {
       onClick={(state:boolean)=>{setBoolAddress(state); setBoolContact(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-          <Select label="Provincia"           value={province?province:branch.province} onChange={setProvince}     options={provinces} />
+          <Select label="Provincia"           value={province?province:branch.address.province} onChange={setProvince}     options={provinces} />
           <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)}
-          placeholder={branch.department} />
+          placeholder={branch.address.department} />
           <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}
-          placeholder={branch.locality}   />
+          placeholder={branch.address.locality}   />
           <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)}
-          placeholder={branch.postalCode} />
+          placeholder={branch.address.postalCode} />
           <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}
-          placeholder={branch.street}                          />
+          placeholder={branch.address.street}                          />
           <Field  label="Altura" bind={[addressNumber, setAddressNumber]}         type="number" validator={Valid.addressNumber(addressNumber)}
-           placeholder={branch.addressNumber}/>
+           placeholder={branch.address.addressNumber.toString()}/>
         </FlexDiv>
 
       </Retractable>

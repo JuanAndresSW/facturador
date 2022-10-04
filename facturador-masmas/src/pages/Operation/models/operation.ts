@@ -1,6 +1,8 @@
 export type documentClassCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch");
 
 type operation = {
+    documentClassCode: documentClassCode,
+    IDBranch: number,
     IDPointOfSale: number,
     thirdParty: {
         CUIT: string,

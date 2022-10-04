@@ -1,6 +1,6 @@
 import ajax from 'ports/ajax';
 import branch from '../models/branch';
-import adaptUpdatedBranchToSend from '../adapters/adaptUpdatedBranchToSend';
+import updatedBranchToJson from '../adapters/updatedBranchToJson';
 import Response from 'models/Response';
 
 /**Envía los datos de una sucursal con uno o más datos actualizados.
@@ -8,5 +8,5 @@ import Response from 'models/Response';
  * @param updatedBranch - Objeto de sucursal actualizada.
 */
 export default async function updateBranch(IDBranch:number, updatedBranch: branch): Promise<Response> {
-    return await ajax('PUT', "branches/"+IDBranch, true, await adaptUpdatedBranchToSend(updatedBranch));
+    return await ajax('PUT', "branches/"+IDBranch, true, await updatedBranchToJson(updatedBranch));
 }

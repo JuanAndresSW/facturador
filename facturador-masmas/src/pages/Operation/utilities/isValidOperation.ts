@@ -8,7 +8,7 @@ import operation, { documentClassCode } from '../models/operation';
 export default function isValidOperation(operation: operation, documentClassCode: documentClassCode, setError: Function): boolean {
 
     //Validar datos del comerciante.
-    if (!Number.isInteger(operation.IDPointOfSale))
+    if (operation.IDPointOfSale === undefined)
     return no("Seleccione un punto de venta.");
 
 
@@ -121,6 +121,8 @@ export default function isValidOperation(operation: operation, documentClassCode
 
     if (currentOperationIncludes("timeDelay") && operation.timeDelay && operation.timeDelay < 0 || operation.timeDelay > 365)
     return no("La diferencia de tiempo debe ser de entre 0 y 365 días.");
+
+    return true;
 
     function no(messaje: string):   boolean {setError(messaje);return false;}
     function currentOperationIncludes(thisProperty: documentProp): boolean { return operationFilters[thisProperty].includes(documentClassCode); }

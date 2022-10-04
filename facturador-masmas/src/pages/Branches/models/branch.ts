@@ -1,5 +1,6 @@
 /**Objeto con datos de una sucursal. */
 type branch = {
+    ID?: number,
     name: string,
     email: string,
     phone: string,
@@ -11,8 +12,8 @@ type branch = {
         street: string,
         addressNumber: number,
     },
-    logo: File,
-    photo: File,
+    logo?: Blob,
+    photo: Blob,
     preferenceColor: string,
 };
 export default branch;

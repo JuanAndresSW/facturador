@@ -91,7 +91,7 @@ export default function SignUp(): JSX.Element {
     
     setSuccess(true);
     setTraderError("");
-    navigate("/inicio");
+    navigate("/");
   }
 
   /*FORMULARIO*****************************************************/

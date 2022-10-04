@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(path = "/api/branches")
-public class PagingBranchesResource {
+public class    PagingBranchesResource {
     private final PortQueryBus portQueryBus;
 
     @Autowired

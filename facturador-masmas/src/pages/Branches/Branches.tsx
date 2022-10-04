@@ -1,15 +1,12 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewPoint from './NewBranch';
-
 //Componentes.
 import ManageBranch from './ManageBranch';
-
 //Servicios.
 import getBranches from './services/getBranches';
-
 //Tipos.
-import branches, {branchesContent} from './models/branches';
-
+import branch from './models/branch';
+import listOfBranches from './models/listOfBranches';
 //GUI.
 import { Loading, OptionWithPhoto, Pagination, Plus } from "components/standalone";
 import { Section, FlexDiv } from "components/wrappers";
@@ -31,78 +28,73 @@ export default function Branches(): JSX.Element {
 
   //Lista de sucursales.
   const [branches, setBranches]:
-  [branches, React.Dispatch<React.SetStateAction<branches>>] = useState(undefined);
-  //Sucursal seleccionada.
-  const [branch, setBranch]:
-  [branchesContent, React.Dispatch<React.SetStateAction<branchesContent>>] = useState(undefined);
-  //Id de la sucursal seleccionada.
-  const [branchID, setBranchID] = useState(-1);
-  const [page, setPage] = useState(0);
+  [branch[], React.Dispatch<React.SetStateAction<branch[]>>] = useState([]);
+
+  //Sucursal seleccionada. TODO: hacer que funcione sin estos dos valores.
+  const [selectedBranch, setSelectedBranch]:
+  [branch, React.Dispatch<React.SetStateAction<branch>>] = useState(undefined);
+  const [selectedBranchID, setSelectedBranchID] = useState(-1);
+
+  //Datos de paginación.
+  const [page, setPage] =             useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [last, setLast] =             useState(true);
   const [sortBy, setSortBy]: [("createdAt"|"name"|"street"), React.Dispatch<React.SetStateAction<("createdAt"|"name"|"street")>>] 
   = useState("createdAt");
 
   //Recuperar la lista de sucursales.
-  useEffect(requestBranches, [page, sortBy]);
+  useEffect(requestListOfBranches, [page, sortBy]);
 
-  function requestBranches(): void {
+  function requestListOfBranches(): void {
     getBranches(page, sortBy, "asc").then(response => {
-      if (response.ok) setBranches(response.content);
+      if (response.ok) {
+        const listOfBranches: listOfBranches = response.content;
+        setBranches   (listOfBranches.branches);
+        setTotalPages (listOfBranches.totalPages);
+        setLast       (listOfBranches.last); 
+      }
     });
   }
 
-  
-
   /**Pantalla de selección de opciones de punto de venta. */
-  const selectionScreen = (
-    <Section label="Administrar instalaciones y puntos de venta">
-      {!branches? null :
-        <FlexDiv justify="flex-start">
-          <Pagination page={page} setPage={setPage} totalPages={branches.totalPages} last={branches.last} />
-          <Dropdown options={sortOptions} value={sortBy} onChange={setSortBy}/>
-          <BiRefresh onClick={requestBranches} style={{color:"#888", fontSize:"1.8rem", cursor:"pointer"}}/>
-        </FlexDiv>
-      }
-      <FlexDiv justify="flex-start" align="flex-start">
-
-
-        {
-          !branches? <Loading/>:
-
-          <>
-
-          <Plus link="./nuevo" />
-          
-          {
-            branches.content.map((branch, index) => 
-            <OptionWithPhoto
-              key={index}
-              title={branch.name}
-              subtitle={branch.locality + ' ' + branch.street + ' ' + branch.addressNumber}
-              image={branch.photo.length>10?branch.photo:null}
-              onClick={() => viewBranch(branch)}
-               />
-            )
-            
-          }
-          
-          </>
-        }
-
+  const selectionScreen = 
+  <Section label="Administrar instalaciones y puntos de venta">
+    {!branches? null :
+      <FlexDiv justify="flex-start">
+        <Pagination page={page} setPage={setPage} totalPages={totalPages} last={last} />
+        <Dropdown options={sortOptions} value={sortBy} onChange={setSortBy}/>
+        <BiRefresh onClick={requestListOfBranches} style={{color:"#888", fontSize:"1.8rem", cursor:"pointer"}}/>
       </FlexDiv>
-    </Section>
-  );
+    }
+    <FlexDiv justify="flex-start" align="flex-start">
 
-  function viewBranch(branch: branchesContent) {
-    setBranchID(branch.branchId);
-    setBranch(branch);
-    navigate(''+branch.branchId);
+      <Plus link="./nuevo" />
+  
+      {branches?.map((branch, index) => 
+      <OptionWithPhoto
+        key={index}
+        title={branch.name}
+        subtitle={branch.address.locality + ' ' + branch.address.street + ' ' + branch.address.addressNumber}
+        image={branch.photo}
+        onClick={() => viewBranch(branch)}
+      />)}
+          
+    </FlexDiv>
+  </Section>;
+
+
+
+  function viewBranch(branch: branch) {
+    setSelectedBranchID(branch.ID);
+    setSelectedBranch(branch);
+    navigate(''+branch.ID);
   }
 
   return (
     <Routes>
       <Route index                            element={selectionScreen} />
       <Route path={"/nuevo"}                  element={<NewPoint />} />
-      <Route path={''+branchID+'/*'}          element={<ManageBranch branch={branch} />} />
+      <Route path={''+selectedBranchID+'/*'}  element={<ManageBranch branch={selectedBranch} />} />
     </Routes>
   );
 }
