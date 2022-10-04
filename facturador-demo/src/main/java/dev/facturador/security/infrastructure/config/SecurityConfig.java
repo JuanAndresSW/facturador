@@ -20,6 +20,8 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.server.context.ServerSecurityContextRepository;
+import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 @Configuration
 @EnableWebSecurity
-//Indico que uso PreAuthorize
 public class SecurityConfig {
     private CustomUserDetailsService userDetailsService;
 
@@ -93,6 +94,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+    @Bean
+    public ServerSecurityContextRepository serverSecurityContextRepository() {
+        return new WebSessionServerSecurityContextRepository();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

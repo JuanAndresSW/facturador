@@ -28,11 +28,12 @@ public class DeleteBranchCommandHandler implements PortCommandHandler<BranchDele
      */
     @Override
     public void handle(BranchDeleteCommand command) throws ResourceNotFound {
-        //Verifica que exista esta sucursal
-        if (!repository.existsByBranchId(command.getBranchId())) {
+
+        var branch =repository.findById(command.getBranchId());
+        //Si existe le sede la eliminacion al caso de uso
+        if (branch.isEmpty()) {
             throw new ResourceNotFound("Esta sucursal no existe");
         }
-        //Si existe le sede la eliminacion al caso de uso
-        repository.delete(Branch.create(command.getBranchId()));
+        repository.delete(branch.get());
     }
 }

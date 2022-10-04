@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.net.URI;
+
+import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.noContent;
 
 /**
  * EndPoint para crear la sucursal
@@ -34,13 +38,13 @@ public class CreateBranchResource {
      */
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public HttpEntity<Void> addBranch(@Valid @RequestBody BranchCreateRestModel branchRestModel) throws Exception {
+    public Mono<HttpEntity<Void>> addBranch(@Valid @RequestBody BranchCreateRestModel branchRestModel) throws Exception {
         var command = BranchCreateCommand.builder()
                 .branchCreateRestModel(branchRestModel).build();
 
         portCommandBus.handle(command);
-
-        return ResponseEntity.created(new URI("http:localhost:8080/api/branches")).build();
+        //"
+        return Mono.empty().map(data -> created(URI.create("http:localhost:8080/api/branches")).build());
     }
 
 }
