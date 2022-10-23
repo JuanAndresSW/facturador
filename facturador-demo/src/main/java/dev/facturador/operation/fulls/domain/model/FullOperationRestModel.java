@@ -1,14 +1,13 @@
 package dev.facturador.operation.fulls.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.facturador.operation.shared.domain.model.ProductModel;
+import dev.facturador.operation.core.domain.model.ProductModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;

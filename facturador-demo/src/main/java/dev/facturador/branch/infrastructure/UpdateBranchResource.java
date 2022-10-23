@@ -9,8 +9,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+
+import static org.springframework.http.ResponseEntity.noContent;
 
 /**
  * EndPoint para actualizar la sucursal
@@ -18,12 +21,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class UpdateBranchResource {
-    private final PortCommandBus portCommandBus;
-    private final PortQueryBus portQueryBus;
+    private final PortCommandBus commandBus;
+    private final PortQueryBus queryBus;
 
-    public UpdateBranchResource(PortCommandBus portCommandBus, PortQueryBus portQueryBus) {
-        this.portCommandBus = portCommandBus;
-        this.portQueryBus = portQueryBus;
+    public UpdateBranchResource(PortCommandBus commandBus, PortQueryBus queryBus) {
+        this.commandBus = commandBus;
+        this.queryBus = queryBus;
     }
 
     /**
@@ -36,18 +39,18 @@ public class UpdateBranchResource {
      */
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{IDBranch}")
-    public HttpEntity<Void> updateBranch(@PathVariable(name = "IDBranch") long IDBranch,
+    public Mono<HttpEntity<Void>> updateBranch(@PathVariable(name = "IDBranch") long IDBranch,
                                          @Valid @RequestBody BranchUpdateRestModel branchRestModel) throws Exception {
         var query = BranchGetQuery.builder()
                 .branchId(IDBranch).build();
 
-        var branch = portQueryBus.handle(query);
+        var branch = queryBus.handle(query);
 
         var command = BranchUpdateCommand.builder()
                 .branchUpdateRestModel(branchRestModel).branch(branch).build();
 
-        portCommandBus.handle(command);
+        commandBus.handle(command);
 
-        return ResponseEntity.noContent().build();
+        return Mono.empty().map(x -> noContent().build());
     }
 }

@@ -7,9 +7,11 @@ import dev.facturador.global.domain.sharedpayload.Page;
 import dev.facturador.global.domain.sharedpayload.PagedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * EndPoint para paginar las sucursales
@@ -17,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class PagingBranchesResource {
-    private final PortQueryBus portQueryBus;
+    private final PortQueryBus queryBus;
 
     @Autowired
-    public PagingBranchesResource(PortQueryBus portQueryBus) {
-        this.portQueryBus = portQueryBus;
+    public PagingBranchesResource(PortQueryBus queryBus) {
+        this.queryBus = queryBus;
     }
 
     /**
@@ -38,7 +40,7 @@ public class PagingBranchesResource {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/traders/{IDTrader}")
-    public HttpEntity<PagedResponse<Branch>> getListBranch(
+    public Mono<HttpEntity<PagedResponse<Branch>>> getListBranch(
             @RequestParam(value = "index") int index,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") String sort,
@@ -50,8 +52,8 @@ public class PagingBranchesResource {
                 .page(Page.starter(index, size, sort, order))
                 .build();
 
-        var response = portQueryBus.handle(query);
+        var response = queryBus.handle(query);
 
-        return ResponseEntity.ok().body(response);
+        return Mono.just(response).map(r -> ok().body(r));
     }
 }

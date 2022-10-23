@@ -2,18 +2,18 @@ package dev.facturador.operation.fulls.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.operation.fulls.domain.SellConditions;
-import dev.facturador.operation.shared.domain.DocumentType;
-import dev.facturador.operation.shared.domain.entity.Operation;
-import dev.facturador.operation.shared.domain.entity.Product;
-import dev.facturador.operation.shared.domain.entity.Receiver;
-import dev.facturador.operation.shared.domain.entity.Sender;
+import dev.facturador.operation.core.domain.DocumentType;
+import dev.facturador.operation.core.domain.entity.Operation;
+import dev.facturador.operation.core.domain.entity.Product;
+import dev.facturador.operation.core.domain.entity.Receiver;
+import dev.facturador.operation.core.domain.entity.Sender;
 import dev.facturador.operation.fulls.domain.model.FullOperationRestModel;
 import dev.facturador.operation.fulls.domain.model.DataRequiredOperation;
 import dev.facturador.trader.domain.Trader;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static dev.facturador.operation.fulls.domain.SellConditions.defineSellCondition;
-import static dev.facturador.operation.shared.domain.AllVatCategory.defineAllVat;
+import static dev.facturador.operation.core.domain.AllVatCategory.defineAllVat;
 
 /**
  * Entidad Factura
  */
 @Entity
 @Table(name = "invoice")
+@EqualsAndHashCode
 @NoArgsConstructor
 @Getter
 @Setter
@@ -50,14 +51,12 @@ public final class Invoice implements Serializable {
     @Column(nullable = false)
     private Integer vat;
 
-    @Column(name = "issue_date", nullable = false)
-    private LocalDate issueDate;
-
     @Enumerated(value = EnumType.STRING)
     @Column(name = "type", nullable = false,
             columnDefinition = "enum('A','B','C')")
     private DocumentType type;
 
+    @JsonIgnore
     @Column(name = "count_invoice_number", nullable = false, length = 8)
     private Integer operationNumberCount;
 
@@ -69,10 +68,13 @@ public final class Invoice implements Serializable {
     @JoinColumn(name = "id_operation_parent", nullable = false, referencedColumnName = "id_operation", unique = true)
     private Operation operation;
 
+    public Invoice(Operation operation) {
+        this.operation = operation;
+    }
+
     public Invoice(Long invoiceId,
                    SellConditions sellConditions,
                    Integer vat,
-                   LocalDate issueDate,
                    DocumentType type,
                    Integer operationNumberCount,
                    String invoiceNumber,
@@ -80,7 +82,6 @@ public final class Invoice implements Serializable {
         this.invoiceId = invoiceId;
         this.sellConditions = sellConditions;
         this.vat = vat;
-        this.issueDate = issueDate;
         this.type = type;
         this.operationNumberCount = operationNumberCount;
         this.invoiceNumber = invoiceNumber;
@@ -93,8 +94,9 @@ public final class Invoice implements Serializable {
 
     public static Invoice create(FullOperationRestModel values, DataRequiredOperation internalValues) {
         var invoice = new Invoice();
-        //Basic data
+        //Condicion de venta
         invoice.setSellConditions(defineSellCondition(values.getSellConditions()));
+        //Definir IVA
         invoice.setVat(values.getVat());
         //Numero
         invoice.setOperationNumberCount(internalValues.getOperationNumberCount());
@@ -102,7 +104,8 @@ public final class Invoice implements Serializable {
 
         //Crear operacion
         invoice.setOperation(new Operation(
-                new Trader(values.getIDTrader()), internalValues.getPointOfSaleNumber()));
+                new Trader(values.getIDTrader()),
+                internalValues.getPointOfSaleNumber()));
         //Crear receiver
         invoice.getOperation().setReceiver(new Receiver());
         invoice.getOperation().getReceiver().setReceiverCode(values.getReceiverCode());
@@ -124,30 +127,16 @@ public final class Invoice implements Serializable {
         //Crear productos
         List<Product> lista = new ArrayList<>();
 
-        values.getProducts().forEach(x -> lista.add(
-                new Product(x.getQuantity(), x.getPrice(), x.getDetail(), invoice.getOperation())));
+        values.getProducts().forEach(x ->
+                lista.add(new Product(x.getQuantity(), x.getPrice(), x.getDetail(), invoice.getOperation())));
+
         invoice.getOperation().setProducts(lista);
 
         //Definir tipo de factura
         invoice.setType(internalValues.getType());
         //Fecha de creacion
-        invoice.setIssueDate(LocalDate.now());
+        invoice.getOperation().setIssueDate(LocalDate.now());
         return invoice;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Invoice invoice = (Invoice) o;
-
-        return new EqualsBuilder().append(getSellConditions(), invoice.getSellConditions()).append(getVat(), invoice.getVat()).append(getType(), invoice.getType()).append(getOperation(), invoice.getOperation()).isEquals();
-    }
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(getSellConditions()).append(getVat()).append(getType()).append(getOperation()).toHashCode();
     }
 
     @Override
@@ -155,11 +144,9 @@ public final class Invoice implements Serializable {
         return "Invoice{" +
                 "sellConditions=" + sellConditions +
                 ", vat=" + vat +
-                ", issueDate=" + issueDate +
                 ", type=" + type +
                 ", operationNumberCount=" + operationNumberCount +
                 ", invoiceNumber='" + invoiceNumber + '\'' +
-                ", operation=" + operation +
                 '}';
     }
 }

@@ -12,4 +12,5 @@ public class CreateAnyFullOperationCommand extends Command {
     private final FullOperationRestModel invoiceValues;
     private final DataRequiredOperation internalValues;
     private final String repository;
+    private Long id;
 }

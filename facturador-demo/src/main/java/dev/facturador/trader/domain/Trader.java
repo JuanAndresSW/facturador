@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.branch.domain.Branch;
 import dev.facturador.global.domain.VatCategory;
-import dev.facturador.operation.shared.domain.entity.Operation;
+import dev.facturador.operation.core.domain.entity.Operation;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

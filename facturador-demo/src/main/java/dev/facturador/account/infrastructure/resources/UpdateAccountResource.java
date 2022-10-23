@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+
+import static org.springframework.http.ResponseEntity.noContent;
 
 /**
  * EndPoint para actualizar los datos de la cuenta de usuario
@@ -39,20 +42,18 @@ public class UpdateAccountResource {
      */
     @PreAuthorize("isAuthenticated()")
     @PutMapping
-    public HttpEntity<Void> updateAccount(@Valid @RequestBody AccountUpdateRestModel accountRestModel)
+    public Mono<HttpEntity<Void> > updateAccount(@Valid @RequestBody AccountUpdateRestModel accountRestModel)
             throws Exception {
         var username = accountRestModel.getUserUpdate().username();
         var query = GetAccountQuery.builder()
                 .username(username).build();
-
         var user = portQueryBus.handle(query);
 
         var command = AccountUpdateCommand.builder()
                 .accountUpdateRestModel(accountRestModel)
                 .actualAccount(user).build();
-
         portCommandBus.handle(command);
 
-        return ResponseEntity.noContent().build();
+        return Mono.empty().map(x -> noContent().build());
     }
 }

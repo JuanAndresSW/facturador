@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * EndPoint para recuperar algunos datos del comerciante
@@ -20,11 +23,11 @@ import java.util.LinkedList;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class GetBranchesSummary {
-    private final PortQueryBus portQueryBus;
+    private final PortQueryBus queryBus;
 
     @Autowired
-    public GetBranchesSummary(PortQueryBus portQueryBus) {
-        this.portQueryBus = portQueryBus;
+    public GetBranchesSummary(PortQueryBus queryBus) {
+        this.queryBus = queryBus;
     }
 
 
@@ -38,15 +41,15 @@ public class GetBranchesSummary {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/traders/{IDTrader}/summary")
-    public HttpEntity<LinkedList<HashMap<String, Object>>> getBranchesSummary
+    public Mono<HttpEntity<LinkedList<HashMap<String, Object>>>> getBranchesSummary
     (@PathVariable(name = "IDTrader") long traderId) throws Exception {
 
         var query = BranchesSummaryQuery.builder()
                 .traderId(traderId).build();
 
-        var response = portQueryBus.handle(query);
+        var response = queryBus.handle(query);
 
-        return ResponseEntity.ok().body(response);
+        return Mono.just(response).map(r -> ok().body(r));
 
     }
 }

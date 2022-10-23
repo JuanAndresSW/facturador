@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotEmpty;
+
+import static org.springframework.http.ResponseEntity.noContent;
 
 
 /**
@@ -33,13 +36,13 @@ public class DeleteAccountResource {
      */
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{username}")
-    public synchronized HttpEntity<Void> deleteAccount(@PathVariable @NotEmpty String username) throws Exception {
+    public synchronized Mono<HttpEntity> deleteAccount(@PathVariable @NotEmpty String username) throws Exception {
 
         var command = AccountDeleteCommand.builder()
                 .username(username).build();
 
         portCommandBus.handle(command);
 
-        return ResponseEntity.noContent().build();
+        return Mono.empty().map(x -> noContent().build());
     }
 }

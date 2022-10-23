@@ -2,18 +2,21 @@ package dev.facturador.account.infrastructure.resources;
 
 import dev.facturador.account.domain.AccountRegisterRestModel;
 import dev.facturador.account.domain.commands.AccountRegisterCommand;
-import dev.facturador.account.domain.querys.AccountSingInQuery;
+import dev.facturador.account.domain.querys.AccountSignInQuery;
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Map;
+
+import static org.springframework.http.ResponseEntity.created;
 
 /**
  * EndPoint para Registrar cuenta de usuario
@@ -38,7 +41,7 @@ public class RegisterAccountResource {
      * @throws Exception
      */
     @PostMapping
-    public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountRegisterRestModel accountRestModel) throws Exception {
+    public Mono<HttpEntity<Map<String, String>>> signUp(@Valid @RequestBody AccountRegisterRestModel accountRestModel) throws Exception {
 
         var command = AccountRegisterCommand.builder()
                 .accountRegisterRestModel(accountRestModel).build();
@@ -48,7 +51,7 @@ public class RegisterAccountResource {
         var username = command.getAccountRegisterRestModel().userRegister().username();
         var passwordNoHash = command.getAccountRegisterRestModel().userRegister().password();
 
-        var query = AccountSingInQuery.Builder.getInstance()
+        var query = AccountSignInQuery.Builder.getInstance()
                 .keys(username, passwordNoHash)
                 .build();
 
@@ -57,8 +60,8 @@ public class RegisterAccountResource {
         response.remove("username");
         response.remove("IDTrader");
 
-        return ResponseEntity.created(new URI("http:localhost:8080/api/mainaccounts"))
-                .body(response);
+
+        return Mono.just(response).map(x -> created(URI.create("http:localhost:8080/api/accounts")).body(x));
     }
 
 }
