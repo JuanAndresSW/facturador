@@ -14,3 +14,7 @@
     color: rgb(0, 112, 240);
     width: 100%;
 }
+
+.success button {
+    margin: 0 auto;
+}

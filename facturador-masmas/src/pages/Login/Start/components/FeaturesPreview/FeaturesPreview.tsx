@@ -13,22 +13,17 @@ const feats = [
     <img src={document} />
     <h3>Crea documentos comerciales</h3>
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, reiciendis
-      fuga dolore non veniam optio dolorem, beatae sunt libero modi quos
-      assumenda ut consequuntur. Itaque aut molestias ullam cum quia.
+      Mantén un registro de tus documentos y descárgalos como PDF.
     </p>
   </>,
   <>
     <img src={pointOfSale} />
     <h3>Administra instalaciones</h3>
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi debitis
-      in nemo amet temporibus incidunt eveniet quam error nostrum, omnis labore
-      repudiandae perferendis repellendus, molestiae vitae voluptatum minus qui?
-      Et!
+      Registra agrupaciones de puntos de venta en una misma ubicación para agilizar la emisión de documentos.
     </p>
   </>,
-  <>
+ /*  <>
     <img src={book} />
     <h3>Libros automáticos</h3>
     <p>
@@ -46,7 +41,7 @@ const feats = [
       fuga dolore non veniam optio dolorem, beatae sunt libero modi quos
       assumenda ut consequuntur. Itaque aut molestias ullam cum quia.
     </p>
-  </>,
+  </> */,
   <>
     <img src={openSource} />
     <h3>Gratis y de código abierto</h3>

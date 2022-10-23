@@ -1,8 +1,9 @@
 import { documentClassCode } from "../models/operation";
 import document from "../models/document";
 import documentClassCodeToDocumentName from "../utilities/documentClassCodeToDocumentName";
+import { base64ToBlob } from "utilities/conversions";
 
-export default function jsonToDocument(json: string, docCC: documentClassCode): document {
+export default async function jsonToDocument(json: string, docCC: documentClassCode): Promise<document> {
     const doc = JSON.parse(json);
     return {
         metadata: {
@@ -14,6 +15,7 @@ export default function jsonToDocument(json: string, docCC: documentClassCode): 
         },
     
         sender: {
+            logo:               await base64ToBlob(doc.logo),
             code:               doc.senderCode,
             name:               doc.senderName,
             address:            doc.senderAddress,

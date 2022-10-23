@@ -1,5 +1,6 @@
 //React.
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //Componentes del formulario.
 import { BackArrow, Loading } from "components/standalone";
@@ -9,18 +10,17 @@ import { BiChevronsDown } from "react-icons/bi";
 import PlusIcon from "./components/PlusIcon";
 import Filter from "./components/Filter";
 
-//Elementos de documento.
-import Document from "./Document";
 //Utilidades.
 import getOperationFormTitle from './utilities/getOperationFormTitle';
 import isValidOperation from './utilities/isValidOperation';
 import Valid from "utilities/Valid";
-import { toFourDigitNumber } from "utilities/conversions";
 //Servicios.
 import postOperation from './services/postOperation';
 import getListOfBranchesAndPoints from './services/getListOfBranchesAndPoints';
 //Tipos.
 import operation, {documentClassCode} from './models/operation';
+import documentIdentifier from "./models/documentIdentifier";
+
 
 type props = { documentClassCode: documentClassCode };
 
@@ -30,8 +30,15 @@ type props = { documentClassCode: documentClassCode };
  */
 export default function OperationForm({ documentClassCode }: props): JSX.Element {
 
-  //Identificador recibido del documento creado.
-  const [documentIdentifier, setDocumentIdentifier] = useState(undefined);
+  //Datos para mostrar el documento comercial generado existosamente.
+  const [documentIdentifier, setDocumentIdentifier]: [documentIdentifier, Function] = useState(undefined);
+  const navigate  = useNavigate();
+  function seeDocument() {
+    navigate(`/inicio/operaciones/documento?
+    id=${documentIdentifier.IDOperation}
+    &class=${documentIdentifier.documentClassCode}`)
+  }
+
 
 
   //Comunicación con el servidor.
@@ -53,17 +60,12 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
     setDocumentIdentifier(response.content);
     setLoading(false);
   }
-
-  function viewDocument() {
-    setViewingDocument(true)
-  }
  
 
   //Datos de control del formulario.
   const [error,               setError] =               useState("");
   const [loading,             setLoading] =             useState(false);
-  const [viewingDocument,     setViewingDocument] =     useState(false);
-  const [branches,            setBranches] =            useState();
+  const [branchesAndPoints,   setBranchesAndPoints] =   useState();
 
 
   //Datos de la operación.
@@ -77,7 +79,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
       name:             '',
       address:          '',
       contact:          '',
-      VATCategory:      '',
+      VATCategory:      "Responsable Inscripto",
       postalCode:       '',
       locality:         ''
     },
@@ -125,22 +127,6 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
   });
 
 
-  //Setters personalizados.
-  function setBranchesAndPoints(branchesAndPoints: any): void {
-    
-    setBranches(branchesAndPoints.map((branch: any) => {
-      return {
-        title: `${branch.locality} ${branch.street} N°${branch.addressNumber}`,
-        value: branch.branchID,
-        subOptions: branch.pointsOfSale.map((point: any) => {
-          return {
-            title: `N°${toFourDigitNumber(point.pointOfSaleNumber)}`,
-            value: point.pointOfSaleId,
-          }
-        })
-      }
-    })); 
-  }
   function setThirdParty(thirdParty: typeof operation.thirdParty) { setOperation({...operation, thirdParty: thirdParty}) }
 
   function setProductTable(table: string[][]) {
@@ -153,9 +139,6 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
   
   
   return (
-    
-    viewingDocument? <Document identifier={documentIdentifier} /> :
-
 
     <Form title={getOperationFormTitle(documentClassCode, true)} onSubmit={generateOperation}>
 
@@ -165,11 +148,15 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
       <Section label="Partícipes">
 
         <FlexDiv>
-          <Select options={branches} value={operation.IDBranch} onChange={(ID: number) => setOperation({...operation, IDBranch: ID})} 
+          <Select 
+          options={branchesAndPoints}
+          value={operation.IDBranch}
+          onChange={(ID: number) => setOperation({...operation, IDBranch: ID})} 
           subValue={operation.IDPointOfSale} 
           subOnChange={(ID: number) => setOperation({...operation, IDPointOfSale: ID})} 
-          fallback="Crea una sucursal:" label="Elige una sucursal y un punto de venta" />
-          <PlusIcon link={"/inicio/sucursales/nuevo"} />
+          fallback="Crea una sucursal:"
+          label="Elige una sucursal" sublabel="Elige un punto de venta" />
+          <PlusIcon title="nueva sucursal" link={"/inicio/sucursales/nuevo"} />
         </FlexDiv>
  
         <BiChevronsDown style={{ margin: "0 auto", display: "block", cursor: "default", fontSize: "2rem", color: "#333" }} />
@@ -190,7 +177,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
         </Filter>
 
         <Filter by="receiverCUIT" classCode={documentClassCode}>
-          <Field label="C.U.I.T." bind={[operation.thirdParty.CUIT, (CUIT: string) => 
+          <Field label={operation.thirdParty.VATCategory === "Consumidor Final" ? "C.U.I.L." : "C.U.I.T."} bind={[operation.thirdParty.CUIT, (CUIT: string) => 
           setThirdParty({...operation.thirdParty, CUIT: CUIT})]} 
           validator={Valid.CUIT(operation.thirdParty.CUIT)} />
         </Filter>
@@ -237,7 +224,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
         </Filter>
 
         <Filter by="vat" classCode={documentClassCode}>
-          <Radio legend="IVA" options={[21, 10, 4, 0]} bind={[operation.VAT, (VAT: number)=>setOperation({...operation, VAT: VAT})]} />
+          <Radio legend="IVA" options={[21, 10, 4, 0]} bind={[operation.VAT, (VAT: string)=>setOperation({...operation, VAT: parseInt(VAT)})]} />
         </Filter>
         
       </Retractable>
@@ -262,21 +249,17 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
       <Message type="error" message={error} />
 
 
-
-      <FlexDiv justify='flex-end'>
-
-        <Cond bool={documentIdentifier}>
-          <Message type="success" message="Se ha creado el documento comercial" />
-          
-        </Cond>
-
-        <Cond bool={documentIdentifier === undefined}>
-          <Button onClick={()=>viewDocument()}>Ver PDF</Button>
-          <Button type="submit">Generar</Button>
-        </Cond>
-
+      <Cond bool={documentIdentifier !== undefined}>
+        <Message type="success" message="Se ha creado el documento comercial" />
         
-      </FlexDiv>
+        <FlexDiv justify="flex-end">
+          <Button type="delete" onClick={()=>seeDocument()}>Ver PDF</Button>
+        </FlexDiv>
+      </Cond>
+
+      <Cond bool={documentIdentifier === undefined}>
+        <FlexDiv justify="flex-end"><Button type="submit">Generar</Button></FlexDiv>
+      </Cond>
 
       <Cond bool={loading}><Loading /></Cond>
       

@@ -3,11 +3,16 @@ import { FlexDiv, Section } from 'components/wrappers';
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import OperationForm from "./OperationForm";
+import Document from "./Document";
+import DocumentHistory from "./components/DocumentHistory/DocumentHistory";
 
 /**Pantalla de selección de tipos de operaciones, con el historial de operaciones.*/
 export default function OperationSelection() {
   return <Routes>
     <Route index                      element={OperationMainScreen} />
+    <Route path={"/documento"}        element={<Document />}        />
+
+
     <Route path={"/factura"}          element={<OperationForm documentClassCode="Fa" />} />
     <Route path={"/nota-de-credito"}  element={<OperationForm documentClassCode="Nc" />} />
     <Route path={"/nota-de-debito"}   element={<OperationForm documentClassCode="Nd" />} />
@@ -34,5 +39,8 @@ const OperationMainScreen = <>
       <Option name="Pagaré"           label="Pa" link="./pagare"          color="842" />
       <Option name="Cheque"           label="Ch" link="./cheque"          color="green" />
     </FlexDiv>
+
+      
   </Section>
+  <DocumentHistory /> 
 </>

@@ -8,6 +8,7 @@ type document = {
     },
 
     sender: {
+        logo: Blob,
         code: string,
         name: string,
         address: string

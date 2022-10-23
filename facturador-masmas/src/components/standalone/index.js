@@ -9,3 +9,4 @@ export {default as Pagination} from './Pagination/Pagination';
 export {default as BackArrow} from './BackArrow';
 export {default as DataBox} from './DataBox/DataBox';
 export {default as PDFButton} from './PDFButton/PDFButton';
+export {default as NavBar} from './NavBar/NavBar';

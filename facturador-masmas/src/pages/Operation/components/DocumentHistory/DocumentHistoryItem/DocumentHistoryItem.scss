@@ -1,0 +1,25 @@
+.document-history-item {
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #444;
+    background-color: #fff;
+    border-radius: 5px;
+
+    &:hover {
+        border: 1px solid rgb(53, 191, 255);
+    }
+
+    h2, h4 {
+        margin: 5px;
+    }
+
+    >div {
+        width: 100%;
+        min-height: 70px;
+        border-top: 1px solid #ccc;
+
+        p {
+            margin: 4px;
+        }
+    }
+}

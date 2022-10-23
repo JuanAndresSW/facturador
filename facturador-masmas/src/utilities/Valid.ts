@@ -31,7 +31,7 @@ export default class Valid {
 
   public static CUIT(CUIT: string, setError?: Function): boolean {
     CUIT = CUIT?.replace(/ |\.|-/g, "");
-    if (/[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(CUIT)) return true;
+    if (/^[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(CUIT)) return true;
     if (setError) setError("Ingrese un C.U.I.T. válido");
     return false;
 
@@ -47,6 +47,8 @@ export default class Valid {
   public static vatCategory(vatCategory: string, setError?: Function): boolean {
     if ( vatCategory === "Responsable Monotributista" 
       || vatCategory === "Responsable Inscripto"
+      || vatCategory === "Consumidor Final"
+      || vatCategory === "Sujeto Exento"
     ) return true;
     if (setError) setError("Seleccione una categoría");
     return false;

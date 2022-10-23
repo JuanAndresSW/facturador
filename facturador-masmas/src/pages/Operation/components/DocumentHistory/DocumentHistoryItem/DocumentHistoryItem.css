@@ -1,0 +1,26 @@
+.document-history-item {
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #444;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.document-history-item:hover {
+  border: 1px solid #35bfff;
+}
+
+.document-history-item h2, .document-history-item h4 {
+  margin: 5px;
+}
+
+.document-history-item > div {
+  width: 100%;
+  min-height: 70px;
+  border-top: 1px solid #ccc;
+}
+
+.document-history-item > div p {
+  margin: 4px;
+}
+/*# sourceMappingURL=DocumentHistoryItem.css.map */

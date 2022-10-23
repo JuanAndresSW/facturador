@@ -2,10 +2,11 @@ import operation, {documentClassCode} from "../models/operation";
 import documentProp from "../models/documentProp";
 import operationFilters from "../utilities/operationFilters";
 import {IDTrader} from "utilities/constants";
+import { toFormattedCUIT } from "utilities/conversions";
 
 /**Convierte a el objeto de operación en un string JSON usado por el back-end para generar un documento.
  * @param operation     - El objeto de operación del cual se tomarán los datos.
- * @param operationCode - El string de dos caracteres que indica el documento al cual corresponde la operación.
+ * @param documentClassCode - El string de dos caracteres que indica el documento al cual corresponde la operación.
  * @param toSend        - Indica si el documento está siendo enviado por el usuario (a un tercero) o por un tercero (al usuario).
  */
 export default function operationToJson(operation: operation, documentClassCode: documentClassCode, toSend: boolean): string {
@@ -23,7 +24,7 @@ export default function operationToJson(operation: operation, documentClassCode:
     //Datos del receptor como tercero.
     if (toSend) {
         if (currentOperationIncludes("receiverCUIT"))
-        filteredOperation["receiverCode"] =         operation.thirdParty.CUIT;
+        filteredOperation["receiverCode"] =         toFormattedCUIT(operation.thirdParty.CUIT);
 
         if (currentOperationIncludes("receiverName"))
         filteredOperation["receiverName"] =         operation.thirdParty.name;
@@ -45,7 +46,7 @@ export default function operationToJson(operation: operation, documentClassCode:
     //Datos del receptor emisor como tercero.
     else {
         if (currentOperationIncludes("senderCUIT"))
-        filteredOperation["senderCode"] =           operation.thirdParty.CUIT;
+        filteredOperation["senderCode"] =           toFormattedCUIT(operation.thirdParty.CUIT);
 
         if (currentOperationIncludes("senderName"))
         filteredOperation["senderName"] =           operation.thirdParty.name;

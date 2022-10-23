@@ -13,7 +13,7 @@ export default function Footer() {
       <div>
         <img src={emblem} alt="" />
         <p>© Conjunto Solución 2022 (GNU V.3)</p>
-        <Link to={"/about"}>Acerca de</Link>
+        <Link to={"/manual"}>Ver el manual de uso</Link>
       </div>
       <div>
         <a

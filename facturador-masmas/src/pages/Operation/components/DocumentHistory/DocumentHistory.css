@@ -1,0 +1,14 @@
+.document-history {
+    margin: 2rem;
+}
+
+.document-history .document-history-menu {
+    display: flex;
+    background-color: #fff;
+    max-width: 700px;
+    min-width: 300px;
+
+    overflow-x: auto;
+    padding: 0;
+    border-radius: 9px;
+}

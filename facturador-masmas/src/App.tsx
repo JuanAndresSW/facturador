@@ -13,7 +13,7 @@ const Home =     lazy(() => import('pages/Home/Home'));
 const SignUp =   lazy(() => import("pages/SignUp/SignUp"));
 const Login =    lazy(() => import("pages/Login/Login"));
 const Account =  lazy(() => import("pages/Account/Account"));
-const About =    lazy(() => import("pages/About/About"));
+const Manual =   lazy(() => import("pages/Manual/Manual"));
 
 /**El componente global de la aplicación.*/
 export default function App(): JSX.Element {
@@ -35,15 +35,17 @@ export default function App(): JSX.Element {
         <Suspense fallback={<SplashScreen />}>
             <Routes>
 
-                <Route index               element={!auth? <Start />  : <Navigate to={"/inicio"} />}   />   
-                <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to={"/"} />}   />
+                <Route index               element={!auth? <Start />  : <Navigate to="/inicio"     />} />   
+                <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to="/inicio"     />} />
+                <Route path="/registrarse" element={!auth? <SignUp /> : <Navigate to="/inicio"     />} />
+
 
                 <Route path="/inicio/*"    element={auth?  <Home />   : <Navigate to={"/ingresar"} />} />
                 <Route path="/cuenta"      element={auth?  <Account />: <Navigate to={"/ingresar"} />} />
 
-                <Route path="/registrarse" element={ <SignUp />  } />
-                <Route path="/acerca-de/*" element={ <About />   } />
-                <Route path="*"            element={ <Error404 />} />      
+                
+                <Route path="/manual/*"    element={ <Manual    />   } />
+                <Route path="*"            element={ <Error404  />   } />      
 
             </Routes>
         </Suspense>

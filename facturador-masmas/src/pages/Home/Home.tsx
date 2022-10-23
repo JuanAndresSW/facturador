@@ -2,10 +2,11 @@ import React from 'react';
 import { Navigate, Route, Routes} from 'react-router-dom';
 
 //Componentes.
-import {LoggedHeader, Subheader, NavBar, Main} from './components';
+import {LoggedHeader, Subheader } from './components';
 
 //Stateless.
-import { Footer } from 'components/standalone';
+import { Main } from 'components/wrappers';
+import { Footer, NavBar } from 'components/standalone';
 import {MdOutlineHomeWork, MdMonetizationOn} from 'react-icons/md';
 
 //Páginas.

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //Componentes de formulario.
 import { Button, Field, Form, Image, Message, Radio } from 'components/formComponents';
@@ -15,8 +15,6 @@ import postAccount from "./services/postAccount";
 
 /**Un formulario de 2 partes para crear una nueva cuenta de usuario.*/
 export default function SignUp(): JSX.Element {
-
-  const navigate = useNavigate();
   
 
   //Controladores del estado del formulario.
@@ -91,7 +89,7 @@ export default function SignUp(): JSX.Element {
     
     setSuccess(true);
     setTraderError("");
-    navigate("/");
+    window.location.reload();
   }
 
   /*FORMULARIO*****************************************************/

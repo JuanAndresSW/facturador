@@ -35,18 +35,20 @@ export default function isValidOperation(operation: operation, documentClassCode
     //Validar datos de la operación.
     if (currentOperationIncludes("productTable")) {
 
-        operation.productTable.quantity.forEach((cell, index)=>{
-            if (cell < 1 || cell > 9999999)     return no(`La cantidad de la fila ${index+1} de la tabla de productos debe ser entre 1 y 9.999.999.`);
-        });
+        for (let i = 0 ; i < operation.productTable.quantity.length ; i++) {
+            if (!operation.productTable.quantity[i] || operation.productTable.quantity[i] < 1 || operation.productTable.quantity[i] > 9999999)
+            return no(`La cantidad de la fila ${i+1} de la tabla de productos debe ser entre 1 y 9.999.999.`);
+        }
+   
+        for (let i = 0 ; i < operation.productTable.description.length ; i++) {
+            if (operation.productTable.description[i] === undefined || operation.productTable.description[i].length < 5)
+            return no(`La descripción de la fila ${i+1} de la tabla de productos debe ser de al menos 5 caracteres.`);
+        }
 
-        operation.productTable.description.forEach((cell, index)=>{
-            if (cell.length < 5) return no(`La descripción de la fila ${index+1} de la tabla de productos debe ser de al menos 5 caracteres.`);
-        });
-
-        operation.productTable.quantity.forEach((cell, index)=>{
-            if (cell < 1 || cell > 9999999)   return no(`El precio de la fila ${index+1} de la tabla de productos debe ser entre 1 y 9.999.999.`);
-        });
-
+        for (let i = 0 ; i < operation.productTable.price.length ; i++) {
+            if (!operation.productTable.price[i] || operation.productTable.price[i] < 1 || operation.productTable.price[i] > 9999999)
+            return no(`El precio de la fila ${i+1} de la tabla de productos debe ser entre 1 y 9.999.999.`);
+        }
     }
 
     if (currentOperationIncludes("observations") && operation.observations?.length > 30)
@@ -75,6 +77,8 @@ export default function isValidOperation(operation: operation, documentClassCode
     return no("El importe total no puede ser 0 o contener importes negativos.");
 
     if (currentOperationIncludes("paymentImputation")) {
+
+        //TODO: change all forEach to normal for loops.
         operation.receiptXTables.paymentImputation.type.forEach((cell, index)=>{
             if (cell.length < 1) return no(`El tipo en la fila ${index} de la tabla de imputación de pago no puede estar vacío.`);
         });
@@ -124,6 +128,6 @@ export default function isValidOperation(operation: operation, documentClassCode
 
     return true;
 
-    function no(messaje: string):   boolean {setError(messaje);return false;}
+    function no(messaje: string): false {setError(messaje);return false;}
     function currentOperationIncludes(thisProperty: documentProp): boolean { return operationFilters[thisProperty].includes(documentClassCode); }
 }

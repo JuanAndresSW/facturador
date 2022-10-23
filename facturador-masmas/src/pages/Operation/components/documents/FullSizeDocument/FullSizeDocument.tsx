@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./FullSizeDocument.css";
-import testimg from 'assets/img/emblem.png';
 import { DataBox } from "components/standalone";
-import { FlexDiv } from "components/wrappers";
+import { Cond, FlexDiv } from "components/wrappers";
 import numberToWords from "../../../utilities/numberToWords";
 
 import document from "../../../models/document";
@@ -12,17 +11,17 @@ type props = {document: document};
 
 export default function FullSizeDocument({document}: props): JSX.Element {
 
-    const productSubtotal = document.operationData.productTable.reduce((prev, sum) => prev+sum.price, 0);
+    const productSubtotal = document.operationData.productTable.reduce((prev, sum) => prev+sum.price*sum.quantity, 0);
     const productTotal = productSubtotal + productSubtotal * (document.operationData.VAT/100);
 
     return ( 
     
-    <div className="full-size-document">
+    <div className="full-size-document" style={{backgroundColor: document.metadata.preferenceColor}}>
 
         <div id="doc-header" >
 
             <div className="doc-header-advertisement">
-                <img src={testimg} alt="" />
+                <img src={document.sender.logo? URL.createObjectURL(document.sender.logo) : null} alt="" />
                 <p>  {document.sender.name}                                 </p>
                 <p className="small">  {document.sender.address}            </p>
                 <p className="small">  contacto: {document.sender.contact}  </p>
@@ -38,7 +37,9 @@ export default function FullSizeDocument({document}: props): JSX.Element {
                 </div>
                 
                 <div className="doc-header-data-date">fecha
-                    <p>{document.metadata.dateOfIssue}</p><p>12</p><p>2022</p>
+                    <p>{document.metadata.dateOfIssue.split('-')[2]}</p>
+                    <p>{document.metadata.dateOfIssue.split('-')[1]}</p>
+                    <p>{document.metadata.dateOfIssue.split('-')[0]}</p>
                 </div>
 
                 <div className="doc-header-data-other">
@@ -62,22 +63,24 @@ export default function FullSizeDocument({document}: props): JSX.Element {
         </div>
 
         <div id="doc-body" >
-            
+
             <data>Cantidad</data><data>Descripción</data><data>Precio</data><data>Total</data>
 
-            {document.operationData.productTable.map(row => <>
+            {document.operationData.productTable.map((row, i) => <Fragment key={i}>
                 <data>{row.quantity}</data>
                 <data>{row.detail}</data>
                 <data>${row.price}</data>
                 <data>${(row.price*row.quantity).toString().length > 7 ? (row.price*row.quantity).toExponential(2) : row.price*row.quantity }</data>
-            </>)}
+            </Fragment>)}
                            
         </div>
 
         <div id="doc-footer" >
             <FlexDiv >
-                <DataBox title="subtotal" value={productSubtotal} />
-                <DataBox title={`IVA ${document.operationData.VAT}%`} value={productSubtotal * (document.operationData.VAT/100)} />
+                <Cond bool={document.metadata?.documentType === "A"}>
+                    <DataBox title="subtotal" value={productSubtotal} />
+                    <DataBox title={`IVA ${document.operationData.VAT}%`} value={(productSubtotal * (document.operationData.VAT/100)).toFixed(2)} />
+                </Cond>
                 <DataBox title="total neto" value={productTotal} />
             </FlexDiv>
 

@@ -2,13 +2,14 @@ import React from "react";
 const html2pdf = require("html2pdf.js");
 
 type props = {
-    nodeReference: React.MutableRefObject<undefined>
+    nodeReference: React.MutableRefObject<undefined>,
+    filename: string
 }
 
-export default function FullSizeDocument({nodeReference}: props): JSX.Element {
+export default function FullSizeDocument({nodeReference, filename}: props): JSX.Element {
     const options = {
         margin: .5,
-        filename: "test",
+        filename: filename,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
@@ -31,5 +32,5 @@ export default function FullSizeDocument({nodeReference}: props): JSX.Element {
         fontSize:"1.2rem",
         borderBottom: "2px solid #b00",
         cursor: "pointer"
-    }}>PDF</button>
+    }}>descargar PDF</button>
 }

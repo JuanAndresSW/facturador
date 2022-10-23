@@ -1,9 +1,7 @@
 import {documentClassCode} from "../models/operation"
 
 type documentIdentifier = {
-    documentNumber: string,
-    documentType?: "A" | "B" | "C",
+    IDOperation: number,
     documentClassCode: documentClassCode,
-    IDBranch: number
 }
 export default documentIdentifier;

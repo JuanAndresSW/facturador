@@ -7,12 +7,13 @@ import documentClassCodeToDocumentName from "../utilities/documentClassCodeToDoc
 
 export default async function postOperation(operation: operation): Promise<Response> {
 
-    const response = await ajax('POST', 
-    `operations/fulls/${documentClassCodeToDocumentName(operation.documentClassCode)}`, true, 
-    operationToJson(operation, operation.documentClassCode, true))
+    const subrepository = "FaNdNc".includes(operation.documentClassCode)? "/fulls" : '';
+    const URL = `operations${subrepository}/${documentClassCodeToDocumentName(operation.documentClassCode)}`
+
+    const response = await ajax('POST', URL, true, operationToJson(operation, operation.documentClassCode, true))
 
     if (response.status === 201)
-    return {...response, content: (jsonToDocumentIdentifier(response.content, operation.documentClassCode, operation.IDBranch))};
+    return {...response, content: (jsonToDocumentIdentifier(response.content, operation.documentClassCode))};
     else return response;
 
 }
