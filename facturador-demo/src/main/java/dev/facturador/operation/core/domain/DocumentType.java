@@ -1,4 +1,4 @@
-package dev.facturador.operation.shared.domain;
+package dev.facturador.operation.core.domain;
 
 import dev.facturador.global.domain.VatCategory;
 

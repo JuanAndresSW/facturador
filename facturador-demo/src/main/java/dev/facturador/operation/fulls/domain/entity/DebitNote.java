@@ -2,18 +2,18 @@ package dev.facturador.operation.fulls.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.operation.fulls.domain.SellConditions;
-import dev.facturador.operation.shared.domain.DocumentType;
-import dev.facturador.operation.shared.domain.entity.Operation;
-import dev.facturador.operation.shared.domain.entity.Product;
-import dev.facturador.operation.shared.domain.entity.Receiver;
-import dev.facturador.operation.shared.domain.entity.Sender;
+import dev.facturador.operation.core.domain.DocumentType;
+import dev.facturador.operation.core.domain.entity.Operation;
+import dev.facturador.operation.core.domain.entity.Product;
+import dev.facturador.operation.core.domain.entity.Receiver;
+import dev.facturador.operation.core.domain.entity.Sender;
 import dev.facturador.operation.fulls.domain.model.DataRequiredOperation;
 import dev.facturador.operation.fulls.domain.model.FullOperationRestModel;
 import dev.facturador.trader.domain.Trader;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static dev.facturador.operation.fulls.domain.SellConditions.defineSellCondition;
-import static dev.facturador.operation.shared.domain.AllVatCategory.defineAllVat;
+import static dev.facturador.operation.core.domain.AllVatCategory.defineAllVat;
 
 /**
  * Entidad Factura
  */
 @Entity
 @Table(name = "debit_note")
+@EqualsAndHashCode
 @NoArgsConstructor
 @Getter
 @Setter
@@ -51,15 +52,12 @@ public final class DebitNote implements Serializable {
     @Column(nullable = false)
     private Integer vat;
 
-    @Column(name = "issue_date", nullable = false)
-    private LocalDate issueDate;
-
     @Enumerated(value = EnumType.STRING)
     @Column(name = "type", nullable = false,
             columnDefinition = "enum('A','B','C')")
     private DocumentType type;
 
-
+    @JsonIgnore
     @Column(name = "count_debit_number", nullable = false, length = 8)
     private Integer operationNumberCount;
 
@@ -71,10 +69,13 @@ public final class DebitNote implements Serializable {
     @JoinColumn(name = "id_operation_parent", nullable = false, referencedColumnName = "id_operation", unique = true)
     private Operation operation;
 
+    public DebitNote(Operation operation) {
+        this.operation = operation;
+    }
+
     public DebitNote(Long debitId,
                      SellConditions sellConditions,
                      Integer vat,
-                     LocalDate issueDate,
                      DocumentType type,
                      Integer operationNumberCount,
                      String debitNumber,
@@ -82,7 +83,6 @@ public final class DebitNote implements Serializable {
         this.debitId = debitId;
         this.sellConditions = sellConditions;
         this.vat = vat;
-        this.issueDate = issueDate;
         this.type = type;
         this.operationNumberCount = operationNumberCount;
         this.debitNumber = debitNumber;
@@ -134,23 +134,8 @@ public final class DebitNote implements Serializable {
         //Definir tipo de factura
         debitNote.setType(internalValues.getType());
         //Fecha de creacion
-        debitNote.setIssueDate(LocalDate.now());
+        debitNote.getOperation().setIssueDate(LocalDate.now());
         return debitNote;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DebitNote debitNote = (DebitNote) o;
-
-        return new EqualsBuilder().append(getSellConditions(), debitNote.getSellConditions()).append(getVat(), debitNote.getVat()).append(getType(), debitNote.getType()).append(getOperation(), debitNote.getOperation()).isEquals();
-    }
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(getSellConditions()).append(getVat()).append(getType()).append(getOperation()).toHashCode();
     }
 
     @Override
@@ -158,11 +143,9 @@ public final class DebitNote implements Serializable {
         return "DebitNote{" +
                 "sellConditions=" + sellConditions +
                 ", vat=" + vat +
-                ", issueDate=" + issueDate +
                 ", type=" + type +
                 ", posNumberInvoice=" + operationNumberCount +
                 ", invoiceNumber=" + debitNumber +
-                ", operation=" + operation +
                 '}';
     }
 }

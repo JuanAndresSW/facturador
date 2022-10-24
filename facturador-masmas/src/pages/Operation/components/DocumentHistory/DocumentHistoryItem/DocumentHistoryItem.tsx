@@ -17,6 +17,7 @@ export default function DocumentHistoryItem({item}:{item: documentHistoryItem}) 
         <div>
             <p>{item.dateOfIssue}</p>
             <p>para: {item.receiverName}</p>
+            <p>{item.receiverCUIT}</p>
         </div>
 
     </Link>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -35,14 +36,15 @@ public class GetTraderSummary {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{username}")
-    public HttpEntity<RequiredTraderData> getTraderSummary(@PathVariable @NotEmpty String username) throws Exception {
+    public Mono<HttpEntity<RequiredTraderData>> getTraderSummary(@PathVariable @NotEmpty String username) throws Exception {
         var query = GetAccountQuery.builder()
                 .username(username).build();
 
         var user = portQueryBus.handle(query);
         var response = RequiredTraderData.valueOf(user);
 
-        return ResponseEntity.ok().body(response);
+
+        return Mono.just(response).map(ResponseEntity::ok);
 
     }
 }

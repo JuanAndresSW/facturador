@@ -5,15 +5,17 @@ import dev.facturador.operation.fulls.domain.model.FullOperationDisplayed;
 import dev.facturador.operation.fulls.domain.querys.GetAnyFullOperationQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
-@RequestMapping(path = "/api/wholes/operations")
+@RequestMapping(path = "/api/operations/fulls",produces = "application/json")
 public class GetAnyFullOperationResource {
     private final PortQueryBus queryBus;
 
@@ -23,22 +25,15 @@ public class GetAnyFullOperationResource {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/repositories/{repository}")
-    public HttpEntity<FullOperationDisplayed> getAnyFullOperation(@NotEmpty @RequestParam(value = "operationNumber") String operationNumber,
-                                                                   @NotEmpty @RequestParam(value = "type") String type,
-                                                                   @NotNull @RequestParam(value = "IDTrader") long traderID,
-                                                                   @NotNull @RequestParam(value = "IDBranch") long branchId,
+    @GetMapping("/{repository}")
+    public Mono<HttpEntity<FullOperationDisplayed>> getAnyFullOperation(@NotNull @RequestParam(value = "operationId") long operationId,
                                                                    @NotNull @PathVariable(value = "repository") String repository) throws Exception {
-
-        var query = GetAnyFullOperationQuery.builder()
-                .operationNumber(operationNumber)
-                .type(type)
-                .traderId(traderID)
-                .branchId(branchId)
+       final var query = GetAnyFullOperationQuery.builder()
+                .operationId(operationId)
                 .repository(repository).build();
 
         var response = queryBus.handle(query);
 
-        return ResponseEntity.ok(response);
+        return Mono.just(response).map(r -> ok().body(r));
     }
 }

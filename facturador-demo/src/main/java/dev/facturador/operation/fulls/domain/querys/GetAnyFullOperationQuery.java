@@ -8,9 +8,6 @@ import lombok.Data;
 @Data
 @Builder
 public class GetAnyFullOperationQuery extends Query<FullOperationDisplayed> {
-    private final String operationNumber;
-    private final String type;
-    private final Long traderId;
-    private final Long branchId;
+    private final Long operationId;
     private final String repository;
 }

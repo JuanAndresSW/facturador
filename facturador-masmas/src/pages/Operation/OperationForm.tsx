@@ -31,12 +31,10 @@ type props = { documentClassCode: documentClassCode };
 export default function OperationForm({ documentClassCode }: props): JSX.Element {
 
   //Datos para mostrar el documento comercial generado existosamente.
-  const [documentIdentifier, setDocumentIdentifier]: [documentIdentifier, Function] = useState(undefined);
+  const [IDOperation, setIDOperation] = useState();
   const navigate  = useNavigate();
   function seeDocument() {
-    navigate(`/inicio/operaciones/documento?
-    id=${documentIdentifier.IDOperation}
-    &class=${documentIdentifier.documentClassCode}`)
+    navigate(`/inicio/operacion/documento?id=${IDOperation}&class=${documentClassCode}`)
   }
 
 
@@ -57,7 +55,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
     const response = await postOperation(operation);
     if (!response.ok) return setError(response.message);
 
-    setDocumentIdentifier(response.content);
+    setIDOperation(response.content);
     setLoading(false);
   }
  
@@ -249,7 +247,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
       <Message type="error" message={error} />
 
 
-      <Cond bool={documentIdentifier !== undefined}>
+      <Cond bool={IDOperation !== undefined}>
         <Message type="success" message="Se ha creado el documento comercial" />
         
         <FlexDiv justify="flex-end">
@@ -257,7 +255,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
         </FlexDiv>
       </Cond>
 
-      <Cond bool={documentIdentifier === undefined}>
+      <Cond bool={IDOperation === undefined}>
         <FlexDiv justify="flex-end"><Button type="submit">Generar</Button></FlexDiv>
       </Cond>
 

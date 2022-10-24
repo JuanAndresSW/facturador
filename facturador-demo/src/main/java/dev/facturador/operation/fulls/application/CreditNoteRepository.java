@@ -1,6 +1,7 @@
 package dev.facturador.operation.fulls.application;
 
-import dev.facturador.operation.shared.domain.DocumentType;
+import dev.facturador.operation.core.domain.DocumentType;
+import dev.facturador.operation.core.domain.entity.Operation;
 import dev.facturador.operation.fulls.domain.model.OperationCount;
 import dev.facturador.operation.fulls.domain.entity.CreditNote;
 import dev.facturador.trader.domain.Trader;
@@ -20,7 +21,7 @@ public interface CreditNoteRepository extends JpaRepository<CreditNote, Long> {
     Optional<OperationCount> findOperationNumberCount
             (@Param("type") DocumentType type, @Param("trader") Trader trader, @Param("number") String number);
 
-    @Query(value = "SELECT new dev.facturador.operation.fulls.domain.entity.CreditNote(creditId, sellConditions, vat, issueDate, type, operationNumberCount, creditNumber, operation) FROM dev.facturador.operation.fulls.domain.entity.CreditNote c WHERE c.type = :type AND c.operation.traderOwner = :trader AND c.creditNumber = :number")
+    @Query(value = "SELECT new dev.facturador.operation.fulls.domain.entity.CreditNote(creditId, sellConditions, vat, type, operationNumberCount, creditNumber, operation) FROM dev.facturador.operation.fulls.domain.entity.CreditNote c WHERE c.type = :type AND c.operation.traderOwner = :trader AND c.creditNumber = :number")
     CreditNote findCreditNote
             (@Param("type") DocumentType type, @Param("trader") Trader trader, @Param("number") String number);
 

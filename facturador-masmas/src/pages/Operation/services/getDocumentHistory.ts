@@ -8,7 +8,7 @@ import {IDTrader} from "utilities/constants";
 
 type documentHistoryFilters = {
     IDBranch?:          number,
-    IDPointOfSale?:     number,
+    pointOfSaleNumber?: number,
     documentClassCode?: documentClassCode
 }
 
@@ -16,8 +16,11 @@ type documentHistoryFilters = {
 /**Recupera el historial de documentos comerciales, aceptando varios filtros. */
 export default async function getDocumentHistory(filters: documentHistoryFilters): Promise<Response> {
 
-    const params = `?IDBranch=${filters.IDBranch}&IDPointOfSale=${filters.IDPointOfSale}&repository=${documentClassCodeToDocumentName(filters.documentClassCode)}`;
-    const URL    = `operations/${IDTrader}${params}`;
+    let params = Number.isInteger(filters.IDBranch)? `IDBranch=${filters.IDBranch}&` : '';
+    params +=    Number.isInteger(filters.pointOfSaleNumber)? `pointOfSaleNumber=${filters.pointOfSaleNumber}&` : '';
+    params +=    filters.documentClassCode? `repository=${documentClassCodeToDocumentName(filters.documentClassCode)}` : '';
+
+    const URL    = `operations/traders/${IDTrader}?${params}`;
 
     const response = await ajax('GET', URL, true);
 

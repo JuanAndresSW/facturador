@@ -42,21 +42,17 @@ public class GetRequiredDataQueryHandler implements PortQueryHandler<DataRequire
                 HashMap.class,
                 "Authorization",
                 query.getHeader());
-        log.info("Pase la segunda request");
         var response = DataRequiredOperation.valueOf(request.getBody());
-        log.info("Cree el response");
         response.category(query.getReceiverCategory());
 
         Optional<OperationCount> projection = Optional.empty();
-        if(query.getRepository().equals("invoice")){
-            projection = invoiceRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
-        }
-        if(query.getRepository().contains("debit")) {
-            projection = debitRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
-        }
-        if(query.getRepository().contains("credit")) {
-            projection = creditRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
-        }
+        if(query.getRepository().equals("invoice")) projection =
+                invoiceRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
+        if(query.getRepository().contains("debit")) projection =
+                debitRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
+        if(query.getRepository().contains("credit")) projection =
+                creditRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
+
         if( Objects.isNull(projection.get().getOperationNumberCount())) {
             return response.defineNumber(0);
         }

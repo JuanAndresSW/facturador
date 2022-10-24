@@ -1,4 +1,4 @@
-package dev.facturador.operation.shared.domain;
+package dev.facturador.operation.core.domain;
 
 public enum AllVatCategory {
     REGISTERED_RESPONSIBLE("Responsable Inscripto"),

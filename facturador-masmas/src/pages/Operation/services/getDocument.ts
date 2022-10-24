@@ -8,7 +8,7 @@ import jsonToDocument from '../adapters/jsonToDocument';
 export default async function getDocument(docID: documentIdentifier): Promise<Response> {
 
     const subrepository = "FaNdNc".includes(docID.documentClassCode)? "/fulls" : '';
-    const params        = `?id=${docID.IDOperation}`;
+    const params        = `?operationId=${docID.IDOperation}`;
     const URL           = `operations${subrepository}/${documentClassCodeToDocumentName(docID.documentClassCode)}${params}`;
 
     const response = await ajax('GET', URL, true);

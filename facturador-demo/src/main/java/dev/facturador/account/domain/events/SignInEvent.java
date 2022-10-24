@@ -9,6 +9,6 @@ import java.util.LinkedHashMap;
 
 @Data
 @Builder
-public class ARequestLoginEvent extends Event<LinkedHashMap<String, String>> {
+public class SignInEvent extends Event<LinkedHashMap<String, String>> {
     private final BodyInserters.FormInserter<String> body;
 }

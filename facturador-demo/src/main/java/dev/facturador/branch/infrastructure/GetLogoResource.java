@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * EndPoint para recuperar el Logo
@@ -33,7 +36,7 @@ public class GetLogoResource {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{IDBranch}/get-logo")
-    public HttpEntity<String> getLogo(@PathVariable(name = "IDBranch") long IDBranch)
+    public Mono<HttpEntity<String>> getLogo(@PathVariable(name = "IDBranch") long IDBranch)
             throws Exception {
 
         var query = BranchGetQuery.builder()
@@ -41,7 +44,7 @@ public class GetLogoResource {
 
         var branch = portQueryBus.handle(query);
 
-        return ResponseEntity.ok().body(branch.getLogo());
+        return Mono.just(branch.getLogo()).map(r -> ok().body(r));
     }
 
 }

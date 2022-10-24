@@ -52,20 +52,19 @@ public class SecurityConfig {
                          "Sorry, You're not authorized to access this resource."));
 
         //Autorización de las request
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js").permitAll()
-                .anyRequest().authenticated();
-        //Le marco cual es el provedor de autenticacion
+        http.authorizeRequests(configurer ->
+                   configurer.antMatchers("/login").permitAll()
+                             .antMatchers("/api/auth/**").permitAll()
+                             .antMatchers("/", "/favicon.ico",
+                                   "/**/*.png",
+                                   "/**/*.gif",
+                                   "/**/*.svg",
+                                   "/**/*.jpg",
+                                   "/**/*.html",
+                                   "/**/*.css",
+                                   "/**/*.js").permitAll()
+                           .anyRequest().authenticated());
+        //Provedor de autenticacion personalizado
         http.authenticationProvider(authenticationProvider());
 
         //Filtros

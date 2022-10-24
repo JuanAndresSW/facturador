@@ -17,15 +17,6 @@ const documentClasses = [
 ]
 
 
-const placeHolderHistory: documentHistoryItem[] = [{
-    documentNumber: "0777-42012142",
-    documentName: "Nota de crédito",
-    documentType: "A",
-    dateOfIssue: "1000-01-01",
-    IDOperation: 23,
-    receiverName: "All Clean SRL"
-}]
-
 /**Historial de documentos comerciales. */
 export default function DocumentHistory() {
 
@@ -35,7 +26,7 @@ export default function DocumentHistory() {
     const [branchesAndPoints, setBranchesAndPoints] = useState([]);
     function retrieveFilteringData() {
 
-        getListOfBranchesAndPoints()
+        getListOfBranchesAndPoints(true)
         .then(response => {
             if (!response.ok) return;
             setBranchesAndPoints(response.content);
@@ -45,18 +36,18 @@ export default function DocumentHistory() {
 
 
     //Filtros del historial.
-    const [IDBranch, setIDBranch] = useState();
-    const [IDPointOfSale, setIDPointOfSale] = useState();
-    const [documentClassCode, setDocumentClass] = useState();
+    const [IDBranch, setIDBranch] = useState(undefined);
+    const [pointOfSaleNumber, setPointOfSaleNumber] = useState(undefined);
+    const [documentClassCode, setDocumentClass] = useState(undefined);
 
 
     //Recuperar el historial.
-    const [documentHistory, setDocumentHistory]: [documentHistoryItem[], Function] = useState(placeHolderHistory);
-    useEffect(searchInDocumentHistory, [IDBranch, IDPointOfSale, documentClassCode]);
+    const [documentHistory, setDocumentHistory]: [documentHistoryItem[], Function] = useState([]);
+    useEffect(searchInDocumentHistory, [IDBranch, pointOfSaleNumber, documentClassCode]);
     function searchInDocumentHistory() {
         const filters = {
             IDBranch:          IDBranch,
-            IDPointOfSale:     IDPointOfSale,
+            pointOfSaleNumber: pointOfSaleNumber,
             documentClassCode: documentClassCode
         };
 
@@ -74,8 +65,8 @@ export default function DocumentHistory() {
       
             <Select 
             options={branchesAndPoints}
-            value={IDBranch}            onChange={setIDBranch}         label="Sucursal"
-            subValue={IDPointOfSale}    subOnChange={setIDPointOfSale} sublabel="Punto de venta" />
+            value={IDBranch}                onChange={setIDBranch}         label="Sucursal"
+            subValue={pointOfSaleNumber}    subOnChange={setPointOfSaleNumber} sublabel="Punto de venta" />
 
 
             <Select 
@@ -88,7 +79,7 @@ export default function DocumentHistory() {
 
         {
             documentHistory?.map((item) => (
-                <DocumentHistoryItem item={item} />
+                <DocumentHistoryItem item={item} key={item.IDOperation} />
             ))
         }
 

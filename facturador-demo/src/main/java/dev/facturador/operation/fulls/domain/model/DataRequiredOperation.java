@@ -1,8 +1,8 @@
 package dev.facturador.operation.fulls.domain.model;
 
 import dev.facturador.global.domain.VatCategory;
-import dev.facturador.operation.shared.application.OperationService;
-import dev.facturador.operation.shared.domain.DocumentType;
+import dev.facturador.operation.core.application.OperationService;
+import dev.facturador.operation.core.domain.DocumentType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

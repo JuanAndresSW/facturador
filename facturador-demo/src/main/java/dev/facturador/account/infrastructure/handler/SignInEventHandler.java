@@ -1,6 +1,6 @@
 package dev.facturador.account.infrastructure.handler;
 
-import dev.facturador.account.domain.events.ARequestLoginEvent;
+import dev.facturador.account.domain.events.SignInEvent;
 import dev.facturador.global.domain.abstractcomponents.ReactiveRequest;
 import dev.facturador.global.domain.abstractcomponents.event.PortEventHandler;
 import lombok.AllArgsConstructor;
@@ -11,15 +11,16 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+//Evento para llamar al Login de Spring
 @Service
 @AllArgsConstructor
-public class ARequestLoginPortEventHandler
-        implements PortEventHandler<LinkedHashMap<String, String>, ARequestLoginEvent> {
+public class SignInEventHandler
+        implements PortEventHandler<LinkedHashMap<String, String>, SignInEvent> {
     @Autowired
     private final ReactiveRequest<Class, String> reactiveRequest;
 
     @Override
-    public LinkedHashMap<String, String> handle(ARequestLoginEvent event) throws Exception {
+    public LinkedHashMap<String, String> handle(SignInEvent event) throws Exception {
         var headers =reactiveRequest.makeRequestNotHeader(
                 "POST",
                 "/login",

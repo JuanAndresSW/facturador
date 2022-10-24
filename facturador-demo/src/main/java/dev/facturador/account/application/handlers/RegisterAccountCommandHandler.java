@@ -5,7 +5,7 @@ import dev.facturador.account.application.ChecksAccountService;
 import dev.facturador.account.domain.Account;
 import dev.facturador.account.domain.commands.AccountRegisterCommand;
 import dev.facturador.account.domain.exception.IndexesAreRepeated;
-import dev.facturador.global.domain.BeanClock;
+import dev.facturador.global.domain.ClockProvider;
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class RegisterAccountCommandHandler implements PortCommandHandler<Account
     @Autowired
     private final AccountRepository repository;
     @Autowired
-    private final BeanClock clock;
+    private final ClockProvider clock;
 
     /**
      * Maneja el comando de registrar una cuenta de usuario
@@ -41,6 +41,6 @@ public class RegisterAccountCommandHandler implements PortCommandHandler<Account
             throw new IndexesAreRepeated(message);
         }
 
-        repository.save(Account.create(command.getAccountRegisterRestModel(), clock));
+        repository.save(Account.toEntity(command.getAccountRegisterRestModel(), clock));
     }
 }

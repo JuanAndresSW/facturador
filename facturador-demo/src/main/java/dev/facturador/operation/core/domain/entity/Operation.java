@@ -1,10 +1,11 @@
-package dev.facturador.operation.shared.domain.entity;
+package dev.facturador.operation.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.operation.fulls.domain.entity.CreditNote;
 import dev.facturador.operation.fulls.domain.entity.DebitNote;
 import dev.facturador.operation.fulls.domain.entity.Invoice;
+import dev.facturador.operation.remittance.domain.Remittance;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -35,32 +37,41 @@ public final class Operation implements Serializable {
     @Column(name = "issuing_point_of_sale_number", nullable = false, length = 3)
     private String issuingPointOfSaleNumber;
 
+    @Column(name = "issue_date", nullable = false)
+    private LocalDate issueDate;
+
     @JsonBackReference
     @OneToMany(mappedBy = "operationProduct", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "operationSender", cascade = CascadeType.ALL)
     private Sender sender;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "operationReceiver", cascade = CascadeType.ALL)
     private Receiver receiver;
 
-    @JsonIgnore
     @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
-    private Invoice invoices;
+    private Invoice invoice;
 
-    @JsonIgnore
     @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private DebitNote debitNote;
 
-    @JsonIgnore
     @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private CreditNote creditNote;
+
+    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
+    private Remittance remittance;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_issuing_trader", nullable = false, updatable = false, referencedColumnName = "id_trader")
     private Trader traderOwner;
+
+    public Operation(Long operationId) {
+        this.operationId = operationId;
+    }
 
     public Operation(Trader traderOwner, String issuingPointOfSaleNumber) {
         this.traderOwner = traderOwner;
@@ -86,9 +97,15 @@ public final class Operation implements Serializable {
     @Override
     public String toString() {
         return "Operation{" +
-                "issuingPointOfSaleNumber='" + issuingPointOfSaleNumber + '\'' +
+                "operationId=" + operationId +
+                ", issuingPointOfSaleNumber='" + issuingPointOfSaleNumber + '\'' +
+                ", issueDate=" + issueDate +
                 ", sender=" + sender +
                 ", receiver=" + receiver +
+                ", invoice=" + invoice +
+                ", debitNote=" + debitNote +
+                ", creditNote=" + creditNote +
+                ", remittance=" + remittance +
                 '}';
     }
 }

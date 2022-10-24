@@ -1,8 +1,8 @@
-package dev.facturador.operation.shared.application;
+package dev.facturador.operation.core.application;
 
 import dev.facturador.global.domain.VatCategory;
-import dev.facturador.operation.shared.domain.AllVatCategory;
-import dev.facturador.operation.shared.domain.DocumentType;
+import dev.facturador.operation.core.domain.AllVatCategory;
+import dev.facturador.operation.core.domain.DocumentType;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;

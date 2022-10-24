@@ -7,9 +7,11 @@ import dev.facturador.pointofsale.domain.PointOfSale;
 import dev.facturador.pointofsale.domain.querys.PointOfSaleListQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * EndPoint para Listar puntos de venta
@@ -17,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/pointsofsale")
 public class PagingPointsOfSaleResource {
-    private final PortQueryBus portQueryBus;
+    private final PortQueryBus queryBus;
 
     @Autowired
-    public PagingPointsOfSaleResource(PortQueryBus portQueryBus) {
-        this.portQueryBus = portQueryBus;
+    public PagingPointsOfSaleResource(PortQueryBus queryBus) {
+        this.queryBus = queryBus;
     }
 
     /**
@@ -36,8 +38,8 @@ public class PagingPointsOfSaleResource {
      * @return Devuelve el objeto {@link PagedResponse} con los datos de paginacion
      */
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/branch/{IDBranch}")
-    public HttpEntity<PagedResponse<PointOfSale>> toListPointOfSale(
+    @GetMapping("/branches/{IDBranch}")
+    public Mono<HttpEntity<PagedResponse<PointOfSale>>> toListPointOfSale(
             @RequestParam(value = "index") int index,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") String sort,
@@ -50,8 +52,8 @@ public class PagingPointsOfSaleResource {
                 .branchId(branchID)
                 .build();
 
-        var response = portQueryBus.handle(query);
+        var response = queryBus.handle(query);
 
-        return ResponseEntity.ok().body(response);
+        return Mono.just(response).map(r -> ok().body(r));
     }
 }

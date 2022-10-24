@@ -1,6 +1,6 @@
 package dev.facturador.operation.fulls.domain.model;
 
-import dev.facturador.operation.shared.domain.model.ProductModel;
+import dev.facturador.operation.core.domain.model.ProductModel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

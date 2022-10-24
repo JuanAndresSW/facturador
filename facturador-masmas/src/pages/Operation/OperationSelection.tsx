@@ -30,17 +30,22 @@ const OperationMainScreen = <>
   <Section label="Nueva operación">
     <FlexDiv>
       <Option name="Factura"          label="Fa" link="./factura"         color="#fa1" />
-      <Option name="Orden de compra"  label="Oc" link="./orden-de-compra" color="#248" />
-      <Option name="Remito"           label="Rm" link="./remito"          color="#841" />
-      <Option name="Recibo X"         label="Rx" link="./recibo-x"        color="purple" />
-      <Option name="Recibo simple"    label="Rs" link="./recibo"          color="#299" />
+      <Option name="Orden de compra"  label="Oc" link="./orden-de-compra" color="#999" />
+      <Option name="Remito"           label="Rm" link="./remito"          color="#999" />
+      <Option name="Recibo X"         label="Rx" link="./recibo-x"        color="#999" />
+      <Option name="Recibo simple"    label="Rs" link="./recibo"          color="#999" />
       <Option name="Nota de crédito"  label="Nc" link="./nota-de-credito" color="#285" />
       <Option name="Nota de débito"   label="Nd" link="./nota-de-debito"  color="hotpink" />
-      <Option name="Pagaré"           label="Pa" link="./pagare"          color="842" />
-      <Option name="Cheque"           label="Ch" link="./cheque"          color="green" />
+      <Option name="Pagaré"           label="Pa" link="./pagare"          color="#999" />
+      <Option name="Cheque"           label="Ch" link="./cheque"          color="#999" />
     </FlexDiv>
 
       
   </Section>
   <DocumentHistory /> 
 </>
+
+/*COLORS:
+#248; #841; purple; #299; 842; green
+
+ */

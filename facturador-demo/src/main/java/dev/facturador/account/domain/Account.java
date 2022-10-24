@@ -1,7 +1,7 @@
 package dev.facturador.account.domain;
 
 
-import dev.facturador.global.domain.BeanClock;
+import dev.facturador.global.domain.ClockProvider;
 import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import dev.facturador.trader.domain.Trader;
 import dev.facturador.user.domain.User;
@@ -43,7 +43,7 @@ public final class Account {
         this.ownerUser = ownerUser;
     }
 
-    public static Account create(String username) {
+    public static Account toEntity(String username) {
         var account = new Account();
         account.setOwnerTrader(null);
         account.setAccountId(null);
@@ -55,7 +55,7 @@ public final class Account {
     /**
      * Named Contructor para el registro de cuenta
      */
-    public static Account create(AccountRegisterRestModel request, BeanClock clock) {
+    public static Account toEntity(AccountRegisterRestModel request, ClockProvider clock) {
         var account = new Account();
         account.setOwnerTrader(new Trader(
                 request.traderRegister().cuit(),
@@ -76,14 +76,16 @@ public final class Account {
         }
 
         account.getOwnerTrader().setPointsOfSaleControl(new PointsOfSaleControl(0, 0, account.getOwnerTrader()));
+
         account.setCreatedAt(LocalDateTime.now(clock.clock()));
+
         return account;
     }
 
     /**
      * Named Contructor para la actualizacion de la cuenta
      */
-    public static Account create(AccountUpdateRestModel request, Account account) {
+    public static Account toEntity(AccountUpdateRestModel request, Account account) {
         if (StringUtils.hasText(request.getUserUpdate().updatedUsername())) {
             account.getOwnerUser().setUsername(request.getUserUpdate().updatedUsername());
         }

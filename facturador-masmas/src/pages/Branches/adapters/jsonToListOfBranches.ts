@@ -9,7 +9,7 @@ export default async function jsonToListOfBranches(json: string): Promise<listOf
     return {
         branches: await Promise.all(listOfBranches.content.map(async (branch: any): Promise<branch> => { return {
             ID:    branch.branchId,
-            name:  branch.name,
+            name:  branch.fantasyName,
             email: branch.email,
             phone: branch.phone,
             address: {

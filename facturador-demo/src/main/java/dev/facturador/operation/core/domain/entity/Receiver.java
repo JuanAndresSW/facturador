@@ -1,7 +1,7 @@
-package dev.facturador.operation.shared.domain.entity;
+package dev.facturador.operation.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.facturador.operation.shared.domain.AllVatCategory;
+import dev.facturador.operation.core.domain.AllVatCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

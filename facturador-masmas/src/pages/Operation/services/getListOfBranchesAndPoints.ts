@@ -6,11 +6,11 @@ import jsonToListOfBranchesAndPoints from "../adapters/jsonToListOfBranchesAndPo
 /**
  * Recupera un array de sucursales con sus puntos de venta a nombre de la cuenta solicitante.
  */
-export default async function getListOfBranchesAndPoints(): Promise<Response> {
+export default async function getListOfBranchesAndPoints(usePointOfSaleNumberInsteadOfID=false): Promise<Response> {
     const response = await ajax("GET", `branches/traders/${IDTrader}/summary`, true);
 
     if (response.status === 400) return {...response, content: []};
-    if (response.status === 200) return {...response, content: jsonToListOfBranchesAndPoints(response.content)};
+    if (response.status === 200) return {...response, content: jsonToListOfBranchesAndPoints(response.content, usePointOfSaleNumberInsteadOfID)};
     return response;
     
 }

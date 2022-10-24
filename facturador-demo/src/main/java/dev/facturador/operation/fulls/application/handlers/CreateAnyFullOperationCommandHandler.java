@@ -8,7 +8,7 @@ import dev.facturador.operation.fulls.domain.entity.CreditNote;
 import dev.facturador.operation.fulls.domain.entity.DebitNote;
 import dev.facturador.operation.fulls.domain.entity.Invoice;
 import dev.facturador.operation.fulls.domain.commands.CreateAnyFullOperationCommand;
-import dev.facturador.operation.shared.application.OperationRepository;
+import dev.facturador.operation.core.application.OperationRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,22 +35,26 @@ public class CreateAnyFullOperationCommandHandler implements PortCommandHandler<
 
         if(command.getRepository().equals("invoice")){
             var invoice = Invoice.create(command.getInvoiceValues(), command.getInternalValues());
-            log.info("Factura es: {}", invoice);
             var operation = operationRepository.save(invoice.getOperation());
             invoice.setOperation(operation);
-            invoiceRepository.save(invoice);
+            invoice = invoiceRepository.save(invoice);
+            command.setId(invoice.getInvoiceId());
         }
         if(command.getRepository().contains("debit")) {
             var debit = DebitNote.create(command.getInvoiceValues(), command.getInternalValues());
             var operation = operationRepository.save(debit.getOperation());
             debit.setOperation(operation);
-            debitRepository.save(debit);
+            debit = debitRepository.save(debit);
+            command.setId(debit.getDebitId());
         }
         if(command.getRepository().contains("credit")) {
             var credit = CreditNote.create(command.getInvoiceValues(), command.getInternalValues());
             var operation = operationRepository.save(credit.getOperation());
             credit.setOperation(operation);
-            creditRepository.save(credit);
+            credit = creditRepository.save(credit);
+            command.setId(credit.getCreditId());
         }
+
+
     }
 }

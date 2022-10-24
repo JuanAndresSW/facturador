@@ -2,6 +2,7 @@ package dev.facturador.account.application.handlers;
 
 import dev.facturador.account.application.AccountRepository;
 import dev.facturador.account.application.ChecksAccountService;
+import dev.facturador.account.domain.Account;
 import dev.facturador.account.domain.commands.AccountDeleteCommand;
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandHandler;
 import dev.facturador.security.domain.exception.ResourceNotFound;
@@ -9,9 +10,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
 
 /**
- * Manjador del comando de eliminar {@link AccountDeleteCommand}
+ * Maneja el comando de eliminar {@link AccountDeleteCommand}
  */
 @AllArgsConstructor
 @Service
@@ -22,18 +24,26 @@ public class DeleteAccountCommandHandler implements PortCommandHandler<AccountDe
     private final AccountRepository repository;
 
     /**
-     * Maneja la eliminacion de una cuenta de usuario
+     * Maneja la eliminación de una cuenta de usuario
      *
      * @param command Comando contiene los datos para eliminar una cuenta de usuario
-     * @throws Exception
      */
     @Override
     public void handle(AccountDeleteCommand command) throws Exception {
-        //Comprueba que exista esta cuenta antes de eliminar
-        if (!checkUseCase.checkAccountExistsByUsername(command.getUsername())) {
-            throw new ResourceNotFound("No existe una cuenta con este username");
+        var response =repository.findByOwnerUserUsername(command.getUsername())
+                .flatMap((accout) -> {
+                    if(isNull(accout)) {
+                        return Optional.of(false);
+                    }
+                    repository.delete(accout);
+                    return Optional.of(true);
+                });
+        if(!response.get()){
+            throw new ResourceNotFound("Esta cuenta no existe");
         }
+    }
 
-        repository.deleteByOwnerUserUsername(command.getUsername());
+    private Boolean isNull(Account account){
+        return Boolean.TRUE.equals(account == null);
     }
 }

@@ -20,6 +20,14 @@ public class GetAccountQueryHandler implements PortQueryHandler<Account, GetAcco
     @Autowired
     private final AccountRepository repository;
 
+    /**
+     * Obtiene una cuenta
+     *
+     * @param query Query con los datos para obtener una cuenta
+     * @return {@link Account}
+     *
+     * @throws ResourceNotFound
+     */
     @Override
     public Account handle(GetAccountQuery query) throws ResourceNotFound {
 

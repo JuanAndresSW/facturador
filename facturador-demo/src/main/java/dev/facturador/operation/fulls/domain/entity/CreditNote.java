@@ -2,14 +2,15 @@ package dev.facturador.operation.fulls.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.facturador.operation.fulls.domain.SellConditions;
-import dev.facturador.operation.shared.domain.DocumentType;
-import dev.facturador.operation.shared.domain.entity.Operation;
-import dev.facturador.operation.shared.domain.entity.Product;
-import dev.facturador.operation.shared.domain.entity.Receiver;
-import dev.facturador.operation.shared.domain.entity.Sender;
+import dev.facturador.operation.core.domain.DocumentType;
+import dev.facturador.operation.core.domain.entity.Operation;
+import dev.facturador.operation.core.domain.entity.Product;
+import dev.facturador.operation.core.domain.entity.Receiver;
+import dev.facturador.operation.core.domain.entity.Sender;
 import dev.facturador.operation.fulls.domain.model.DataRequiredOperation;
 import dev.facturador.operation.fulls.domain.model.FullOperationRestModel;
 import dev.facturador.trader.domain.Trader;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static dev.facturador.operation.fulls.domain.SellConditions.defineSellCondition;
-import static dev.facturador.operation.shared.domain.AllVatCategory.defineAllVat;
+import static dev.facturador.operation.core.domain.AllVatCategory.defineAllVat;
 
 /**
  * Entidad Factura
@@ -32,6 +33,7 @@ import static dev.facturador.operation.shared.domain.AllVatCategory.defineAllVat
 @Slf4j
 @Entity
 @Table(name = "credit_note")
+@EqualsAndHashCode
 @NoArgsConstructor
 @Getter
 @Setter
@@ -51,15 +53,12 @@ public final class CreditNote implements Serializable {
     @Column(nullable = false)
     private Integer vat;
 
-    @Column(name = "issue_date", nullable = false)
-    private LocalDate issueDate;
-
     @Enumerated(value = EnumType.STRING)
     @Column(name = "type", nullable = false,
             columnDefinition = "enum('A','B','C')")
     private DocumentType type;
 
-
+    @JsonIgnore
     @Column(name = "count_credit_number", nullable = false, length = 8)
     private Integer operationNumberCount;
 
@@ -71,10 +70,13 @@ public final class CreditNote implements Serializable {
     @JoinColumn(name = "id_operation_parent", nullable = false, referencedColumnName = "id_operation", unique = true)
     private Operation operation;
 
+    public CreditNote(Operation operation) {
+        this.operation = operation;
+    }
+
     public CreditNote(Long creditId,
                       SellConditions sellConditions,
                       Integer vat,
-                      LocalDate issueDate,
                       DocumentType type,
                       Integer operationNumberCount,
                       String creditNumber,
@@ -82,7 +84,6 @@ public final class CreditNote implements Serializable {
         this.creditId = creditId;
         this.sellConditions = sellConditions;
         this.vat = vat;
-        this.issueDate = issueDate;
         this.type = type;
         this.operationNumberCount = operationNumberCount;
         this.creditNumber = creditNumber;
@@ -134,23 +135,8 @@ public final class CreditNote implements Serializable {
         //Definir tipo de factura
         creditNote.setType(internalValues.getType());
         //Fecha de creacion
-        creditNote.setIssueDate(LocalDate.now());
+        creditNote.getOperation().setIssueDate(LocalDate.now());
         return creditNote;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CreditNote that = (CreditNote) o;
-
-        return new EqualsBuilder().append(getSellConditions(), that.getSellConditions()).append(getVat(), that.getVat()).append(getType(), that.getType()).append(getOperationNumberCount(), that.getOperationNumberCount()).append(getCreditNumber(), that.getCreditNumber()).append(getOperation(), that.getOperation()).isEquals();
-    }
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(getSellConditions()).append(getVat()).append(getType()).append(getOperationNumberCount()).append(getCreditNumber()).append(getOperation()).toHashCode();
     }
 
     @Override
@@ -158,11 +144,9 @@ public final class CreditNote implements Serializable {
         return "DebitNote{" +
                 "sellConditions=" + sellConditions +
                 ", vat=" + vat +
-                ", issueDate=" + issueDate +
                 ", type=" + type +
                 ", posNumberInvoice=" + operationNumberCount +
                 ", invoiceNumber=" + creditNumber +
-                ", operation=" + operation +
                 '}';
     }
 }

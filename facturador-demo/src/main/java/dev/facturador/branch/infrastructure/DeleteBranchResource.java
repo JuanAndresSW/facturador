@@ -3,12 +3,14 @@ package dev.facturador.branch.infrastructure;
 import dev.facturador.branch.domain.command.BranchDeleteCommand;
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+
+import static org.springframework.http.ResponseEntity.noContent;
 
 
 /**
@@ -17,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/branches")
 public class DeleteBranchResource {
-    private final PortCommandBus portCommandBus;
+    private final PortCommandBus commandBus;
 
-    public DeleteBranchResource(PortCommandBus portCommandBus) {
-        this.portCommandBus = portCommandBus;
+    public DeleteBranchResource(PortCommandBus commandBus) {
+        this.commandBus = commandBus;
     }
 
     /**
@@ -32,12 +34,12 @@ public class DeleteBranchResource {
      */
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{IDBranch}")
-    public HttpEntity<Void> deleteBranch(@PathVariable(name = "IDBranch") long IDBranch) throws Exception {
+    public Mono<HttpEntity<Void>> deleteBranch(@PathVariable(name = "IDBranch") long IDBranch) throws Exception {
         var command = BranchDeleteCommand.builder()
                 .branchId(IDBranch).build();
 
-        portCommandBus.handle(command);
+        commandBus.handle(command);
 
-        return ResponseEntity.noContent().build();
+        return Mono.empty().map(x-> noContent().build());
     }
 }

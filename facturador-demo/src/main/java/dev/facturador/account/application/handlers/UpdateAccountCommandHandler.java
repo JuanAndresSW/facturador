@@ -37,6 +37,6 @@ public class UpdateAccountCommandHandler implements PortCommandHandler<AccountUp
             throw new ErrorInDataForUpdate(result);
         }
 
-        repository.saveAndFlush(Account.create(command.getAccountUpdateRestModel(), command.getActualAccount()));
+        repository.saveAndFlush(Account.toEntity(command.getAccountUpdateRestModel(), command.getActualAccount()));
     }
 }

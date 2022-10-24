@@ -1,6 +1,6 @@
 import { toFourDigitNumber } from "utilities/conversions";
 
-export default function jsonToListOfBranchesAndPoints(json: string): any[] {
+export default function jsonToListOfBranchesAndPoints(json: string, usePointOfSaleNumberInsteadOfID=false): any[] {
     const listOfBAP = JSON.parse(json);
     
     return listOfBAP.map((branch: any) => {   
@@ -10,7 +10,7 @@ export default function jsonToListOfBranchesAndPoints(json: string): any[] {
           subOptions: branch.pointsOfSale.map((point: any) => {
             return {
               title: `N°${toFourDigitNumber(point.pointOfSaleNumber)}`,
-              value: point.pointOfSaleId,
+              value: usePointOfSaleNumberInsteadOfID? point.pointOfSaleNumber : point.pointOfSaleId,
             }
           })
         }
