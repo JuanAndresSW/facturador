@@ -13,18 +13,23 @@ type props = {
 
 /**
  * Un input de archivos de tipo imágen. Acepta png, jpg y svg.
- * @param props.label - El título del input.
- * @param props.note - Nota adicional acerca del input.
- * @param props.fallback - URL de imágen a mostrar cuando no hay ninguna otra imágen. Por defecto es un icono de usuario.
- * @param props.setter - Función controladora del estado de la constante que almacena la imágen.
- * @param props.img - Valor File de la imágen a mostrar.
+ * @param props.label     - El título del input.
+ * @param props.note      - Nota adicional acerca del input.
+ * @param props.fallback  - URL de imágen a mostrar cuando no hay ninguna otra imágen. Por defecto es un icono de usuario.
+ * @param props.setter    - Función controladora del estado de la constante que almacena la imágen.
+ * @param props.img       - Valor File de la imágen a mostrar.
  */
 export default function Image({label, note, fallback=defaultAvatar, setter, img}:props) {
+
   return (
     <label className="image">
         {label}<span> {note}</span>
             
-        {img?<BsFillXCircleFill onClick={(e)=>{e.preventDefault();setter(undefined)}} />:null}
+        {img?.size>10?
+        <BsFillXCircleFill onClick={e=>{
+          e.preventDefault();
+          setter(undefined);
+          }} /> : null}
             
         <input
           type="file"
@@ -34,7 +39,7 @@ export default function Image({label, note, fallback=defaultAvatar, setter, img}
           }}
         />
         <div>
-        <img src={img? URL.createObjectURL(img):fallback} />
+        <img src={img?.size>10? URL.createObjectURL(img):fallback} />
         </div>
 
     </label>

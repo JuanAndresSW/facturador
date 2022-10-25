@@ -1,0 +1,1 @@
+export {default as FullSizeDocument } from './FullSizeDocument/FullSizeDocument';

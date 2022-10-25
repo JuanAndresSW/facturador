@@ -1,29 +1,38 @@
 type document = {
-    documentType: ("purchase-order" | "remittance" | "invoice" | "debit-note" | "credit-note" | "receipt-x" | "receipt" | "promissory-note" | "check" | "other");
-    flux: ("in"|"out");
-    IDPointOfSale: number;
-    sendingToGroup: boolean;
-    partner: {ID:number, registered:boolean}
-    IDGroup: number;
-    productTable: [[number, string, number]];
-    VATPercentage: string;
-    observations: string;
-    payer: string;
-    payerAddress: string;
-    paymentTime: string;
-    paymentMethods: [number,number,number];
-    paymentImputation: [[string,number,number,number]];
-    detailOfValues: [[string,string,number,string,number]];
-    seller: string;
-    conditions: ("Al contado"|"Cuenta corriente"|"Cheque"|"Pagaré");
-    deliveryDeadline: string;
-    placeOfDelivery: string;
-    carrier: string;
-    descriptionOfValues: string;
-    paymentDeadline: string;
-    amount: number;
-    protest: boolean;
-    delay: number;
-    bank: string;
+    metadata: {
+        documentNumber: string,
+        documentType: string,
+        documentName: string,
+        preferenceColor: string,
+        dateOfIssue: string
+    },
+
+    sender: {
+        logo: Blob,
+        code: string,
+        name: string,
+        address: string
+        VATCategory: string,
+        contact: string
+    },
+    receiver: {
+        code: string,
+        name: string,
+        address: string,
+        VATCategory: string,
+        postalCode: string,
+        locality: string,
+    },
+
+    operationData: {
+        sellConditions: string,
+        VAT: number,
+        productTable: {
+            quantity: number,
+            price: number,
+            detail: string
+        }[],
+
+    }
 }
 export default document;

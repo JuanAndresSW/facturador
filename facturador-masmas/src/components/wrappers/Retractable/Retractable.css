@@ -1,0 +1,22 @@
+.retractable [data-retractable-header]{
+    display: flex;
+    align-items: center;
+    flex-flow: nowrap;
+    justify-content: space-between;
+    margin: 3rem 0 0;
+    padding: 0 1rem .2rem;
+    color: #333;
+    font-size: 1rem;
+    font-family: monospace;
+    cursor:pointer;
+}
+[data-retractable-header] svg {
+    display: block;
+    font-size: 2rem;
+}
+.retractable>div:nth-child(2) {
+    padding-bottom: 2rem;
+}
+.retractable.folded div:nth-child(2) {
+    display: none;   
+}

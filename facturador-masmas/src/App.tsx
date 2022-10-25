@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import {SplashScreen, Error404} from 'styledComponents';
+import {SplashScreen, Error404} from 'components/standalone';
 
 //Controladores de la sesión.
 import getSessionByToken from 'services/getSessionByToken';
@@ -13,18 +13,21 @@ const Home =     lazy(() => import('pages/Home/Home'));
 const SignUp =   lazy(() => import("pages/SignUp/SignUp"));
 const Login =    lazy(() => import("pages/Login/Login"));
 const Account =  lazy(() => import("pages/Account/Account"));
-const About =    lazy(() => import("pages/About/About"));
+const Manual =   lazy(() => import("pages/Manual/Manual"));
 
-/**El componente global de la aplicación. */
+/**El componente global de la aplicación.*/
 export default function App(): JSX.Element {
 
     //Determina si se le debe dar permisos de sesión al usuario.
     const [auth, setAuth] = useState(undefined);
 
     //Comprobar la sesión con el servidor en el primer renderizado.
-    useEffect(() => getSessionByToken((ok: boolean) => { 
-        setAuth(ok);
-    }), []);
+    useEffect(tryGettinAuthorization, []);
+    function tryGettinAuthorization() {
+        getSessionByToken().then(response => setAuth(response.ok))
+    }
+    
+  
 
     return (
         (auth === undefined) ? <SplashScreen /> :
@@ -32,14 +35,17 @@ export default function App(): JSX.Element {
         <Suspense fallback={<SplashScreen />}>
             <Routes>
 
-                <Route index               element={!auth? <Start />  : <Home />}   />   
-                <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to={"/"} />}   />
+                <Route index               element={!auth? <Start />  : <Navigate to="/inicio"     />} />   
+                <Route path="/ingresar"    element={!auth? <Login />  : <Navigate to="/inicio"     />} />
+                <Route path="/registrarse" element={!auth? <SignUp /> : <Navigate to="/inicio"     />} />
 
-                <Route path="/cuenta"      element={auth? <Account /> : <Navigate to={"/ingresar"} />} />
 
-                <Route path="/registrarse" element={ <SignUp />  } />
-                <Route path="/acerca-de/*" element={ <About />   } />
-                <Route path="*"            element={ <Error404 />} />      
+                <Route path="/inicio/*"    element={auth?  <Home />   : <Navigate to={"/ingresar"} />} />
+                <Route path="/cuenta"      element={auth?  <Account />: <Navigate to={"/ingresar"} />} />
+
+                
+                <Route path="/manual/*"    element={ <Manual    />   } />
+                <Route path="*"            element={ <Error404  />   } />      
 
             </Routes>
         </Suspense>

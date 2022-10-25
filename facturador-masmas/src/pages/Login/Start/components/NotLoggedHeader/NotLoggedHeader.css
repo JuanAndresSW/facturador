@@ -18,8 +18,7 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-          box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  border-bottom: none;
 }
 
 header #logo {
@@ -64,6 +63,7 @@ header #header-links button {
   float: right;
   background-color: #00ac00;
   border: none;
+  border-bottom: 2px solid #008d00;
   border-radius: 5px;
   padding: 0.5rem 1rem;
   margin: 1rem;

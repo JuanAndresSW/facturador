@@ -1,41 +1,54 @@
 table {
     display: block;
+    border: 1px solid #bbb;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.3);
-    width: 100%;
-    padding: .2rem;
-    overflow-x: auto;
+    background-color: #eee;
+
+    width:min-content;
+    max-width: 98%;
+    max-height: 20rem;
+    margin: 0 auto;
+    overflow: auto;
+
+    border-spacing: 0;
 }
 table thead {
     cursor: default;
+    
+}
+table tbody {
+    white-space: nowrap;
 }
 table svg {
     display: block;
     text-align: center;
     margin: .4rem auto;
     padding: 0 .4rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: #555;
     font-size: 1.5rem;
 }
 table svg:hover {
     cursor: pointer;
-    color: white;
-    transition: .1s;
-    transform: scale(1.2);
+    color: #35f;
+    transform: scale(1.1);
 }
 tbody label {
-    margin: 0;
+    margin: 0 .2rem;
+}
+thead tr {
+    position: relative;
 }
 thead tr th {
-    color: white;
-    border: 1px solid rgba(220, 220, 220, 0.5);
+    color: #333;
+    background-color: #eee;
+    border-bottom: #bbb solid 1px;
+
     font-family: monospace;
     font-weight: normal;
-    font-size: 1rem;
+    font-size: .8rem;
     padding: .2rem;
-    border-radius: 3px;
-    background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.3) 0%,
-      rgba(2, 61, 109, 0.6) 100%);
+    min-width: 6rem;
+
+    position: sticky;
+    top: 0;
 }

@@ -1,6 +1,7 @@
+/**Objeto de datos del comerciante. */
 type traderData = {
-    businessName: string;
-    vatCategory: string;
-    uniqueKey: string;
+    businessName: string,
+    VATCategory: string,
+    CUIT: string
 };
 export default traderData;

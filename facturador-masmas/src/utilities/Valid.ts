@@ -29,19 +29,25 @@ export default class Valid {
     return false;
   }
 
-  public static code(code: string, setError?: Function): boolean {
-    code = code?.replace(/ |\.|-/g, "");
-    //if (code === "") return true; TODO: generate automatic code
-    if (/[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(code)) return true;
-    if (setError) setError("Ingrese un número de ingresos brutos válido");
+  public static CUIT(CUIT: string, setError?: Function): boolean {
+    CUIT = CUIT?.replace(/ |\.|-/g, "");
+    if (/^[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(CUIT)) return true;
+    if (setError) setError("Ingrese un C.U.I.T. válido");
+    return false;
+
+  }
+
+  public static sellConditions(conditions: string, setError?: Function): boolean {
+    if ("Al contado Cuenta corriente Cheque Pagaré Otro") return true;
+    if (setError) setError("Las condiciones de venta deben ser: Al contado, Cuenta corriente, Cheque, Pagaré u Otro");
     return false;
 
   }
 
   public static vatCategory(vatCategory: string, setError?: Function): boolean {
-    if (
-         vatCategory === "Monotributista" 
+    if ( vatCategory === "Responsable Monotributista" 
       || vatCategory === "Responsable Inscripto"
+      || vatCategory === "Consumidor Final"
       || vatCategory === "Sujeto Exento"
     ) return true;
     if (setError) setError("Seleccione una categoría");
@@ -54,7 +60,7 @@ export default class Valid {
 
   public static postalCode(postalCode: string, setError?: Function): boolean {
     if  (/^\d{4}$/.test(postalCode)) return true;
-    if (setError) setError("Ingrese un código postal con el formato AAAA");
+    if (setError) setError("Ingrese un código postal de 4 dígitos");
     return false;
   }
 
@@ -74,8 +80,8 @@ export default class Valid {
     return false;
   }
 
-  public static addressNumber(addressNumber: string, setError?: Function): boolean {
-    if (/^[1-9]{1}\d{0,4}$/.test(addressNumber)) return true;
+  public static addressNumber(addressNumber: number, setError?: Function): boolean {
+    if (/^[1-9]{1}\d{0,4}$/.test(addressNumber?.toLocaleString())) return true;
     if (setError) setError("Ingrese un número de dirección");
     return false;
   }
@@ -88,7 +94,13 @@ export default class Valid {
 
   public static hexColor(hexColor: string, setError?: Function): boolean {
     if (/^#[\da-f]{6}$/.test(hexColor)) return true;
-    if (setError) setError("Ingrese una altura válida");
+    if (setError) setError("Ingrese un color válido.");
+    return false;
+  }
+
+  public static date(date: string, setError?: Function): boolean {
+    if (/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(date)) return true;
+    if (setError) setError("Ingrese una fecha válida.");
     return false;
   }
 }

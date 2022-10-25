@@ -1,40 +1,64 @@
 package dev.facturador.pointofsale.domain;
 
-import dev.facturador.trader.domain.Trader;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.branch.domain.Branch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
-@SuppressWarnings("ALL")
+/**
+ * Entidad punto de venta
+ */
 @Entity
 @Table(name = "point_of_sale")
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-public final class PointOfSale implements Serializable {
-    public static final Long serialVersinUID = 1L;
+public class PointOfSale implements Serializable {
+    public static final Long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id_point_of_sale")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idPointOfSale;
+    private Long pointOfSaleId;
 
-    @Column(name = "address", nullable = false, length = 50)
-    private String address;
+    @Column(name = "point_of_sale_number", nullable = false)
+    private Integer pointOfSaleNumber;
 
-    @Column(name = "email", nullable = false, length = 128)
-    private String email;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate createdAt;
 
-    @Column(name = "name", nullable = false, length = 20)
-    private String name;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_owner_branch", nullable = false, updatable = false, referencedColumnName = "id_branch")
+    private Branch branchOwner;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_trader", nullable = false)
-    private Trader traderOwner;
+    public PointOfSale(long pointOfSaleId) {
+        super();
+        this.pointOfSaleId = pointOfSaleId;
+    }
 
+    public PointOfSale(Long pointOfSaleId, Integer pointOfSaleNumber) {
+        this.pointOfSaleId = pointOfSaleId;
+        this.pointOfSaleNumber = pointOfSaleNumber;
+    }
+
+    public static PointOfSale create(PointOfSaleModel values) {
+        var pointOfSale = new PointOfSale();
+        pointOfSale.setPointOfSaleNumber(values.posControl().getTotalCount() + 1);
+        pointOfSale.setBranchOwner(new Branch(values.IDBranch()));
+        pointOfSale.setCreatedAt(LocalDate.now());
+        return pointOfSale;
+    }
+
+    public static PointOfSale create(Long id) {
+        var pointOfSale = new PointOfSale();
+        pointOfSale.setPointOfSaleId(id);
+
+        return pointOfSale;
+    }
 }

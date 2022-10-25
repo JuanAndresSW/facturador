@@ -18,11 +18,10 @@
       "adapters/*":["./adapters/*"],
       "assets/*":["./assets/*"],
       "components/*":["./components/*"],
-      "interceptors/*":["./interceptors/*"],
+      "ports/*":["./ports/*"],
       "models/*":["./models/*"],
       "pages/*":["./pages/*"],
       "services/*":["./services/*"],
-      "styledComponents/*":["./styledComponents/*"],
       "utilities/*":["./utilities/*"]
     }
   }

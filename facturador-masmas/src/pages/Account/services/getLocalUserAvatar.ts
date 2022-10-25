@@ -1,12 +1,11 @@
+import Response from 'models/Response';
 import { base64ToBlob } from 'utilities/conversions';
 
-export default function getLocalUserAvatar(callback: Function): void {
+/**Recupera un Blob a partir de un string almacenado en localStorage, correspondiente a el avatar de usuario. */
+export default async function getLocalUserAvatar(): Promise<Response> {
 
-    if (localStorage.getItem("avatar")) returnAsFile();
-    else callback(false);
-
-    async function returnAsFile():Promise<void> {
-        const blob = await base64ToBlob(localStorage.getItem('avatar').slice(22)); //"data:image/png;base64,".length === 22
-        callback(true, blob);
-    }
+    if (localStorage.getItem("avatar")) {
+        const blob = await base64ToBlob(localStorage.getItem('avatar'));
+        return new Response("", blob, 200);
+    }   
 }

@@ -1,0 +1,63 @@
+/*The main container*/
+
+[data-component='OptionWithPhoto']{
+    width: 10rem;
+    height: 13rem;
+    margin: 1rem;
+    position: relative;
+    cursor: pointer;
+}
+[data-component='OptionWithPhoto']>div {
+    border-radius: 10px;
+    transition: .1s;
+    position: relative;
+}
+[data-component='OptionWithPhoto']>div:hover {
+    background-color: #eee;
+    transform: scale(1.1);
+    outline: 0px solid #0070f0;
+}
+
+/*Text*/
+
+[data-component='OptionWithPhoto']>div a {
+    text-decoration: none;
+}
+[data-component='OptionWithPhoto']>div a img {
+    width: 10rem;
+    height: 10rem;
+    
+    border-radius: 10px;
+    overflow: hidden;
+}
+[data-component='OptionWithPhoto'] p, [data-component='OptionWithPhoto'] a span {
+    color: #222;
+    margin: 0;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+[data-component='OptionWithPhoto'] a span {color: #444;}
+abbr {text-decoration: none !important;}
+
+/*The option icon*/
+
+[data-component='OptionWithPhoto']>menu svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: .2rem;
+    border-radius: 50%;
+    color: #fff;
+    cursor: context-menu;
+    transition: .1s;
+}
+[data-component='OptionWithPhoto']>menu svg:hover {
+    background-color: #77f;
+}
+[data-component='OptionWithPhoto']>menu svg:active {
+    background-color: #bbb;
+}

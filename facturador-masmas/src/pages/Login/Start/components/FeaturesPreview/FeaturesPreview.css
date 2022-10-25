@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "nunito";
+  src: url(../../../../../assets/fonts/Nunito-VariableFont_wght.ttf);
+}
+
 .features {
   background-color: white;
   width: 100%;
@@ -12,7 +17,10 @@
   margin: 3rem;
   padding: .5rem 1rem;
   width: 85%;
-  background-color: white;
+  border: 1px solid #ccc;
+  border-bottom: 4px solid #ccc;
+  border-radius: 9999px;
+  font-family: nunito;
 }
 
 .features div img {
@@ -28,11 +36,8 @@
 }
 
 .features div:nth-child(odd) {
-  -webkit-box-shadow: 20px 14px 0px 5px rgba(64, 231, 236, 0.5), -20px -14px 0px 0px rgba(11, 117, 255, 0.5);
-          box-shadow: 20px 14px 0px 5px rgba(64, 231, 236, 0.5), -20px -14px 0px 0px rgba(11, 117, 255, 0.5);
   margin-right: 5rem;
   text-align: left;
-  border-radius: 222px 15px;
 }
 
 .features div:nth-child(odd) img {
@@ -40,11 +45,8 @@
 }
 
 .features div:nth-child(even) {
-  -webkit-box-shadow: -20px 14px 0px 0px rgba(11, 117, 255, 0.5), 20px -14px 0px 0px rgba(64, 231, 236, 0.5);
-          box-shadow: -20px 14px 0px 0px rgba(11, 117, 255, 0.5), 20px -14px 0px 0px rgba(64, 231, 236, 0.5);
   margin-left: 5rem;
   text-align: right;
-  border-radius: 15px 222px;
 }
 
 .features div:nth-child(even) img {
@@ -52,11 +54,8 @@
 }
 
 @media (max-width: 768px) {
-  .features div:nth-child(odd) {
-    border-radius: 100px;
-  }
-  .features div:nth-child(even) {
-    border-radius: 100px;
+  .features div {
+    border: none;
   }
   .features div h3 {
     font-size: 2rem;

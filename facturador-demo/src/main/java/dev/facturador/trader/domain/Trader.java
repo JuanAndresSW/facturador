@@ -1,14 +1,20 @@
 package dev.facturador.trader.domain;
 
-import dev.facturador.pointofsale.domain.PointOfSale;
-import dev.facturador.shared.domain.Vat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.facturador.branch.domain.Branch;
+import dev.facturador.global.domain.VatCategory;
+import dev.facturador.operation.core.domain.entity.Operation;
+import dev.facturador.pointofsale.domain.subdomain.PointsOfSaleControl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 
 @SuppressWarnings("ALL")
 @Entity
@@ -17,71 +23,71 @@ import java.util.Collection;
 @Getter
 @Setter
 public final class Trader implements Serializable {
-    public static final Long serialVersinUID = 1L;
+    public static final Long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id_trader")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idTrader;
-
-    @Column(name = "unique_key", nullable = false, length = 15, updatable = false, unique = true)
-    private String uniqueKey;
-
+    private long traderId;
+    @Column(nullable = false, length = 15, updatable = false, unique = true)
+    private String cuit;
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "vat", nullable = false,
-            columnDefinition = "enum('RESPONSABLE_INSCRIPTO','MONOTRIBUTISTA','SUJETO_EXENTO')")
-    private Vat vat;
+    @Column(name = "vat_category", nullable = false,
+            columnDefinition = "enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE')")
+    private VatCategory vatCategory;
+    @Column(name = "business_name", nullable = false, length = 20)
+    private String businessName;
 
-    @Column(name = "gross_income", nullable = false, length = 15)
-    private String grossIncome;
+    @OneToOne(mappedBy = "trader", cascade = CascadeType.ALL)
+    private PointsOfSaleControl pointsOfSaleControl;
 
-    @Column(name = "name", nullable = false, length = 20)
-    private String name;
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Branch> branches;
 
-    @Column(name = "passive", nullable = false)
-    private int passive;
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Operation> operations;
 
-    @Column(name = "active", nullable = false)
-    private int active;
-
-    @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.ALL)
-    private Collection<PointOfSale> pointOfSaleOutlets;
-
-    public Trader(String uniqueKey, String grossIncome, String name, int active, int passive) {
-        this.uniqueKey = uniqueKey;
-        this.grossIncome = grossIncome;
-        this.name = name;
-        this.active = active;
-        this.passive = passive;
+    public Trader(long traderId) {
+        this.traderId = traderId;
     }
 
-    public Trader(String uniqueKey, String grossIncome, String name) {
-        this.uniqueKey = uniqueKey;
-        this.grossIncome = grossIncome;
-        this.name = name;
+    public Trader(long traderId, String cuit, String businessName) {
+        this.traderId = traderId;
+        this.cuit = cuit;
+        this.businessName = businessName;
     }
 
-    public static Vat defineVat(String vat) {
-        if (vat.contains("Responsable")) {
-            return Vat.RESPONSABLE_INSCRIPTO;
-        }
-        if (vat.contains("Monotributista")) {
-            return Vat.MONOTRIBUTISTA;
-        }
-        if (vat.contains("Sujeto")) {
-            return Vat.SUJETO_EXENTO;
-        }
-        return null;
+    public Trader(String cuit, String businessName) {
+        this.cuit = cuit;
+        this.businessName = businessName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Trader trader = (Trader) o;
+
+        return new EqualsBuilder().append(getTraderId(), trader.getTraderId()).isEquals();
+    }
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(getTraderId()).toHashCode();
     }
 
     @Override
     public String toString() {
         return "Trader{" +
-                "idTrader=" + idTrader +
-                ", uniqueKey='" + uniqueKey + '\'' +
-                ", vatCategory=" + vat.getNameVat() +
-                ", grossIncome='" + grossIncome + '\'' +
-                ", name='" + name + '\'' +
+                "idTrader=" + traderId +
+                ", cuit='" + cuit + '\'' +
+                ", vatCategory=" + vatCategory.vatToLowercaseAndSpanish() +
+                ", name='" + businessName + '\'' +
                 '}';
     }
 }

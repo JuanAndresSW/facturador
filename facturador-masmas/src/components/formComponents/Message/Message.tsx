@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {FlexDiv} from 'styledComponents';
+import Button from "../Button/Button";
 import './Message.css';
 
 type props = {
@@ -9,7 +9,9 @@ type props = {
 }
 
 /**
- * @returns Un mensaje de error sincronizado con 'message', siendo una pieza de estado.
+ * Un mensaje de error sincronizado con 'message', siendo una pieza de estado.
+ * @param props.type    - Naturaleza del mensaje. Puede ser error o success.
+ * @param props.message - String a mostrar como mensaje.
  */
 export default function Message({type, message}:props): JSX.Element {
     const navigate = useNavigate();
@@ -21,7 +23,7 @@ export default function Message({type, message}:props): JSX.Element {
         </p>:
         <div className="success">
             <p>💾 {message}</p>
-            <button onClick={()=>navigate(-1)}>Regresar</button>
+            <Button onClick={() => navigate(-1)}>Regresar</Button>
         </div>
         
     );

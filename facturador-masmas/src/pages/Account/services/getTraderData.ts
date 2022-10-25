@@ -1,11 +1,13 @@
 import getToken from "../../../services/getToken";
-import ajax from 'interceptors/ajax';
-import adaptTraderData from '../adapters/adaptTraderData';
+import Response from "models/Response";
+import ajax from 'ports/ajax';
+import jsonToTraderData from '../adapters/jsonToTraderData';
 
-export default function getTraderData(callback: Function): void {
-    ajax("GET", `mainaccounts/${sessionStorage.getItem("username")}`, { token: getToken("access") }, respond);
-    function respond(state: number, data: string) {
-        if (state===200) callback(true, adaptTraderData(data));
-        else callback(false, data);
-    }
+/**Recupera información del comerciante de la cuenta.*/
+export default async function getTraderData(): Promise<Response> {
+    const response = await ajax("GET", `accounts/${sessionStorage.getItem("username")}`, true);
+
+    if (response.status===200) return {...response, content: jsonToTraderData(response.content)}
+    return response;
+ 
 }

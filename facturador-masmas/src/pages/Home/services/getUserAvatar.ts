@@ -1,28 +1,18 @@
-import ajax from 'interceptors/ajax';
-import getToken from 'services/getToken';
+import Response from 'models/Response';
+import ajax from 'ports/ajax';
 import { base64ToBlob } from 'utilities/conversions';
 
 
 /**
 * Recupera un File correspondiente al avatar de usuario del propietario del token de acceso almacenado.
-* @param callback La función que procesará la respuesta. 
 */
-export default function getUserAvatar(callback: Function): void {
+export default async function getUserAvatar(): Promise<Response> {
 
     if (localStorage.getItem("avatar")) 
-        returnAsFile(200, localStorage.getItem("avatar"));
-    else 
-        ajax("GET","useravatars",{token: getToken('access')}, returnAsFile);
+    return new Response('', await base64ToBlob(localStorage.getItem("avatar")), 200, true);
 
-    async function returnAsFile(state:number, base64:string):Promise<void> {
-        if (state !== 200) {callback(false); return;}
-        if (base64 === 'undefined') {callback(false); return;}
-    
-        const blob = await base64ToBlob(base64.slice(22)); //"data:image/png;base64,".length === 22
-        callback(true, blob);
-            
-        //Almacenar en localstorage si no está almacenado.
-        if (!localStorage.getItem("avatar")) localStorage.setItem("avatar", base64);
-        return;
+    else {
+        const response = await ajax("GET","users/"+sessionStorage.getItem('username'), true);
+        return {...response, content: await base64ToBlob(response.content), ok: (response.status === 200 && response.content !== 'undefined')}
     }
 }

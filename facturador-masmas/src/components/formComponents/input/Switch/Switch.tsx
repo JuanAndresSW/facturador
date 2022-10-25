@@ -1,31 +1,34 @@
 import React from "react";
+import { BiCheck, BiX } from "react-icons/bi";
 import './Switch.css';
 
 type props = {
-    label?: string;
-    note?: string;
-    falseIcon?: React.SVGProps<SVGSVGElement>;
-    trueIcon?: React.SVGProps<SVGSVGElement>;
-    bind: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    label?: string,
+    falseIcon?: React.SVGProps<SVGSVGElement>,
+    trueIcon?: React.SVGProps<SVGSVGElement>,
+    value: boolean,
+    setter: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 /**
  * Un interruptor ligado a un boolean declarado con setState. El valor izquierdo es falso, el derecho verdadero.
- * @param label - El título del input.
- * @param note - Nota extra acerca del input.
- * @param falseIcon - Elemento SVG a mostrar para el valor falso.
- * @param trueIcon - Elemento SVG a mostrar para el valor verdadero.
- * @param bind - Array desestructurado asociado al valor del input.
+ * @param props.label       - El título del input.
+ * @param props.falseIcon   - Elemento SVG a mostrar para el valor falso.
+ * @param props.trueIcon    - Elemento SVG a mostrar para el valor verdadero.
+ * @param props.value       - Valor del input.
+ * @param props.setter      - Función de evento de clic, llamada con el valor opuesto al actual.
  */
-export default function Switch({ label = "", note, falseIcon, trueIcon, bind }: props): JSX.Element {
+export default function Switch({ label = "", falseIcon=<BiX/>, trueIcon=<BiCheck/>, value, setter }: props): JSX.Element {
 
     return (
-        <label className="select" style={(label.length===0)?{margin:"0 auto"}:{}}> {label} <span> {note}</span>
-            <div className={bind[0]?"switch switch-true":"switch switch-false"}
-            onClick={()=>bind[1](!bind[0])}>
+        <label style={{margin:label.length===0?"0 auto":""}}> {label}
+
+            <div className={value?"switch switch-true":"switch switch-false"}
+            onClick={()=>setter(!value)}>
                 {falseIcon}
                 {trueIcon}
             </div>
+
         </label>
     );
 };

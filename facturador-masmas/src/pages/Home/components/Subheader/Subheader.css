@@ -1,0 +1,49 @@
+.subheader {
+  width: 98%;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  padding: .6rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.subheader p {
+  border: 1px solid #727171;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  margin: 0 1rem;
+  padding: 0.2rem 0.4rem;
+  display: block;
+  cursor: default;
+}
+
+.subheader p:nth-child(1) {
+  background-color: #6ff56f;
+}
+
+.subheader p:nth-child(2) {
+  background-color: #fad55a;
+}
+
+.subheader p:nth-child(3) {
+  background-color: #5dbaf8;
+}
+
+@media (max-width: 600px) {
+  .subheader p {
+    margin: 0.5rem;
+  }
+}
+/*# sourceMappingURL=Subheader.css.map */

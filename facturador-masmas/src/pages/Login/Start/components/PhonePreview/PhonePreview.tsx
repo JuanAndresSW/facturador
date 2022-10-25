@@ -7,11 +7,13 @@ import "slick-carousel/slick/slick-theme.css";
 import img1 from "../../assets/img/doc.png";
 import img2 from "../../assets/img/libro.jpg";
 import img3 from "../../assets/img/punto.jpg";
-import img4 from "../../assets/img/stats.jpg";
+import img4 from "../../assets/img/stats.png";
 
 import "./PhonePreview.css";
 
 const imgs: string[] = [img1, img2, img3, img4];
+
+/**Sección con una muestra visual de la aplicación para teléfonos móviles. */
 export default function PhonePreview(): JSX.Element {
   const settings = {
     arrows: false,

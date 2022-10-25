@@ -6,7 +6,7 @@ import './NotLoggedHeader.css';
 
 /**
  * Un panel fijado en la parte superior de la pantalla.
- * El header cuando se no se ha detectado una sesión de usuario.
+ * El header cuando se no se ha detectado una sesión de usuario. Contiene algunos enlaces útiles.
  */
 export default function NotLoggedHeader(): JSX.Element {
   

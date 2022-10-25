@@ -2,28 +2,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //Servicios.
+import deleteAccount from './services/deleteAccount';
 import getLocalUserAvatar from './services/getLocalUserAvatar';
 import getTraderData from './services/getTraderData';
-import { updateMainAccount, updateBranchAccount } from './services/updateAccounts';
-import requestDeletionCode from './services/requestDeletionCode';
-import requestAccountDeletion from './services/requestAccountDeletion';
+import putAccount from './services/putAccount';
 //Validación.
 import Valid from "utilities/Valid";
 //GUI.
-import { Button, Message, Field, Form, Image, Radio } from "components/formComponents";
-import { Retractable } from "components/layout";
-import { Loading, Section } from "styledComponents";
+import { Button, Field, Form, Image, Message, Radio } from "components/formComponents";
+import { Loading } from "components/standalone";
+import { Confirm, FlexDiv, Retractable, Section } from "components/wrappers";
 import { BiChevronLeft } from "react-icons/bi";
 //Modelos.
 import editedAccount from "./models/editedAccount";
-
-
-//## Funciones de implementación condicional. ##//
-const hasRootAccess = sessionStorage.getItem("role") === "MAIN";
-
-const updateAccount = hasRootAccess?
-(data:any, handler:Function)=> updateMainAccount(data, handler):
-(data:any, handler:Function)=> updateBranchAccount(data, handler);
+import traderData from "./models/traderData";
 
 
 /**Un formulario que permite cambiar datos de la cuenta / eliminar la cuenta de usuario y el comerciante. */
@@ -41,37 +33,38 @@ export default function Account(): JSX.Element {
     const [error, setError] =                       useState("");
     const [deleteError, setDeleteError] =           useState("");
     //Datos de eliminación.
-    const [deletePermissionGranted, setDeletePermissionGranted] = useState(false);
-    const [deletionCode, setDeletionCode] =                       useState("");
+    const [deletionCode, setDeletionCode] =         useState("");
     //Datos del usuario.
     const [avatar, setAvatar] =                     useState(undefined);
-    const [newUsername, setNewUsername] =                 useState('');
+    const [newUsername, setNewUsername] =           useState('');
     const [password, setPassword] =                 useState("");
     const [newPassword, setNewPassword] =           useState("");
     const [confirmPassword, setConfirmPassword] =   useState("");
     //Datos del comerciante.
     const [businessName, setBusinessName] =         useState("");
     const [newBusinessName, setNewBusinessName] =   useState("");
-    const [vatCategory, setVatCategory] =           useState("");
-    const [newVatCategory, setNewVatCategory] =     useState("");
-    const [code, setCode] =                         useState("");
-    const [newCode, setNewCode] =                   useState("");
+    const [VATCategory, setVatCategory] =           useState("");
+    const [newVATCategory, setNewVATCategory] =     useState("");
+    const [CUIT, setCUIT] =                         useState("");
 
     //Pedir los datos actuales en el primer renderizado.
-    useEffect(() => {
-        getLocalUserAvatar((ok:boolean, file: Blob) => {
-            if (ok && !avatar) setAvatar(file);
+    useEffect(getAvatarAndTraderData);
+    
+    function getAvatarAndTraderData() {
+        getLocalUserAvatar().then(response => {
+            if (response.ok && !avatar) setAvatar(response.content);
         });
 
-        if (hasRootAccess) {
-            getTraderData((ok:boolean, data:any):void => {
-                if (!ok) { setError(data); return; }
-                setBusinessName (data.businessName);
-                setVatCategory  (data.vatCategory);
-                setCode         (data.uniqueKey);
-            });
-        }
-    }, []);
+        getTraderData().then(response=> {
+            if (!response.ok) return setError(response.message)
+            
+            const traderData: traderData = response.content;
+            setBusinessName (traderData.businessName);
+            setVatCategory  (traderData.VATCategory);
+            setCUIT         (traderData.CUIT);
+        });
+
+    }
 
     /*VALIDACIÓN***************************************************************/
 
@@ -82,11 +75,8 @@ export default function Account(): JSX.Element {
             if (!Valid.password(newPassword, setError)) return;
             if (newPassword!==confirmPassword) return setError("Las contraseñas no coinciden");
         }
-        if (hasRootAccess)                                            {
-            if (newBusinessName && !Valid.names(newBusinessName)) return setError("La razón social debe ser de entre 3 y 20 caracteres");
-            if (newVatCategory && !Valid.vatCategory(newVatCategory)) return setError("Seleccione una categoría");
-            if (newCode && !Valid.code(code)) return setError(`C.U.I.${newVatCategory === "Monotributista"? "L. inválido": "T. inválida"}`);
-        }
+        if (newBusinessName && !Valid.names(newBusinessName)) return setError("La razón social debe ser de entre 3 y 20 caracteres");
+        if (newVATCategory && !Valid.vatCategory(newVATCategory, setError)) return;
         submit();
     }
 
@@ -97,45 +87,30 @@ export default function Account(): JSX.Element {
         setLoading(true);
         const account: editedAccount = {
             user: {
-                username:     sessionStorage.getItem("username"),
-                newUsername:  newUsername,
-                password:     password,
-                newPassword:  newPassword,
-                newAvatar:    avatar,
+                updatedUsername:  newUsername,
+                password:         password,
+                updatedPassword:  newPassword,
+                updatedAvatar:    avatar,
             },
             trader: {
-                newBusinessName: newBusinessName,
-                newVatCategory:  newVatCategory,
-                newCode:         newCode,
+                updatedBusinessName: newBusinessName,
+                updatedVATCategory:  newVATCategory,
             }
         } 
-        updateAccount(account, (ok:boolean, data:string)=>{
-            setLoading(false);
-            if (ok) {
-                setSuccess(true);
-                if (newUsername) sessionStorage.setItem("username", newUsername);
-            }
-            else setError(data);
-        });
-    }
-
-    //Solicita un código de eliminación a ser enviado al email del usuario.
-    function RequestDeletePermission() {
-        setLoading(true);
-        requestDeletionCode((ok:boolean, data:string)=> {
-            setLoading(false);
-            if (ok) setDeletePermissionGranted(true);
-            else setDeleteError(data);
-        });
+        const response = await putAccount(account);
+        
+        if (!response.ok) return setError(response.message);
+        setSuccess(true);
+        if (newUsername) sessionStorage.setItem("username", newUsername);
     }
 
     //Envía el código de eliminación ingresado. Si es correcto, la cuenta de usuario es eliminada.
-    function deleteAccount() {
+    async function requestAccountDeletion() {
         //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
-        requestAccountDeletion(deletionCode, (ok:boolean, data:string)=> {
-            if (!ok) setDeleteError(data);
-            else setDeleteSuccess(true);
-        });
+        const response = await deleteAccount(deletionCode);
+        if (!response.ok) setDeleteError(response.message);
+        else setDeleteSuccess(true);
+     
     }
 
 
@@ -150,50 +125,60 @@ export default function Account(): JSX.Element {
             <Image label='' setter={setAvatar} img={avatar} />
 
             <Field bind={[newUsername, setNewUsername]} label="Nombre"
-            placeholder={sessionStorage.getItem('username')} />
+            placeholder={sessionStorage.getItem('username')}
+            validator={Valid.names(newUsername)} />
 
-            <Field bind={[password, setPassword]} label="Para cambiar tu contraseña, introduce la contraseña actual:" type="password" />
+            <Field bind={[password, setPassword]} type="password"
+            label="Para cambiar tu contraseña, introduce la contraseña actual:"
+            validator={Valid.password(password)} />
             {!Valid.password(password) ? null:
             <>
-            <Field bind={[newPassword, setNewPassword]} label="Nueva contraseña" type="password" />
-            <Field bind={[confirmPassword, setConfirmPassword]} label="Confirmar nueva contraseña" type="password" />
+            <Field bind={[newPassword, setNewPassword]} label="Nueva contraseña" type="password"
+            validator={Valid.password(newPassword)} />
+            <Field bind={[confirmPassword, setConfirmPassword]} 
+            label="Confirmar nueva contraseña" type="password"
+            validator={confirmPassword === newPassword} />
             </>}
 
-            {!hasRootAccess?null:
-                <Section label="Datos del comercio">
-                    <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
-                    placeholder={businessName} />
-                        
-                    <Radio legend={"Actualmente: "+vatCategory+". Nueva categoría:"} bind={[newVatCategory, setNewVatCategory]}
-                    options={["Responsable Inscripto", "Monotributista", "Sujeto Exento"]} />
+            <Section label="Datos del comercio">
+                <p style={{textAlign:"center", cursor:"default"}}>C.U.I.T.: {CUIT}</p>
 
-                    <Field label={"C.U.I." + (newVatCategory === "Monotributista" ? "L. " : "T. ")}
-                    bind={[newCode, setNewCode]} placeholder={code} />
-                </Section>
-            }
+                <Field bind={[newBusinessName, setNewBusinessName]} label="Razón social"
+                placeholder={businessName} validator={Valid.names(newBusinessName)} />
+                        
+                <Radio legend={"Actualmente: "+VATCategory+". Nueva categoría:"} bind={[newVATCategory, setNewVATCategory]}
+                options={["Responsable Inscripto", "Responsable Monotributista"]} />
+            </Section>
 
             <Message type="error" message={error} />
 
             {success? <Message type="success" message="Se han guardado los cambios"/>:
             loading?<Loading />:
-            <Button text="Confirmar cambios" type="submit" />}
+            <Button type="submit">Confirmar cambios</Button>}
             
 
             <p style={{textAlign:"center", color:"#fff", cursor:"default"}}>...</p>
             <Retractable label="Otras opciones" initial={false}>
                 
-                {!deletePermissionGranted? null :
-                    <Field bind={[deletionCode, setDeletionCode]} 
-                    label={'Se ha enviado por correo electrónico el código de eliminación. Escríbelo a continuación para confirmar:'} />
-                }   
+                
+                <Field bind={[deletionCode, setDeletionCode]} 
+                label={'Escríbe el código de eliminación:'} />
+                
 
                 <Message type="error" message={deleteError} />
 
                 {deleteSuccess? <Message type="success" message={`Se ha eliminado la cuenta`}/>:
-                    loading? <Loading /> :
-                    <Button type="delete"
-                text=   {!deletePermissionGranted?"Borrar la cuenta" : "Solicitar código para eliminar cuenta"}
-                onClick={!deletePermissionGranted?deleteAccount      :  RequestDeletePermission} />}  {/*TODO: remove !: delete only after permission */}
+                loading? <Loading /> :
+                
+                <FlexDiv justify='space-between'>
+                    <a href="about:blank" target='_blank'>Solicitar código</a>
+
+                    <Confirm label="¿Está seguro de que quiere eliminar su cuenta? Esta acción es irreversible"
+                    onConfirm={requestAccountDeletion}>
+                        <Button type="delete">Borrar la cuenta</Button>
+                    </Confirm>
+                </FlexDiv>}
+                
 
             </Retractable>
         </Form>

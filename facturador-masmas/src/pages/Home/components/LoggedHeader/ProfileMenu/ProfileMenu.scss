@@ -1,71 +1,73 @@
 #profile-menu {
     cursor: context-menu;
-    width: max-content;
-    height: 2.5rem; max-height: 2.5rem;
+    height: 2rem; max-height: 2rem;
     margin: 1rem;
     display: flex;
     align-items: center;
     img {
+        &:hover {background-color: gainsboro;}
         border-radius: 50%;
         object-position: center;
         object-fit: fill;
         margin: 0;
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-    svg {
-        margin: -.2rem;
-        display: block;
-        color: black;
-        font-size: 2rem;
+        padding: 3px;
+        width: 2rem;
+        height: 2rem;
     }
 }
 #profile-menu-list {
-    z-index: 10;
-    height: 0;
-    overflow: hidden;
-    background-color: #0f3e67ee;
+    z-index: 1000;
+    height: min-content;
     position: absolute;
-    top: 4rem;
+    top: 4.5rem;
     right: .5rem;
-    border-radius: 2px;
+    display: none;
+    background-color: #fff;
+    border: 1px solid #777;
+    border-radius: 3px;
     font-family: monospace;
+    
     p {
         cursor:default;
         font-size: 1rem;
         margin: .4rem;
-        color: #fff;
+        text-align: center;
+        color: #272727;
     }
     ul {
         list-style: none;
-        margin: 0; padding: .5rem;
+        padding: 0 .5rem;
         li {
+            display: block;
             font-size: 1rem;
-            color: #fff;
-            padding: 0.4rem;
             text-align: center;
+            color: #272727;
+            width: max-content;
+            margin: .3rem auto; 
             cursor:pointer;
+            
             a {
+                padding: .4rem .6rem;
+                border-radius: 99px;
                 text-decoration: none;
-                color: rgb(255, 255, 255);
-            }
-            .active {
-                color: #ccf;
+                color: rgb(0, 0, 0);
+                &:hover {
+                    background-color: #eee;
+                }
             }
         }
     }
-}
-#profile-menu-list.extended {
-    animation: retract .01s ease-in forwards;
-}
-@keyframes retract {
-	0% {
-	height: 0;
-	}
-    50% {
-        height: 5rem;
+    &.extended {
+        display: block;
     }
-	100% {
-		height: max-content;
-	}
+
+    &::before {
+        content: "";
+        position: absolute;
+        right: 10%;
+        top: -13%;
+        border-width: 8px;
+        border-style: solid;
+        border-color: transparent transparent #555 transparent;
+    }
 }

@@ -1,0 +1,58 @@
+[data-branchpoints] {
+    background-color: #fefefe;
+    min-height: 14rem;
+    padding: 2rem 0 2rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+    div {
+        margin: 0 auto;
+        .point-plus {
+            display: inline-block;
+            margin: 1rem;
+            border-radius: 999px;
+            background-color: #ccc;
+            width: 4rem;
+            padding: .6rem .4rem;
+            text-align: center;
+            cursor: pointer;
+            transition: .1s;
+            &:hover {
+                background-color: #bbb;
+            }
+        }
+    }
+    .point {
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: #eee;
+        width: 10rem;
+        padding: .2rem .4rem;
+        margin: .8rem;
+        position: relative;
+        h3 {
+            font-size: 1rem;
+            margin: 0;
+            padding-right: 1rem;
+            border-right: 1px solid #bbb;
+            float: left;
+            display: block;
+            cursor: default;
+        }
+        svg{
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #444;
+            &:hover {
+                color:#fd5454;
+                cursor: pointer;
+            }
+        }
+    }
+    &:nth-child(even) {
+        background-color: #ddf;
+    }
+    h1 {
+        text-align: center;
+    }
+}
