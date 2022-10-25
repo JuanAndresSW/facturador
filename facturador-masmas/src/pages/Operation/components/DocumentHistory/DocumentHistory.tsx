@@ -8,7 +8,7 @@ import getDocumentHistory from "../../services/getDocumentHistory";
 
 import documentHistoryItem from 'pages/Operation/models/documentHistoryItem';
 import "./DocumentHistory.css";
-import { FlexDiv } from 'components/wrappers';
+import { Cond, FlexDiv } from 'components/wrappers';
 
 const documentClasses = [
     {title: "Factura",          value: "Fa"},
@@ -60,9 +60,9 @@ export default function DocumentHistory() {
 
     return <div className='document-history'>
 
-        <menu className='document-history-menu'>
 
-      
+        <Cond bool={documentHistory.length > 0}>
+        <menu className='document-history-menu'>
             <Select 
             options={branchesAndPoints}
             value={IDBranch}                onChange={setIDBranch}         label="Sucursal"
@@ -74,6 +74,8 @@ export default function DocumentHistory() {
             value={documentClassCode}       onChange={setDocumentClass}    label="Documento"
             />
         </menu>
+        </Cond>
+
 
        <FlexDiv justify='flex-start'>
 

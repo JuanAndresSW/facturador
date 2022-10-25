@@ -1,7 +1,7 @@
 import ajax from 'ports/ajax';
 import Response from 'models/Response';
 import documentIdentifier from "../models/documentIdentifier";
-import documentClassCodeToDocumentName from "../utilities/documentClassCodeToDocumentName";
+import documentClassCodeToDocumentName from "../utilities/conversions/documentClassCodeToDocumentName";
 import jsonToDocument from '../adapters/jsonToDocument';
 
 /**Recupera un documento comercial utilizando un identificador de documento. */

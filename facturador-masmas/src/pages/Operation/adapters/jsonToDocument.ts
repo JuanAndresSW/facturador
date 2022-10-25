@@ -1,6 +1,6 @@
 import { documentClassCode } from "../models/operation";
 import document from "../models/document";
-import documentClassCodeToDocumentName from "../utilities/documentClassCodeToDocumentName";
+import documentClassCodeToDocumentName from "../utilities/conversions/documentClassCodeToDocumentName";
 import { base64ToBlob } from "utilities/conversions";
 
 export default async function jsonToDocument(json: string, docCC: documentClassCode): Promise<document> {

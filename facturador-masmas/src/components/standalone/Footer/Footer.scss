@@ -6,6 +6,7 @@ footer {
     flex-flow: row wrap;
     align-items: center;
     justify-content: space-between;
+    text-align: center;
     div {
         font-family: monospace;
         margin: 0 1rem;
@@ -20,7 +21,7 @@ footer {
             width: max-content;
             margin: 0 auto;
         }
-        .github *{
+        .github svg {
             height: 4rem;
             width: 4rem;
             color: black;

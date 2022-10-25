@@ -1,6 +1,6 @@
 import operation, {documentClassCode} from "../models/operation";
 import documentProp from "../models/documentProp";
-import operationFilters from "../utilities/operationFilters";
+import operationFilters from "../utilities/constants/operationFilters";
 import {IDTrader} from "utilities/constants";
 import { toFormattedCUIT } from "utilities/conversions";
 

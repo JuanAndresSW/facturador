@@ -1,7 +1,7 @@
 import ajax from 'ports/ajax';
 import Response from 'models/Response';
 import jsonToDocumentHistory from "../adapters/jsonToDocumentHistory";
-import documentClassCodeToDocumentName from "../utilities/documentClassCodeToDocumentName";
+import documentClassCodeToDocumentName from "../utilities/conversions/documentClassCodeToDocumentName";
 import { documentClassCode } from '../models/operation';
 import {IDTrader} from "utilities/constants";
 

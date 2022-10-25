@@ -10,7 +10,7 @@ export default function TitleScreen(): JSX.Element {
 
   //Controladores del formulario.
   const [loading, setLoading] = useState(false);
-  const [loginInputType, setLoginInputType] = useState("text");
+  const [inputingPassword, setInputingPassword] = useState(false);
   const [error, setError] = useState("");
   //Valores del formulario.
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -21,7 +21,7 @@ export default function TitleScreen(): JSX.Element {
     setError("");
     setUsernameOrEmail("");
     setPassword("");
-    setLoginInputType("text");
+    setInputingPassword(true);
   }
 
   //Validar los datos. Si son validados, se envían al servidor.
@@ -53,21 +53,23 @@ export default function TitleScreen(): JSX.Element {
       </h2>
 
       <input
-        type={loginInputType}
-        placeholder={loginInputType === "text" ? "nombre o email"   : "contraseña"}
-        value=      {loginInputType === "text" ? usernameOrEmail    : password}
-        onChange=   {loginInputType === "text" ? 
-        e =>        setUsernameOrEmail(e.target.value.trim())       : e=> setPassword(e.target.value.trim())}
-        onKeyPress= {loginInputType === "text" ?
-        e => { if (e.key === "Enter") {setError(""); setLoginInputType("password")}}:
-        e => { if (e.key === "Enter") validate() }}
+        type={inputingPassword?"password":"text"}
+        placeholder={inputingPassword? "contraseña" : "nombre o email"}
+        value=      {inputingPassword? password : usernameOrEmail}
+        onChange=   {inputingPassword ?
+                    e => setPassword(e.target.value) :
+                    e => setUsernameOrEmail(e.target.value)}
+
+        onKeyDown = {inputingPassword ?
+          e => { if (e.key === "Enter") validate() } :
+          e => { if (e.key === "Enter") {setError(""); setInputingPassword(true)}}
+        }
       />
 
       {loading? <Loading/>:
-      <button
-      onClick={loginInputType === "text" ?
-      ()=> {setError(""); setLoginInputType("password")} : validate }>
-      {loginInputType === "text" ? 'Siguiente':'Iniciar sesión'}
+
+      <button onClick={inputingPassword ? validate : ()=> {setError(""); setInputingPassword(true)}}>
+        {inputingPassword ? 'Iniciar sesión' : "Siguiente"}
       </button>}
 
       <Message type="error" message={error}/>

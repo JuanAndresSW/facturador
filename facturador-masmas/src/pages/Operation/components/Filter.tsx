@@ -1,6 +1,6 @@
 import React from 'react';
 import { Cond } from 'components/wrappers';
-import operationFilters from "../utilities/operationFilters";
+import operationFilters from "../utilities/constants/operationFilters";
 import {documentClassCode} from '../models/operation';
 import documentProp from '../models/documentProp';
 

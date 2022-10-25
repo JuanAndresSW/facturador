@@ -15,7 +15,7 @@ export default async function tryLogin(usernameOrEmail: string, password: string
     
     window.location.reload();
   }
-  if (response.status >= 404)
+  if (response.status === 400)
   return {...response, message: "Usuario o contraseña incorrecta"};
 
   return response;

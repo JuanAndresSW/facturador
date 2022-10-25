@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import documentHistoryItem from "../../../models/documentHistoryItem";
-import documentNameToClassCode from "../../../utilities/documentNameToClassCode";
+import documentNameToClassCode from "../../../utilities/conversions/documentNameToClassCode";
 import "./DocumentHistoryItem.css";
 
 
@@ -16,7 +16,7 @@ export default function DocumentHistoryItem({item}:{item: documentHistoryItem}) 
        
         <div>
             <p>{item.dateOfIssue}</p>
-            <p>para: {item.receiverName}</p>
+            <p><span>para:</span> {item.receiverName}</p>
             <p>{item.receiverCUIT}</p>
         </div>
 

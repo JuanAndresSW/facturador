@@ -1,5 +1,5 @@
 import Valid from 'utilities/Valid';
-import operationFilters from "./operationFilters";
+import operationFilters from "./constants/operationFilters";
 import documentProp from '../models/documentProp';
 import operation, { documentClassCode } from '../models/operation';
 

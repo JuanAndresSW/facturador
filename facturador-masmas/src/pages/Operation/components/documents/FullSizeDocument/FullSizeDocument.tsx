@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import "./FullSizeDocument.css";
 import { DataBox } from "components/standalone";
 import { Cond, FlexDiv } from "components/wrappers";
-import numberToWords from "../../../utilities/numberToWords";
+import numberToWords from "../../../utilities/conversions/numberToWords";
 
 import document from "../../../models/document";
 

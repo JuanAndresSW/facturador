@@ -1,8 +1,7 @@
 .document-history-item {
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   text-decoration: none;
   color: #444;
-  background-color: #fff;
   border-radius: 5px;
   margin: 10px;
 }
@@ -22,7 +21,7 @@
 .document-history-item > div {
   width: 100%;
   min-height: 70px;
-  border-top: 2px solid #ccc;
+  border-top: 1px solid #ccc;
 }
 
 .document-history-item > div p {

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { Loading, PDFButton } from "components/standalone";
 import { FullSizeDocument } from "./components/documents";
@@ -11,11 +12,13 @@ import document from "./models/document";
 import { documentClassCode } from "./models/operation";
 
 
+
 /**La representación gráfica de un documento. Un documento es la entidad que resulta de una operación exitosa. */
 export default function Document(): JSX.Element {
 
+
     //Identificar qué documento se debe pedir al servidor.
-    const params = new URLSearchParams(window.document.location.search)
+    const params = useSearchParams()[0];
     const documentIdentifier: documentIdentifier = {
         IDOperation:        parseInt(params.get("id")),
         documentClassCode:  params.get("class") as documentClassCode,

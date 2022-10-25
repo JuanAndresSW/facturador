@@ -15,6 +15,7 @@ footer {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  text-align: center;
 }
 
 footer div {
@@ -37,7 +38,7 @@ footer div a {
   margin: 0 auto;
 }
 
-footer div .github * {
+footer div .github svg {
   height: 4rem;
   width: 4rem;
   color: black;

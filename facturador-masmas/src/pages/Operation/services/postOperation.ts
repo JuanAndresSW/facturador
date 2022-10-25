@@ -2,7 +2,7 @@ import ajax from 'ports/ajax';
 import Response from 'models/Response';
 import operation from '../models/operation';
 import operationToJson from "../adapters/operationToJson";
-import documentClassCodeToDocumentName from "../utilities/documentClassCodeToDocumentName";
+import documentClassCodeToDocumentName from "../utilities/conversions/documentClassCodeToDocumentName";
 
 export default async function postOperation(operation: operation): Promise<Response> {
 
