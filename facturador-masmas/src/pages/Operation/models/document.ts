@@ -21,7 +21,7 @@ type document = {
         address: string,
         VATCategory: string,
         postalCode: string,
-        locality: string,
+        city: string,
     },
 
     operationData: {

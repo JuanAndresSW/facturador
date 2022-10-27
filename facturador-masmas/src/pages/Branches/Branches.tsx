@@ -74,7 +74,7 @@ export default function Branches(): JSX.Element {
       <OptionWithPhoto
         key={index}
         title={branch.name}
-        subtitle={branch.address.locality + ' ' + branch.address.street + ' ' + branch.address.addressNumber}
+        subtitle={branch.address.city + ' ' + branch.address.street + ' ' + branch.address.addressNumber}
         image={branch.photo}
         onClick={() => viewBranch(branch)}
       />)}

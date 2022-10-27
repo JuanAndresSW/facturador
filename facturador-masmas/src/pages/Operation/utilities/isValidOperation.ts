@@ -28,7 +28,7 @@ export default function isValidOperation(operation: operation, documentClassCode
     if (currentOperationIncludes("receiverPostalCode") && !Valid.postalCode(operation.thirdParty.postalCode, setError))
     return false;
 
-    if (currentOperationIncludes("receiverLocality") && !Valid.address(operation.thirdParty.locality))
+    if (currentOperationIncludes("receiverCity") && !Valid.address(operation.thirdParty.city))
     return no("Ingrese una localidad de entre 4 y 40 caracteres.");
 
 

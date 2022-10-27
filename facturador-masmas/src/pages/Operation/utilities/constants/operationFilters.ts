@@ -13,7 +13,7 @@ const operationFilters = Object.freeze({
     receiverAddress:    "OcRmFaNdNcRxPa",
     receiverVATCategory:"OcRmFaNdNcRx",
     receiverPostalCode: "OcRmFaNdNcRx",
-    receiverLocality:   "OcRmFaNdNcRxCh",
+    receiverCity:   "OcRmFaNdNcRxCh",
 
     productTable:       "OcRmFaNdNc",
     observations:       "OcRm",

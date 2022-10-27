@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //Modelos.
@@ -6,9 +6,8 @@ import branch from "./models/branch";
 
 //Servicios.
 import postBranch from './services/postBranch';
-
-//Utilidades.
-import provinces from './utils/provinces';
+import getListOfProvinces from './services/public/getListOfProvinces';
+import getListOfCitiesByProvinceName from './services/public/getListOfCitiesByProvinceName';
 
 //GUI.
 import defaultLogo from 'assets/svg/default-logo.svg';
@@ -28,14 +27,14 @@ export default function NewBranch(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-
+  
+  
 
   //  Datos del punto de venta.  //
   const [name,       setName] =       useState();
   //Dirección.
-  const [province,   setProvince] =   useState("Buenos Aires");
-  const [department, setDepartment] = useState();
-  const [locality,   setLocality] =   useState();
+  const [province,   setProvince] =   useState("Misiones");
+  const [city,       setCity] =       useState();
   const [postalCode, setPostalCode] = useState();
   const [street,     setStreet] =     useState();
   const [number,     setNumber] =     useState();
@@ -48,6 +47,15 @@ export default function NewBranch(): JSX.Element {
   const [color,      setColor] =      useState("#ffffff");
 
 
+  //  Datos de opciones de formulario.  //
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+
+
+  useEffect(()=>getListOfProvinces(setProvinces), []);
+  useEffect(()=>getListOfCitiesByProvinceName(province, setCities), [province]);
+
+
   //  Controladores de elementos <Retractable/>  //
   const [boolAddress,     setBoolAddress] =     useState(true);
   const [boolContact,     setBoolContact] =     useState(false);
@@ -56,8 +64,7 @@ export default function NewBranch(): JSX.Element {
   function validate(): void {
     setError(undefined);
     if (!Valid.names(name, setError))            return;
-    if (!Valid.address(department))              return setError("El departamento debe ser de entre 4 y 40 caracteres");
-    if (!Valid.address(locality))                return setError("La localidad debe ser de entre 4 y 40 caracteres");
+    if (!Valid.address(city))                    return setError("La localidad debe ser de entre 4 y 40 caracteres");
     if (!Valid.postalCode(postalCode, setError)) return;
     if (!Valid.address(street))                  return setError("La calle debe ser de entre 4 y 40 caracteres");
     if (!Valid.addressNumber(number, setError))  return;
@@ -77,8 +84,7 @@ export default function NewBranch(): JSX.Element {
       phone: phone,
       address: {
         province: province,
-        department: department,
-        locality: locality,
+        city: city,
         postalCode: postalCode,
         street: street,
         addressNumber: number,
@@ -107,8 +113,7 @@ export default function NewBranch(): JSX.Element {
 
         <FlexDiv>
           <Select label="Provincia"           value={province} onChange={setProvince}     options={provinces} />
-          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.address(department)} />
-          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.address(locality)}   />
+          <Select label="Municipio"           value={city} onChange={setCity}     options={cities} />
           <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)} />
           <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.address(street)}                          />
           <Field  label="Altura " bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)} />

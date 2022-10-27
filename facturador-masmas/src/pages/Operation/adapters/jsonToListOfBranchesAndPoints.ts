@@ -5,7 +5,7 @@ export default function jsonToListOfBranchesAndPoints(json: string, usePointOfSa
     
     return listOfBAP.map((branch: any) => {   
         return {
-          title: `${branch.locality} ${branch.street} N°${branch.addressNumber}`,
+          title: `${branch.city} ${branch.street} N°${branch.addressNumber}`,
           value: branch.branchID,
           subOptions: branch.pointsOfSale.map((point: any) => {
             return {

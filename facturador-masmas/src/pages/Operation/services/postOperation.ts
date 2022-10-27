@@ -10,7 +10,13 @@ export default async function postOperation(operation: operation): Promise<Respo
     const URL = `operations${subrepository}/${documentClassCodeToDocumentName(operation.documentClassCode)}`
 
     const response = await ajax('POST', URL, true, operationToJson(operation, operation.documentClassCode, true))
-    
+
     return response;
 
 }
+
+
+
+const injectTextInHtmlText = (text: number) => "hola "+text+" mundo";
+
+const test = ()=> injectTextInHtmlText;

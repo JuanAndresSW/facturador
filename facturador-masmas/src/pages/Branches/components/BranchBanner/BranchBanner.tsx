@@ -3,7 +3,6 @@ import { useNavigate }                from "react-router-dom";
 
 import branch from "pages/Branches/models/branch";
 
-import { base64ToBlob }               from "utilities/conversions";
 import deleteBranch                   from '../../services/deleteBranch';
 
 import { Button, Message }            from "components/formComponents";
@@ -28,7 +27,7 @@ export default function BranchBanner({branch}:{branch:branch}): JSX.Element {
         <div data-component="branch-banner">
           <img src={branch.photo?.size>10?URL.createObjectURL(branch.photo):null} alt="" />
           <h2>{branch.name}</h2>
-          <h3>{branch.address.locality + ' ' + branch.address.street + ' ' + branch.address.addressNumber}</h3>
+          <h3>{branch.address.city + ' ' + branch.address.street + ' ' + branch.address.addressNumber}</h3>
 
           <div>
           <Button onClick={()=>navigate('./editar')}>Editar</Button>

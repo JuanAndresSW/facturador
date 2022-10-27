@@ -55,7 +55,7 @@ export default function FullSizeDocument({document}: props): JSX.Element {
             <p>Señor/es: {document.receiver.name}</p>
             <p>C.P.: {document.receiver.postalCode}</p>
             <p>Domicilio: {document.receiver.address}</p>
-            <p>Localidad: {document.receiver.locality}</p>
+            <p>Municipio: {document.receiver.city}</p>
             <p>I.V.A.: {document.receiver.VATCategory}</p>
             <p>C.U.I.T.: {document.receiver.code}</p>
             <p>Cond. de venta: {document.operationData.sellConditions}</p>

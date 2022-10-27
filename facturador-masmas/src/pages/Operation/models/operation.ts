@@ -12,7 +12,7 @@ type operation = {
         VATCategory: string,
         startOfActivities?: string,
         postalCode: string,
-        locality: string
+        city: string
     },
     productTable: {
         quantity: number[],

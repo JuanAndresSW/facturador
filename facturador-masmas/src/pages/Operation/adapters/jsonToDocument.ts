@@ -28,7 +28,7 @@ export default async function jsonToDocument(json: string, docCC: documentClassC
             address:            doc.receiverAddress,
             VATCategory:        doc.receiverVatCategory,
             postalCode:         doc.receiverPostalCode,
-            locality:           doc.receiverLocality,
+            city:               doc.receiverCity,
         },
     
         operationData: {

@@ -11,7 +11,7 @@ type operationProp =
     "receiverVATCategory"|
     "startOfActivities"|
     "receiverPostalCode"|
-    "receiverLocality"|
+    "receiverCity"|
     "productTable"|
     "observations"|
     "seller"|

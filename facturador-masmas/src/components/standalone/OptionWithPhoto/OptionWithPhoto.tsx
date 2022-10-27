@@ -32,4 +32,4 @@ export default function OptionWithPhoto({ title, subtitle, image, onClick }: pro
         </div>
     )
 }
-//TODO: renombrar este componente a BranchPreview y moverlo a la página Branches.
+//TODO: renombrar este componente a BranchPreviewItem y moverlo a la página Branches.

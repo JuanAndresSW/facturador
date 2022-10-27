@@ -1,10 +1,13 @@
 import React from "react";
 import "./manual.css";
+
 import signup from "../assets/signup.png";
 import branch from "../assets/create-branch.png";
 import selectBranch from "../assets/select-branch.png";
 import creatingPoint from "../assets/creating-point.png";
 import createDoc from "../assets/create-doc.png";
+import tutorial from "../assets/facturador-tutorial.mp4";
+
 import {Section} from "components/wrappers";
 
 export default function Description() {
@@ -21,6 +24,10 @@ export default function Description() {
         <p>La aplicación fue ideada para facilitar el proceso de enseñanza de documentos comerciales en las asignaturas de contabilidad.</p>
 
         <h2>Comienza a usar la aplicación en 4 pasos</h2>
+
+        <video controls width="250">
+            <source src={tutorial} type="video/mp4" />
+        </video>
 
         <h3>1: Crea una cuenta de comerciante</h3>
         <img src={signup} alt="" />
