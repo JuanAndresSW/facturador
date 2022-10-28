@@ -56,7 +56,6 @@ public class GetRequiredDataQueryHandler implements PortQueryHandler<DataRequire
         if( Objects.isNull(projection.get().getOperationNumberCount())) {
             return response.defineNumber(0);
         }
-        log.info("Apunto de enviar la request");
         return response.defineNumber(projection.get().getOperationNumberCount());
     }
 }

@@ -7,7 +7,7 @@ public interface BranchSummaryProjection {
 
     String getFantasyName();
 
-    String getLocality();
+    String getCity();
 
     String getStreet();
 

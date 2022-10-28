@@ -43,7 +43,7 @@ public final class Receiver implements Serializable {
     @Column(name = "receiver_postal_code", nullable = false, length = 10)
     private String receiverPostalCode;
     @Column(name = "receiver_locality", nullable = false, length = 45)
-    private String receiverLocality;
+    private String receiverCity;
 
     @JsonIgnore
     @OneToOne
@@ -58,11 +58,11 @@ public final class Receiver implements Serializable {
 
         Receiver receiver = (Receiver) o;
 
-        return new EqualsBuilder().append(getReceiverCode(), receiver.getReceiverCode()).append(getReceiverName(), receiver.getReceiverName()).append(getReceiverAddress(), receiver.getReceiverAddress()).append(getReceiverVatCategory(), receiver.getReceiverVatCategory()).append(getReceiverPostalCode(), receiver.getReceiverPostalCode()).append(getReceiverLocality(), receiver.getReceiverLocality()).isEquals();
+        return new EqualsBuilder().append(getReceiverCode(), receiver.getReceiverCode()).append(getReceiverName(), receiver.getReceiverName()).append(getReceiverAddress(), receiver.getReceiverAddress()).append(getReceiverVatCategory(), receiver.getReceiverVatCategory()).append(getReceiverPostalCode(), receiver.getReceiverPostalCode()).append(getReceiverCity(), receiver.getReceiverCity()).isEquals();
     }
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(getReceiverCode()).append(getReceiverName()).append(getReceiverAddress()).append(getReceiverVatCategory()).append(getReceiverPostalCode()).append(getReceiverLocality()).toHashCode();
+        return new HashCodeBuilder(17, 37).append(getReceiverCode()).append(getReceiverName()).append(getReceiverAddress()).append(getReceiverVatCategory()).append(getReceiverPostalCode()).append(getReceiverCity()).toHashCode();
     }
 
     @Override
@@ -73,7 +73,7 @@ public final class Receiver implements Serializable {
                 ", receiverAddress='" + receiverAddress + '\'' +
                 ", receiverVatCategory=" + receiverVatCategory +
                 ", receiverPostalCode='" + receiverPostalCode + '\'' +
-                ", receiverLocality='" + receiverLocality + '\'' +
+                ", receiverLocality='" + receiverCity + '\'' +
                 '}';
     }
 }

@@ -30,17 +30,11 @@ public class PagingBranchQueryHandler implements PortQueryHandler<PagedResponse<
 
     @Override
     public PagedResponse<Branch> handle(PagingBranchesQuery query) throws Exception {
-        log.info("entre a lhandler");
         validatePageNumberAndSize(query.getPage().getIndex(), query.getPage().getSize(), query.getPage().getOrder());
-        log.info("pase validaciones");
         var pageable = createPageable(query.getPage());
-        log.info("cree pageable");
-        log.info("pageable is: {}", pageable);
         var pages = repository.findByTraderOwnerTraderId(query.getTraderId(), pageable);
-        log.info("pase el repository");
 
         if (pages.getNumberOfElements() != 0) {
-            log.info("entre al if");
             pages.getContent().forEach(branch -> {
                 branch.setPointsOfSale(null);
                 branch.setLogo(null);
@@ -48,8 +42,7 @@ public class PagingBranchQueryHandler implements PortQueryHandler<PagedResponse<
         }
 
         List<Branch> content = pages.getNumberOfElements() == 0 ? Collections.emptyList() : pages.getContent();
-        log.info("cree la lista");
-        return new PagedResponse<Branch>(content, pages.getNumber(), pages.getSize(),
+        return new PagedResponse(content, pages.getNumber(), pages.getSize(),
                 pages.getTotalElements(), pages.getTotalPages(), pages.isLast());
     }
 

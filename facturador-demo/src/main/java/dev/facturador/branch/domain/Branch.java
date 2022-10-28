@@ -40,10 +40,7 @@ public final class Branch implements Serializable {
 
     @Column(nullable = false, length = 20)
     private String province;
-    @Column(nullable = false, length = 45)
-    private String department;
-    @Column(nullable = false, length = 45)
-    private String locality;
+    private String city;
     @Column(name = "postal_code", nullable = false, length = 10)
     private String postalCode;
     @Column(nullable = false, length = 50)
@@ -79,10 +76,10 @@ public final class Branch implements Serializable {
         this.branchId = branchId;
     }
 
-    public Branch(Long branchId, String fantasyName, String locality, String street, String addressNumber, List<PointOfSale> pointsOfSale) {
+    public Branch(Long branchId, String fantasyName, String city, String street, String addressNumber, List<PointOfSale> pointsOfSale) {
         this.branchId = branchId;
         this.fantasyName = fantasyName;
-        this.locality = locality;
+        this.city = city;
         this.street = street;
         this.addressNumber = addressNumber;
         this.pointsOfSale = pointsOfSale;
@@ -92,8 +89,7 @@ public final class Branch implements Serializable {
                   String email,
                   String phone,
                   String province,
-                  String department,
-                  String locality,
+                  String city,
                   String postalCode,
                   String street,
                   String preferenceColor) {
@@ -101,8 +97,7 @@ public final class Branch implements Serializable {
         this.email = email;
         this.phone = phone;
         this.province = province;
-        this.department = department;
-        this.locality = locality;
+        this.city = city;
         this.postalCode = postalCode;
         this.street = street;
         this.preferenceColor = preferenceColor;
@@ -129,14 +124,11 @@ public final class Branch implements Serializable {
         if (StringUtils.hasText(updatedValues.getUpdatedPhone())) {
             branch.setPhone(updatedValues.getUpdatedPhone());
         }
-        if (StringUtils.hasText(updatedValues.getUpdatedDepartment())) {
-            branch.setDepartment(updatedValues.getUpdatedDepartment());
-        }
         if (StringUtils.hasText(updatedValues.getUpdatedProvince())) {
             branch.setProvince(updatedValues.getUpdatedProvince());
         }
-        if (StringUtils.hasText(updatedValues.getUpdatedLocality())) {
-            branch.setLocality(updatedValues.getUpdatedLocality());
+        if (StringUtils.hasText(updatedValues.getUpdatedCity())) {
+            branch.setCity(updatedValues.getUpdatedCity());
         }
         if (StringUtils.hasText(updatedValues.getUpdatedPostalCode())) {
             branch.setPostalCode(updatedValues.getUpdatedPostalCode());
@@ -171,8 +163,7 @@ public final class Branch implements Serializable {
                 values.getEmail(),
                 values.getPhone(),
                 values.getAddress().getProvince(),
-                values.getAddress().getDepartment(),
-                values.getAddress().getLocality(),
+                values.getAddress().getCity(),
                 values.getAddress().getPostalCode(),
                 values.getAddress().getStreet(),
                 values.getPreferenceColor());
@@ -212,8 +203,7 @@ public final class Branch implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", province='" + province + '\'' +
-                ", department='" + department + '\'' +
-                ", locality='" + locality + '\'' +
+                ", locality='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", street='" + street + '\'' +
                 ", addressNumber='" + addressNumber + '\'' +
