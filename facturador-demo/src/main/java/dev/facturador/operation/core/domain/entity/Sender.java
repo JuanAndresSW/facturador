@@ -48,6 +48,14 @@ public final class Sender implements Serializable {
     @JoinColumn(name = "id_operation_parent", nullable = false, updatable = false, referencedColumnName = "id_operation", unique = true)
     private Operation operationSender;
 
+    public Sender(String senderCode, String senderName, String senderAddress, VatCategory senderVatCategory, String senderContact) {
+        this.senderCode = senderCode;
+        this.senderName = senderName;
+        this.senderAddress = senderAddress;
+        this.senderVatCategory = senderVatCategory;
+        this.senderContact = senderContact;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

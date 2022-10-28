@@ -30,7 +30,6 @@ public final class DataRequiredOperation {
         response.setSenderStreet(String.valueOf(values.get("street")));
         response.setSenderName(String.valueOf(values.get("fantasyName")));
         response.setPointOfSaleNumber(String.valueOf(values.get("pointOfSaleNumber")));
-
         response.setSenderVatCategory(String.valueOf((values.get("vatCategory"))));
         return response;
     }

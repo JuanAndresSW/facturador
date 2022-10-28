@@ -408,6 +408,33 @@ LOCK TABLES `third_party` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ticket`
+--
+
+DROP TABLE IF EXISTS `ticket`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ticket` (
+  `ticket_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_operation_parent` int unsigned NOT NULL,
+  `ticket_number` int NOT NULL,
+  `count_ticket_number` varchar(13) NOT NULL,
+  PRIMARY KEY (`ticket_id`),
+  UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
+  CONSTRAINT `operation_ticket_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ticket`
+--
+
+LOCK TABLES `ticket` WRITE;
+/*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `trader`
 --
 
@@ -484,10 +511,6 @@ LOCK TABLES `user_avatar` WRITE;
 /*!40000 ALTER TABLE `user_avatar` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_avatar` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'facturador_db'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -498,4 +521,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-28  1:23:46
+-- Dump completed on 2022-10-28  4:53:25
