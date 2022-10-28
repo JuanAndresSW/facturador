@@ -14,8 +14,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -110,7 +108,7 @@ public final class DebitNote implements Serializable {
         debitNote.getOperation().setReceiver(new Receiver());
         debitNote.getOperation().getReceiver().setReceiverCode(values.getReceiverCode());
         debitNote.getOperation().getReceiver().setReceiverName(values.getReceiverName());
-        debitNote.getOperation().getReceiver().setReceiverLocality(values.getReceiverLocality());
+        debitNote.getOperation().getReceiver().setReceiverCity(values.getReceiverCity());
         debitNote.getOperation().getReceiver().setReceiverPostalCode(values.getReceiverPostalCode());
         debitNote.getOperation().getReceiver().setReceiverVatCategory(defineAllVat(values.getReceiverVatCategory()));
         debitNote.getOperation().getReceiver().setReceiverAddress(values.getReceiverAddress());

@@ -25,7 +25,7 @@ public class FullOperationUtility {
         response.setReceiverName(operation.getReceiver().getReceiverName());
         response.setReceiverPostalCode(operation.getReceiver().getReceiverPostalCode());
         response.setReceiverVatCategory(operation.getReceiver().getReceiverVatCategory().toFixedVat());
-        response.setReceiverLocality(operation.getReceiver().getReceiverLocality());
+        response.setReceiverCity(operation.getReceiver().getReceiverCity());
 
         response.setSenderCode(operation.getSender().getSenderCode());
         response.setSenderAddress(operation.getSender().getSenderAddress());

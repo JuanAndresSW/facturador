@@ -15,8 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -111,7 +109,7 @@ public final class CreditNote implements Serializable {
         creditNote.getOperation().setReceiver(new Receiver());
         creditNote.getOperation().getReceiver().setReceiverCode(values.getReceiverCode());
         creditNote.getOperation().getReceiver().setReceiverName(values.getReceiverName());
-        creditNote.getOperation().getReceiver().setReceiverLocality(values.getReceiverLocality());
+        creditNote.getOperation().getReceiver().setReceiverCity(values.getReceiverCity());
         creditNote.getOperation().getReceiver().setReceiverPostalCode(values.getReceiverPostalCode());
         creditNote.getOperation().getReceiver().setReceiverVatCategory(defineAllVat(values.getReceiverVatCategory()));
         creditNote.getOperation().getReceiver().setReceiverAddress(values.getReceiverAddress());

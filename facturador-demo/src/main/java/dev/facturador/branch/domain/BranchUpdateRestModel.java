@@ -20,9 +20,7 @@ public final class BranchUpdateRestModel {
     private String updatedProvince;
 
     @Size(min = 4, max = 40)
-    private String updatedDepartment;
-    @Size(min = 4, max = 40)
-    private String updatedLocality;
+    private String updatedCity;
     @Size(max = 10)
     private String updatedPostalCode;
 

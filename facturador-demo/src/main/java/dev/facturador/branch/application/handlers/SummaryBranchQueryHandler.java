@@ -34,7 +34,7 @@ public class SummaryBranchQueryHandler
                 {
                     put("branchID", x.getBranchId());
                     put("fantasyName", x.getFantasyName());
-                    put("locality", x.getLocality());
+                    put("city", x.getCity());
                     put("street", x.getStreet());
                     put("addressNumber", x.getAddressNumber());
                     put("pointsOfSale", x.getPointsOfSale());

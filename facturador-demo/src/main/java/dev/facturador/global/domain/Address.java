@@ -16,10 +16,7 @@ public class Address {
     private String province;
     @NotEmpty
     @Size(min = 4, max = 40)
-    private String department;
-    @NotEmpty
-    @Size(min = 4, max = 40)
-    private String locality;
+    private String city;
     @NotEmpty
     private String postalCode;
     @NotEmpty
