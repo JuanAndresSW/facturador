@@ -1,4 +1,4 @@
-export type documentClassCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch");
+export type documentClassCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch" | "Tk");
 
 type operation = {
     documentClassCode: documentClassCode,

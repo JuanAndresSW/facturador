@@ -163,6 +163,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
 
 
 
+      <Cond bool={"Tk"!==documentClassCode}>
       <Retractable label="Datos del tercero" initial={false}>
 
         <FlexDiv>
@@ -209,7 +210,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
         </Filter>
 
       </Retractable>
-      
+      </Cond>
 
       
       <Retractable label="Datos de la operación">

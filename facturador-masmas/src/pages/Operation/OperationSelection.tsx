@@ -5,7 +5,7 @@ import OperationForm from "./OperationForm";
 import Document from "./Document";
 import DocumentHistory from "./components/DocumentHistory/DocumentHistory";
 
-import OperationSelectionItem from "./components/Option/OperationSelectionItem";
+import OperationSelectionItem from "./components/OperationSelectionItem/OperationSelectionItem";
 import { FlexDiv, Section } from 'components/wrappers';
 
 
@@ -19,6 +19,7 @@ export default function OperationSelection() {
     <Route path={"/factura"}          element={<OperationForm documentClassCode="Fa" />} />
     <Route path={"/nota-de-credito"}  element={<OperationForm documentClassCode="Nc" />} />
     <Route path={"/nota-de-debito"}   element={<OperationForm documentClassCode="Nd" />} />
+    <Route path={"/ticket"}           element={<OperationForm documentClassCode="Tk" />} />
     <Route path={"/recibo-x"}         element={<OperationForm documentClassCode="Rx" />} />
     <Route path={"/recibo"}           element={<OperationForm documentClassCode="Rs" />} />
     <Route path={"/orden-de-compra"}  element={<OperationForm documentClassCode="Oc" />} />
@@ -33,6 +34,7 @@ const OperationMainScreen = <>
   <Section label="Nueva operación">
     <FlexDiv>
       <OperationSelectionItem   documentClassCode="Fa" link="./factura"          />
+      <OperationSelectionItem   documentClassCode="Tk" link="./ticket"           />
       <OperationSelectionItem   documentClassCode="Oc" link="./orden-de-compra" disabled  />
       <OperationSelectionItem   documentClassCode="Rm" link="./remito" disabled           />
       <OperationSelectionItem   documentClassCode="Rx" link="./recibo-x" disabled         />

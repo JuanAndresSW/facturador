@@ -3,7 +3,7 @@
   src: url(../../../../../assets/fonts/Nunito-VariableFont_wght.ttf);
 }
 
-.full-size-document {
+.invoice-like-document {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: (1fr)[6];
@@ -17,12 +17,12 @@
   font-family: "nunito";
 }
 
-.full-size-document > div {
+.invoice-like-document > div {
   width: 600px;
   border-radius: 6px;
 }
 
-.full-size-document #doc-header {
+.invoice-like-document #doc-header {
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: header;
@@ -32,35 +32,35 @@
       grid-template-columns: 1fr 1fr;
 }
 
-.full-size-document #doc-header > div {
+.invoice-like-document #doc-header > div {
   margin: 0 .25rem;
   overflow: hidden;
   background-color: #fff;
   border-radius: 6px;
 }
 
-.full-size-document #doc-header > div p {
+.invoice-like-document #doc-header > div p {
   margin: 4px;
   text-align: center;
 }
 
-.full-size-document #doc-header > div p.small {
+.invoice-like-document #doc-header > div p.small {
   font-size: .8rem;
 }
 
-.full-size-document #doc-header .doc-header-advertisement img {
+.invoice-like-document #doc-header .doc-header-advertisement img {
   max-height: 70px;
   margin: 0 auto;
   display: block;
 }
 
-.full-size-document #doc-header .doc-header-data .doc-header-data-title {
+.invoice-like-document #doc-header .doc-header-data .doc-header-data-title {
   height: 50px;
   background-color: #bbb;
   border-bottom: 1px solid black;
 }
 
-.full-size-document #doc-header .doc-header-data .doc-header-data-title p {
+.invoice-like-document #doc-header .doc-header-data .doc-header-data-title p {
   float: inline-start;
   display: block;
   padding: .2rem;
@@ -68,14 +68,14 @@
   font-size: 2rem;
 }
 
-.full-size-document #doc-header .doc-header-data .doc-header-data-title h2 {
+.invoice-like-document #doc-header .doc-header-data .doc-header-data-title h2 {
   font-size: medium;
   margin: 0;
   padding: 3px;
   font-weight: 50;
 }
 
-.full-size-document #doc-header .doc-header-data .doc-header-data-date {
+.invoice-like-document #doc-header .doc-header-data .doc-header-data-date {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -87,13 +87,13 @@
           justify-content: flex-end;
 }
 
-.full-size-document #doc-header .doc-header-data .doc-header-data-date p {
+.invoice-like-document #doc-header .doc-header-data .doc-header-data-date p {
   display: block;
   padding: 5px;
   border: 1px solid black;
 }
 
-.full-size-document #doc-header .doc-header-data .doc-header-data-other {
+.invoice-like-document #doc-header .doc-header-data .doc-header-data-other {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -104,7 +104,7 @@
           justify-content: space-between;
 }
 
-.full-size-document #doc-subheader {
+.invoice-like-document #doc-subheader {
   -ms-grid-row: 2;
   -ms-grid-column: 1;
   grid-area: subheader;
@@ -117,7 +117,7 @@
       flex-wrap: wrap;
 }
 
-.full-size-document #doc-subheader > p {
+.invoice-like-document #doc-subheader > p {
   min-width: 30%;
   max-width: 45%;
   text-overflow: ellipsis;
@@ -128,7 +128,7 @@
   font-size: .8rem;
 }
 
-.full-size-document #doc-body {
+.invoice-like-document #doc-body {
   -ms-grid-row: 3;
   -ms-grid-row-span: 3;
   -ms-grid-column: 1;
@@ -148,12 +148,12 @@
   overflow: hidden;
 }
 
-.full-size-document #doc-body data:nth-child(-n + 4) {
+.invoice-like-document #doc-body data:nth-child(-n + 4) {
   background-color: #363636;
   color: white;
 }
 
-.full-size-document #doc-body data {
+.invoice-like-document #doc-body data {
   padding: 8px 0;
   text-align: center;
   background-color: white;
@@ -161,7 +161,7 @@
   overflow: hidden;
 }
 
-.full-size-document #doc-footer {
+.invoice-like-document #doc-footer {
   -ms-grid-row: 6;
   -ms-grid-column: 1;
   grid-area: footer;
@@ -172,14 +172,14 @@
   background-color: white;
 }
 
-.full-size-document #doc-footer p {
+.invoice-like-document #doc-footer p {
   padding: .5rem;
   margin: 0;
   border-radius: 5px;
   background-color: white;
 }
 
-.full-size-document #doc-footer .doc-footer-copies {
+.invoice-like-document #doc-footer .doc-footer-copies {
   margin: .5rem;
 }
-/*# sourceMappingURL=FullSizeDocument.css.map */
+/*# sourceMappingURL=InvoiceLikeDocument.css.map */

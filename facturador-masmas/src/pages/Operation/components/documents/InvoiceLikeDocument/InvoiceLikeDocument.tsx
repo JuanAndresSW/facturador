@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import "./FullSizeDocument.css";
+import "./InvoiceLikeDocument.css";
 import { DataBox } from "components/standalone";
 import { Cond, FlexDiv } from "components/wrappers";
 import numberToWords from "../../../utilities/conversions/numberToWords";
@@ -9,14 +9,15 @@ import document from "../../../models/document";
 type props = {document: document};
 
 
-export default function FullSizeDocument({document}: props): JSX.Element {
+/**Un documento comercial, pudiendo ser: (factura || nota de débito || nota de crédito). */
+export default function InvoiceLikeDocument({document}: props): JSX.Element {
 
     const productSubtotal = document.operationData.productTable.reduce((prev, sum) => prev+sum.price*sum.quantity, 0);
     const productTotal = productSubtotal + productSubtotal * (document.operationData.VAT/100);
 
     return ( 
     
-    <div className="full-size-document" style={{backgroundColor: document.metadata.preferenceColor}}>
+    <div className="invoice-like-document" style={{backgroundColor: document.metadata.preferenceColor}}>
 
         <div id="doc-header" >
 
@@ -51,6 +52,7 @@ export default function FullSizeDocument({document}: props): JSX.Element {
 
 
 
+
         <div id="doc-subheader" >
             <p>Señor/es: {document.receiver.name}</p>
             <p>C.P.: {document.receiver.postalCode}</p>
@@ -61,6 +63,8 @@ export default function FullSizeDocument({document}: props): JSX.Element {
             <p>Cond. de venta: {document.operationData.sellConditions}</p>
             <p>Remito:</p>
         </div>
+
+
 
         <div id="doc-body" >
 
@@ -74,6 +78,8 @@ export default function FullSizeDocument({document}: props): JSX.Element {
             </Fragment>)}
                            
         </div>
+
+
 
         <div id="doc-footer" >
             <FlexDiv >
@@ -91,10 +97,10 @@ export default function FullSizeDocument({document}: props): JSX.Element {
                 </div>
 
                 <DataBox title="son pesos" value={numberToWords(productTotal).toLowerCase()} />
-            </FlexDiv>
-              
-            
+            </FlexDiv>  
         </div>
+
+
 
     </div>)
 }
