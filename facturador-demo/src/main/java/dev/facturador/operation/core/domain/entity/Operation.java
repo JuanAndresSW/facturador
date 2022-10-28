@@ -6,6 +6,7 @@ import dev.facturador.operation.fulls.domain.entity.CreditNote;
 import dev.facturador.operation.fulls.domain.entity.DebitNote;
 import dev.facturador.operation.fulls.domain.entity.Invoice;
 import dev.facturador.operation.remittance.domain.Remittance;
+import dev.facturador.operation.ticket.domain.Ticket;
 import dev.facturador.trader.domain.Trader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -63,6 +64,8 @@ public final class Operation implements Serializable {
 
     @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private Remittance remittance;
+    @OneToOne(mappedBy = "operation",cascade = CascadeType.ALL)
+    private Ticket ticket;
 
     @JsonIgnore
     @ManyToOne
@@ -106,6 +109,7 @@ public final class Operation implements Serializable {
                 ", debitNote=" + debitNote +
                 ", creditNote=" + creditNote +
                 ", remittance=" + remittance +
+                ", ticket=" + ticket +
                 '}';
     }
 }
