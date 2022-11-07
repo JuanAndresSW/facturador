@@ -1,5 +1,6 @@
 package dev.facturador.operation.ticket.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.facturador.operation.core.domain.model.ProductModel;
 import lombok.Data;
 
@@ -10,6 +11,8 @@ import java.util.List;
 public final class TicketRestModel {
     @NotNull
     private List<ProductModel> products;
-    private String pointOfSaleId;
-    private String traderId;
+    @JsonProperty(value = "IDPointOfSale")
+    private String IDPointOfSale;
+    @JsonProperty(value = "IDTrader")
+    private String IDTrader;
 }

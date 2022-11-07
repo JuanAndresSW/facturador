@@ -28,9 +28,12 @@ public class TicketCreateCommandHandler implements PortCommandHandler<TicketComm
 
     @Override
     public void handle(TicketCommand command) throws Exception {
-        var operation = new Operation();
+        defineNumberTicket(command);
+        log.info("Pase el numero de ticket");
         var ticket = Ticket.create(command);
-        operation = operationRepository.save(ticket.getOperation());
+        log.info("CREE EL TICket");
+        var operation = operationRepository.save(ticket.getOperation());
+        log.info("CREE LA OP");
         ticket.setOperation(operation);
         ticketRepository.save(ticket);
 
@@ -40,9 +43,12 @@ public class TicketCreateCommandHandler implements PortCommandHandler<TicketComm
     private void defineNumberTicket(TicketCommand command){
         var projection = ticketRepository.findOperationNumberCount(new Trader(command.getTraderId()), command.getRequiredData().getPointOfSaleNumber());
 
-        if( Objects.isNull(projection.get().getOperationNumberCount())) {
+        log.info("Projection is: {}", projection);
+        if(Objects.isNull(projection.get().getOperationNumberCount()) || projection.get().getOperationNumberCount() == null || projection.isEmpty()) {
+            log.info("ENtro bien");
             command.getRequiredData().defineNumber(0);
         }
+        log.info("NO entro bien");
         command.getRequiredData().defineNumber(projection.get().getOperationNumberCount());
     }
 }

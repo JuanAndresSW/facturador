@@ -3,14 +3,10 @@ package dev.facturador.operation.ticket.infrastructure;
 import dev.facturador.global.domain.abstractcomponents.ReactiveRequest;
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
-import dev.facturador.operation.fulls.domain.commands.CreateAnyFullOperationCommand;
 import dev.facturador.operation.fulls.domain.model.DataRequiredOperation;
-import dev.facturador.operation.fulls.domain.model.FullOperationRestModel;
-import dev.facturador.operation.fulls.domain.querys.GetRequiredOperationDataQuery;
 import dev.facturador.operation.ticket.domain.TicketCommand;
 import dev.facturador.operation.ticket.domain.TicketRestModel;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -21,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -52,22 +47,23 @@ public class CreateTicketResource {
             @Valid @RequestBody TicketRestModel ticketRestModel,
             HttpServletRequest request) throws Exception {
 
+        log.info("HOLA MUNDO: {}", ticketRestModel);
         var response = reactiveRequest.makeRequest(
                 "GET",
-                "/api/pointsofsale/" + ticketRestModel.getPointOfSaleId(),
+                "/api/pointsofsale/" + ticketRestModel.getIDPointOfSale(),
                 null,
                 MediaType.APPLICATION_JSON,
                 HashMap.class,
                 "Authorization",
                 request.getHeader("Authorization"));
 
-
+        log.info("PASE EL POINT REQ");
         var required = DataRequiredOperation.valueOf(response.getBody());
-
+        log.info("Pase required data");
         var command = TicketCommand.builder()
                 .products(ticketRestModel.getProducts())
                 .requiredData(required)
-                .traderId(Long.parseLong(ticketRestModel.getTraderId()))
+                .traderId(Long.parseLong(ticketRestModel.getIDTrader()))
                 .build();
 
         commandBus.handle(command);
