@@ -18,6 +18,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Entidad Operacion
@@ -41,6 +42,7 @@ public final class Operation implements Serializable {
     @Column(name = "issue_date", nullable = false)
     private LocalDate issueDate;
 
+    @JsonIgnore
     @JsonBackReference
     @OneToMany(mappedBy = "operationProduct", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
@@ -64,7 +66,8 @@ public final class Operation implements Serializable {
 
     @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private Remittance remittance;
-    @OneToOne(mappedBy = "operation",cascade = CascadeType.ALL)
+
+    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL)
     private Ticket ticket;
 
     @JsonIgnore
@@ -75,7 +78,6 @@ public final class Operation implements Serializable {
     public Operation(Long operationId) {
         this.operationId = operationId;
     }
-
     public Operation(Trader traderOwner, String issuingPointOfSaleNumber) {
         this.traderOwner = traderOwner;
         this.issuingPointOfSaleNumber = issuingPointOfSaleNumber;
@@ -84,17 +86,13 @@ public final class Operation implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (o == null || getClass() != o.getClass()) return false;
-
         Operation operation = (Operation) o;
-
-        return new EqualsBuilder().append(getTraderOwner(), operation.getTraderOwner()).append(getSender(), operation.getSender()).append(getReceiver(), operation.getReceiver()).isEquals();
+        return Objects.equals(getOperationId(), operation.getOperationId()) && Objects.equals(getIssuingPointOfSaleNumber(), operation.getIssuingPointOfSaleNumber()) && Objects.equals(getIssueDate(), operation.getIssueDate()) && Objects.equals(getInvoice(), operation.getInvoice()) && Objects.equals(getDebitNote(), operation.getDebitNote()) && Objects.equals(getCreditNote(), operation.getCreditNote()) && Objects.equals(getRemittance(), operation.getRemittance()) && Objects.equals(getTicket(), operation.getTicket()) && Objects.equals(getTraderOwner(), operation.getTraderOwner());
     }
-
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(getTraderOwner()).append(getSender()).append(getReceiver()).toHashCode();
+        return Objects.hash(getOperationId(), getIssuingPointOfSaleNumber(), getIssueDate(), getInvoice(), getDebitNote(), getCreditNote(), getRemittance(), getTicket(), getTraderOwner());
     }
 
     @Override

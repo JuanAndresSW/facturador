@@ -3,14 +3,13 @@ package dev.facturador.operation.ticket.infrastructure;
 import dev.facturador.global.domain.abstractcomponents.ReactiveRequest;
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
-import dev.facturador.operation.fulls.domain.model.DataRequiredOperation;
+import dev.facturador.operation.core.domain.GetRequiredOperationDataQuery;
 import dev.facturador.operation.ticket.domain.TicketCommand;
 import dev.facturador.operation.ticket.domain.TicketRestModel;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -25,7 +24,7 @@ import static org.springframework.http.ResponseEntity.created;
 /**
  * EndPoint para crear una factura
  */
-@Slf4j
+@Log4j2
 @RestController
 @RequestMapping(path = "/api/operations/ticket")
 @AllArgsConstructor
@@ -46,23 +45,20 @@ public class CreateTicketResource {
     public Mono<HttpEntity<Long>> addAnyFullOperation(
             @Valid @RequestBody TicketRestModel ticketRestModel,
             HttpServletRequest request) throws Exception {
+        log.info("Rest model is: {}", ticketRestModel.toString());
 
-        log.info("HOLA MUNDO: {}", ticketRestModel);
-        var response = reactiveRequest.makeRequest(
-                "GET",
-                "/api/pointsofsale/" + ticketRestModel.getIDPointOfSale(),
-                null,
-                MediaType.APPLICATION_JSON,
-                HashMap.class,
-                "Authorization",
-                request.getHeader("Authorization"));
+        final var query = GetRequiredOperationDataQuery.builder()
+                .pointOfSaleId(Long.valueOf(ticketRestModel.getIDPointOfSale()))
+                .traderId(Long.valueOf(ticketRestModel.getIDTrader()))
+                .header(request.getHeader("Authorization"))
+                .repository("ticket").build();
 
-        log.info("PASE EL POINT REQ");
-        var required = DataRequiredOperation.valueOf(response.getBody());
-        log.info("Pase required data");
+        var response = queryBus.handle(query);
+
+        log.info("DATA REQUIRED IS: {}", response.toString());
         var command = TicketCommand.builder()
                 .products(ticketRestModel.getProducts())
-                .requiredData(required)
+                .requiredData(response)
                 .traderId(Long.parseLong(ticketRestModel.getIDTrader()))
                 .build();
 

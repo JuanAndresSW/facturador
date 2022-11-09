@@ -14,6 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("ALL")
@@ -49,7 +50,7 @@ public final class Trader implements Serializable {
     @JsonIgnore
     @JsonBackReference
     @OneToMany(mappedBy = "traderOwner", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<Operation> operations;
+    private List<Operation> operations;
 
     public Trader(long traderId) {
         this.traderId = traderId;

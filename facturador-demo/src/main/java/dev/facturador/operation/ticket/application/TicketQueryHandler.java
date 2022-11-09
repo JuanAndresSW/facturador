@@ -33,7 +33,7 @@ public class TicketQueryHandler implements PortQueryHandler<TicketResponse, Tick
     public TicketResponse handle(TicketQuery query) throws Exception {
         Optional<Operation> operation = Optional.empty();
         operation = repository.findByOperationId(query.getOperationId());
-        if (operation.isEmpty()) throw new ResourceNotFound("El comerciante no tiene esta factura");
+        if (operation.isEmpty()) throw new ResourceNotFound("El comerciante no tiene esta operacion");
 
         return toDisplayed(operation.get());
     }

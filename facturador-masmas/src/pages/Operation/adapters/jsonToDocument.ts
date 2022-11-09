@@ -7,7 +7,7 @@ export default async function jsonToDocument(json: string, docCC: documentClassC
     const doc = JSON.parse(json);
     return {
         metadata: {
-            documentNumber:     doc.operationNumber,
+            documentNumber:     doc.operationNumber? doc.operationNumber : doc.ticketNumber,
             documentType:       doc.type,
             documentName:       documentClassCodeToDocumentName(docCC, true),
             preferenceColor:    doc.preferenceColor,
@@ -16,7 +16,7 @@ export default async function jsonToDocument(json: string, docCC: documentClassC
     
         sender: {
             logo:               await base64ToBlob(doc.logo),
-            code:               doc.senderCode,
+            code:               doc.senderCode? doc.senderCode : doc.senderCuit,
             name:               doc.senderName,
             address:            doc.senderAddress,
             VATCategory:        doc.senderVatCategory,

@@ -8,7 +8,8 @@
     padding: 1rem;
     text-align: center;
 
-    border: 1px solid #ccc;
+    border: 1px dashed #ccc;
+    color: #333;
 
     .doc-body {
         
@@ -22,7 +23,6 @@
         data {
             padding: 3px 0;
             text-align: center;
-            background-color: white;
         }
     }
 }

@@ -42,6 +42,7 @@ public class ListAnyOperationQueryHandler implements PortQueryHandler<List<Docum
                             "debit-note", event.getDebitNote() != null,
                             "credit-note", event.getCreditNote() != null,
                             "remittance", event.getRemittance() != null,
+                            "ticket", event.getTicket() != null,
                             "default", true);
 
                     return match.get(query.getRepository());
@@ -63,7 +64,6 @@ public class ListAnyOperationQueryHandler implements PortQueryHandler<List<Docum
                 .filter(operation -> query.getPointOfSaleNumber() != 0 ?
                         Long.parseLong(operation.getIssuingPointOfSaleNumber()) == query.getPointOfSaleNumber() : true);
 
-
         return toView(operations);
     }
 
@@ -82,12 +82,11 @@ public class ListAnyOperationQueryHandler implements PortQueryHandler<List<Docum
                     .operationId(operation.getOperationId())
                     .branchId(issuingBranch.getBranchId())
                     .issueDate(operation.getIssueDate().toString())
-                    .receiverName(operation.getReceiver().getReceiverName())
-                    .receiverCuit(operation.getReceiver().getReceiverCode())
+                    .receiverName(operation.getReceiver() != null ? operation.getReceiver().getReceiverName() : "undefined")
+                    .receiverCuit(operation.getReceiver() != null ? operation.getReceiver().getReceiverCode() : "undefined")
                     .build());
 
             var count = new AtomicLong(history.stream().count());
-            log.info("Count is: {}", count);
             if(operation.getInvoice() != null) {
                 history.get(count.intValue()-1).setDocumentClass("Factura");
                 history.get(count.intValue()-1).setOperationNumber(operation.getInvoice().getInvoiceNumber());
@@ -102,6 +101,11 @@ public class ListAnyOperationQueryHandler implements PortQueryHandler<List<Docum
                 history.get(count.intValue()-1).setDocumentClass("Nota de crédito");
                 history.get(count.intValue()-1).setOperationNumber(operation.getCreditNote().getCreditNumber());
                 history.get(count.intValue()-1).setDocumentType(operation.getCreditNote().getType().name());
+            }
+            if(operation.getTicket() != null) {
+                history.get(count.intValue()-1).setDocumentClass("Ticket");
+                history.get(count.intValue()-1).setOperationNumber(operation.getTicket().getTicketNumber());
+                history.get(count.intValue()-1).setDocumentType("undefined");
             }
         });
         return history;

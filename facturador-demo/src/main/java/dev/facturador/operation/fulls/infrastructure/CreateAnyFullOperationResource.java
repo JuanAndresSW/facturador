@@ -2,9 +2,8 @@ package dev.facturador.operation.fulls.infrastructure;
 
 import dev.facturador.global.domain.abstractcomponents.command.PortCommandBus;
 import dev.facturador.global.domain.abstractcomponents.query.PortQueryBus;
-import dev.facturador.operation.fulls.domain.model.FullOperationResponse;
 import dev.facturador.operation.fulls.domain.commands.CreateAnyFullOperationCommand;
-import dev.facturador.operation.fulls.domain.querys.GetRequiredOperationDataQuery;
+import dev.facturador.operation.core.domain.GetRequiredOperationDataQuery;
 import dev.facturador.operation.fulls.domain.model.FullOperationRestModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class CreateAnyFullOperationResource {
                 .pointOfSaleId(fullOperationRestModel.getIDPointOfSale())
                 .traderId(fullOperationRestModel.getIDTrader())
                 .header(request.getHeader("Authorization"))
-                .receiverCategory(fullOperationRestModel.getReceiverVatCategory())
+                .category(fullOperationRestModel.getReceiverVatCategory())
                 .repository(repository).build();
         var response = queryBus.handle(query);
 

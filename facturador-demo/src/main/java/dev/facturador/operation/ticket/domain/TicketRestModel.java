@@ -9,10 +9,12 @@ import java.util.List;
 
 @Data
 public final class TicketRestModel {
-    @NotNull
-    private List<ProductModel> products;
     @JsonProperty(value = "IDPointOfSale")
+    @NotNull
     private String IDPointOfSale;
     @JsonProperty(value = "IDTrader")
+    @NotNull
     private String IDTrader;
+    @NotNull
+    private List<ProductModel> products;
 }

@@ -4,6 +4,7 @@ import operation from '../models/operation';
 import operationToJson from "../adapters/operationToJson";
 import documentClassCodeToDocumentName from "../utilities/conversions/documentClassCodeToDocumentName";
 
+/**Envía una operación para crear un documento comercial cualquiera. Devuelve el ID de la operación si fuese exitosa. */
 export default async function postOperation(operation: operation): Promise<Response> {
 
     const subrepository = "FaNdNc".includes(operation.documentClassCode)? "/fulls" : '';
@@ -14,9 +15,3 @@ export default async function postOperation(operation: operation): Promise<Respo
     return response;
 
 }
-
-
-
-const injectTextInHtmlText = (text: number) => "hola "+text+" mundo";
-
-const test = ()=> injectTextInHtmlText;

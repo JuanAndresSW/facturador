@@ -1,4 +1,4 @@
-package dev.facturador.operation.fulls.domain;
+package dev.facturador.operation.fulls.domain.model;
 
 public enum SellConditions {
     CASH("Al contado"),

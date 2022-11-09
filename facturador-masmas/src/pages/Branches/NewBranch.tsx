@@ -146,7 +146,7 @@ export default function NewBranch(): JSX.Element {
 
       <Message type="error" message={error} />
 
-      {success?<Message type="success" message={`Se ha creado el punto de venta "${name}"`} />:
+      {success?<Message type="success" message={`Se ha creado la sucursal "${name}"`} />:
       loading?<Loading />:<Button type="submit">Crear</Button>}
     </Form>
   );

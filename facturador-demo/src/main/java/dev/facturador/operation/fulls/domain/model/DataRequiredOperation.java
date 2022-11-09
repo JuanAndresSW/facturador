@@ -36,7 +36,7 @@ public final class DataRequiredOperation {
         return response;
     }
 
-    public void category(String receiverCategory) {
+    public void resolveType(String receiverCategory) {
         this.setType((new OperationService()).types.apply(this.senderVatCategory, receiverCategory));
     }
 

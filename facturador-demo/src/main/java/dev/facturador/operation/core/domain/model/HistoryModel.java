@@ -1,4 +1,4 @@
-package dev.facturador.operation.core.domain;
+package dev.facturador.operation.core.domain.model;
 
 public final class HistoryModel {
     private Long operationId;

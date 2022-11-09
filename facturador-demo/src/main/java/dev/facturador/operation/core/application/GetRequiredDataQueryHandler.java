@@ -1,4 +1,4 @@
-package dev.facturador.operation.fulls.application.handlers;
+package dev.facturador.operation.core.application;
 
 import dev.facturador.global.domain.abstractcomponents.ReactiveRequest;
 import dev.facturador.global.domain.abstractcomponents.query.PortQueryHandler;
@@ -6,8 +6,9 @@ import dev.facturador.operation.fulls.application.CreditNoteRepository;
 import dev.facturador.operation.fulls.application.DebitNoteRepository;
 import dev.facturador.operation.fulls.application.InvoiceRepository;
 import dev.facturador.operation.fulls.domain.model.OperationCount;
-import dev.facturador.operation.fulls.domain.querys.GetRequiredOperationDataQuery;
+import dev.facturador.operation.core.domain.GetRequiredOperationDataQuery;
 import dev.facturador.operation.fulls.domain.model.DataRequiredOperation;
+import dev.facturador.operation.ticket.application.TicketRepository;
 import dev.facturador.trader.domain.Trader;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class GetRequiredDataQueryHandler implements PortQueryHandler<DataRequire
     @Autowired
     private final DebitNoteRepository debitRepository;
     @Autowired
+    private final TicketRepository ticketRepository;
+    @Autowired
     private final ReactiveRequest<Class, HashMap<String, Object>> reactiveRequest;
 
     @Override
@@ -43,19 +46,31 @@ public class GetRequiredDataQueryHandler implements PortQueryHandler<DataRequire
                 "Authorization",
                 query.getHeader());
         var response = DataRequiredOperation.valueOf(request.getBody());
-        response.category(query.getReceiverCategory());
+        var number = this.findOperationNumberCount
+                (query.getRepository(),response,query.getCategory(), new Trader(query.getTraderId()));
 
+        if( Objects.isNull(number.get().getOperationNumberCount())) return response.defineNumber(0);
+        return response.defineNumber(number.get().getOperationNumberCount());
+    }
+
+    private Optional<OperationCount> findOperationNumberCount(String repository, DataRequiredOperation response,String category, Trader trader){
         Optional<OperationCount> projection = Optional.empty();
-        if(query.getRepository().equals("invoice")) projection =
-                invoiceRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
-        if(query.getRepository().contains("debit")) projection =
-                debitRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
-        if(query.getRepository().contains("credit")) projection =
-                creditRepository.findOperationNumberCount(response.getType(), new Trader(query.getTraderId()), response.getPointOfSaleNumber());
-
-        if( Objects.isNull(projection.get().getOperationNumberCount())) {
-            return response.defineNumber(0);
+        if(repository.equals("invoice")) {
+            response.resolveType(category);
+            projection = invoiceRepository.findOperationNumberCount(response.getType(), trader, response.getPointOfSaleNumber());
         }
-        return response.defineNumber(projection.get().getOperationNumberCount());
+        if(repository.contains("debit")) {
+            response.resolveType(category);
+            projection = debitRepository.findOperationNumberCount(response.getType(), trader, response.getPointOfSaleNumber());
+        }
+        if(repository.contains("credit")) {
+            response.resolveType(category);
+            projection = creditRepository.findOperationNumberCount(response.getType(), trader, response.getPointOfSaleNumber());
+        }
+        if(repository.equals("ticket")) {
+            projection = ticketRepository.findOperationNumberCount(trader, response.getPointOfSaleNumber());
+        }
+
+        return projection;
     }
 }

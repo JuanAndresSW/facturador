@@ -2,7 +2,7 @@ type documentHistoryItem = {
 
     documentNumber: string,
     documentName: string,
-    documentType: string,
+    documentType?: string,
     
     IDOperation: number,
     dateOfIssue: string,

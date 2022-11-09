@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +29,14 @@ public final class Ticket implements Serializable {
     public static final Long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "id_invoice")
+    @Column(name = "id_ticket")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ticketId;
 
-    @JsonIgnore
     @Column(name = "count_ticket_number", nullable = false, length = 8)
     private Integer operationNumberCount;
 
-    @Column(name = "ticket_number", nullable = false)
+    @Column(name = "ticket_number", nullable = false, length = 13)
     private String ticketNumber;
 
     @JsonIgnore
@@ -53,34 +53,44 @@ public final class Ticket implements Serializable {
         this.ticketId = ticketId;
     }
 
-    public static Ticket create(TicketCommand command){
+    public static Ticket create(TicketCommand command, Clock clock){
         var ticket = new Ticket();
 
         ticket.setOperationNumberCount(command.getRequiredData().getOperationNumberCount());
         ticket.setTicketNumber(command.getRequiredData().getOperationNumber());
 
-        ticket.setOperation(new Operation(
-                new Trader(command.getTraderId()),
-                command.getRequiredData().getPointOfSaleNumber()));
+        var operation = new Operation(
+                new Trader(command.getTraderId()), command.getRequiredData().getPointOfSaleNumber());
+
         //Crear Sender
-        ticket.getOperation().setSender(new Sender());
-        ticket.getOperation().getSender().setSenderCode(command.getRequiredData().getSenderCuit());
-        ticket.getOperation().getSender().setSenderName(command.getRequiredData().getSenderName());
-        ticket.getOperation().getSender().setSenderContact(command.getRequiredData().getSenderPhone());
-        ticket.getOperation().getSender().setSenderVatCategory(command.getRequiredData().getVatCategory());
-        ticket.getOperation().getSender().setSenderAddress(
+        operation.setSender(new Sender());
+        operation.getSender().setSenderCode(command.getRequiredData().getSenderCuit());
+        operation.getSender().setSenderName(command.getRequiredData().getSenderName());
+        operation.getSender().setSenderContact(command.getRequiredData().getSenderPhone());
+        operation.getSender().setSenderVatCategory(command.getRequiredData().getVatCategory());
+        operation.getSender().setSenderAddress(
                 command.getRequiredData().getSenderStreet().concat(" ").concat(command.getRequiredData().getSenderAddressNumber()));
-        ticket.getOperation().getSender().setOperationSender(ticket.getOperation());
+        operation.getSender().setOperationSender(operation);
         //Crear productos
         List<Product> lista = new ArrayList<>();
 
         command.getProducts().forEach(x ->
-                lista.add(new Product(x.getQuantity(), x.getPrice(), x.getDetail(), ticket.getOperation())));
+                lista.add(new Product(x.getQuantity(), x.getPrice(), x.getDetail(), operation)));
 
-        ticket.getOperation().setProducts(lista);
+        operation.setProducts(lista);
 
+        operation.setIssueDate(LocalDate.now(clock));
 
-        ticket.getOperation().setIssueDate(LocalDate.now());
+        ticket.setOperation(operation);
         return ticket;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticketId=" + ticketId +
+                ", operationNumberCount=" + operationNumberCount +
+                ", ticketNumber='" + ticketNumber + '\'' +
+                '}';
     }
 }

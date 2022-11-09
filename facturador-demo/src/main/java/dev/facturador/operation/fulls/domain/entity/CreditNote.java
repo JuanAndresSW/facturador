@@ -1,7 +1,7 @@
 package dev.facturador.operation.fulls.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.facturador.operation.fulls.domain.SellConditions;
+import dev.facturador.operation.fulls.domain.model.SellConditions;
 import dev.facturador.operation.core.domain.DocumentType;
 import dev.facturador.operation.core.domain.entity.Operation;
 import dev.facturador.operation.core.domain.entity.Product;
@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.facturador.operation.fulls.domain.SellConditions.defineSellCondition;
+import static dev.facturador.operation.fulls.domain.model.SellConditions.defineSellCondition;
 import static dev.facturador.operation.core.domain.AllVatCategory.defineAllVat;
 
 /**
