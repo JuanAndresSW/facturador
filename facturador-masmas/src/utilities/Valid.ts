@@ -32,7 +32,7 @@ export default class Valid {
   public static CUIT(CUIT: string, setError?: Function): boolean {
     CUIT = CUIT?.replace(/ |\.|-/g, "");
     if (/^[0-9]{2}[1-9][0-9]{7}[0-9]$/.test(CUIT)) return true;
-    if (setError) setError("Ingrese un C.U.I.T. válido");
+    if (setError) setError("Ingrese una clave válida");
     return false;
 
   }

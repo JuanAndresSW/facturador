@@ -12,7 +12,7 @@ public final class TicketResponse {
     private String senderCuit;
     private String senderVatCategory;
     private String senderAddress;
-    private String ticketNumber;
+    private String operationNumber;
     private String issueDate;
     private List<ProductModel> products;
 

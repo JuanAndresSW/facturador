@@ -12,6 +12,7 @@ const tabs = [
     {path: "/mapa",         label:'Mapa del sitio'}
 ]
 
+/**Un manual de uso de la aplicación. */
 export default function Manual() {
     return <Main menu={<NavBar tabs={tabs} />} content={
 
@@ -23,7 +24,7 @@ export default function Manual() {
                 <Route index element={<Navigate to={'./descripcion'}/>}             />
 
                 <Route path={"descripcion/*"}  element={<Description/>}                  />
-                <Route path={"mapa/*"}         element={<Sitemap/>}                  />
+                <Route path={"mapa"}           element={<Sitemap/>}                  />
                 <Route path="*"                element={<Navigate to={"/manual"} />}/>
             </Routes>
         </div>

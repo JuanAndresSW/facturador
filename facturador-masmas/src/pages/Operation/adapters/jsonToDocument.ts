@@ -7,7 +7,7 @@ export default async function jsonToDocument(json: string, docCC: documentClassC
     const doc = JSON.parse(json);
     return {
         metadata: {
-            documentNumber:     doc.operationNumber? doc.operationNumber : doc.ticketNumber,
+            documentNumber:     doc.operationNumber,
             documentType:       doc.type,
             documentName:       documentClassCodeToDocumentName(docCC, true),
             preferenceColor:    doc.preferenceColor,

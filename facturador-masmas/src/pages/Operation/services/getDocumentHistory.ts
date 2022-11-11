@@ -16,8 +16,8 @@ type documentHistoryFilters = {
 /**Recupera el historial de documentos comerciales, aceptando varios filtros. */
 export default async function getDocumentHistory(filters: documentHistoryFilters): Promise<Response> {
 
-    let params = Number.isInteger(filters.IDBranch)? `IDBranch=${filters.IDBranch}&` : '';
-    params +=    Number.isInteger(filters.pointOfSaleNumber)? `pointOfSaleNumber=${filters.pointOfSaleNumber}&` : '';
+    let params = filters.IDBranch? `IDBranch=${filters.IDBranch}&` : '';
+    params +=    filters.pointOfSaleNumber? `pointOfSaleNumber=${filters.pointOfSaleNumber}&` : '';
     params +=    filters.documentClassCode? `repository=${documentClassCodeToDocumentName(filters.documentClassCode)}` : '';
 
     const URL    = `operations/traders/${IDTrader}?${params}`;

@@ -23,7 +23,9 @@ const tabs = [
     {path:paths.branches,  icon: <MdOutlineHomeWork />,  label:'sucursales'},
 ]
 
-/**Devuelve la página principal dependiente de una sesión iniciada. Contiene todas las vistas principales de la aplicación.*/
+/**Devuelve la página principal dependiente de una sesión iniciada para mostrarse.
+ * Contiene todas las vistas principales de la aplicación.
+ * */
 export default function Home():JSX.Element {
 
     return (

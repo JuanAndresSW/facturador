@@ -22,9 +22,7 @@ export default async function postAccount(account: account): Promise<Response> {
         }));
 
         window.location.reload();
-
-        return response;
     }
 
-    return {...response, message: JSON.parse(response.content)?.mensaje}
+    return response
 } 

@@ -1,3 +1,4 @@
+/**Un ítem dentro de un historial de documentos comerciales. */
 type documentHistoryItem = {
 
     documentNumber: string,

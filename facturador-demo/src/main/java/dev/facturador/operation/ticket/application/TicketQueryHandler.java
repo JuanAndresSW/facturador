@@ -42,10 +42,10 @@ public class TicketQueryHandler implements PortQueryHandler<TicketResponse, Tick
         var response = new TicketResponse();
         response.setSenderCuit(operation.getSender().getSenderCode());
         response.setSenderName(operation.getSender().getSenderName());
-        response.setSenderVatCategory(operation.getSender().getSenderVatCategory().toString());
+        response.setSenderVatCategory(operation.getSender().getSenderVatCategory().vatToLowercaseAndSpanish());
         response.setIssueDate(operation.getIssueDate().toString());
         response.setSenderAddress(operation.getSender().getSenderAddress());
-        response.setTicketNumber(operation.getTicket().getTicketNumber());
+        response.setOperationNumber(operation.getTicket().getTicketNumber());
 
         //Crear productos
         List<ProductModel> lista = new ArrayList<>();

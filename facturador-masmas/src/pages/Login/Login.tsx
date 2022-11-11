@@ -42,9 +42,13 @@ export default function Login(): JSX.Element {
 
       {loading?<Loading />:<Button type="submit">Ingresar</Button>}
 
+      
+      
       <FlexDiv justify='space-between'>
+
+        {/* TODO: implementar función "olvidé mi contraseña"
         <a href="about:blank" target="_blank" 
-        style={{margin:'1rem 0'}}>Olvidé mi contraseña</a>
+        style={{margin:'1rem 0'}}>Olvidé mi contraseña</a> */}
 
         <Link to="/registrarse" style={{ margin: '1rem 0'}}>
           Crea una nueva cuenta</Link>

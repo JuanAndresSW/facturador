@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import NewPoint from './NewBranch';
 //Componentes.
 import ManageBranch from './ManageBranch';
+import BranchPreviewItem from "./components/BranchPreviewItem/BranchPreviewItem";
 //Servicios.
 import getBranches from './services/getBranches';
 //Tipos.
 import branch from './models/branch';
 import listOfBranches from './models/listOfBranches';
 //GUI.
-import { Loading, OptionWithPhoto, Pagination, Plus } from "components/standalone";
+import { Pagination, Plus } from "components/standalone";
 import { Section, FlexDiv } from "components/wrappers";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Dropdown } from "components/formComponents";
@@ -30,7 +31,8 @@ export default function Branches(): JSX.Element {
   const [branches, setBranches]:
   [branch[], React.Dispatch<React.SetStateAction<branch[]>>] = useState([]);
 
-  //Sucursal seleccionada. TODO: hacer que funcione sin estos dos valores.
+  //Sucursal seleccionada.
+  //TODO: hacer que funcione sin estos dos valores, tomando en su lugar los datos de la URL.
   const [selectedBranch, setSelectedBranch]:
   [branch, React.Dispatch<React.SetStateAction<branch>>] = useState(undefined);
   const [selectedBranchID, setSelectedBranchID] = useState(-1);
@@ -71,7 +73,7 @@ export default function Branches(): JSX.Element {
       <Plus link="./nuevo" />
   
       {branches?.map((branch, index) => 
-      <OptionWithPhoto
+      <BranchPreviewItem
         key={index}
         title={branch.name}
         subtitle={branch.address.city + ' ' + branch.address.street + ' ' + branch.address.addressNumber}

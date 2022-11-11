@@ -15,6 +15,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,6 @@ public class ListAnyOperationQueryHandler implements PortQueryHandler<List<Docum
     public List<DocumentHistory> handle(ListAnyOperationQuery query) throws Exception {
         Thread.sleep(2);
         var operations = Flux.fromStream( repository.findByTraderOwner(new Trader(query.getTraderID())).stream() );
-
         operations =operations
                 .filter(event ->{
                     final Map<String, Boolean> match = Map.of(
@@ -62,7 +63,8 @@ public class ListAnyOperationQueryHandler implements PortQueryHandler<List<Docum
                     return !issuingBranch.isEmpty();
                 })
                 .filter(operation -> query.getPointOfSaleNumber() != 0 ?
-                        Long.parseLong(operation.getIssuingPointOfSaleNumber()) == query.getPointOfSaleNumber() : true);
+                        Long.parseLong(operation.getIssuingPointOfSaleNumber()) == query.getPointOfSaleNumber() : true)
+                .sort(Comparator.comparing(Operation::getIssueDate));
 
         return toView(operations);
     }

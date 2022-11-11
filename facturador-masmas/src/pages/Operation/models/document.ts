@@ -1,3 +1,4 @@
+/**Un documento comercial cualquiera. */
 type document = {
     metadata: {
         documentNumber: string,

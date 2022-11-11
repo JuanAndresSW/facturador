@@ -39,10 +39,10 @@ export default function isValidOperation(operation: operation, documentClassCode
             if (!operation.productTable.quantity[i] || operation.productTable.quantity[i] < 1 || operation.productTable.quantity[i] > 9999999)
             return no(`La cantidad de la fila ${i+1} de la tabla de productos debe ser entre 1 y 9.999.999.`);
         }
-   
+        //TODO: verificar la cantidad máxima de caracteres apropiada que no cause errores.
         for (let i = 0 ; i < operation.productTable.description.length ; i++) {
-            if (operation.productTable.description[i] === undefined || operation.productTable.description[i].length < 5)
-            return no(`La descripción de la fila ${i+1} de la tabla de productos debe ser de al menos 5 caracteres.`);
+            if (operation.productTable.description[i] === undefined || operation.productTable.description[i].length < 5 || operation.productTable.description[i].length > 20)
+            return no(`La descripción de la fila ${i+1} de la tabla de productos debe ser de de entre 5 y 20 caracteres.`);
         }
 
         for (let i = 0 ; i < operation.productTable.price.length ; i++) {
@@ -78,7 +78,7 @@ export default function isValidOperation(operation: operation, documentClassCode
 
     if (currentOperationIncludes("paymentImputation")) {
 
-        //TODO: change all forEach to normal for loops.
+        //TODO: cambiar todos los forEach a loops for normales.
         operation.receiptXTables.paymentImputation.type.forEach((cell, index)=>{
             if (cell.length < 1) return no(`El tipo en la fila ${index} de la tabla de imputación de pago no puede estar vacío.`);
         });

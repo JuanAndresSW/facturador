@@ -4,7 +4,7 @@ import Response from 'models/Response';
 import jsonToListOfBranchesAndPoints from "../adapters/jsonToListOfBranchesAndPoints";
 
 /**
- * Recupera un array de sucursales con sus puntos de venta a nombre de la cuenta solicitante.
+ * Recupera un array de sucursales, cada uno con sus puntos de venta a nombre de la cuenta solicitante.
  */
 export default async function getListOfBranchesAndPoints(usePointOfSaleNumberInsteadOfID=false): Promise<Response> {
     const response = await ajax("GET", `branches/traders/${IDTrader}/summary`, true);
