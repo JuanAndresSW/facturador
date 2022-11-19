@@ -12,8 +12,11 @@ type props = {document: document};
 /**Un documento comercial, pudiendo ser: (factura || nota de débito || nota de crédito). */
 export default function InvoiceLikeDocument({document}: props): JSX.Element {
 
-    const productSubtotal = document.operationData.productTable.reduce((prev, sum) => prev+sum.price*sum.quantity, 0);
-    const productTotal = productSubtotal + productSubtotal * (document.operationData.VAT/100);
+    const productSubtotal = document.operationData.productTable.reduce((sum, row) => sum+row.price*row.quantity, 0);
+    const shouldAddVAT = document.metadata.documentType === "A";
+    const productTotal = shouldAddVAT?
+        productSubtotal + productSubtotal * (document.operationData.VAT/100) :
+        productSubtotal;
 
     return ( 
     
@@ -45,7 +48,6 @@ export default function InvoiceLikeDocument({document}: props): JSX.Element {
 
                 <div className="doc-header-data-other">
                     <p>C.U.I.T. N°</p><p>{document.sender.code}</p>
-                    <p>Inicio de actividades:</p><p>05-10-22</p>
                 </div>
             </div>
         </div>

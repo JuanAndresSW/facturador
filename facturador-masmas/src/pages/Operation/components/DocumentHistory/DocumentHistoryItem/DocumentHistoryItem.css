@@ -1,17 +1,17 @@
 .document-history-item {
-  border: 1px solid #ccc;
+  border: 1px solid var(--light-gray);
   text-decoration: none;
-  color: #444;
+  color: var(--gray);
   border-radius: 5px;
   margin: 10px;
 }
 
 .document-history-item:hover, .document-history-item:hover * {
-  border-color: #3586ff;
+  border-color: var(--light-blue);
 }
 
 .document-history-item h2 {
-  color: #1f1bf8;
+  color: var(--bolder-blue);
 }
 
 .document-history-item h2, .document-history-item h4 {
@@ -21,7 +21,7 @@
 .document-history-item > div {
   width: 100%;
   min-height: 70px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--light-gray);
 }
 
 .document-history-item > div p {

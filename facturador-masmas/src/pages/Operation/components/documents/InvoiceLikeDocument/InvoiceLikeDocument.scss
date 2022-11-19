@@ -1,6 +1,4 @@
-@font-face {
-    font-family: "nunito"; src: url(../../../../../assets/fonts/Nunito-VariableFont_wght.ttf);
-}
+
 
 .invoice-like-document{
     display: grid;
@@ -19,7 +17,7 @@
     width: 600px;
     height: 840px;
 
-    font-family: "nunito";
+    font-family: var(--main-font);
     
     &>div {
        
@@ -35,7 +33,7 @@
         &>div {
             margin: 0 .25rem;
             overflow: hidden;
-            background-color: #fff;
+            background-color: white;
             border-radius: 6px;
             p {
                 margin: 4px;
@@ -55,7 +53,7 @@
         .doc-header-data {
             .doc-header-data-title {
                 height: 50px;
-                background-color: #bbb;
+                background-color: var(--light-gray);
                 border-bottom: 1px solid black;
                 p {
                     float: inline-start;
@@ -118,10 +116,10 @@
         align-items: center;
         gap: 0 1px;
         border-radius: 6px;
-        background-color: #bbb;
+        background-color: var(--light-gray);
         overflow: hidden;
         data:nth-child(-n + 4) {
-            background-color: #363636;
+            background-color: var(--dark-gray);
             color: white;
         }
         data {

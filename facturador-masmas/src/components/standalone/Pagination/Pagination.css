@@ -1,11 +1,8 @@
-@font-face {
-    font-family: "nunito";
-    src: url(../../../assets/fonts/Nunito-VariableFont_wght.ttf);
-}
+
 
 [data-pagination] {
     padding: 0;
-    background-color: #ccc;
+    background-color: var(--light-gray);
     border-radius: 999px;
     overflow: hidden;
     width: max-content;
@@ -19,16 +16,16 @@
     cursor: pointer;
 }
 [data-pagination] svg.unactive {
-    background-color: #bbb;
+    background-color: var(--almost-white);
     cursor: default;
 }
 [data-pagination] svg:hover {
-    background-color: #bbb;
+    background-color: var(--almost-white);
 }
 
 
 [data-pagination] div {
-    font-family: nunito;
+    font-family: var(--main-font);
     padding: 0 .4rem;
     margin: 0;
     height: 2rem;

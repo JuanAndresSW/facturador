@@ -19,10 +19,10 @@
 }
 
 [data-component='branch-preview-item'] > div:hover {
-  background-color: #eee;
+  background-color: var(--almost-white);
   -webkit-transform: scale(1.1);
           transform: scale(1.1);
-  outline: 0px solid #0070f0;
+  outline: 0px solid var(--blue);
 }
 
 [data-component='branch-preview-item'] > div a {
@@ -31,7 +31,7 @@
 }
 
 [data-component='branch-preview-item'] > div a span {
-  color: #444;
+  color: var(--gray);
 }
 
 [data-component='branch-preview-item'] > div a img {
@@ -42,7 +42,7 @@
 }
 
 [data-component='branch-preview-item'] p, [data-component='branch-preview-item'] a span {
-  color: #222;
+  color: var(--dark-gray);
   margin: 0;
   width: 100%;
   text-overflow: ellipsis;

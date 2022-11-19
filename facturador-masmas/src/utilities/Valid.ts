@@ -22,7 +22,7 @@ export default class Valid {
     return false;
   }
 
-  public static image(image: File, setError?: Function):boolean {
+  public static image(image: Blob | File, setError?: Function):boolean {
     if (!image) return true;
     if (image?.size < 2097152) return true;
     if (setError) setError("La imágen no debe superar los 2MB");
@@ -81,13 +81,14 @@ export default class Valid {
   }
 
   public static addressNumber(addressNumber: number, setError?: Function): boolean {
+    if (!addressNumber) return true;
     if (/^[1-9]{1}\d{0,4}$/.test(addressNumber?.toLocaleString())) return true;
     if (setError) setError("Ingrese un número de dirección");
     return false;
   }
 
   public static addressHeight(addressHeight: string, setError?: Function): boolean {
-    if (/^[\-]?\d{1,3}$/.test(addressHeight)) return true;
+    if (/^[-]?\d{1,3}$/.test(addressHeight)) return true;
     if (setError) setError("Ingrese una altura válida");
     return false;
   }

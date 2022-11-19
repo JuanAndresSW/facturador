@@ -1,6 +1,4 @@
-@font-face {
-    font-family: "nunito"; src: url(../../../../../assets/fonts/Nunito-VariableFont_wght.ttf);
-}
+
 
 .ticket {
     width: 400px;
@@ -8,8 +6,8 @@
     padding: 1rem;
     text-align: center;
 
-    border: 1px dashed #ccc;
-    color: #333;
+    border: 1px dashed var(--light-gray);
+    color: var(--gray);
 
     .doc-body {
         

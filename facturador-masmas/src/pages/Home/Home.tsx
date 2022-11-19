@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, Route, Routes} from 'react-router-dom';
 
 //Componentes.
-import {LoggedHeader, Subheader } from './components';
+import LoggedHeader from './components/LoggedHeader/LoggedHeader';
 
 //Stateless.
 import { Main } from 'components/wrappers';
@@ -31,7 +31,6 @@ export default function Home():JSX.Element {
     return (
     <>  
         <LoggedHeader />
-        <Subheader />
         
         <Main 
         menu={<NavBar tabs={tabs} />} 

@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     img {
-        &:hover {background-color: gainsboro;}
+        &:hover {background-color: var(--light-gray);}
         border-radius: 50%;
         object-position: center;
         object-fit: fill;
@@ -22,10 +22,10 @@
     top: 4.5rem;
     right: .5rem;
     display: none;
-    background-color: #fff;
-    border: 1px solid #777;
+    background-color: white;
+    border: 1px solid var(--light-gray);
     border-radius: 3px;
-    font-family: monospace;
+    font-family: var(--secondary-font);
     
     p {
         cursor:default;
@@ -41,7 +41,7 @@
             display: block;
             font-size: 1rem;
             text-align: center;
-            color: #272727;
+            color: var(--light-black);
             width: max-content;
             margin: .3rem auto; 
             cursor:pointer;
@@ -50,9 +50,9 @@
                 padding: .4rem .6rem;
                 border-radius: 99px;
                 text-decoration: none;
-                color: rgb(0, 0, 0);
+                color: black;
                 &:hover {
-                    background-color: #eee;
+                    background-color: var(--almost-white);
                 }
             }
         }
@@ -68,6 +68,6 @@
         top: -13%;
         border-width: 8px;
         border-style: solid;
-        border-color: transparent transparent #555 transparent;
+        border-color: transparent transparent var(--gray) transparent;
     }
 }

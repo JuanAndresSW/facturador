@@ -1,16 +1,16 @@
 .document-history-item {
-    border: 1px solid #ccc;
+    border: 1px solid var(--light-gray);
     text-decoration: none;
-    color: #444;
+    color: var(--gray);
     border-radius: 5px;
     margin: 10px;
 
     &:hover, &:hover * {
-        border-color: #3586ff;
+        border-color: var(--light-blue);
     }
 
     h2 {
-        color: #1f1bf8;
+        color: var(--bolder-blue);
     }
     h2, h4 {
         margin: 5px;
@@ -19,7 +19,7 @@
     >div {
         width: 100%;
         min-height: 70px;
-        border-top: 1px solid #ccc;
+        border-top: 1px solid var(--light-gray);
 
         p {
             margin: 4px;

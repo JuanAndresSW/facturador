@@ -6,22 +6,22 @@ type props = {
     filename: string
 }
 
-export default function FullSizeDocument({nodeReference, filename}: props): JSX.Element {
-    const options = {
+/**Un botón que permite descargar un documento PDF, cuyo contenido es extraido de una referencia a un nodo. */
+export default function PDFButton({nodeReference, filename}: props): JSX.Element {
+
+    const documentPreferences = {
         margin: .5,
-        filename: filename,
+        filename: filename ?? "documento",
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
     }
 
     function displayPDF(): void {
-        html2pdf().set(options).from(nodeReference.current).save();
+        html2pdf().set(documentPreferences).from(nodeReference.current).save();
     }
 
-    return <button 
-    onClick={()=>displayPDF()}
-    style={{
+    const PDFButtonStyle = {
         backgroundColor: "#f33",
         width: "minContent",
         border: "none",
@@ -32,5 +32,9 @@ export default function FullSizeDocument({nodeReference, filename}: props): JSX.
         fontSize:"1.2rem",
         borderBottom: "2px solid #b00",
         cursor: "pointer"
-    }}>descargar PDF</button>
+    }
+
+    return <button onClick={()=>displayPDF()} style={PDFButtonStyle}>
+        descargar PDF
+    </button>
 }

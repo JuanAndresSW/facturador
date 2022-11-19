@@ -1,7 +1,4 @@
-@font-face {
-    font-family: "nunito";
-    src: url(../../../../../assets/fonts/Nunito-VariableFont_wght.ttf);
-}
+
 
 
 header {
@@ -16,7 +13,7 @@ header {
         align-items: center;
         text-decoration: none;
         color: white;
-        font-family: monospace;
+        font-family: var(--secondary-font);
         img {
             margin: 0 1rem 0 0.6rem;
             border-radius: 50%;
@@ -25,7 +22,7 @@ header {
         }
     }
     #header-links{
-        font-family: 'nunito', monospace;
+        font-family: var(--main-font);
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -37,9 +34,9 @@ header {
         }
         button {
             float: right;
-            background-color: #00ac00;
+            background-color: var(--leaf);
             border: none;
-            border-bottom: 2px solid #008d00;
+            border-bottom: 2px solid var(--bold-leaf);
             border-radius: 5px;
             padding: 0.5rem 1rem;
             margin: 1rem;

@@ -1,5 +1,5 @@
 .section {
-    background-color: #fff;
+    background-color: white;
     border-radius: 0px;
     margin: 2rem;
     padding: 1rem;
@@ -9,7 +9,7 @@
 .section legend:nth-child(1) {
     margin: .4rem;
     text-align: center;
-    color: #222;
+    color: var(--dark-gray);
     font-size: 1rem;
-    font-family: monospace;
+    font-family: var(--secondary-font);
 }

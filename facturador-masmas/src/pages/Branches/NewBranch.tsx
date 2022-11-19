@@ -16,9 +16,10 @@ import { Field, Form, Select, Image, Message, Button, Color } from "components/f
 import { BiChevronLeft } from "react-icons/bi";
 import { Loading } from 'components/standalone';
 import { FlexDiv, Retractable } from "components/wrappers";
+
+//Utilidades.
 import Valid from "utilities/Valid";
-
-
+import isValidBranch from "./utilities/isValidBranch";
 
 /**Formulario para crear una nueva sucursal. */
 export default function NewBranch(): JSX.Element {
@@ -61,23 +62,8 @@ export default function NewBranch(): JSX.Element {
   const [boolContact,     setBoolContact] =     useState(false);
   const [boolPreferences, setBoolPreferences] = useState(false);
 
-  function validate(): void {
-    setError(undefined);
-    if (!Valid.names(name, setError))            return;
-    if (!Valid.address(city))                    return setError("La localidad debe ser de entre 4 y 40 caracteres");
-    if (!Valid.postalCode(postalCode, setError)) return;
-    if (!Valid.address(street))                  return setError("La calle debe ser de entre 4 y 40 caracteres");
-    if (!Valid.addressNumber(number, setError))  return;
-    if (!Valid.email(email, setError))           return;
-    if (!Valid.phone(phone, setError))           return;
-    if (!Valid.image(photo, setError))           return;
-    if (!Valid.image(logo))                      return setError("El logo no puede superar los 2MB");
-    if (!Valid.hexColor(color, setError))        return;
-    submit();
-  }
+  async function submitBranchIfValid(): Promise<void> {
 
-  async function submit(): Promise<void> {
-    setLoading(true);
     const branch: branch = {
       name: name,
       email: email,
@@ -93,16 +79,21 @@ export default function NewBranch(): JSX.Element {
       photo: photo,
       preferenceColor: color
     }
+
+    if (!isValidBranch(branch, setError)) return;
+
+
+    setLoading(true);
     const response = await postBranch(branch);
-      
     setLoading(false);
+
     if (!response.ok) setError(response.message);
     else setSuccess(true);
 
   }
 
   return (
-    <Form title="Crea una instalación" onSubmit={validate} >
+    <Form title="Crea una instalación" onSubmit={submitBranchIfValid} >
 
     <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
 

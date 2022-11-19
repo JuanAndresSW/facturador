@@ -11,6 +11,7 @@ import { FlexDiv, Retractable } from "components/wrappers";
 
 //Utilities.
 import Valid from "utilities/Valid";
+import isValidBranch from "./utilities/isValidBranch";
 import branch from "./models/branch";
 import { base64ToBlob } from "utilities/conversions";
 
@@ -68,28 +69,14 @@ export default function EditBranch({branch}:props): JSX.Element {
   useEffect(()=>{
     setPhoto(branch.photo);
 
-    getBranchLogo(branch.ID). then (response => {
+    getBranchLogo(branch.ID).then (response => {
       if (response.ok) base64ToBlob(response.content).then(convertedLogo=>setLogo(convertedLogo));
     });
-  },[]);
+  }, [branch.photo, branch.ID]);
 
-  function validate():void {
-    setError(undefined);
-    if (name          && !Valid.names(name, setError)) return;
-    if (city          && !Valid.address(city)) return setError("Elija un municipio");
-    if (postalCode    && !Valid.postalCode(postalCode, setError)) return;
-    if (street        && !Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
-    if (addressNumber && !Valid.addressNumber(addressNumber, setError)) return;
-    if (email         && !Valid.email(email, setError)) return;
-    if (phone         && !Valid.phone(phone, setError)) return;
-    if (!Valid.image(photo, setError)) return;
-    if (!Valid.image(logo)) return setError("El logo no puede superar los 2MB");
-    if (!Valid.hexColor(color, setError)) return;
-    submit();
-  }
 
-  async function submit(): Promise<void> {
-    setLoading(true);
+  async function submitBranchIfValid(): Promise<void> {
+    
     const updatedBranch: branch = {
       name: name,
       email: email,
@@ -106,7 +93,9 @@ export default function EditBranch({branch}:props): JSX.Element {
       preferenceColor: color
     }
 
+    if (!isValidBranch(updatedBranch, setError)) return;
 
+    setLoading(true);
     const response = await putBranch(branch.ID, updatedBranch);
     if (response.ok) setSuccess(true)
     else setError(response.message);
@@ -115,7 +104,7 @@ export default function EditBranch({branch}:props): JSX.Element {
 
 
   return (
-    <Form title={"Editando sucursal "+branch.name} onSubmit={validate} >
+    <Form title={"Editando sucursal "+branch.name} onSubmit={submitBranchIfValid} >
 
     <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
 

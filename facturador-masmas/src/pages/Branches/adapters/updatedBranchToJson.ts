@@ -11,7 +11,7 @@ export default async function updatedBranchToJson(branch: branch): Promise<strin
         updatedCity:          branch.address.city,
         updatedPostalCode:    branch.address.postalCode,
         updatedStreet:        branch.address.street,
-        updatedAddressNumber: branch.address.addressNumber,
+        updatedAddressNumber: branch.address.addressNumber ?? "S/N",
         updatedPhoto:         await fileToBase64(branch.photo),
         updatedLogo:             await fileToBase64(branch.logo),
         updatedPreferenceColor:  branch.preferenceColor,

@@ -22,11 +22,11 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  font-family: monospace;
+  font-family: var(--secondary-font);
 }
 
 [data-option] div:hover {
-  background-color: #eee;
+  background-color: var(--almost-white);
   border: 3px solid;
 }
 
@@ -39,7 +39,7 @@
 }
 
 [data-option] span p {
-  color: #222;
+  color: var(--light-black);
   margin: .2rem 0;
   width: 100%;
   text-overflow: ellipsis;
