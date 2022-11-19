@@ -1,5 +1,10 @@
-# facturador
-Aplicación web didáctica para crear documentos comerciales.
+# facturador++
+## ℹ️ Introduccion
+Este repositorio contiene la Aplicacion Web facturador++, esta aplicacion web fue desarrollada del lado del frontend con React
+y del lado del backend Java Spring Boot, el motor de base de datos utilizado es MySQL
+
+## ℹ️ Sobre la Aplicacion
+Aplicación web didáctica destinada a crear documentos comerciales.
 
 ## Instrucciones:
 
