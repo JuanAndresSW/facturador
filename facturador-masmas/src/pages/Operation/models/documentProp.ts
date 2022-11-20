@@ -1,4 +1,4 @@
-/**Un propiedad de un documento cualquiera. */
+/**Un propiedad de un documento comercial cualquiera. */
 type operationProp =
     "senderCUIT"|
     "receiverCUIT"|
@@ -11,7 +11,7 @@ type operationProp =
     "receiverVATCategory"|
     "startOfActivities"|
     "receiverPostalCode"|
-    "receiverLocality"|
+    "receiverCity"|
     "productTable"|
     "observations"|
     "seller"|

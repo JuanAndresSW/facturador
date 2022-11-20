@@ -11,13 +11,14 @@ import { FlexDiv, Retractable } from "components/wrappers";
 
 //Utilities.
 import Valid from "utilities/Valid";
-import provinces from "./utils/provinces";
 import branch from "./models/branch";
 import { base64ToBlob } from "utilities/conversions";
 
 //Servicios.
 import putBranch from './services/putBranch';
 import getBranchLogo from './services/getBranchLogo';
+import getListOfProvinces from './services/public/getListOfProvinces';
+import getListOfCitiesByProvinceName from './services/public/getListOfCitiesByProvinceName';
 
 type props = {
   branch: branch
@@ -36,12 +37,14 @@ export default function EditBranch({branch}:props): JSX.Element {
   const [boolContact,     setBoolContact] =     useState(false);
   const [boolPreferences, setBoolPreferences] = useState(false);
 
+
+
+
   //  Datos del punto de venta.  //
   const [name,       setName] =       useState();
   //Dirección.
   const [province,   setProvince] =   useState();
-  const [department, setDepartment] = useState();
-  const [locality,   setLocality] =   useState();
+  const [city,       setCity] =       useState();
   const [postalCode, setPostalCode] = useState();
   const [street,     setStreet] =     useState();
   const [addressNumber,     setAddressNumber] =     useState();
@@ -53,7 +56,15 @@ export default function EditBranch({branch}:props): JSX.Element {
   const [logo,       setLogo] =       useState(null);
   const [color,      setColor] =      useState(branch.preferenceColor);
 
+  //  Datos de opciones de formulario.  //
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
 
+
+  useEffect(()=>getListOfProvinces(setProvinces), []);
+  useEffect(()=>getListOfCitiesByProvinceName(province, setCities), [province]);
+
+  
   useEffect(()=>{
     setPhoto(branch.photo);
 
@@ -65,8 +76,7 @@ export default function EditBranch({branch}:props): JSX.Element {
   function validate():void {
     setError(undefined);
     if (name          && !Valid.names(name, setError)) return;
-    if (department    && !Valid.address(department)) return setError("El departamento debe ser de entre 4 y 40 caracteres");
-    if (locality      && !Valid.address(locality)) return setError("La localidad debe ser de entre 4 y 40 caracteres");
+    if (city          && !Valid.address(city)) return setError("Elija un municipio");
     if (postalCode    && !Valid.postalCode(postalCode, setError)) return;
     if (street        && !Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
     if (addressNumber && !Valid.addressNumber(addressNumber, setError)) return;
@@ -86,8 +96,7 @@ export default function EditBranch({branch}:props): JSX.Element {
       phone: phone,
       address: {
         province: province,
-        department: department,
-        locality: locality,
+        city: city,
         postalCode: postalCode,
         street: street,
         addressNumber: addressNumber
@@ -117,11 +126,9 @@ export default function EditBranch({branch}:props): JSX.Element {
       onClick={(state:boolean)=>{setBoolAddress(state); setBoolContact(false); setBoolPreferences(false);}}>
 
         <FlexDiv>
-          <Select label="Provincia"           value={province?province:branch.address.province} onChange={setProvince}     options={provinces} />
-          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.names(department)}
-          placeholder={branch.address.department} />
-          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.names(locality)}
-          placeholder={branch.address.locality}   />
+          <Select label="Provincia"           value={province} onChange={setProvince}     options={provinces} />
+          <Select label="Municipio"           value={city} onChange={setCity}             options={cities} />
+      
           <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)}
           placeholder={branch.address.postalCode} />
           <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.names(street)}

@@ -11,7 +11,7 @@ type HTTPMethod = ("GET"|"POST"|"PUT"|"DELETE");
  * @param {boolean}    [refresh]        - Si el token a enviar es de refrescamiento.
  * @return {Response}                   - La respuesta de la petición.
  */
-const ajax = (method: HTTPMethod, url: string, needsAuth: boolean=false, body?:string, refresh=false): Promise<Response> =>
+const ajax = (method: HTTPMethod, url: string, needsAuth: boolean=false, body?:string, refresh:boolean=false): Promise<Response> =>
 new Promise<Response>( resolve => {
 
   //Definir la request.
@@ -26,20 +26,19 @@ new Promise<Response>( resolve => {
   //Abrir la request.
   xhr.open(method, process.env.REACT_APP_API + url, true);
   if (body  !== undefined)  xhr.setRequestHeader("Content-Type", "application/json");
-  if (needsAuth)            xhr.setRequestHeader("Authorization", 'Bearer ' + getToken("access"));
+  if (needsAuth)            xhr.setRequestHeader("Authorization", 'Bearer ' + getToken(refresh?"refresh":"access"));
   xhr.send(body);
 
-  //Manejar la respuesta.
   function handleResponse(): void {
     if (xhr.readyState === XMLHttpRequest.DONE) 
 
     switch (xhr.status) {
       case 0:   resolve(new Response("No se ha podido establecer la comunicación con el servidor")); break;
-      case 400: resolve(new Response("Error al procesar la respuesta", ',', 400)); break;
-      case 404: resolve(new Response("No se ha encontrado el recurso solicitado", '', 404)); break;
-      case 401: resolve(new Response("No tienes permiso para esta operación", '', 401)); break;
-      case 500: resolve(new Response("Error del servidor", '', 500)); break;
-      default:  resolve(new Response("", xhr.responseText, xhr.status, true)); break;
+      case 400: resolve(new Response("Error al procesar la respuesta", '', 400));                    break;
+      case 404: resolve(new Response("No se ha encontrado el recurso solicitado", '', 404));         break;
+      case 401: resolve(new Response("No tienes permiso para esta operación", '', 401));             break;
+      case 500: resolve(new Response("Error del servidor", '', 500));                                break;
+      default:  resolve(new Response("", xhr.responseText, xhr.status, true));                       break;
     } 
     
   }

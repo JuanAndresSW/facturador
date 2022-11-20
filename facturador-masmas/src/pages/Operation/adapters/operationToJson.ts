@@ -38,8 +38,8 @@ export default function operationToJson(operation: operation, documentClassCode:
         if (currentOperationIncludes("receiverPostalCode"))
         filteredOperation["receiverPostalCode"] =   operation.thirdParty.postalCode;
 
-        if (currentOperationIncludes("receiverLocality"))
-        filteredOperation["receiverLocality"] =     operation.thirdParty.locality;
+        if (currentOperationIncludes("receiverCity"))
+        filteredOperation["receiverCity"] =     operation.thirdParty.city;
     }
 
 

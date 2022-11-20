@@ -79,7 +79,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
       contact:          '',
       VATCategory:      "Responsable Inscripto",
       postalCode:       '',
-      locality:         ''
+      city:         ''
     },
     productTable: {
       quantity:         [0],
@@ -163,6 +163,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
 
 
 
+      <Cond bool={"Tk"!==documentClassCode}>
       <Retractable label="Datos del tercero" initial={false}>
 
         <FlexDiv>
@@ -190,9 +191,9 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
           setThirdParty({...operation.thirdParty, address: address})]} validator={Valid.address(operation.thirdParty.address)} />
         </Filter>
 
-        <Filter by="receiverLocality" classCode={documentClassCode}>
-          <Field label="Localidad" bind={[operation.thirdParty.locality, (locality: string) => 
-          setThirdParty({...operation.thirdParty, locality: locality})]} validator={Valid.address(operation.thirdParty.locality)} />
+        <Filter by="receiverCity" classCode={documentClassCode}>
+          <Field label="Localidad" bind={[operation.thirdParty.city, (city: string) => 
+          setThirdParty({...operation.thirdParty, city: city})]} validator={Valid.address(operation.thirdParty.city)} />
         </Filter>
 
         <Filter by="receiverPostalCode" classCode={documentClassCode}>
@@ -209,7 +210,7 @@ export default function OperationForm({ documentClassCode }: props): JSX.Element
         </Filter>
 
       </Retractable>
-      
+      </Cond>
 
       
       <Retractable label="Datos de la operación">

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200mm" height="200mm" version="1.1" viewBox="0 0 250 200" xmlns="http://www.w3.org/2000/svg" xmlnsCc="http://creativecommons.org/ns#" xmlnsDc="http://purl.org/dc/elements/1.1/" xmlnsOsb="http://www.openswatchbook.org/uri/2009/osb" xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlnsXlink="http://www.w3.org/1999/xlink">
+<metadata>
+<rdfRDF>
+<ccWork rdfAbout="">
+<dcFormat>image/svg+xml</dcFormat>
+<dcType rdfResource="http://purl.org/dc/dcmitype/StillImage"/>
+<dcTitle/>
+</ccWork>
+</rdfRDF>
+</metadata>
+<rect y="-25" width="250" height="250" fill="#fff" stroke-width="0"/>
+<path d="m0 137.66c60.735-91.294 66.816-98.481 66.816-98.481l82.742 105.22 53.209-57.656 47.233 64.087v74.167l-250 1e-5z" fill="#808080"/>
+<ellipse cx="155.49" cy="38.327" rx="29.931" ry="29.723" fill="#808080" stroke-width="0"/>
+</svg>

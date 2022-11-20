@@ -46,8 +46,7 @@ const feats = [
     <img src={openSource} />
     <h3>Gratis y de código abierto</h3>
     <p>
-      Amet consectetur adipisicing elit. Odio, reiciendis fuga dolore non veniam
-      optio dolorem, beatae sunt libero{" "}
+      Puedes acceder libremente al código y solicitar contribuir en GitHub.
     </p>
   </>,
 ];

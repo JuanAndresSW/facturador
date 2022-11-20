@@ -6,12 +6,13 @@ export default function getColorByDocClassCode(cc: (documentClassCode | "default
 
     const documentColors = {
         Fa: "#fa1",
+        Nc: "#285",
+        Nd: "hotpink",
+        Tk: "black",
         Oc: "#248",
         Rm: "#841",
         Rx: "purple",
         Rs: "#299",
-        Nc: "#285",
-        Nd: "hotpink",
         Pa: "#842",
         Ch: "green",
         default: "#999"

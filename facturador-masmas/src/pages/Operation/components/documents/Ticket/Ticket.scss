@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "nunito"; src: url(../../../../../assets/fonts/Nunito-VariableFont_wght.ttf);
+}
+
+.ticket {
+    width: 400px;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+
+    border: 1px dashed #ccc;
+    color: #333;
+
+    .doc-body {
+        
+        display: grid;
+        grid-template-columns: 1fr 4fr 1fr 1fr;
+        grid-template-rows: repeat(11, 1fr);
+        align-items: center;
+        gap: 0 1px;
+        overflow: hidden;
+
+        data {
+            padding: 3px 0;
+            text-align: center;
+        }
+    }
+}

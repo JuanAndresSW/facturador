@@ -1,0 +1,33 @@
+@font-face {
+  font-family: "nunito";
+  src: url(../../../../../assets/fonts/Nunito-VariableFont_wght.ttf);
+}
+
+.ticket {
+  width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+  border: 1px dashed #ccc;
+  color: #333;
+}
+
+.ticket .doc-body {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 4fr 1fr 1fr;
+      grid-template-columns: 1fr 4fr 1fr 1fr;
+  -ms-grid-rows: (1fr)[11];
+      grid-template-rows: repeat(11, 1fr);
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0 1px;
+  overflow: hidden;
+}
+
+.ticket .doc-body data {
+  padding: 3px 0;
+  text-align: center;
+}
+/*# sourceMappingURL=Ticket.css.map */

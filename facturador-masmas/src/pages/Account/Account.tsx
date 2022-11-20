@@ -32,8 +32,6 @@ export default function Account(): JSX.Element {
     //Errores.
     const [error, setError] =                       useState("");
     const [deleteError, setDeleteError] =           useState("");
-    //Datos de eliminación.
-    const [deletionCode, setDeletionCode] =         useState("");
     //Datos del usuario.
     const [avatar, setAvatar] =                     useState(undefined);
     const [newUsername, setNewUsername] =           useState('');
@@ -68,7 +66,7 @@ export default function Account(): JSX.Element {
 
     /*VALIDACIÓN***************************************************************/
 
-    function filter():void {
+    function submitIfEditedAccountIsValid():void {
         if (!Valid.image(avatar, setError)) return;
         if (newUsername && !Valid.names(newUsername, setError)) return;
         if (Valid.password(password)) {
@@ -104,13 +102,11 @@ export default function Account(): JSX.Element {
         if (newUsername) sessionStorage.setItem("username", newUsername);
     }
 
-    //Envía el código de eliminación ingresado. Si es correcto, la cuenta de usuario es eliminada.
+    //Elimina la cuenta de usuario.
     async function requestAccountDeletion() {
-        //if (deletionCode?.length !== 5) {setDeleteError("Código inválido"); return;} TODO: remove uncomment
-        const response = await deleteAccount(deletionCode);
+        const response = await deleteAccount();
         if (!response.ok) setDeleteError(response.message);
         else setDeleteSuccess(true);
-     
     }
 
 
@@ -119,7 +115,7 @@ export default function Account(): JSX.Element {
     return (
         <>
    
-        <Form title="Opciones de la cuenta" onSubmit={filter}>
+        <Form title="Opciones de la cuenta" onSubmit={submitIfEditedAccountIsValid}>
             <BiChevronLeft onClick={() => navigate("/inicio")} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
                 
             <Image label='' setter={setAvatar} img={avatar} />
@@ -160,10 +156,6 @@ export default function Account(): JSX.Element {
             <p style={{textAlign:"center", color:"#fff", cursor:"default"}}>...</p>
             <Retractable label="Otras opciones" initial={false}>
                 
-                
-                <Field bind={[deletionCode, setDeletionCode]} 
-                label={'Escríbe el código de eliminación:'} />
-                
 
                 <Message type="error" message={deleteError} />
 
@@ -171,7 +163,6 @@ export default function Account(): JSX.Element {
                 loading? <Loading /> :
                 
                 <FlexDiv justify='space-between'>
-                    <a href="about:blank" target='_blank'>Solicitar código</a>
 
                     <Confirm label="¿Está seguro de que quiere eliminar su cuenta? Esta acción es irreversible"
                     onConfirm={requestAccountDeletion}>

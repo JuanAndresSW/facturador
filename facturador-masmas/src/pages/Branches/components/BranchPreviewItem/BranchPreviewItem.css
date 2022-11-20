@@ -1,0 +1,51 @@
+/*The main container*/
+[data-component='branch-preview-item'] {
+  width: 10rem;
+  height: 13rem;
+  margin: 1rem;
+  position: relative;
+  cursor: pointer;
+}
+
+[data-component='branch-preview-item'] abbr {
+  text-decoration: none !important;
+}
+
+[data-component='branch-preview-item'] > div {
+  border-radius: 10px;
+  -webkit-transition: .1s;
+  transition: .1s;
+  position: relative;
+}
+
+[data-component='branch-preview-item'] > div:hover {
+  background-color: #eee;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+  outline: 0px solid #0070f0;
+}
+
+[data-component='branch-preview-item'] > div a {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+[data-component='branch-preview-item'] > div a span {
+  color: #444;
+}
+
+[data-component='branch-preview-item'] > div a img {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+[data-component='branch-preview-item'] p, [data-component='branch-preview-item'] a span {
+  color: #222;
+  margin: 0;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/*# sourceMappingURL=BranchPreviewItem.css.map */

@@ -16,7 +16,7 @@ export default async function jsonToDocument(json: string, docCC: documentClassC
     
         sender: {
             logo:               await base64ToBlob(doc.logo),
-            code:               doc.senderCode,
+            code:               doc.senderCode? doc.senderCode : doc.senderCuit,
             name:               doc.senderName,
             address:            doc.senderAddress,
             VATCategory:        doc.senderVatCategory,
@@ -28,7 +28,7 @@ export default async function jsonToDocument(json: string, docCC: documentClassC
             address:            doc.receiverAddress,
             VATCategory:        doc.receiverVatCategory,
             postalCode:         doc.receiverPostalCode,
-            locality:           doc.receiverLocality,
+            city:               doc.receiverCity,
         },
     
         operationData: {

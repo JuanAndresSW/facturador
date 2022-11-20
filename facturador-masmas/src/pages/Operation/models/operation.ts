@@ -1,5 +1,6 @@
-export type documentClassCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch");
+export type documentClassCode = ("Fa" | "Oc" | "Rm" | "Rx" | "Rs" | "Nc" | "Nd" | "Pa" | "Ch" | "Tk");
 
+/**Una operación que se utilizará para crear un documento comercial. */
 type operation = {
     documentClassCode: documentClassCode,
     IDBranch: number,
@@ -12,7 +13,7 @@ type operation = {
         VATCategory: string,
         startOfActivities?: string,
         postalCode: string,
-        locality: string
+        city: string
     },
     productTable: {
         quantity: number[],
