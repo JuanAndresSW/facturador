@@ -53,6 +53,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
         if (isRequiredAuthorization(request) ) {
             log.info("Entro al filtro?");
+            log.info("La URL que entro al filtro es: {}", request.getRequestURI());
             String authHeader = request.getHeader(AUTHORIZATION);
             var token = jwt.token(authHeader);
             try {
@@ -69,7 +70,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     }
 
     private Boolean isRequiredAuthorization(HttpServletRequest request){
-        return !isNecessaryAuthorization(request) && !isFrontResource(request);
+        return !isFrontResource(request) && isNecessaryAuthorization(request);
     }
 
     /**
@@ -83,26 +84,29 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             authUser.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authUser);
-        } else throw new ResourceNotFound("Token is missing");
+        } else {
+            throw new ResourceNotFound("Token is missing");
+        }
     }
 
     private boolean isFrontResource(HttpServletRequest request) {
-        return request.getRequestURI().contains(".css")   ||
+        return  request.getRequestURI().contains(".css")  ||
                 request.getRequestURI().contains(".js")   ||
                 request.getRequestURI().contains(".html") ||
                 request.getRequestURI().contains(".png")  ||
                 request.getRequestURI().contains(".ico")  ||
                 request.getRequestURI().contains(".gif")  ||
                 request.getRequestURI().contains(".jpg")  ||
+                request.getRequestURI().contains(".ttf")  ||
                 request.getRequestURI().contains(".svg");
     }
 
     private boolean isNecessaryAuthorization(HttpServletRequest request) {
-        return  request.getServletPath().equals("/login")                    ||
-                request.getServletPath().equals("/api/auth/accounts/log-in") ||
-                request.getServletPath().equals("/api/auth/accounts")        ||
-                request.getServletPath().equals("/api/auth/refresh")         ||
-                request.getServletPath().equals("/");
+        return  !request.getServletPath().equals("/login") &&
+                !request.getServletPath().equals("/api/auth/accounts/log-in") &&
+                !request.getServletPath().equals("/api/auth/accounts") &&
+                !request.getServletPath().equals("/api/auth/refresh") &&
+                !request.getServletPath().equals("/");
     }
 
 }

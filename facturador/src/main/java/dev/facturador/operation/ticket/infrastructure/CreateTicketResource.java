@@ -44,18 +44,15 @@ public class CreateTicketResource {
     @PostMapping
     public Mono<HttpEntity<Long>> addAnyFullOperation(
             @Valid @RequestBody TicketRestModel ticketRestModel,
-            HttpServletRequest request) throws Exception {
-        log.info("Rest model is: {}", ticketRestModel.toString());
-
+            @RequestHeader(name = "Authorization") String token) throws Exception {
         final var query = GetRequiredOperationDataQuery.builder()
                 .pointOfSaleId(Long.valueOf(ticketRestModel.getIDPointOfSale()))
                 .traderId(Long.valueOf(ticketRestModel.getIDTrader()))
-                .header(request.getHeader("Authorization"))
+                .header(token)
                 .repository("ticket").build();
 
         var response = queryBus.handle(query);
 
-        log.info("DATA REQUIRED IS: {}", response.toString());
         var command = TicketCommand.builder()
                 .products(ticketRestModel.getProducts())
                 .requiredData(response)

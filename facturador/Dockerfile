@@ -1,5 +1,5 @@
 FROM openjdk:17-alpine
-COPY target/facturador-api.war service.war
+COPY target/facturador-0.1-ALPHA.war service.war
 ENTRYPOINT ["java","-jar","/service.war"]
 
 

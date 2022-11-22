@@ -25,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * EndPoint para verificar si el Token no ha expirado
  */
 @RestController
-@RequestMapping(path = "/api/auth")
+@RequestMapping(path = "/api/auth/")
 public class InitResource {
     private final CustomJWT jwt;
     private final CustomUserDetailsService service;
@@ -44,7 +44,7 @@ public class InitResource {
      * @param response {@link HttpServletResponse} de la API HttpServlet. Marca la respuesta de la request
      * @throws IOException
      */
-    @GetMapping("/init")
+    @GetMapping("init")
     public void initApp(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = this.verifyTokenIsTrue(request, response);
         var initResponse = this.createResponseWithEmail(email);

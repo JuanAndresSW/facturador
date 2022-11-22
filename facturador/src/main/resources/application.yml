@@ -1,13 +1,9 @@
 ---
 #Configuracion del Servidor
-enableLoggingRequestDetails: false
 server:
   error:
     include-message: always
     include-binding-errors: always
-  compression:
-    enabled: true
-    min-response-size: 4096
 #Configuracion del log
 logging:
   level:
@@ -30,7 +26,7 @@ spring:
   #Configuracion de MySQL
   datasource:
     password: admin
-    url: jdbc:mysql://localhost:3306/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://still-mapper-369012:us-central1:facturador-db-instance/facturador_db?useSSL=true&useTimezone=true&serverTimezone=UTC
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:

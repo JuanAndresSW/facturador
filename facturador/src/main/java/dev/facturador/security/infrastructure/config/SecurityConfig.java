@@ -63,6 +63,7 @@ public class SecurityConfig {
                         "/**/*.jpg",
                         "/**/*.html",
                         "/**/*.css",
+                        "/**/*.ttf",
                         "/**/*.js").permitAll()
                 .anyRequest().authenticated();
         //Provedor de autenticacion personalizado
