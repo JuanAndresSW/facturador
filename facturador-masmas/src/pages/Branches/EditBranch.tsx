@@ -72,7 +72,26 @@ export default function EditBranch({branch}:props): JSX.Element {
     getBranchLogo(branch.ID).then (response => {
       if (response.ok) base64ToBlob(response.content).then(convertedLogo=>setLogo(convertedLogo));
     });
+<<<<<<< HEAD
   }, [branch.photo, branch.ID]);
+=======
+  },[]);
+
+  function validate():void {
+    setError(undefined);
+    if (name          && !Valid.names(name, setError)) return;
+    if (city          && !Valid.address(city)) return setError("Elija un municipio");
+    if (postalCode    && !Valid.postalCode(postalCode, setError)) return;
+    if (street        && !Valid.address(street)) return setError("La calle debe ser de entre 4 y 40 caracteres");
+    if (addressNumber && !Valid.addressNumber(addressNumber, setError)) return;
+    if (email         && !Valid.email(email, setError)) return;
+    if (phone         && !Valid.phone(phone, setError)) return;
+    if (!Valid.image(photo, setError)) return;
+    if (!Valid.image(logo)) return setError("El logo no puede superar los 2MB");
+    if (!Valid.hexColor(color, setError)) return;
+    submit();
+  }
+>>>>>>> a9cfebedc654b8758b9fa3fb96f1f9126b50f7cc
 
 
   async function submitBranchIfValid(): Promise<void> {
