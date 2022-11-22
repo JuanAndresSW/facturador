@@ -34,7 +34,7 @@ CREATE TABLE `account` (
   KEY `id_trader_account_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_account_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`) ON DELETE CASCADE,
   CONSTRAINT `id_user_account_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,7 +55,7 @@ DROP TABLE IF EXISTS `branch`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `branch` (
   `id_branch` int unsigned NOT NULL AUTO_INCREMENT,
-  `fantasy_name` varchar(30) NOT NULL,
+  `fantasy_name` varchar(45) NOT NULL,
   `email` varchar(128) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `province` varchar(20) NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE `branch` (
   PRIMARY KEY (`id_branch`),
   KEY `id_trader_branch_fk_idx` (`id_owner_trader`),
   CONSTRAINT `id_trader_branch_fk` FOREIGN KEY (`id_owner_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +102,7 @@ CREATE TABLE `credit_note` (
   UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
   KEY `operation_credit_fk_idx` (`id_operation_parent`),
   CONSTRAINT `operation_credit_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `debit_note` (
   UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
   KEY `operation_debit_fk_idx` (`id_operation_parent`),
   CONSTRAINT `operation_debit_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `invoice` (
   UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
   KEY `operation_invoice_fk_idx` (`id_operation_parent`),
   CONSTRAINT `operation_invoice_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +191,7 @@ CREATE TABLE `operation` (
   PRIMARY KEY (`id_operation`),
   KEY `trader_operation_fk_idx` (`id_issuing_trader`),
   CONSTRAINT `trader_operation_fk` FOREIGN KEY (`id_issuing_trader`) REFERENCES `trader` (`id_trader`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +218,7 @@ CREATE TABLE `point_of_sale` (
   PRIMARY KEY (`id_point_of_sale`),
   KEY `id_branch_pos_fk_idx` (`id_owner_branch`),
   CONSTRAINT `id_branch_pos_fk` FOREIGN KEY (`id_owner_branch`) REFERENCES `branch` (`id_branch`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `points_of_sale_control` (
   PRIMARY KEY (`id_pos_control`),
   KEY `id_trader_control_of_pos_fk_idx` (`id_trader`),
   CONSTRAINT `id_trader_control_of_pos_fk` FOREIGN KEY (`id_trader`) REFERENCES `trader` (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,12 +268,12 @@ CREATE TABLE `product` (
   `id_product` int unsigned NOT NULL AUTO_INCREMENT,
   `quantity` int unsigned NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `detail` varchar(30) NOT NULL,
+  `detail` varchar(45) NOT NULL,
   `id_operation_parent` int unsigned NOT NULL,
   PRIMARY KEY (`id_product`),
   KEY `operation_product_fk_idx` (`id_operation_parent`),
   CONSTRAINT `operation_product_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=562 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,17 +295,17 @@ DROP TABLE IF EXISTS `receiver`;
 CREATE TABLE `receiver` (
   `id_receiver` int unsigned NOT NULL AUTO_INCREMENT,
   `receiver_code` varchar(15) NOT NULL,
-  `receiver_name` varchar(30) NOT NULL,
+  `receiver_name` varchar(45) NOT NULL,
   `receiver_address` varchar(45) NOT NULL,
   `receiver_vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE','EXCEMPT','END_CONSUMER','OTHER') NOT NULL,
   `receiver_postal_code` varchar(8) NOT NULL,
-  `receiver_locality` varchar(45) NOT NULL,
+  `receiver_city` varchar(45) NOT NULL,
   `id_operation_parent` int unsigned NOT NULL,
   PRIMARY KEY (`id_receiver`),
   UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
   KEY `operation_receiver_fk_idx` (`id_operation_parent`),
   CONSTRAINT `operation_receiver_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -355,7 +355,7 @@ DROP TABLE IF EXISTS `sender`;
 CREATE TABLE `sender` (
   `id_sender` int unsigned NOT NULL AUTO_INCREMENT,
   `sender_code` varchar(15) NOT NULL,
-  `sender_name` varchar(30) NOT NULL,
+  `sender_name` varchar(45) NOT NULL,
   `sender_address` varchar(45) NOT NULL,
   `sender_contact` varchar(128) NOT NULL,
   `sender_vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
@@ -364,7 +364,7 @@ CREATE TABLE `sender` (
   UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
   KEY `operation_sender_fk_idx` (`id_operation_parent`),
   CONSTRAINT `operation_sender_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,7 +393,7 @@ CREATE TABLE `third_party` (
   `postal_code` varchar(10) NOT NULL,
   `street` varchar(50) NOT NULL,
   `address_number` varchar(5) NOT NULL,
-  `branch_name` varchar(30) NOT NULL,
+  `branch_name` varchar(45) NOT NULL,
   `vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
   `usage_counter` int unsigned NOT NULL,
   PRIMARY KEY (`id_third_party`)
@@ -424,7 +424,7 @@ CREATE TABLE `ticket` (
   PRIMARY KEY (`id_ticket`),
   UNIQUE KEY `id_operation_parent_UNIQUE` (`id_operation_parent`),
   CONSTRAINT `operation_ticket_fk` FOREIGN KEY (`id_operation_parent`) REFERENCES `operation` (`id_operation`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,10 +446,10 @@ DROP TABLE IF EXISTS `trader`;
 CREATE TABLE `trader` (
   `id_trader` int unsigned NOT NULL AUTO_INCREMENT,
   `cuit` varchar(15) NOT NULL,
-  `business_name` varchar(20) NOT NULL,
+  `business_name` varchar(25) NOT NULL,
   `vat_category` enum('REGISTERED_RESPONSIBLE','MONOTAX_RESPONSIBLE') NOT NULL,
   PRIMARY KEY (`id_trader`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -476,7 +476,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -502,7 +502,7 @@ CREATE TABLE `user_avatar` (
   PRIMARY KEY (`id_user_avatar`),
   UNIQUE KEY `UK_9r98vdxdtt1tw76ecsrxpv2io` (`id_user`),
   CONSTRAINT `id_user_avatar_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
