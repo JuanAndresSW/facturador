@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //Modelos.
@@ -6,9 +6,8 @@ import branch from "./models/branch";
 
 //Servicios.
 import postBranch from './services/postBranch';
-
-//Utilidades.
-import provinces from './utils/provinces';
+import getListOfProvinces from './services/public/getListOfProvinces';
+import getListOfCitiesByProvinceName from './services/public/getListOfCitiesByProvinceName';
 
 //GUI.
 import defaultLogo from 'assets/svg/default-logo.svg';
@@ -17,9 +16,10 @@ import { Field, Form, Select, Image, Message, Button, Color } from "components/f
 import { BiChevronLeft } from "react-icons/bi";
 import { Loading } from 'components/standalone';
 import { FlexDiv, Retractable } from "components/wrappers";
+
+//Utilidades.
 import Valid from "utilities/Valid";
-
-
+import isValidBranch from "./utilities/isValidBranch";
 
 /**Formulario para crear una nueva sucursal. */
 export default function NewBranch(): JSX.Element {
@@ -28,14 +28,14 @@ export default function NewBranch(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-
+  
+  
 
   //  Datos del punto de venta.  //
   const [name,       setName] =       useState();
   //Dirección.
-  const [province,   setProvince] =   useState("Buenos Aires");
-  const [department, setDepartment] = useState();
-  const [locality,   setLocality] =   useState();
+  const [province,   setProvince] =   useState("Misiones");
+  const [city,       setCity] =       useState();
   const [postalCode, setPostalCode] = useState();
   const [street,     setStreet] =     useState();
   const [number,     setNumber] =     useState();
@@ -48,37 +48,29 @@ export default function NewBranch(): JSX.Element {
   const [color,      setColor] =      useState("#ffffff");
 
 
+  //  Datos de opciones de formulario.  //
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+
+
+  useEffect(()=>getListOfProvinces(setProvinces), []);
+  useEffect(()=>getListOfCitiesByProvinceName(province, setCities), [province]);
+
+
   //  Controladores de elementos <Retractable/>  //
   const [boolAddress,     setBoolAddress] =     useState(true);
   const [boolContact,     setBoolContact] =     useState(false);
   const [boolPreferences, setBoolPreferences] = useState(false);
 
-  function validate(): void {
-    setError(undefined);
-    if (!Valid.names(name, setError))            return;
-    if (!Valid.address(department))              return setError("El departamento debe ser de entre 4 y 40 caracteres");
-    if (!Valid.address(locality))                return setError("La localidad debe ser de entre 4 y 40 caracteres");
-    if (!Valid.postalCode(postalCode, setError)) return;
-    if (!Valid.address(street))                  return setError("La calle debe ser de entre 4 y 40 caracteres");
-    if (!Valid.addressNumber(number, setError))  return;
-    if (!Valid.email(email, setError))           return;
-    if (!Valid.phone(phone, setError))           return;
-    if (!Valid.image(photo, setError))           return;
-    if (!Valid.image(logo))                      return setError("El logo no puede superar los 2MB");
-    if (!Valid.hexColor(color, setError))        return;
-    submit();
-  }
+  async function submitBranchIfValid(): Promise<void> {
 
-  async function submit(): Promise<void> {
-    setLoading(true);
     const branch: branch = {
       name: name,
       email: email,
       phone: phone,
       address: {
         province: province,
-        department: department,
-        locality: locality,
+        city: city,
         postalCode: postalCode,
         street: street,
         addressNumber: number,
@@ -87,16 +79,21 @@ export default function NewBranch(): JSX.Element {
       photo: photo,
       preferenceColor: color
     }
+
+    if (!isValidBranch(branch, setError)) return;
+
+
+    setLoading(true);
     const response = await postBranch(branch);
-      
     setLoading(false);
+
     if (!response.ok) setError(response.message);
     else setSuccess(true);
 
   }
 
   return (
-    <Form title="Crea una instalación" onSubmit={validate} >
+    <Form title="Crea una instalación" onSubmit={submitBranchIfValid} >
 
     <BiChevronLeft onClick={() => navigate(-1)} style={{margin:"1rem", fontSize:"2rem", color:"rgb(44,44,44)",cursor:"pointer"}} />
 
@@ -107,8 +104,7 @@ export default function NewBranch(): JSX.Element {
 
         <FlexDiv>
           <Select label="Provincia"           value={province} onChange={setProvince}     options={provinces} />
-          <Field  label="Departamento"        bind={[department, setDepartment]} validator={Valid.address(department)} />
-          <Field  label="Localidad"           bind={[locality, setLocality]}     validator={Valid.address(locality)}   />
+          <Select label="Municipio"           value={city} onChange={setCity}     options={cities} />
           <Field  label="Código postal"       bind={[postalCode, setPostalCode]} type="number" validator={Valid.postalCode(postalCode)} />
           <Field  label="Calle"               bind={[street, setStreet]}         validator={Valid.address(street)}                          />
           <Field  label="Altura " bind={[number, setNumber]}         type="number" validator={Valid.addressNumber(number)} />
@@ -141,7 +137,7 @@ export default function NewBranch(): JSX.Element {
 
       <Message type="error" message={error} />
 
-      {success?<Message type="success" message={`Se ha creado el punto de venta "${name}"`} />:
+      {success?<Message type="success" message={`Se ha creado la sucursal "${name}"`} />:
       loading?<Loading />:<Button type="submit">Crear</Button>}
     </Form>
   );

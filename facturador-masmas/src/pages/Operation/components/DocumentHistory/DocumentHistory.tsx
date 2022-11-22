@@ -8,12 +8,13 @@ import getDocumentHistory from "../../services/getDocumentHistory";
 
 import documentHistoryItem from 'pages/Operation/models/documentHistoryItem';
 import "./DocumentHistory.css";
-import { Cond, FlexDiv } from 'components/wrappers';
+import { FlexDiv } from 'components/wrappers';
 
 const documentClasses = [
     {title: "Factura",          value: "Fa"},
     {title: "Nota de débito",   value: "Nd"},
     {title: "Nota de crédito",  value: "Nc"},
+    {title: "Ticket",           value: "Tk"},
 ]
 
 
@@ -59,9 +60,7 @@ export default function DocumentHistory() {
 
 
     return <div className='document-history'>
-
-
-        <Cond bool={documentHistory.length > 0}>
+        
         <menu className='document-history-menu'>
             <Select 
             options={branchesAndPoints}
@@ -74,7 +73,6 @@ export default function DocumentHistory() {
             value={documentClassCode}       onChange={setDocumentClass}    label="Documento"
             />
         </menu>
-        </Cond>
 
 
        <FlexDiv justify='flex-start'>

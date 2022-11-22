@@ -1,34 +1,19 @@
-# Proyecto creado con "npm create-react-app"
-Aplicación web didáctica de contabilidad basada en React.
+# ⚛ facturador++ React.js
 
-## Scripts:
+Contiene información sobre cómo iniciar y empezar a trabajar con el front-end web del proyecto.
 
-En la carpeta raíz, se puede ejecutar:
-### `npm start`
 
-Ejecuta la aplicación en modo de desarrollo. Asegurarse de ejecutar `npm install` antes, para instalar las dependencias.
+## 🏁 Como iniciar
+1. Asegurarse de tener instalado: npm (o yarn) y tsc;
+2. Ejecutar `npm install` para instalar dependencias;
+3. Para ejecutar el proyecto en modo de desarrollo, ejecutar `npm start`;
+4. Para crear un paquete (build), ejecutar `npm run build`;
 
-### `npm test`
 
-Ejecuta el entorno de pruebas
-
-### `npm run build`
-
-Transpila, minifica y hace tree shaking a todo el proyecto para la versión de lanzamiento
-
-## Notas:
+## 🗒️ Notas:
 
 ### SCSS:
+Muchos componentes utilizan SCSS. Para editar estos archivos, si está usando Visual Studio Code, se recomienda la extensión 'live sass compiler', para convertir rápidamente a CSS.
 
-Muchos componentes utilizan SCSS. Para transformarlo a CSS, se recomienda la extensión 'live sass compiler en VSC'.
-
-### Archivos especiales:
-
-1. package.json: declaración de dependencias
-3. tsconfig.json: configuración del comportamiento de typescript
-5. global.d.ts: exporta declaraciones especiales que permiten importar archivos .jpg, .png, .svg..
-
-### Directorios:
-* **node_modules**: módulos de react. Para generar automáticamente a partir de las dependecias especificadas: npm install
-* **public**: carpeta principal accesible por el servidor
-* **src**: todos los recursos que serán empaquetados por Webpack.
+### ENV:
+En el archivo .env podrá modificar la dirección a la cual se dirigen todas las peticiones HTTP que realiza el front-end.

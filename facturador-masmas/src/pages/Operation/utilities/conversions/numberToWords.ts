@@ -1,9 +1,10 @@
-/*************************************************************/
-// NumeroALetras
-// The MIT License (MIT) 
-// @author Rodolfo Carmona
-// @contributor Jean (jpbadoino@gmail.com)
-/*************************************************************/
+/************************************************************
+* NumeroALetras
+* The MIT License (MIT) 
+* @author Rodolfo Carmona
+* @contributor Jean (jpbadoino@gmail.com)
+* @editor Juan Andrés Dos Santos
+*/
 function Unidades(num: number){
     switch(num) {
         case 1: return "UN";

@@ -6,8 +6,7 @@ type branch = {
     phone: string,
     address: {
         province: string,
-        department: string,
-        locality: string,
+        city: string,
         postalCode: string,
         street: string,
         addressNumber: number,

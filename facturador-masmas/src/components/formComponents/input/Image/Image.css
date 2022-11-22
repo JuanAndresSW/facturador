@@ -28,15 +28,15 @@
 }
 
 .image svg {
-    color: #aaa;
+    color: var(--light-gray);
     font-size: 1.2rem;
     position: absolute;
     bottom: 8.2rem;
     right: .1rem;
 }
 .image:hover {
-    background-color: #eee;
+    background-color: var(--almost-white);
 }
 .image svg:hover {
-    color: #f44;
+    color: var(--crab);
 }

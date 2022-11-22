@@ -1,7 +1,7 @@
 package dev.facturador.operation.fulls.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.facturador.operation.fulls.domain.SellConditions;
+import dev.facturador.operation.fulls.domain.model.SellConditions;
 import dev.facturador.operation.core.domain.DocumentType;
 import dev.facturador.operation.core.domain.entity.Operation;
 import dev.facturador.operation.core.domain.entity.Product;
@@ -14,8 +14,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.facturador.operation.fulls.domain.SellConditions.defineSellCondition;
+import static dev.facturador.operation.fulls.domain.model.SellConditions.defineSellCondition;
 import static dev.facturador.operation.core.domain.AllVatCategory.defineAllVat;
 
 /**
@@ -110,7 +108,7 @@ public final class Invoice implements Serializable {
         invoice.getOperation().setReceiver(new Receiver());
         invoice.getOperation().getReceiver().setReceiverCode(values.getReceiverCode());
         invoice.getOperation().getReceiver().setReceiverName(values.getReceiverName());
-        invoice.getOperation().getReceiver().setReceiverLocality(values.getReceiverLocality());
+        invoice.getOperation().getReceiver().setReceiverCity(values.getReceiverCity());
         invoice.getOperation().getReceiver().setReceiverPostalCode(values.getReceiverPostalCode());
         invoice.getOperation().getReceiver().setReceiverVatCategory(defineAllVat(values.getReceiverVatCategory()));
         invoice.getOperation().getReceiver().setReceiverAddress(values.getReceiverAddress());

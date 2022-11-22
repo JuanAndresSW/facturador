@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, Route, Routes} from 'react-router-dom';
 
 //Componentes.
-import {LoggedHeader, Subheader } from './components';
+import LoggedHeader from './components/LoggedHeader/LoggedHeader';
 
 //Stateless.
 import { Main } from 'components/wrappers';
@@ -23,13 +23,14 @@ const tabs = [
     {path:paths.branches,  icon: <MdOutlineHomeWork />,  label:'sucursales'},
 ]
 
-/**Devuelve la página principal dependiente de una sesión iniciada. Contiene todas las vistas principales de la aplicación.*/
+/**Devuelve la página principal dependiente de una sesión iniciada para mostrarse.
+ * Contiene todas las vistas principales de la aplicación.
+ * */
 export default function Home():JSX.Element {
 
     return (
     <>  
         <LoggedHeader />
-        <Subheader />
         
         <Main 
         menu={<NavBar tabs={tabs} />} 

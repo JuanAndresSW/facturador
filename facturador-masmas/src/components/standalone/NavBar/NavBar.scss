@@ -15,7 +15,7 @@ nav {
     margin: .3rem 0;
     font-size: 0.8rem;
     text-decoration: none;
-    color: #222;
+    color: var(--light-black);
     cursor: pointer;
     svg {
       display: block;
@@ -23,11 +23,11 @@ nav {
       font-size: 1.2rem;
     }
     &.active {
-      border-right: 3px solid #0e46ff;
-      color: #0e46ff;
+      border-right: 3px solid var(--blue);
+      color: var(--blue);
     }
     &:hover {
-      background-color: gainsboro;
+      background-color: var(--light-gray);
     }
     
   }
@@ -41,7 +41,7 @@ nav {
   }
   nav>a {
     flex: 1;
-    border-bottom: 2px solid gainsboro;
+    border-bottom: 2px solid var(--light-gray);
     padding: 5px;
     margin: 0;
     display: flex;
@@ -50,7 +50,7 @@ nav {
     text-align: center;
     &.active {
       border: none;
-      border-bottom: 3px solid #0e46ff;
+      border-bottom: 3px solid var(--blue);
     }
   }
 }

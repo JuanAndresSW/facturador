@@ -10,11 +10,10 @@ export default async function branchToJson(branch: branch): Promise<string> {
         phone: branch.phone,
         address: {
             province:      branch.address.province,
-            department:    branch.address.department,
-            locality:      branch.address.locality,
+            city:          branch.address.city,
             postalCode:    branch.address.postalCode,
             street:        branch.address.street,
-            addressNumber: branch.address.addressNumber,
+            addressNumber: branch.address.addressNumber ?? "S/N",
         },
         photo:  await fileToBase64(branch.photo),
         logo:   await fileToBase64(branch.logo),

@@ -1,8 +1,8 @@
 [data-branchpoints] {
-  background-color: #fefefe;
+  background-color: var(--almost-white);
   min-height: 14rem;
   padding: 2rem 0 2rem;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: var(--subtitle-font);
 }
 
 [data-branchpoints] div {
@@ -13,7 +13,7 @@
   display: inline-block;
   margin: 1rem;
   border-radius: 999px;
-  background-color: #ccc;
+  background-color: var(--almost-white);
   width: 4rem;
   padding: .6rem .4rem;
   text-align: center;
@@ -23,13 +23,13 @@
 }
 
 [data-branchpoints] div .point-plus:hover {
-  background-color: #bbb;
+  background-color: var(--light-gray);
 }
 
 [data-branchpoints] .point {
-  border: 1px solid #ccc;
+  border: 1px solid var(--light-gray);
   border-radius: 6px;
-  background-color: #eee;
+  background-color: var(--almost-white);
   width: 10rem;
   padding: .2rem .4rem;
   margin: .8rem;
@@ -40,7 +40,7 @@
   font-size: 1rem;
   margin: 0;
   padding-right: 1rem;
-  border-right: 1px solid #bbb;
+  border-right: 1px solid var(--light-gray);
   float: left;
   display: block;
   cursor: default;
@@ -50,16 +50,16 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  color: #444;
+  color: var(--gray);
 }
 
 [data-branchpoints] .point svg:hover {
-  color: #fd5454;
+  color: var(--crab);
   cursor: pointer;
 }
 
 [data-branchpoints]:nth-child(even) {
-  background-color: #ddf;
+  background-color: var(--almost-white);
 }
 
 [data-branchpoints] h1 {

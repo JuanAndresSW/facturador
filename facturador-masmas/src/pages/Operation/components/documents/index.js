@@ -1,1 +1,2 @@
-export {default as FullSizeDocument } from './FullSizeDocument/FullSizeDocument';
+export {default as InvoiceLikeDocument } from './InvoiceLikeDocument/InvoiceLikeDocument';
+export {default as Ticket } from './Ticket/Ticket';

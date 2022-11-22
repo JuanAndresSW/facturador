@@ -1,11 +1,11 @@
 /**Especifica para cada propiedad de una operación los documentos que incluyen esa propiedad.
  * @example filters.property = "OcFa"; //La propiedad property es incluida en la orden de compra y la factura.*/
 const operationFilters = Object.freeze({
-    senderCUIT:         "OcRmFaNdNcRxCh",
-    senderAddress:      "OcRmFaNdNcRxPaCh",
-    senderName:         "OcRmFaNdNcRxRsPaCh",
+    senderCUIT:         "OcRmFaTkNdNcRxCh",
+    senderAddress:      "OcRmFaTkNdNcRxPaCh",
+    senderName:         "OcRmFaTkNdNcRxRsPaCh",
     senderContact:      "OcRmFaNdNcRxPa",
-    senderVATCategory:  "OcRmFaNdNcRx",
+    senderVATCategory:  "OcRmFaTkNdNcRx",
     startOfActivities:  "OcRmFaNdNcRx",
 
     receiverCUIT:       "OcRmFaNdNcRx",
@@ -13,9 +13,9 @@ const operationFilters = Object.freeze({
     receiverAddress:    "OcRmFaNdNcRxPa",
     receiverVATCategory:"OcRmFaNdNcRx",
     receiverPostalCode: "OcRmFaNdNcRx",
-    receiverLocality:   "OcRmFaNdNcRxCh",
+    receiverCity:       "OcRmFaNdNcRxCh",
 
-    productTable:       "OcRmFaNdNc",
+    productTable:       "OcRmFaTkNdNc",
     observations:       "OcRm",
     seller:             "Oc",
     sellConditions:     "OcFaNdNc",

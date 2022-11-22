@@ -7,8 +7,9 @@ export default function documentClassCodeToDocumentName(cc: documentClassCode, i
         case "Oc":  return inSpanish ? "Orden de compra" : "purchase-order";
         case "Rm":  return inSpanish ? "Remito" : "remittance";
         case "Fa":  return inSpanish ? "Factura" : "invoice";
-        case "Nd":  return inSpanish ? "Nota de débito" : "debit-note";
-        case "Nc":  return inSpanish ? "Nota de crédito" : "credit-note";
+        case "Tk":  return inSpanish ? "Ticket" : "ticket";
+        case "Nd":  return inSpanish ? "Nota de débito" : "debit";
+        case "Nc":  return inSpanish ? "Nota de crédito" : "credit";
         case "Rx":  return inSpanish ? "Recibo X" : "receipt-x";
         case "Rs":  return inSpanish ? "Recibo" : "receipt";
         case "Pa":  return inSpanish ? "Pagaré" : "promissory-note";

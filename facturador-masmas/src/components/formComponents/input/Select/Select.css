@@ -2,25 +2,25 @@
     width: 50%;
     padding: .3rem 1rem;
     margin: .5rem;
-    background-color: #efefef;
-    color: #222;
-    border: 1px solid gainsboro;
+    background-color: var(--almost-white);
+    color: var(--light-black);
+    border: 1px solid var(--light-gray);
     border-radius: 4px;
     cursor: context-menu;
-    font-family: monospace;
+    font-family: var(--secondary-font);
 }
 .select:focus {
-    border-color: #02bac7;
+    border-color: var(--light-blue);
 }
 
 .sub-select{
     width: min-content;
     padding: .3rem;
     margin: .5rem;
-    background-color: #efefef;
-    color: #222;
-    border: 1px solid gainsboro;
+    background-color: var(--almost-white);
+    color: var(--light-black);
+    border: 1px solid var(--light-gray);
     border-radius: 4px;
     cursor: context-menu;
-    font-family: monospace;
+    font-family: var(--secondary-font);
 }

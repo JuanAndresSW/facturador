@@ -5,13 +5,11 @@ export default function jsonToDocumentHistory(json: string): documentHistoryItem
     return history?.map((item : any): documentHistoryItem => { return {
         IDOperation:    item.operationId,
         documentName:   item.documentClass,
-        documentType:   item.documentType,
+        documentType:   item.documentType !== "undefined" ? item.documentType: "",
         documentNumber: item.operationNumber,
         
-        receiverName:   item.receiverName,
-        receiverCUIT:   item.receiverCuit,
+        receiverName:   item.receiverName !== "undefined" ? item.receiverName : "",
+        receiverCUIT:   item.receiverCuit !== "undefined" ? item.receiverCuit : "",
         dateOfIssue:    item.issueDate,
-        
-        
     }})
 }

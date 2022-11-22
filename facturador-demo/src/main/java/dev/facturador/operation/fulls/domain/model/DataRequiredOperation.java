@@ -5,9 +5,11 @@ import dev.facturador.operation.core.application.OperationService;
 import dev.facturador.operation.core.domain.DocumentType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
 
+@Log4j2
 @NoArgsConstructor
 @Data
 public final class DataRequiredOperation {
@@ -30,17 +32,21 @@ public final class DataRequiredOperation {
         response.setSenderStreet(String.valueOf(values.get("street")));
         response.setSenderName(String.valueOf(values.get("fantasyName")));
         response.setPointOfSaleNumber(String.valueOf(values.get("pointOfSaleNumber")));
-
         response.setSenderVatCategory(String.valueOf((values.get("vatCategory"))));
         return response;
     }
 
-    public void category(String receiverCategory) {
+    public void resolveType(String receiverCategory) {
         this.setType((new OperationService()).types.apply(this.senderVatCategory, receiverCategory));
     }
 
     public DataRequiredOperation defineNumber(Integer number) {
+        log.info("NUmber is {}",number);
+        log.info("point number {} ", this.pointOfSaleNumber);
+
         this.setOperationNumberCount(number + 1);
+        log.info("op number count {}", this.operationNumberCount);
+        log.info("Pase el 1+0");
         this.setOperationNumber((new OperationService()).formatOperationNumber(Integer.parseInt(this.pointOfSaleNumber), this.operationNumberCount));
         return this;
     }

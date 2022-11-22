@@ -1,8 +1,8 @@
 .field {
   display: block;
-  border: 1px solid #dadce0;
+  border: 1px solid var(--light-gray);
   border-radius: 5px;
-  color: #5f6368;
+  color: var(--gray);
   margin: .5rem auto;
   padding: 0.6rem;
   width: 80%;
@@ -11,6 +11,6 @@
 .field:focus {
   border-width: 1.2px;
   outline: none;
-  border-color: #0070f0;
+  border-color: var(--blue);
 }
-.invalid:focus {border-color: rgb(255, 151, 16);}
+.invalid:focus {border-color: var(--marigold);}

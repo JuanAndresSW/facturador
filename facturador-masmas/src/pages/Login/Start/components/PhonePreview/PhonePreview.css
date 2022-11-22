@@ -16,8 +16,8 @@
   width: max-content;
   margin: 1rem auto;
   text-decoration: none;
-  color: #6cd800;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: var(--android);
+  font-family: var(--ui-font);
 }
 
 .phone #phone-title svg {
@@ -32,8 +32,8 @@
 }
 
 .phone .slider-wrapper {
-  background: #020024;
-  background: linear-gradient(143deg, #020024 0%, #4a4d4e 100%);
+  background: var(--void-blue);
+  background: linear-gradient(143deg, var(--void-blue) 0%, #4a4d4e 100%);
   max-width: 15rem;
   max-height: -webkit-min-content;
   max-height: -moz-min-content;

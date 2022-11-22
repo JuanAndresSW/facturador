@@ -1,6 +1,6 @@
 footer {
   min-height: 5rem;
-  border-top: 1px solid gainsboro;
+  border-top: 1px solid var(--light-gray);
   padding: 0 3rem 2rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -19,7 +19,7 @@ footer {
 }
 
 footer div {
-  font-family: monospace;
+  font-family: var(--secondary-font);
   margin: 0 1rem;
 }
 

@@ -1,7 +1,7 @@
 package dev.facturador.operation.fulls.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.facturador.operation.fulls.domain.SellConditions;
+import dev.facturador.operation.fulls.domain.model.SellConditions;
 import dev.facturador.operation.core.domain.DocumentType;
 import dev.facturador.operation.core.domain.entity.Operation;
 import dev.facturador.operation.core.domain.entity.Product;
@@ -15,8 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,7 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.facturador.operation.fulls.domain.SellConditions.defineSellCondition;
+import static dev.facturador.operation.fulls.domain.model.SellConditions.defineSellCondition;
 import static dev.facturador.operation.core.domain.AllVatCategory.defineAllVat;
 
 /**
@@ -111,7 +109,7 @@ public final class CreditNote implements Serializable {
         creditNote.getOperation().setReceiver(new Receiver());
         creditNote.getOperation().getReceiver().setReceiverCode(values.getReceiverCode());
         creditNote.getOperation().getReceiver().setReceiverName(values.getReceiverName());
-        creditNote.getOperation().getReceiver().setReceiverLocality(values.getReceiverLocality());
+        creditNote.getOperation().getReceiver().setReceiverCity(values.getReceiverCity());
         creditNote.getOperation().getReceiver().setReceiverPostalCode(values.getReceiverPostalCode());
         creditNote.getOperation().getReceiver().setReceiverVatCategory(defineAllVat(values.getReceiverVatCategory()));
         creditNote.getOperation().getReceiver().setReceiverAddress(values.getReceiverAddress());

@@ -5,9 +5,9 @@
     justify-content: space-between;
     margin: 3rem 0 0;
     padding: 0 1rem .2rem;
-    color: #333;
+    color: var(--dark-gray);
     font-size: 1rem;
-    font-family: monospace;
+    font-family: var(--secondary-font);
     cursor:pointer;
 }
 [data-retractable-header] svg {

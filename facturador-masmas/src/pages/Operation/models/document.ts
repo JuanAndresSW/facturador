@@ -1,3 +1,4 @@
+/**Un documento comercial cualquiera. */
 type document = {
     metadata: {
         documentNumber: string,
@@ -21,7 +22,7 @@ type document = {
         address: string,
         VATCategory: string,
         postalCode: string,
-        locality: string,
+        city: string,
     },
 
     operationData: {

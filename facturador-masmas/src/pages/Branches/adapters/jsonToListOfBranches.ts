@@ -14,8 +14,7 @@ export default async function jsonToListOfBranches(json: string): Promise<listOf
             phone: branch.phone,
             address: {
                 province:      branch.province,
-                department:    branch.department,
-                locality:      branch.locality,
+                city:          branch.city,
                 postalCode:    branch.postalCode,
                 street:        branch.street,
                 addressNumber: branch.addressNumber,

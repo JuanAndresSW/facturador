@@ -32,7 +32,7 @@ public final class FullOperationDisplayed {
     private String receiverAddress;
     private String receiverVatCategory;
     private String receiverPostalCode;
-    private String receiverLocality;
+    private String receiverCity;
 
     private String preferenceColor;
     @Lob

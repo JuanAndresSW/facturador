@@ -24,7 +24,7 @@
 }
 
 #profile-menu img:hover {
-  background-color: gainsboro;
+  background-color: var(--light-gray);
 }
 
 #profile-menu-list {
@@ -36,10 +36,10 @@
   top: 4.5rem;
   right: .5rem;
   display: none;
-  background-color: #fff;
-  border: 1px solid #777;
+  background-color: white;
+  border: 1px solid var(--light-gray);
   border-radius: 3px;
-  font-family: monospace;
+  font-family: var(--secondary-font);
 }
 
 #profile-menu-list p {
@@ -59,7 +59,7 @@
   display: block;
   font-size: 1rem;
   text-align: center;
-  color: #272727;
+  color: var(--light-black);
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -75,7 +75,7 @@
 }
 
 #profile-menu-list ul li a:hover {
-  background-color: #eee;
+  background-color: var(--almost-white);
 }
 
 #profile-menu-list.extended {
@@ -89,6 +89,6 @@
   top: -13%;
   border-width: 8px;
   border-style: solid;
-  border-color: transparent transparent #555 transparent;
+  border-color: transparent transparent var(--gray) transparent;
 }
 /*# sourceMappingURL=ProfileMenu.css.map */

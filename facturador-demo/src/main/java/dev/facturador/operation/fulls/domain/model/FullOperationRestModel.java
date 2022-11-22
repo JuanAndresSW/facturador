@@ -49,6 +49,6 @@ public class FullOperationRestModel implements Serializable {
     @NotEmpty
     private String receiverPostalCode;
     @NotEmpty
-    private String receiverLocality;
+    private String receiverCity;
 
 }
