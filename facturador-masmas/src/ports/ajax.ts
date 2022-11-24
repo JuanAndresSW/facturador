@@ -26,7 +26,7 @@ new Promise<Response>( resolve => {
   //Abrir la request.
   xhr.open(method, process.env.REACT_APP_API + url, true);
   if (body  !== undefined)  xhr.setRequestHeader("Content-Type", "application/json");
-  if (needsAuth)            xhr.setRequestHeader("Authorization", 'Bearer ' + getToken(refresh?"refresh":"access"));
+  if (needsAuth)            xhr.setRequestHeader("Authorization", 'Bearer ' + getToken("access"));
   xhr.send(body);
 
   function handleResponse(): void {
