@@ -15,6 +15,3 @@ El directorio raíz tiene dos carpetas:
 * facturador-masmas: el front-end
 
 Para información sobre cómo ejecutar cada parte, refiérase a sus respectivos readme.
-
-## Información de desarrollo:
-En [esta](https://drive.google.com/drive/folders/1cnJiZDqgtwk2DHUioX_-bKYUBR_A8BnR?usp=sharing) carpeta de Google Drive tiene acceso a la documentación del proyecto.
