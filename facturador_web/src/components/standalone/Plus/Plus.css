@@ -1,0 +1,26 @@
+.plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10rem;
+    height: 10rem;
+    margin: 1rem;
+    background: white;
+    border-radius: 10px;
+    outline: 2px dashed var(--almost-white);
+    transition: .1s;
+}
+.plus svg {
+    display: block;
+    height: 6rem;
+    width: 6rem;
+    color: var(--light-gray);
+}
+.plus:hover {
+    transform: scale(1.1);
+    outline: 2px solid var(--blue);
+}
+.plus:hover>svg {
+    color: var(--blue);
+    
+}

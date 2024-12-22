@@ -1,0 +1,17 @@
+.loading {
+    animation:rotate 1s ease infinite;
+    display: block;
+    font-size: 2rem;
+    color: var(--gray);
+    margin: .2rem auto;
+}
+
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

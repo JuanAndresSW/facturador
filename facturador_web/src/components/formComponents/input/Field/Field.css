@@ -1,0 +1,16 @@
+.field {
+  display: block;
+  border: 1px solid var(--light-gray);
+  border-radius: 5px;
+  color: var(--gray);
+  margin: .5rem auto;
+  padding: 0.6rem;
+  width: 80%;
+  height: 1.2rem;
+}
+.field:focus {
+  border-width: 1.2px;
+  outline: none;
+  border-color: var(--blue);
+}
+.invalid:focus {border-color: var(--marigold);}

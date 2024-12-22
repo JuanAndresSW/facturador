@@ -1,0 +1,12 @@
+.manual ul {
+    list-style-type: square;
+}
+
+.manual svg {
+    display: inline-block;
+}
+
+.manual img {
+    max-width: 80%;
+    border: 1px solid var(--light-gray);
+}

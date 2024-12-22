@@ -1,0 +1,64 @@
+.phone {
+  min-height: 10rem;
+  background-color: white;
+  padding: 1rem 0;
+}
+
+.phone #phone-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin: 1rem auto;
+  text-decoration: none;
+  color: var(--android);
+  font-family: var(--ui-font);
+}
+
+.phone #phone-title svg {
+  font-size: 3rem;
+  height: 3rem;
+  width: 3rem;
+}
+
+.phone #phone-title h2 {
+  text-align: center;
+  margin: 1rem;
+}
+
+.phone .slider-wrapper {
+  background: var(--void-blue);
+  background: linear-gradient(143deg, var(--void-blue) 0%, #4a4d4e 100%);
+  max-width: 15rem;
+  max-height: -webkit-min-content;
+  max-height: -moz-min-content;
+  max-height: min-content;
+  overflow: hidden;
+  margin: 1rem auto;
+  padding: 1rem 0.5rem 2rem 0.5rem;
+  border: 2px inset black;
+  border-radius: 15px;
+}
+
+.phone .slider-wrapper hr {
+  margin: 0 auto;
+  width: 20%;
+}
+
+.phone .slider-wrapper .slide {
+  background-color: black;
+  min-height: 20rem;
+  max-height: 25rem;
+  margin: 1rem 0 0;
+  overflow: hidden;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+/*# sourceMappingURL=PhonePreview.css.map */

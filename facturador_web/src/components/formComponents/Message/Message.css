@@ -1,0 +1,20 @@
+.error {
+    margin: 2rem .4rem;
+    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: var(--secondary-font);
+    font-size: 1rem;
+}
+.success p {
+    cursor: default;
+    text-align: center;
+    color: var(--blue);
+    width: 100%;
+}
+
+.success button {
+    margin: 0 auto;
+}

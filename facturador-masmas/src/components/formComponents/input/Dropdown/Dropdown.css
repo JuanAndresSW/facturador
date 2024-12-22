@@ -1,8 +1,0 @@
-[data-dropdown] {
-    margin: 0 1rem;
-    width: min-content;
-    background: none;
-    color: var(--light-black);
-    border: none;
-    cursor: context-menu;
-}

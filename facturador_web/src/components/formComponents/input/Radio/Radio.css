@@ -1,0 +1,14 @@
+.radio {
+    display: inline-block;
+    margin: .5rem 1rem  ;
+}
+[type="radio"] {
+    margin-right: 1rem;
+    margin: 0 1rem 0;
+    padding: 0;
+    cursor: pointer;
+}
+[type="radio"].radio-checked{
+    transition: .1s;
+    transform: scale(1.6);
+}

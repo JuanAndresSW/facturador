@@ -1,0 +1,15 @@
+.section {
+    background-color: white;
+    border-radius: 0px;
+    margin: 2rem;
+    padding: 1rem;
+    max-width: 800px;
+}
+
+.section legend:nth-child(1) {
+    margin: .4rem;
+    text-align: center;
+    color: var(--dark-gray);
+    font-size: 1rem;
+    font-family: var(--secondary-font);
+}
