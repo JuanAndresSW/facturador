@@ -18,7 +18,7 @@ export default async function getSessionByToken(): Promise<Response> {
   if (accessTokenResponse.status === 200) return success(accessTokenResponse.content);
   
   else {
-    const refreshTokenResponse = await ajax("POST","auth/refresh", true, undefined, true);
+    const refreshTokenResponse = await ajax("GET","auth/refresh", true, undefined, true);
 
     if (refreshTokenResponse.status === 200) return success(refreshTokenResponse.content)
     else return new Response("Los tokens almacenados son erróneos o han expirado.");

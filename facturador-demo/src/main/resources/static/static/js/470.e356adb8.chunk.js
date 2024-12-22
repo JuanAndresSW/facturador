@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkfacturador_masmas=self.webpackChunkfacturador_masmas||[]).push([[470],{2470:function(a,r,u){u.r(r),u.d(r,{default:function(){return t}});u(2791);var n=u(184);function t(){return(0,n.jsx)(n.Fragment,{})}}}]);
-//# sourceMappingURL=470.e356adb8.chunk.js.map
