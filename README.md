@@ -5,21 +5,23 @@
 `facturador++` es una aplicación web didáctica que permite administrar una empresa comercial con distintos puntos de venta, y crear documentos comerciales.
 Está desarrollada usando React, Java Spring Boot y MySQL.
 
-
-## Configuraciones
-
 El directorio raíz tiene dos carpetas:
 
 * facturador: el back-end
 * facturador_web: el front-end
 
+## Antes de ejecutar
 
 ### Configurar el back-end
 
   * Instalar Java 17: [OpenJDK 17](https://jdk.java.net/archive).
   * Instalar MySQL 8: [MySQL 8](https://dev.mysql.com/downloads/mysql/8.0.html).
   * Instalar Maven 3.9.9: [Apache Maven](https://maven.apache.org/download.cgi?).
-  * Limpiar el Build e instalar dependencias del back-end: `mvn clean -f pom.xml && mvn install -f pom.xml`.
+  * Limpiar el Build e instalar dependencias del back-end:
+  ```
+  $ mvn clean -f pom.xml
+  $ mvn install -f pom.xml
+  ```
   * Montar la base de datos en `./facturador/data/`. En `./facturador/src/main/resources/` establecer los parámetros de conexión:
 
 ```yml
@@ -31,6 +33,21 @@ El directorio raíz tiene dos carpetas:
 
 ### Configurar el front-end
 
-* Instalar dependencias del front-end con npm: `npm install`.
+* Instalar dependencias del front-end con npm:
+```
+$ npm install
+```
 * Muchos componentes utilizan SCSS. Para editar estos archivos, si está usando Visual Studio Code, se recomienda la extensión 'live sass compiler', para convertir rápidamente a CSS.
-* .env: en el archivo `./facturador_web/.env` podrá modificar la dirección a la cual se dirigen todas las peticiones HTTP.
+* .env: en el archivo `./facturador_web/.env` puede modificar la dirección a la cual se dirigen todas las peticiones HTTP.
+
+## Ejecutar la aplicación
+
+Ejecute el back-end desde `./facturador/` con:
+```
+$ mvn spring-boot:run
+```
+
+Ejecute el front-end desde `./facturador_web/` con:
+```
+$ npm start
+```
